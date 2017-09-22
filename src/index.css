@@ -1,0 +1,28 @@
+@import 'css-reset/reset.css';
+
+:global(html) {
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+:global(*),
+:global(*::before),
+:global(*::after) {
+  box-sizing: inherit;
+}
+
+:global(html),
+:global(body),
+.root {
+  width: 100%;
+  height: 100%;
+}
+
+.root {
+  color: color(black alpha(50%));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: 6vmin;
+}
