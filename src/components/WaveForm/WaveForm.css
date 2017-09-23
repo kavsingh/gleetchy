@@ -1,0 +1,33 @@
+.root {
+  position: relative;
+}
+
+.handleContainer {
+  position: absolute;
+  height: 100%;
+  top: 0;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.handle {
+  position: relative;
+  height: 100%;
+  width: 100%;
+}
+
+.handleLine {
+  position: absolute;
+  height: 100%;
+  width: 1px;
+  left: 50%;
+  background-color: #000;
+}
+
+.handleTag {
+  position: absolute;
+  height: 10px;
+  width: 50%;
+  top: 0;
+  background-color: #000;
+}

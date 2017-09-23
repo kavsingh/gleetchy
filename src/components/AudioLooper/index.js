@@ -1,5 +1,6 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
+import { clamp } from 'ramda'
 import WaveForm from '../WaveForm'
 import PlayPauseButton from '../PlayPauseButton'
 import classNames from './AudioLooper.css'
@@ -17,11 +18,25 @@ class AudioLooper extends Component {
 
     this.bufferSourceNode = null
     this.handlePlayPause = this.handlePlayPause.bind(this)
+    this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
+    this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
   }
 
   handlePlayPause() {
     if (!this.state.buffer) return
     this.setState(state => ({ isPlaying: !state.isPlaying }))
+  }
+
+  handleLoopStartDrag(movement) {
+    this.setState(state => ({
+      loopStart: clamp(0, state.loopEnd - 0.0001, state.loopStart + movement),
+    }))
+  }
+
+  handleLoopEndDrag(movement) {
+    this.setState(state => ({
+      loopEnd: clamp(state.loopStart + 0.0001, 1, state.loopEnd + movement),
+    }))
   }
 
   replaceBufferSourceNode() {
@@ -51,13 +66,24 @@ class AudioLooper extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { buffer, isPlaying, loopStart } = this.state
+    const { buffer, isPlaying, loopStart, loopEnd } = this.state
     const bufferChanged = prevState.buffer !== buffer
     const playChanged = isPlaying !== prevState.isPlaying
+    const startChanged = loopStart !== prevState.loopStart
 
-    if (buffer && (bufferChanged || playChanged)) {
-      this.replaceBufferSourceNode()
-      if (isPlaying) this.bufferSourceNode.start(0, loopStart)
+    if (buffer) {
+      if (bufferChanged || playChanged || startChanged) {
+        this.replaceBufferSourceNode()
+
+        if (isPlaying) {
+          this.bufferSourceNode.start(0, loopStart * buffer.duration)
+        }
+      } else {
+        Object.assign(this.bufferSourceNode, {
+          loopStart: loopStart * buffer.duration,
+          loopEnd: loopEnd * buffer.duration,
+        })
+      }
     }
   }
 
@@ -66,7 +92,7 @@ class AudioLooper extends Component {
   }
 
   render() {
-    const { buffer, isPlaying } = this.state
+    const { buffer, isPlaying, loopEnd, loopStart } = this.state
 
     return (
       <div className={classNames.root}>
@@ -76,7 +102,11 @@ class AudioLooper extends Component {
                 width={600}
                 height={100}
                 buffer={buffer}
+                loopStart={loopStart}
+                loopEnd={loopEnd}
                 key={'waveform'}
+                onLoopStartDrag={this.handleLoopStartDrag}
+                onLoopEndDrag={this.handleLoopEndDrag}
               />,
               <PlayPauseButton
                 key={'button'}
