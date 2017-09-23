@@ -91,9 +91,9 @@ module.exports = {
   },
   plugins: [
     new webpack.EnvironmentPlugin('NODE_ENV'),
-    new ExtractTextPlugin(isProduction
-      ? '[name].[contenthash:20].css'
-      : '[name].css'),
+    new ExtractTextPlugin(
+      isProduction ? '[name].[contenthash:20].css' : '[name].css',
+    ),
     new HtmlWebpackPlugin({
       title: 'Basics',
       template: fromRoot('src/index.html'),

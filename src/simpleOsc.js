@@ -1,4 +1,4 @@
-import { createSlider, attachEls } from './uiUtil'
+import { createSlider, attachEls, bindControl } from './uiUtil'
 
 const simpleOsc = () => {
   const audioContext = new AudioContext()
@@ -6,31 +6,30 @@ const simpleOsc = () => {
   const osc2 = audioContext.createOscillator()
   const gain = audioContext.createGain()
 
-  const [
-    gainControl,
-    freqControl,
-  ] = attachEls(
-    document.body,
-    [
-      createSlider({
-        min: 0, max: 1, step: 0.01, value: 0,
-      }),
-      createSlider({
-        min: 40, max: 440, step: 1, value: 40,
-      }),
-    ],
-  )
+  const freqControl = createSlider('osc', {
+    min: 40,
+    max: 440,
+    step: 1,
+    value: 40,
+  })
 
-  const updateGain = () => { gain.gain.value = gainControl.value }
-  const updateOsc = () => {
-    osc.frequency.value = freqControl.value
-    osc2.frequency.value = freqControl.value * 0.8
-  }
+  const gainControl = createSlider('gain', {
+    min: 0,
+    max: 1,
+    step: 0.01,
+    value: 0,
+  })
 
-  updateGain()
-  updateOsc()
-  gainControl.addEventListener('input', updateGain)
-  freqControl.addEventListener('input', updateOsc)
+  attachEls(document.body, [freqControl.container, gainControl.container])
+
+  bindControl(gainControl.input, () => {
+    gain.gain.value = gainControl.input.value
+  })
+
+  bindControl(freqControl.input, () => {
+    osc.frequency.value = freqControl.input.value
+    osc2.frequency.value = freqControl.input.value * 0.8
+  })
 
   osc.connect(gain)
   osc2.connect(gain)

@@ -1,7 +1,7 @@
 import 'babel-polyfill'
-import { once, docReady } from './util'
-// import simpleOsc from './simpleOsc'
-// import audioLoop from './audioLoop'
+import './index.css'
+import { once } from 'ramda'
+import { docReady } from './util'
 import gleetchy from './gleetchy'
 
 docReady().then(once(gleetchy))

@@ -7,7 +7,24 @@ module.exports = {
 
   env: { browser: true },
 
-  extends: ['mongrel', 'plugin:inferno/recommended'],
+  plugins: ['inferno', 'prettier'],
 
-  plugins: ['inferno'],
+  extends: [
+    'mongrel',
+    'prettier',
+    'prettier/react',
+    'plugin:inferno/recommended',
+  ],
+
+  rules: {
+    'prettier/prettier': [
+      'warn',
+      {
+        semi: false,
+        singleQuote: true,
+        trailingComma: 'all',
+        bracketSpacing: true,
+      },
+    ],
+  },
 }
