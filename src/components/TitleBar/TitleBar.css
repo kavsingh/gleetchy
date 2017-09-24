@@ -1,0 +1,6 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  font-size: 0.8em;
+  padding: 0 0 0.6em;
+}

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
+import TitleBar from '../TitleBar'
 import Slider from '../Slider'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
@@ -33,25 +34,25 @@ class AudioLooper extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { isPlaying, buffer } = this.props
+    const { isPlaying, file } = this.props
     const { loopStart, loopEnd, gain, playbackRate } = this.state
 
     const playChanged = isPlaying !== prevProps.isPlaying
-    const bufferChanged = prevProps.buffer !== buffer
+    const fileChanged = prevProps.file !== file
     const startChanged = loopStart !== prevState.loopStart
 
     this.gainNode.gain.value = gain
 
-    if (buffer) {
-      if (bufferChanged || playChanged || startChanged) {
+    if (file && file.buffer) {
+      if (fileChanged || playChanged || startChanged) {
         this.replaceBufferSourceNode()
 
         if (isPlaying) {
-          this.bufferSourceNode.start(0, loopStart * buffer.duration)
+          this.bufferSourceNode.start(0, loopStart * file.buffer.duration)
         }
       } else {
-        this.bufferSourceNode.loopStart = loopStart * buffer.duration
-        this.bufferSourceNode.loopEnd = loopEnd * buffer.duration
+        this.bufferSourceNode.loopStart = loopStart * file.buffer.duration
+        this.bufferSourceNode.loopEnd = loopEnd * file.buffer.duration
         this.bufferSourceNode.playbackRate.value = playbackRate
       }
     }
@@ -111,7 +112,7 @@ class AudioLooper extends Component {
     }
 
     const { loopStart, loopEnd, playbackRate } = this.state
-    const { createBufferSourceNode, buffer } = this.props
+    const { createBufferSourceNode, file: { buffer } } = this.props
 
     this.bufferSourceNode = createBufferSourceNode()
     this.bufferSourceNode.buffer = buffer
@@ -124,51 +125,54 @@ class AudioLooper extends Component {
   }
 
   render() {
-    const { buffer } = this.props
+    const { file: { buffer, name }, label } = this.props
     const { loopEnd, loopStart, gain, playbackRate } = this.state
 
     return (
       <div className={classNames.root}>
-        <div className={classNames.waveContainer}>
-          <div className={classNames.waveFormContainer}>
-            <WaveForm buffer={buffer} />
+        <TitleBar>{() => `${label}${name ? ` / ${name}` : ''}`}</TitleBar>
+        <div className={classNames.main}>
+          <div className={classNames.waveContainer}>
+            <div className={classNames.waveFormContainer}>
+              <WaveForm buffer={buffer} />
+            </div>
+            {buffer ? (
+              <div className={classNames.loopRegionContainer}>
+                <LoopRegion
+                  loopStart={loopStart}
+                  loopEnd={loopEnd}
+                  onLoopStartDrag={this.handleLoopStartDrag}
+                  onLoopEndDrag={this.handleLoopEndDrag}
+                  onLoopRegionDrag={this.handleLoopRegionDrag}
+                />
+              </div>
+            ) : (
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={this.handleLoadAudioClick}
+                className={classNames.initLoadAudio}
+              >
+                Load audio file
+              </div>
+            )}
           </div>
-          {buffer ? (
-            <div className={classNames.loopRegionContainer}>
-              <LoopRegion
-                loopStart={loopStart}
-                loopEnd={loopEnd}
-                onLoopStartDrag={this.handleLoopStartDrag}
-                onLoopEndDrag={this.handleLoopEndDrag}
-                onLoopRegionDrag={this.handleLoopRegionDrag}
-              />
-            </div>
-          ) : (
-            <div
-              role="button"
-              tabIndex={0}
-              onClick={this.handleLoadAudioClick}
-              className={classNames.initLoadAudio}
-            >
-              Load audio file
-            </div>
-          )}
-        </div>
-        <div className={classNames.gainSliderContainer}>
-          <Slider
-            value={gain}
-            renderLabel={() => 'G'}
-            renderValue={() => gain.toFixed(2)}
-            onChange={this.handleGainChange}
-          />
-        </div>
-        <div className={classNames.rateSliderContainer}>
-          <Slider
-            value={playbackRate}
-            renderLabel={() => 'S'}
-            renderValue={() => playbackRate.toFixed(2)}
-            onChange={this.handleRateChange}
-          />
+          <div className={classNames.gainSliderContainer}>
+            <Slider
+              value={gain}
+              renderLabel={() => 'G'}
+              renderValue={() => gain.toFixed(2)}
+              onChange={this.handleGainChange}
+            />
+          </div>
+          <div className={classNames.rateSliderContainer}>
+            <Slider
+              value={playbackRate}
+              renderLabel={() => 'S'}
+              renderValue={() => playbackRate.toFixed(2)}
+              onChange={this.handleRateChange}
+            />
+          </div>
         </div>
       </div>
     )
@@ -181,7 +185,12 @@ AudioLooper.propTypes = {
   gain: PropTypes.number,
   playbackRate: PropTypes.number,
   isPlaying: PropTypes.bool,
-  buffer: PropTypes.instanceOf(AudioBuffer),
+  label: PropTypes.string,
+  file: PropTypes.shape({
+    buffer: PropTypes.instanceOf(AudioBuffer),
+    name: PropTypes.string,
+    type: PropTypes.string,
+  }),
   loadAudio: PropTypes.func,
   connect: PropTypes.func,
   disconnect: PropTypes.func,
@@ -195,7 +204,8 @@ AudioLooper.defaultProps = {
   gain: 1,
   playbackRate: 1,
   isPlaying: false,
-  buffer: null,
+  label: '',
+  file: {},
   loadAudio: () => {},
   connect: () => {},
   disconnect: () => {},

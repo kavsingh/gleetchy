@@ -33,7 +33,7 @@ class Gleetchy extends Component {
         {
           id: 'loop0',
           label: 'Loop 0',
-          file: null,
+          file: {},
           gain: 0.5,
           loopStart: 0,
           loopEnd: 1,
@@ -42,7 +42,7 @@ class Gleetchy extends Component {
         {
           id: 'loop1',
           label: 'Loop 1',
-          file: null,
+          file: {},
           gain: 0.5,
           loopStart: 0,
           loopEnd: 1,
@@ -118,9 +118,6 @@ class Gleetchy extends Component {
               }}
               key={id}
             >
-              <div className={classNames.label}>
-                {label} {file ? ` / ${file.name}` : ''}
-              </div>
               <AudioLooper
                 gain={gain}
                 playbackRate={playbackRate}
@@ -128,7 +125,8 @@ class Gleetchy extends Component {
                 loopEnd={loopEnd}
                 createBufferSourceNode={this.createBufferSourceNode}
                 createGainNode={this.createGainNode}
-                buffer={(file || {}).buffer || null}
+                label={label}
+                file={file || {}}
                 loadAudio={() => this.loadAudioToLooper(id)}
                 connect={node => this.connectOut(node, id)}
                 disconnect={node => this.disconnectOut(node, id)}
