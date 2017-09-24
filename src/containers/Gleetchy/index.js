@@ -1,7 +1,7 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
-import { tryCatch } from 'ramda'
-import { warn, loadAudioToBuffer } from '../../util'
+import { tryCatch, head } from 'ramda'
+import { warn, decodeAudioDataP } from '../../util'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
@@ -23,16 +23,16 @@ class Gleetchy extends Component {
         {
           id: 'loop0',
           label: 'Loop 0',
-          src: 'media/okthenalright4rhyth.mp3',
-          gain: 0.6,
+          file: null,
+          gain: 0.5,
           loopStart: 0,
-          loopEnd: 0.25,
+          loopEnd: 1,
           playbackRate: 1,
         },
         {
           id: 'loop1',
           label: 'Loop 1',
-          src: 'media/okthenalright4bass.mp3',
+          file: null,
           gain: 0.5,
           loopStart: 0,
           loopEnd: 1,
@@ -44,8 +44,7 @@ class Gleetchy extends Component {
     const context = new AudioContext()
     const out = context.destination
 
-    this.handlePlayPause = this.handlePlayPause.bind(this)
-    this.loadAudioToBuffer = loadAudioToBuffer(context)
+    this.decodeAudioData = decodeAudioDataP(context)
     this.connectOut = tryCatch(node => node.connect(out), warn)
     this.disconnectOut = tryCatch(node => node.disconnect(out), warn)
     this.createBufferSourceNode = tryCatch(
@@ -53,10 +52,33 @@ class Gleetchy extends Component {
       warn,
     )
     this.createGainNode = tryCatch(() => context.createGain(), warn)
+
+    this.handlePlayPause = this.handlePlayPause.bind(this)
   }
 
   handlePlayPause() {
     this.setState(state => ({ isPlaying: !state.isPlaying }))
+  }
+
+  async loadAudioToLooper(id) {
+    const file = head(await loadAudioFilesToArrayBuffers())
+
+    if (!file) throw new Error('No file selected')
+
+    file.buffer = await this.decodeAudioData(file.buffer)
+
+    this.setState(state => {
+      const loops = [...state.loops]
+      const loopState = loops.find(loop => loop.id === id)
+
+      if (!loopState) return {}
+
+      loopState.file = file
+
+      return { ...state, loops }
+    })
+
+    return file
   }
 
   render() {
@@ -69,12 +91,10 @@ class Gleetchy extends Component {
             isPlaying={this.state.isPlaying}
             onClick={this.handlePlayPause}
           />
-          <div onClick={() => loadAudioFilesToArrayBuffers()
-            .then(console.log.bind(console))}>Clicky</div>
         </Panel>
         {loops.map(
           (
-            { loopStart, loopEnd, gain, src, id, label, playbackRate },
+            { loopStart, loopEnd, gain, file, id, label, playbackRate },
             index,
           ) => (
             <Panel
@@ -86,7 +106,9 @@ class Gleetchy extends Component {
               }}
               key={id}
             >
-              <div className={classNames.label}>{label}</div>
+              <div className={classNames.label}>
+                {label} {file ? ` / ${file.name}` : ''}
+              </div>
               <AudioLooper
                 gain={gain}
                 playbackRate={playbackRate}
@@ -94,7 +116,8 @@ class Gleetchy extends Component {
                 loopEnd={loopEnd}
                 createBufferSourceNode={this.createBufferSourceNode}
                 createGainNode={this.createGainNode}
-                loadAudio={() => this.loadAudioToBuffer(src)}
+                buffer={(file || {}).buffer || null}
+                loadAudio={() => this.loadAudioToLooper(id)}
                 connect={node => this.connectOut(node, id)}
                 disconnect={node => this.disconnectOut(node, id)}
                 isPlaying={isPlaying}
