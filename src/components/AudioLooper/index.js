@@ -133,7 +133,9 @@ class AudioLooper extends Component {
         <TitleBar>
           {() => (
             <span>
-              {`${label}${name ? ` / ${name}` : ''}`}
+              {`${label}${name ? ` / ${name}` : ''}${name && buffer
+                ? ` . ${buffer.duration}s`
+                : ''}`}
               {buffer ? (
                 <span
                   role="button"
