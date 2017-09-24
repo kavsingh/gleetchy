@@ -22,7 +22,7 @@ class Gleetchy extends Component {
         {
           id: 'loop0',
           label: 'Loop 0',
-          src: 'media/okthenalright4.mp3',
+          src: 'media/okthenalright4rhyth.mp3',
           gain: 0.6,
           loopStart: 0,
           loopEnd: 0.25,
@@ -31,11 +31,11 @@ class Gleetchy extends Component {
         {
           id: 'loop1',
           label: 'Loop 1',
-          src: 'media/fmloop.mp3',
-          gain: 0.1,
-          loopStart: 0.95,
-          loopEnd: 0.98,
-          playbackRate: 0.5,
+          src: 'media/okthenalright4bass.mp3',
+          gain: 0.5,
+          loopStart: 0,
+          loopEnd: 1,
+          playbackRate: 1,
         },
       ],
     }

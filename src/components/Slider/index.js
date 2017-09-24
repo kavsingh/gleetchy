@@ -7,6 +7,8 @@ class Slider extends Component {
   constructor(...args) {
     super(...args)
 
+    this.state = { isDragging: false }
+
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
@@ -14,6 +16,8 @@ class Slider extends Component {
   }
 
   handleMouseDown() {
+    this.setState({ isDragging: true })
+
     window.addEventListener('mousemove', this.handleMouseMove)
     window.addEventListener('mouseup', this.handleMouseUp)
   }
@@ -30,11 +34,15 @@ class Slider extends Component {
   }
 
   handleMouseUp() {
+    this.setState({ isDragging: false })
+
     window.removeEventListener('mousemove', this.handleMouseMove)
     window.removeEventListener('mouseup', this.handleMouseUp)
   }
 
   handleClick(event) {
+    if (this.state.isDragging) return
+
     const { orient } = this.props
     const vert = orient === 'vertical'
     const offset = vert ? event.offsetY : event.offsetX
