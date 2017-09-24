@@ -182,11 +182,11 @@ AudioLooper.propTypes = {
   playbackRate: PropTypes.number,
   isPlaying: PropTypes.bool,
   buffer: PropTypes.instanceOf(AudioBuffer),
-  loadAudio: PropTypes.function,
-  connect: PropTypes.function,
+  loadAudio: PropTypes.func,
+  connect: PropTypes.func,
   disconnect: PropTypes.func,
-  createBufferSourceNode: PropTypes.function,
-  createGainNode: PropTypes.function,
+  createBufferSourceNode: PropTypes.func,
+  createGainNode: PropTypes.func,
 }
 
 AudioLooper.defaultProps = {

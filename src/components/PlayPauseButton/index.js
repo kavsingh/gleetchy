@@ -10,7 +10,7 @@ const PlayPauseButton = ({ isPlaying, onClick }) => (
 
 PlayPauseButton.propTypes = {
   isPlaying: PropTypes.bool,
-  onClick: PropTypes.function,
+  onClick: PropTypes.func,
 }
 
 PlayPauseButton.defaultProps = {
