@@ -2,6 +2,7 @@ import Inferno from 'inferno'
 import Component from 'inferno-component'
 import { tryCatch } from 'ramda'
 import { warn, loadAudioToBuffer } from '../../util'
+import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
 import classNames from './Gleetchy.css'
@@ -68,6 +69,8 @@ class Gleetchy extends Component {
             isPlaying={this.state.isPlaying}
             onClick={this.handlePlayPause}
           />
+          <div onClick={() => loadAudioFilesToArrayBuffers()
+            .then(console.log.bind(console))}>Clicky</div>
         </Panel>
         {loops.map(
           (
