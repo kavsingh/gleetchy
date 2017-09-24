@@ -1,5 +1,6 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
+import { clamp } from 'ramda'
 import classNames from './Slider.css'
 
 class Slider extends Component {
@@ -9,6 +10,7 @@ class Slider extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   handleMouseDown() {
@@ -17,18 +19,30 @@ class Slider extends Component {
   }
 
   handleMouseMove(event) {
-    const vert = this.props.orient === 'vertical'
+    const { orient, value } = this.props
+    const vert = orient === 'vertical'
     const movement = vert ? event.movementY : event.movementX
     const dim = vert
       ? this.barContainer.offsetHeight
       : this.barContainer.offsetWidth
 
-    this.props.onSlide(movement / -dim)
+    this.props.onChange(clamp(0, 1, movement / -dim + value))
   }
 
   handleMouseUp() {
     window.removeEventListener('mousemove', this.handleMouseMove)
     window.removeEventListener('mouseup', this.handleMouseUp)
+  }
+
+  handleClick(event) {
+    const { orient } = this.props
+    const vert = orient === 'vertical'
+    const offset = vert ? event.offsetY : event.offsetX
+    const dim = vert
+      ? this.barContainer.offsetHeight
+      : this.barContainer.offsetWidth
+
+    this.props.onChange(clamp(0, 1, 1 - offset / dim))
   }
 
   componentWillUnmount() {
@@ -48,6 +62,7 @@ class Slider extends Component {
         <div
           className={classNames.barContainer}
           onMouseDown={this.handleMouseDown}
+          onClick={this.handleClick}
           ref={c => {
             this.barContainer = c
           }}

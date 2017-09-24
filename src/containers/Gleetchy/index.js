@@ -26,6 +26,7 @@ class Gleetchy extends Component {
           gain: 0.6,
           loopStart: 0,
           loopEnd: 0.25,
+          playbackRate: 1,
         },
         {
           id: 'loop1',
@@ -34,6 +35,7 @@ class Gleetchy extends Component {
           gain: 0.1,
           loopStart: 0.95,
           loopEnd: 0.98,
+          playbackRate: 0.5,
         },
       ],
     }
@@ -67,30 +69,36 @@ class Gleetchy extends Component {
             onClick={this.handlePlayPause}
           />
         </Panel>
-        {loops.map(({ loopStart, loopEnd, gain, src, id, label }, index) => (
-          <Panel
-            style={{
-              height: '10em',
-              ...(index === 0
-                ? { borderTop: '1px solid #fee' }
-                : { marginTop: '1em' }),
-            }}
-            key={id}
-          >
-            <div className={classNames.label}>{label}</div>
-            <AudioLooper
-              gain={gain}
-              loopStart={loopStart}
-              loopEnd={loopEnd}
-              createBufferSourceNode={this.createBufferSourceNode}
-              createGainNode={this.createGainNode}
-              loadAudio={() => this.loadAudioToBuffer(src)}
-              connect={node => this.connectOut(node, id)}
-              disconnect={node => this.disconnectOut(node, id)}
-              isPlaying={isPlaying}
-            />
-          </Panel>
-        ))}
+        {loops.map(
+          (
+            { loopStart, loopEnd, gain, src, id, label, playbackRate },
+            index,
+          ) => (
+            <Panel
+              style={{
+                height: '10em',
+                ...(index === 0
+                  ? { borderTop: '1px solid #fee' }
+                  : { marginTop: '1em' }),
+              }}
+              key={id}
+            >
+              <div className={classNames.label}>{label}</div>
+              <AudioLooper
+                gain={gain}
+                playbackRate={playbackRate}
+                loopStart={loopStart}
+                loopEnd={loopEnd}
+                createBufferSourceNode={this.createBufferSourceNode}
+                createGainNode={this.createGainNode}
+                loadAudio={() => this.loadAudioToBuffer(src)}
+                connect={node => this.connectOut(node, id)}
+                disconnect={node => this.disconnectOut(node, id)}
+                isPlaying={isPlaying}
+              />
+            </Panel>
+          ),
+        )}
       </div>
     )
   }

@@ -1,6 +1,7 @@
 .root {
-  max-width: 58em;
+  max-width: 62em;
   margin: 0 auto;
+  padding: 0 2em;
 }
 
 .panel {

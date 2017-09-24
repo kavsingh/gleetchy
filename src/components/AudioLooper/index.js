@@ -24,8 +24,8 @@ class AudioLooper extends Component {
     this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
     this.handleLoopRegionDrag = this.handleLoopRegionDrag.bind(this)
-    this.handleGainSlide = this.handleGainSlide.bind(this)
-    this.handleRateSlide = this.handleRateSlide.bind(this)
+    this.handleGainChange = this.handleGainChange.bind(this)
+    this.handleRateChange = this.handleRateChange.bind(this)
 
     this.gainNode.gain.value = this.state.gain
 
@@ -63,14 +63,12 @@ class AudioLooper extends Component {
     })
   }
 
-  handleGainSlide(movement) {
-    this.setState(({ gain }) => ({ gain: clamp(0, 1, gain + movement) }))
+  handleGainChange(gain) {
+    this.setState(() => ({ gain }))
   }
 
-  handleRateSlide(movement) {
-    this.setState(({ playbackRate }) => ({
-      playbackRate: clamp(0, 1, playbackRate + movement),
-    }))
+  handleRateChange(playbackRate) {
+    this.setState(() => ({ playbackRate }))
   }
 
   replaceBufferSourceNode() {
@@ -152,17 +150,17 @@ class AudioLooper extends Component {
         <div className={classNames.gainSliderContainer}>
           <Slider
             value={gain}
-            renderLabel={() => 'Gain'}
-            renderValue={() => gain.toPrecision(2)}
-            onSlide={this.handleGainSlide}
+            renderLabel={() => 'G'}
+            renderValue={() => gain.toFixed(2)}
+            onChange={this.handleGainChange}
           />
         </div>
         <div className={classNames.rateSliderContainer}>
           <Slider
             value={playbackRate}
-            renderLabel={() => 'Speed'}
-            renderValue={() => playbackRate.toPrecision(2)}
-            onSlide={this.handleRateSlide}
+            renderLabel={() => 'S'}
+            renderValue={() => playbackRate.toFixed(2)}
+            onChange={this.handleRateChange}
           />
         </div>
       </div>

@@ -18,7 +18,12 @@
 
 .label {
   flex: 0 0 auto;
-  margin-bottom: 0.2em;
+  margin-bottom: 0.4em;
+}
+
+.value {
+  flex: 0 0 0;
+  width: 100%;
 }
 
 .barContainer {
@@ -26,24 +31,26 @@
   flex: 1 0 auto;
   width: 100%;
   margin-bottom: 0.2em;
+  cursor: ns-resize;
 }
 
 .track,
 .bar {
   position: absolute;
   top: 0;
-  right: 0;
   bottom: 0;
-  left: 0;
 }
 
 .track {
   z-index: 1;
-  background-color: color(#000 a(0.04));
-  border: 1px solid color(#000 a(0.06));
+  width: 1px;
+  left: 50%;
+  background-color: color(#000 a(0.1));
 }
 
 .bar {
   z-index: 2;
+  width: 3px;
+  left: calc(50% - 1px);
   background-color: #000;
 }
