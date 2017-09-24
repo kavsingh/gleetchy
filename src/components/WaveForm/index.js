@@ -6,16 +6,31 @@ import classNames from './WaveForm.css'
 const normaliseChannel = map(v => (v + 0.5) * 0.5)
 
 class WaveForm extends Component {
-  drawWaveForm() {
+  constructor(...args) {
+    super(...args)
+
+    this.state = { width: 0, height: 0 }
+
+    this.handleResize = this.handleResize.bind(this)
+    this.updateWaveForm = this.updateWaveForm.bind(this)
+  }
+
+  updateWaveForm() {
     const { buffer } = this.props
+    const { width, height } = this.state
 
     if (!buffer || !this.canvasNode) return
 
+    this.canvasNode.width = width
+    this.canvasNode.height = height
+
     const context = this.canvasNode.getContext('2d')
-    const { offsetWidth: width, offsetHeight: height } = this.canvasNode
     const halfHeight = height / 2
     const leftChannel = normaliseChannel(buffer.getChannelData(0))
-    const rightChannel = normaliseChannel(buffer.getChannelData(1))
+    const rightChannel =
+      buffer.numberOfChannels > 1
+        ? normaliseChannel(buffer.getChannelData(1))
+        : leftChannel
     const buffStep = buffer.length / width
 
     context.fillStyle = '#fff'
@@ -31,21 +46,32 @@ class WaveForm extends Component {
     }
   }
 
-  componentDidMount() {
-    const { offsetWidth, offsetHeight } = this.canvasNode
-
-    this.canvasNode.width = offsetWidth
-    this.canvasNode.height = offsetHeight
-
-    this.drawWaveForm()
+  handleResize() {
+    this.setState(() => ({
+      width: this.canvasNode.offsetWidth,
+      height: this.canvasNode.offsetHeight,
+    }))
   }
 
-  shouldComponentUpdate(props) {
-    return this.props.buffer !== props.buffer
+  componentDidMount() {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+  }
+
+  shouldComponentUpdate(props, state) {
+    return (
+      this.props.buffer !== props.buffer ||
+      this.state.width !== state.width ||
+      this.state.height !== state.height
+    )
   }
 
   componentDidUpdate() {
-    this.drawWaveForm()
+    this.updateWaveForm()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWaveForm)
   }
 
   render() {

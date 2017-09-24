@@ -99,7 +99,9 @@ class Gleetchy extends Component {
           ) => (
             <Panel
               style={{
-                height: '10em',
+                height: '24vh',
+                minHeight: '10em',
+                maxHeight: '20em',
                 ...(index === 0
                   ? { borderTop: '1px solid #fee' }
                   : { marginTop: '1em' }),

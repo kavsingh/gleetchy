@@ -2,7 +2,7 @@ export const loadAudioFiles = () => {
   let input = document.createElement('input')
 
   input.setAttribute('type', 'file')
-  input.setAttribute('accept', '.wav, .mp3, .ogg, .aiff, .m4a')
+  input.setAttribute('accept', '.wav, .mp3, .ogg')
 
   return new Promise(resolve => {
     input.onchange = () => {
