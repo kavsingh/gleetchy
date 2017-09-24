@@ -1,5 +1,5 @@
-import Inferno from 'inferno'
-import Component from 'inferno-component'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { map } from 'ramda'
 import classNames from './WaveForm.css'
 
@@ -13,6 +13,27 @@ class WaveForm extends Component {
 
     this.handleResize = this.handleResize.bind(this)
     this.updateWaveForm = this.updateWaveForm.bind(this)
+  }
+
+  componentDidMount() {
+    this.handleResize()
+    window.addEventListener('resize', this.handleResize)
+  }
+
+  shouldComponentUpdate(props, state) {
+    return (
+      this.props.buffer !== props.buffer ||
+      this.state.width !== state.width ||
+      this.state.height !== state.height
+    )
+  }
+
+  componentDidUpdate() {
+    this.updateWaveForm()
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWaveForm)
   }
 
   updateWaveForm() {
@@ -53,27 +74,6 @@ class WaveForm extends Component {
     }))
   }
 
-  componentDidMount() {
-    this.handleResize()
-    window.addEventListener('resize', this.handleResize)
-  }
-
-  shouldComponentUpdate(props, state) {
-    return (
-      this.props.buffer !== props.buffer ||
-      this.state.width !== state.width ||
-      this.state.height !== state.height
-    )
-  }
-
-  componentDidUpdate() {
-    this.updateWaveForm()
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.updateWaveForm)
-  }
-
   render() {
     return (
       <canvas
@@ -84,6 +84,14 @@ class WaveForm extends Component {
       />
     )
   }
+}
+
+WaveForm.propTypes = {
+  buffer: PropTypes.instanceOf(AudioBuffer),
+}
+
+WaveForm.defaultProps = {
+  buffer: null,
 }
 
 export default WaveForm

@@ -1,5 +1,5 @@
-import Inferno from 'inferno'
-import Component from 'inferno-component'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import classNames from './Slider.css'
 
@@ -12,6 +12,11 @@ class Slider extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('mousemove', this.handleMouseMove)
+    window.removeEventListener('mouseup', this.handleMouseUp)
   }
 
   handleMouseDown({ timeStamp }) {
@@ -55,11 +60,6 @@ class Slider extends Component {
     this.props.onChange(clamp(0, 1, 1 - offset / dim))
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('mousemove', this.handleMouseMove)
-    window.removeEventListener('mouseup', this.handleMouseUp)
-  }
-
   render() {
     const { orient, value, renderLabel, renderValue } = this.props
     const isVert = orient === 'vertical'
@@ -71,6 +71,7 @@ class Slider extends Component {
       >
         <div className={classNames.label}>{renderLabel()}</div>
         <div
+          role="presentation"
           className={classNames.barContainer}
           onMouseDown={this.handleMouseDown}
           ref={c => {
@@ -89,9 +90,20 @@ class Slider extends Component {
   }
 }
 
+Slider.propTypes = {
+  value: PropTypes.number,
+  onChange: PropTypes.func,
+  orient: PropTypes.oneOf(['vertical', 'horizontal']),
+  renderLabel: PropTypes.func,
+  renderValue: PropTypes.func,
+}
+
 Slider.defaultProps = {
+  value: 0.5,
+  onChange: () => {},
   orient: 'vertical',
-  onSlide: () => {},
+  renderLabel: () => {},
+  renderValue: () => {},
 }
 
 export default Slider

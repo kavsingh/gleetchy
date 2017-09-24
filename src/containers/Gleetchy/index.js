@@ -1,5 +1,5 @@
-import Inferno from 'inferno'
-import Component from 'inferno-component'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { tryCatch, head } from 'ramda'
 import { warn, decodeAudioDataP } from '../../util'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
@@ -12,6 +12,16 @@ const Panel = ({ children, style }) => (
     {children}
   </div>
 )
+
+Panel.propTypes = {
+  children: PropTypes.node,
+  style: PropTypes.shape(),
+}
+
+Panel.defaultProps = {
+  children: [],
+  style: {},
+}
 
 class Gleetchy extends Component {
   constructor(...args) {

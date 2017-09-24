@@ -1,6 +1,5 @@
-import Inferno from 'inferno'
-import Component from 'inferno-component'
-import { clamp } from 'ramda'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import classNames from './LoopRegion.css'
 
 const Handle = ({ align = 'left' }) => (
@@ -12,6 +11,14 @@ const Handle = ({ align = 'left' }) => (
     <div className={classNames.handleLine} />
   </div>
 )
+
+Handle.propTypes = {
+  align: PropTypes.oneOf(['left', 'right']),
+}
+
+Handle.defaultProps = {
+  align: 'left',
+}
 
 class LoopRegion extends Component {
   constructor(...args) {
@@ -26,6 +33,12 @@ class LoopRegion extends Component {
     this.handleActiveRegionDown = this.handleActiveRegionDown.bind(this)
     this.handleActiveRegionDrag = this.handleActiveRegionDrag.bind(this)
     this.handleActiveRegionUp = this.handleActiveRegionUp.bind(this)
+  }
+
+  componentWillUnmount() {
+    this.handleLoopStartUp()
+    this.handleLoopEndUp()
+    this.handleActiveRegionUp()
   }
 
   handleLoopStartDown() {
@@ -70,24 +83,18 @@ class LoopRegion extends Component {
     window.removeEventListener('mouseup', this.handleActiveRegionUp)
   }
 
-  componentWillUnmount() {
-    this.handleLoopStartUp()
-    this.handleLoopEndUp()
-    this.handleActiveRegionUp()
-  }
-
   render() {
-    const { loopStart, loopEnd, width, height } = this.props
+    const { loopStart, loopEnd } = this.props
 
     return (
       <div
         className={classNames.root}
-        style={{ width, height }}
         ref={c => {
           this.rootNode = c
         }}
       >
         <div
+          role="presentation"
           className={classNames.handleContainer}
           style={{ left: `${loopStart * 100}%` }}
           onMouseDown={this.handleLoopStartDown}
@@ -95,6 +102,7 @@ class LoopRegion extends Component {
           <Handle align="left" />
         </div>
         <div
+          role="presentation"
           className={classNames.handleContainer}
           style={{ left: `${loopEnd * 100}%` }}
           onMouseDown={this.handleLoopEndDown}
@@ -107,6 +115,7 @@ class LoopRegion extends Component {
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           <div
+            role="presentation"
             className={classNames.activeRegion}
             onMouseDown={this.handleActiveRegionDown}
             style={{
@@ -122,6 +131,22 @@ class LoopRegion extends Component {
       </div>
     )
   }
+}
+
+LoopRegion.propTypes = {
+  onLoopEndDrag: PropTypes.func,
+  onLoopStartDrag: PropTypes.func,
+  onLoopRegionDrag: PropTypes.func,
+  loopStart: PropTypes.number,
+  loopEnd: PropTypes.number,
+}
+
+LoopRegion.defaultProps = {
+  onLoopEndDrag: () => {},
+  onLoopStartDrag: () => {},
+  onLoopRegionDrag: () => {},
+  loopStart: 0,
+  loopEnd: 1,
 }
 
 export default LoopRegion

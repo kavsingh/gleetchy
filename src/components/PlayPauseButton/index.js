@@ -1,10 +1,21 @@
-import Inferno from 'inferno'
+import React from 'react'
+import PropTypes from 'prop-types'
 import classNames from './PlayPauseButton.css'
 
-const PlayPauseButton = ({ isPlaying = false, onClick = () => {} }) => (
-  <div onClick={onClick} className={classNames.root}>
+const PlayPauseButton = ({ isPlaying, onClick }) => (
+  <div role="button" tabIndex={0} onClick={onClick} className={classNames.root}>
     {isPlaying ? 'Stop' : 'Play'}
   </div>
 )
+
+PlayPauseButton.propTypes = {
+  isPlaying: PropTypes.bool,
+  onClick: PropTypes.function,
+}
+
+PlayPauseButton.defaultProps = {
+  isPlaying: false,
+  onClick: () => {},
+}
 
 export default PlayPauseButton

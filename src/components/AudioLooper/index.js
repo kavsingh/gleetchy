@@ -1,5 +1,5 @@
-import Inferno from 'inferno'
-import Component from 'inferno-component'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import Slider from '../Slider'
 import WaveForm from '../WaveForm'
@@ -30,6 +30,35 @@ class AudioLooper extends Component {
     this.gainNode.gain.value = this.state.gain
 
     this.props.connect(this.gainNode)
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    const { isPlaying, buffer } = this.props
+    const { loopStart, loopEnd, gain, playbackRate } = this.state
+
+    const playChanged = isPlaying !== prevProps.isPlaying
+    const bufferChanged = prevProps.buffer !== buffer
+    const startChanged = loopStart !== prevState.loopStart
+
+    this.gainNode.gain.value = gain
+
+    if (buffer) {
+      if (bufferChanged || playChanged || startChanged) {
+        this.replaceBufferSourceNode()
+
+        if (isPlaying) {
+          this.bufferSourceNode.start(0, loopStart * buffer.duration)
+        }
+      } else {
+        this.bufferSourceNode.loopStart = loopStart * buffer.duration
+        this.bufferSourceNode.loopEnd = loopEnd * buffer.duration
+        this.bufferSourceNode.playbackRate.value = playbackRate
+      }
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.bufferSourceNode) this.props.disconnect(this.bufferSourceNode)
   }
 
   handleLoadAudioClick() {
@@ -94,35 +123,6 @@ class AudioLooper extends Component {
     this.bufferSourceNode.connect(this.gainNode)
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    const { isPlaying, buffer } = this.props
-    const { loopStart, loopEnd, gain, playbackRate } = this.state
-
-    const playChanged = isPlaying !== prevProps.isPlaying
-    const bufferChanged = prevProps.buffer !== buffer
-    const startChanged = loopStart !== prevState.loopStart
-
-    this.gainNode.gain.value = gain
-
-    if (buffer) {
-      if (bufferChanged || playChanged || startChanged) {
-        this.replaceBufferSourceNode()
-
-        if (isPlaying) {
-          this.bufferSourceNode.start(0, loopStart * buffer.duration)
-        }
-      } else {
-        this.bufferSourceNode.loopStart = loopStart * buffer.duration
-        this.bufferSourceNode.loopEnd = loopEnd * buffer.duration
-        this.bufferSourceNode.playbackRate.value = playbackRate
-      }
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.bufferSourceNode) this.props.disconnect(this.bufferSourceNode)
-  }
-
   render() {
     const { buffer } = this.props
     const { loopEnd, loopStart, gain, playbackRate } = this.state
@@ -145,6 +145,8 @@ class AudioLooper extends Component {
             </div>
           ) : (
             <div
+              role="button"
+              tabIndex={0}
               onClick={this.handleLoadAudioClick}
               className={classNames.initLoadAudio}
             >
@@ -171,6 +173,34 @@ class AudioLooper extends Component {
       </div>
     )
   }
+}
+
+AudioLooper.propTypes = {
+  loopStart: PropTypes.number,
+  loopEnd: PropTypes.number,
+  gain: PropTypes.number,
+  playbackRate: PropTypes.number,
+  isPlaying: PropTypes.bool,
+  buffer: PropTypes.instanceOf(AudioBuffer),
+  loadAudio: PropTypes.function,
+  connect: PropTypes.function,
+  disconnect: PropTypes.func,
+  createBufferSourceNode: PropTypes.function,
+  createGainNode: PropTypes.function,
+}
+
+AudioLooper.defaultProps = {
+  loopStart: 0,
+  loopEnd: 1,
+  gain: 1,
+  playbackRate: 1,
+  isPlaying: false,
+  buffer: null,
+  loadAudio: () => {},
+  connect: () => {},
+  disconnect: () => {},
+  createBufferSourceNode: () => {},
+  createGainNode: () => {},
 }
 
 export default AudioLooper

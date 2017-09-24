@@ -1,6 +1,7 @@
 import 'babel-polyfill'
 import './index.css'
-import Inferno, { render } from 'inferno'
+import React from 'react'
+import { render } from 'react-dom'
 import Gleetchy from './containers/Gleetchy'
 
 const container = document.createElement('div')

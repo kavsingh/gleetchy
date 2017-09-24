@@ -6,9 +6,8 @@
       "browsers": "> 1%, Last 2 versions",
       "uglify": true
     }
-  }]],
+  }], "react"],
   "plugins": [
-    "inferno",
     "transform-object-rest-spread",
     "transform-runtime"
   ],
