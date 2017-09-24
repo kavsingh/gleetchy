@@ -15,6 +15,7 @@ class AudioLooper extends Component {
       loopStart: props.loopStart || 0,
       loopEnd: props.loopEnd || 1,
       gain: props.gain || 0,
+      playbackRate: props.playbackRate || 1,
     }
 
     this.bufferSourceNode = null
@@ -24,6 +25,7 @@ class AudioLooper extends Component {
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
     this.handleLoopRegionDrag = this.handleLoopRegionDrag.bind(this)
     this.handleGainSlide = this.handleGainSlide.bind(this)
+    this.handleRateSlide = this.handleRateSlide.bind(this)
 
     this.gainNode.gain.value = this.state.gain
 
@@ -65,6 +67,12 @@ class AudioLooper extends Component {
     this.setState(({ gain }) => ({ gain: clamp(0, 1, gain + movement) }))
   }
 
+  handleRateSlide(movement) {
+    this.setState(({ playbackRate }) => ({
+      playbackRate: clamp(0, 1, playbackRate + movement),
+    }))
+  }
+
   replaceBufferSourceNode() {
     if (this.bufferSourceNode) {
       this.bufferSourceNode.disconnect(this.gainNode)
@@ -73,14 +81,13 @@ class AudioLooper extends Component {
 
     this.bufferSourceNode = this.props.createBufferSourceNode()
 
-    const { loopStart, loopEnd, buffer } = this.state
+    const { loopStart, loopEnd, buffer, playbackRate } = this.state
 
-    Object.assign(this.bufferSourceNode, {
-      buffer,
-      loop: true,
-      loopStart: loopStart * buffer.duration,
-      loopEnd: loopEnd * buffer.duration,
-    })
+    this.bufferSourceNode.buffer = buffer
+    this.bufferSourceNode.loop = true
+    this.bufferSourceNode.loopStart = loopStart * buffer.duration
+    this.bufferSourceNode.loopEnd = loopEnd * buffer.duration
+    this.bufferSourceNode.playbackRate.value = playbackRate
 
     this.bufferSourceNode.connect(this.gainNode)
   }
@@ -93,7 +100,7 @@ class AudioLooper extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { isPlaying } = this.props
-    const { buffer, loopStart, loopEnd, gain } = this.state
+    const { buffer, loopStart, loopEnd, gain, playbackRate } = this.state
     const playChanged = isPlaying !== prevProps.isPlaying
     const bufferChanged = prevState.buffer !== buffer
     const startChanged = loopStart !== prevState.loopStart
@@ -108,10 +115,9 @@ class AudioLooper extends Component {
           this.bufferSourceNode.start(0, loopStart * buffer.duration)
         }
       } else {
-        Object.assign(this.bufferSourceNode, {
-          loopStart: loopStart * buffer.duration,
-          loopEnd: loopEnd * buffer.duration,
-        })
+        this.bufferSourceNode.loopStart = loopStart * buffer.duration
+        this.bufferSourceNode.loopEnd = loopEnd * buffer.duration
+        this.bufferSourceNode.playbackRate.value = playbackRate
       }
     }
   }
@@ -121,7 +127,7 @@ class AudioLooper extends Component {
   }
 
   render() {
-    const { buffer, loopEnd, loopStart, gain } = this.state
+    const { buffer, loopEnd, loopStart, gain, playbackRate } = this.state
 
     return (
       <div className={classNames.root}>
@@ -149,6 +155,14 @@ class AudioLooper extends Component {
             renderLabel={() => 'Gain'}
             renderValue={() => gain.toPrecision(2)}
             onSlide={this.handleGainSlide}
+          />
+        </div>
+        <div className={classNames.rateSliderContainer}>
+          <Slider
+            value={playbackRate}
+            renderLabel={() => 'Speed'}
+            renderValue={() => playbackRate.toPrecision(2)}
+            onSlide={this.handleRateSlide}
           />
         </div>
       </div>

@@ -31,7 +31,7 @@ class Gleetchy extends Component {
           id: 'loop1',
           label: 'Loop 1',
           src: 'media/fmloop.mp3',
-          gain: 0.16,
+          gain: 0.1,
           loopStart: 0.95,
           loopEnd: 0.98,
         },
