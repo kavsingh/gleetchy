@@ -3,7 +3,6 @@ import Component from 'inferno-component'
 import { clamp } from 'ramda'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
-import PlayPauseButton from '../PlayPauseButton'
 import classNames from './AudioLooper.css'
 
 class AudioLooper extends Component {
@@ -12,20 +11,13 @@ class AudioLooper extends Component {
 
     this.state = {
       buffer: null,
-      isPlaying: false,
       loopStart: 0,
       loopEnd: 1,
     }
 
     this.bufferSourceNode = null
-    this.handlePlayPause = this.handlePlayPause.bind(this)
     this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
-  }
-
-  handlePlayPause() {
-    if (!this.state.buffer) return
-    this.setState(state => ({ isPlaying: !state.isPlaying }))
   }
 
   handleLoopStartDrag(movement) {
@@ -67,9 +59,10 @@ class AudioLooper extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    const { buffer, isPlaying, loopStart, loopEnd } = this.state
+    const { isPlaying } = this.props
+    const { buffer, loopStart, loopEnd } = this.state
+    const playChanged = isPlaying !== prevProps.isPlaying
     const bufferChanged = prevState.buffer !== buffer
-    const playChanged = isPlaying !== prevState.isPlaying
     const startChanged = loopStart !== prevState.loopStart
 
     if (buffer) {
@@ -93,7 +86,7 @@ class AudioLooper extends Component {
   }
 
   render() {
-    const { buffer, isPlaying, loopEnd, loopStart } = this.state
+    const { buffer, loopEnd, loopStart } = this.state
 
     return (
       <div className={classNames.root}>
@@ -116,15 +109,6 @@ class AudioLooper extends Component {
             ''
           )}
         </div>
-        {buffer ? (
-          <PlayPauseButton
-            key={'button'}
-            isPlaying={isPlaying}
-            onClick={this.handlePlayPause}
-          />
-        ) : (
-          'Loading ...'
-        )}
       </div>
     )
   }
