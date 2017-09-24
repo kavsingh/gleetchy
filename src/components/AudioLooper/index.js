@@ -130,7 +130,26 @@ class AudioLooper extends Component {
 
     return (
       <div className={classNames.root}>
-        <TitleBar>{() => `${label}${name ? ` / ${name}` : ''}`}</TitleBar>
+        <TitleBar>
+          {() => (
+            <span>
+              {`${label}${name ? ` / ${name}` : ''}`}
+              {buffer ? (
+                <span
+                  role="button"
+                  tabIndex={0}
+                  style={{ cursor: 'pointer' }}
+                  onClick={this.handleLoadAudioClick}
+                >
+                  {' '}
+                  / Load audio file
+                </span>
+              ) : (
+                ''
+              )}
+            </span>
+          )}
+        </TitleBar>
         <div className={classNames.main}>
           <div className={classNames.waveContainer}>
             <div className={classNames.waveFormContainer}>
@@ -160,6 +179,7 @@ class AudioLooper extends Component {
           <div className={classNames.gainSliderContainer}>
             <Slider
               value={gain}
+              renderTitle={() => 'Gain'}
               renderLabel={() => 'G'}
               renderValue={() => gain.toFixed(2)}
               onChange={this.handleGainChange}
@@ -168,6 +188,7 @@ class AudioLooper extends Component {
           <div className={classNames.rateSliderContainer}>
             <Slider
               value={playbackRate}
+              renderTitle={() => 'Speed'}
               renderLabel={() => 'S'}
               renderValue={() => playbackRate.toFixed(2)}
               onChange={this.handleRateChange}

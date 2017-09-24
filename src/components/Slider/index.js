@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { clamp } from 'ramda'
+import { clamp, identity } from 'ramda'
 import classNames from './Slider.css'
 
 class Slider extends Component {
@@ -61,15 +61,16 @@ class Slider extends Component {
   }
 
   render() {
-    const { orient, value, renderLabel, renderValue } = this.props
+    const { orient, value, renderLabel, renderValue, renderTitle } = this.props
     const isVert = orient === 'vertical'
     const offVal = `${(1 - value) * 100}%`
 
     return (
       <div
         className={isVert ? classNames.rootVertical : classNames.rootHorizontal}
+        title={renderTitle(value)}
       >
-        <div className={classNames.label}>{renderLabel()}</div>
+        <div className={classNames.label}>{renderLabel(value)}</div>
         <div
           role="presentation"
           className={classNames.barContainer}
@@ -84,7 +85,7 @@ class Slider extends Component {
             style={isVert ? { top: offVal } : { right: offVal }}
           />
         </div>
-        <div className={classNames.value}>{renderValue()}</div>
+        <div className={classNames.value}>{renderValue(value)}</div>
       </div>
     )
   }
@@ -96,14 +97,16 @@ Slider.propTypes = {
   orient: PropTypes.oneOf(['vertical', 'horizontal']),
   renderLabel: PropTypes.func,
   renderValue: PropTypes.func,
+  renderTitle: PropTypes.func,
 }
 
 Slider.defaultProps = {
   value: 0.5,
   onChange: () => {},
   orient: 'vertical',
-  renderLabel: () => {},
-  renderValue: () => {},
+  renderLabel: identity,
+  renderValue: identity,
+  renderTitle: identity,
 }
 
 export default Slider

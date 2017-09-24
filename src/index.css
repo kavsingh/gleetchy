@@ -13,6 +13,11 @@
   user-select: inherit;
 }
 
+:global(*:focus),
+:global(*:active) {
+  outline: none;
+}
+
 :global(html),
 :global(body) {
   width: 100%;

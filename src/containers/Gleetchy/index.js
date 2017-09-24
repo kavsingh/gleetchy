@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { tryCatch, head } from 'ramda'
-import { warn, decodeAudioDataP } from '../../util'
+import { warn, decodeAudioDataP, log } from '../../util'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'

@@ -1,14 +1,25 @@
+import { log } from '../util'
+
 export const loadAudioFiles = () => {
   let input = document.createElement('input')
 
   input.setAttribute('type', 'file')
   input.setAttribute('accept', '.wav, .mp3, .ogg')
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     input.onchange = () => {
       const { files } = input
 
       resolve([...files].filter(({ type }) => type.startsWith('audio/')))
+
+      input.value = null
+      input = null
+    }
+
+    input.onerror = error => {
+      reject(error)
+
+      input.value = null
       input = null
     }
 
