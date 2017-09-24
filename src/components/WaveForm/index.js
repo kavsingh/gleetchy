@@ -36,11 +36,23 @@ class WaveForm extends Component {
     window.removeEventListener('resize', this.updateWaveForm)
   }
 
-  updateWaveForm() {
+  drawTempWaveform() {
+    const { width, height } = this.state
+    const context = this.canvasNode.getContext('2d')
+
+    this.canvasNode.width = width
+    this.canvasNode.height = height
+
+    context.fillStyle = '#fff'
+    context.fillRect(0, 0, width, height)
+    context.fillStyle = '#000'
+
+    context.fillRect(0, height / 2, width, 1)
+  }
+
+  drawWaveForm() {
     const { buffer } = this.props
     const { width, height } = this.state
-
-    if (!buffer || !this.canvasNode) return
 
     this.canvasNode.width = width
     this.canvasNode.height = height
@@ -67,6 +79,13 @@ class WaveForm extends Component {
     }
   }
 
+  updateWaveForm() {
+    if (!this.canvasNode) return
+
+    if (this.props.buffer) this.drawWaveForm()
+    else this.drawTempWaveform()
+  }
+
   handleResize() {
     this.setState(() => ({
       width: this.canvasNode.offsetWidth,
@@ -91,7 +110,7 @@ WaveForm.propTypes = {
 }
 
 WaveForm.defaultProps = {
-  buffer: null,
+  buffer: undefined,
 }
 
 export default WaveForm

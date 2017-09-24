@@ -51,4 +51,5 @@
   justify-content: center;
   cursor: pointer;
   z-index: 3;
+  background-color: color(#fff a(0.96));
 }
