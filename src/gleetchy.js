@@ -24,6 +24,7 @@ class Gleetchy extends Component {
       () => context.createBufferSource(),
       warn,
     )
+    this.createGainNode = tryCatch(() => context.createGain(), warn)
   }
 
   handlePlayPause() {
@@ -35,6 +36,7 @@ class Gleetchy extends Component {
       <div>
         <AudioLooper
           createBufferSourceNode={this.createBufferSourceNode}
+          createGainNode={this.createGainNode}
           loadAudio={() => this.loadAudioToBuffer('media/okthenalright4.mp3')}
           connect={this.connectOut}
           disconnect={this.disconnectOut}

@@ -1,5 +1,6 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
+import { clamp } from 'ramda'
 import classNames from './LoopRegion.css'
 
 const Handle = ({ align = 'left' }) => (
@@ -22,6 +23,9 @@ class LoopRegion extends Component {
     this.handleLoopEndDown = this.handleLoopEndDown.bind(this)
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
     this.handleLoopEndUp = this.handleLoopEndUp.bind(this)
+    this.handleActiveRegionDown = this.handleActiveRegionDown.bind(this)
+    this.handleActiveRegionDrag = this.handleActiveRegionDrag.bind(this)
+    this.handleActiveRegionUp = this.handleActiveRegionUp.bind(this)
   }
 
   handleLoopStartDown() {
@@ -52,14 +56,28 @@ class LoopRegion extends Component {
     window.removeEventListener('mousemove', this.handleLoopEndDrag)
   }
 
+  handleActiveRegionDown() {
+    window.addEventListener('mousemove', this.handleActiveRegionDrag)
+    window.addEventListener('mouseup', this.handleActiveRegionUp)
+  }
+
+  handleActiveRegionDrag({ movementX }) {
+    this.props.onLoopRegionDrag(movementX / this.props.width)
+  }
+
+  handleActiveRegionUp() {
+    window.removeEventListener('mousemove', this.handleActiveRegionDrag)
+    window.removeEventListener('mouseup', this.handleActiveRegionUp)
+  }
+
   componentWillUnmount() {
     this.handleLoopStartUp()
     this.handleLoopEndUp()
+    this.handleActiveRegionUp()
   }
 
   render() {
     const { loopStart, loopEnd, width, height } = this.props
-    const activeEnd = `${(1 - loopEnd) * 100}%`
 
     return (
       <div className={classNames.root} style={{ width, height }}>
@@ -84,6 +102,7 @@ class LoopRegion extends Component {
           />
           <div
             className={classNames.activeRegion}
+            onMouseDown={this.handleActiveRegionDown}
             style={{
               left: `${loopStart * 100}%`,
               right: `${(1 - loopEnd) * 100}%`,

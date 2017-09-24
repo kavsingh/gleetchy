@@ -13,11 +13,13 @@ class AudioLooper extends Component {
       buffer: null,
       loopStart: 0,
       loopEnd: 1,
+      gain: 0.8,
     }
 
     this.bufferSourceNode = null
     this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
+    this.handleLoopRegionDrag = this.handleLoopRegionDrag.bind(this)
   }
 
   handleLoopStartDrag(movement) {
@@ -30,6 +32,25 @@ class AudioLooper extends Component {
     this.setState(state => ({
       loopEnd: clamp(state.loopStart + 0.0001, 1, state.loopEnd + movement),
     }))
+  }
+
+  handleLoopRegionDrag(movement) {
+    this.setState(({ loopStart, loopEnd }) => {
+      const gap = loopEnd - loopStart
+
+      let nextStart
+      let nextEnd
+
+      if (movement < 0) {
+        nextStart = clamp(0, 1 - gap, loopStart + movement)
+        nextEnd = nextStart + gap
+      } else {
+        nextEnd = clamp(gap, 1, loopEnd + movement)
+        nextStart = nextEnd - gap
+      }
+
+      return { loopStart: nextStart, loopEnd: nextEnd }
+    })
   }
 
   replaceBufferSourceNode() {
@@ -103,6 +124,7 @@ class AudioLooper extends Component {
                 loopEnd={loopEnd}
                 onLoopStartDrag={this.handleLoopStartDrag}
                 onLoopEndDrag={this.handleLoopEndDrag}
+                onLoopRegionDrag={this.handleLoopRegionDrag}
               />
             </div>
           ) : (

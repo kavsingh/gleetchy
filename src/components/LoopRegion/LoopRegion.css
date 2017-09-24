@@ -9,7 +9,7 @@
   height: 100%;
   top: 0;
   z-index: 2;
-  cursor: pointer;
+  cursor: ew-resize;
   width: 10px;
   transform: translateX(-5px);
 }
@@ -50,6 +50,10 @@
   position: absolute;
   top: 0;
   bottom: 0;
+}
+
+.activeRegion {
+  cursor: move;
 }
 
 .inactiveRegion {
