@@ -2,6 +2,7 @@ import Inferno from 'inferno'
 import Component from 'inferno-component'
 import { clamp } from 'ramda'
 import WaveForm from '../WaveForm'
+import LoopRegion from '../LoopRegion'
 import PlayPauseButton from '../PlayPauseButton'
 import classNames from './AudioLooper.css'
 
@@ -96,25 +97,34 @@ class AudioLooper extends Component {
 
     return (
       <div className={classNames.root}>
-        {buffer
-          ? [
-              <WaveForm
+        <div className={classNames.waveContainer}>
+          <div className={classNames.waveFormContainer}>
+            <WaveForm buffer={buffer} width={600} height={100} />
+          </div>
+          {buffer ? (
+            <div className={classNames.loopRegionContainer}>
+              <LoopRegion
                 width={600}
                 height={100}
-                buffer={buffer}
                 loopStart={loopStart}
                 loopEnd={loopEnd}
-                key={'waveform'}
                 onLoopStartDrag={this.handleLoopStartDrag}
                 onLoopEndDrag={this.handleLoopEndDrag}
-              />,
-              <PlayPauseButton
-                key={'button'}
-                isPlaying={isPlaying}
-                onClick={this.handlePlayPause}
-              />,
-            ]
-          : 'Loading ...'}
+              />
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+        {buffer ? (
+          <PlayPauseButton
+            key={'button'}
+            isPlaying={isPlaying}
+            onClick={this.handlePlayPause}
+          />
+        ) : (
+          'Loading ...'
+        )}
       </div>
     )
   }
