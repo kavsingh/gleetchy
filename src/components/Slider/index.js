@@ -7,16 +7,15 @@ class Slider extends Component {
   constructor(...args) {
     super(...args)
 
-    this.state = { isDragging: false }
+    this.state = { mouseDownStartTime: 0 }
 
     this.handleMouseDown = this.handleMouseDown.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
     this.handleMouseUp = this.handleMouseUp.bind(this)
-    this.handleClick = this.handleClick.bind(this)
   }
 
-  handleMouseDown() {
-    this.setState({ isDragging: true })
+  handleMouseDown({ timeStamp }) {
+    this.setState({ mouseDownStartTime: timeStamp })
 
     window.addEventListener('mousemove', this.handleMouseMove)
     window.addEventListener('mouseup', this.handleMouseUp)
@@ -33,16 +32,19 @@ class Slider extends Component {
     this.props.onChange(clamp(0, 1, movement / -dim + value))
   }
 
-  handleMouseUp() {
-    this.setState({ isDragging: false })
-
+  handleMouseUp(event) {
     window.removeEventListener('mousemove', this.handleMouseMove)
     window.removeEventListener('mouseup', this.handleMouseUp)
+
+    const movement =
+      this.props.orient === 'vertical' ? event.movementY : event.movementX
+    const clickTime = event.timeStamp - this.state.mouseDownStartTime < 300
+    const clickMove = movement < 4
+
+    if (clickTime && clickMove) this.registerClick(event)
   }
 
-  handleClick(event) {
-    if (this.state.isDragging) return
-
+  registerClick(event) {
     const { orient } = this.props
     const vert = orient === 'vertical'
     const offset = vert ? event.offsetY : event.offsetX
@@ -54,7 +56,8 @@ class Slider extends Component {
   }
 
   componentWillUnmount() {
-    this.handleMouseUp()
+    window.removeEventListener('mousemove', this.handleMouseMove)
+    window.removeEventListener('mouseup', this.handleMouseUp)
   }
 
   render() {
@@ -70,7 +73,6 @@ class Slider extends Component {
         <div
           className={classNames.barContainer}
           onMouseDown={this.handleMouseDown}
-          onClick={this.handleClick}
           ref={c => {
             this.barContainer = c
           }}

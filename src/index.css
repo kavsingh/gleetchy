@@ -2,6 +2,7 @@
 
 :global(html) {
   box-sizing: border-box;
+  user-select: none;
   font-size: 14px;
 }
 
@@ -9,6 +10,7 @@
 :global(*::before),
 :global(*::after) {
   box-sizing: inherit;
+  user-select: inherit;
 }
 
 :global(html),
