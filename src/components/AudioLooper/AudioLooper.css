@@ -1,5 +1,13 @@
 .root {
   padding: 20px;
+  display: flex;
+  flex-wrap: no-wrap;
+}
+
+.gainSliderContainer {
+  width: 20px;
+  height: 100px;
+  margin-left: 1em;
 }
 
 .waveContainer {

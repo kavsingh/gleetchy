@@ -1,6 +1,7 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
 import { clamp } from 'ramda'
+import Slider from '../Slider'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 import classNames from './AudioLooper.css'
@@ -11,15 +12,22 @@ class AudioLooper extends Component {
 
     this.state = {
       buffer: null,
-      loopStart: 0,
-      loopEnd: 1,
-      gain: 0.8,
+      loopStart: props.loopStart || 0,
+      loopEnd: props.loopEnd || 1,
+      gain: props.gain || 0,
     }
 
     this.bufferSourceNode = null
+    this.gainNode = this.props.createGainNode()
+
     this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
     this.handleLoopRegionDrag = this.handleLoopRegionDrag.bind(this)
+    this.handleGainSlide = this.handleGainSlide.bind(this)
+
+    this.gainNode.gain.value = this.state.gain
+
+    this.props.connect(this.gainNode)
   }
 
   handleLoopStartDrag(movement) {
@@ -53,9 +61,13 @@ class AudioLooper extends Component {
     })
   }
 
+  handleGainSlide(movement) {
+    this.setState(({ gain }) => ({ gain: clamp(0, 1, gain + movement) }))
+  }
+
   replaceBufferSourceNode() {
     if (this.bufferSourceNode) {
-      this.props.disconnect(this.bufferSourceNode)
+      this.bufferSourceNode.disconnect(this.gainNode)
       this.bufferSourceNode = null
     }
 
@@ -70,7 +82,7 @@ class AudioLooper extends Component {
       loopEnd: loopEnd * buffer.duration,
     })
 
-    this.props.connect(this.bufferSourceNode)
+    this.bufferSourceNode.connect(this.gainNode)
   }
 
   componentDidMount() {
@@ -81,10 +93,12 @@ class AudioLooper extends Component {
 
   componentDidUpdate(prevProps, prevState) {
     const { isPlaying } = this.props
-    const { buffer, loopStart, loopEnd } = this.state
+    const { buffer, loopStart, loopEnd, gain } = this.state
     const playChanged = isPlaying !== prevProps.isPlaying
     const bufferChanged = prevState.buffer !== buffer
     const startChanged = loopStart !== prevState.loopStart
+
+    this.gainNode.gain.value = gain
 
     if (buffer) {
       if (bufferChanged || playChanged || startChanged) {
@@ -107,7 +121,7 @@ class AudioLooper extends Component {
   }
 
   render() {
-    const { buffer, loopEnd, loopStart } = this.state
+    const { buffer, loopEnd, loopStart, gain } = this.state
 
     return (
       <div className={classNames.root}>
@@ -130,6 +144,14 @@ class AudioLooper extends Component {
           ) : (
             ''
           )}
+        </div>
+        <div className={classNames.gainSliderContainer}>
+          <Slider
+            value={gain}
+            renderLabel={() => 'Gain'}
+            renderValue={() => gain.toPrecision(2)}
+            onSlide={this.handleGainSlide}
+          />
         </div>
       </div>
     )

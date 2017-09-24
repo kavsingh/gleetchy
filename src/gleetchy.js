@@ -35,9 +35,22 @@ class Gleetchy extends Component {
     return (
       <div>
         <AudioLooper
+          gain={0.6}
+          loopEnd={0.25}
           createBufferSourceNode={this.createBufferSourceNode}
           createGainNode={this.createGainNode}
           loadAudio={() => this.loadAudioToBuffer('media/okthenalright4.mp3')}
+          connect={this.connectOut}
+          disconnect={this.disconnectOut}
+          isPlaying={this.state.isPlaying}
+        />
+        <AudioLooper
+          gain={0.16}
+          loopStart={0.95}
+          loopEnd={0.98}
+          createBufferSourceNode={this.createBufferSourceNode}
+          createGainNode={this.createGainNode}
+          loadAudio={() => this.loadAudioToBuffer('media/fmloop.mp3')}
           connect={this.connectOut}
           disconnect={this.disconnectOut}
           isPlaying={this.state.isPlaying}
