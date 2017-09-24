@@ -3,18 +3,19 @@ import Component from 'inferno-component'
 import { map } from 'ramda'
 import classNames from './WaveForm.css'
 
+const normaliseChannel = map(v => (v + 0.5) * 0.5)
+
 class WaveForm extends Component {
   drawWaveForm() {
     const { buffer } = this.props
 
-    if (!buffer) return
+    if (!buffer || !this.canvasNode) return
 
     const context = this.canvasNode.getContext('2d')
-    const { width, height } = this.canvasNode
+    const { offsetWidth: width, offsetHeight: height } = this.canvasNode
     const halfHeight = height / 2
-    const normalise = map(v => (v + 0.5) * 0.5)
-    const leftChannel = normalise(buffer.getChannelData(0))
-    const rightChannel = normalise(buffer.getChannelData(1))
+    const leftChannel = normaliseChannel(buffer.getChannelData(0))
+    const rightChannel = normaliseChannel(buffer.getChannelData(1))
     const buffStep = buffer.length / width
 
     context.fillStyle = '#fff'
@@ -31,6 +32,11 @@ class WaveForm extends Component {
   }
 
   componentDidMount() {
+    const { offsetWidth, offsetHeight } = this.canvasNode
+
+    this.canvasNode.width = offsetWidth
+    this.canvasNode.height = offsetHeight
+
     this.drawWaveForm()
   }
 
@@ -46,8 +52,6 @@ class WaveForm extends Component {
     return (
       <canvas
         className={classNames.root}
-        width={this.props.width}
-        height={this.props.height}
         ref={c => {
           this.canvasNode = c
         }}

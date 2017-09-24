@@ -1,12 +1,15 @@
 import Inferno from 'inferno'
 import Component from 'inferno-component'
 import { tryCatch } from 'ramda'
-import { warn, loadAudioToBuffer } from '../util'
-import PlayPauseButton from '../components/PlayPauseButton'
-import AudioLooper from '../components/AudioLooper'
+import { warn, loadAudioToBuffer } from '../../util'
+import PlayPauseButton from '../../components/PlayPauseButton'
+import AudioLooper from '../../components/AudioLooper'
+import classNames from './Gleetchy.css'
 
 const Panel = ({ children, style }) => (
-  <div style={{ padding: '10px', margin: '10px', ...style }}>{children}</div>
+  <div className={classNames.panel} style={{ ...style }}>
+    {children}
+  </div>
 )
 
 class Gleetchy extends Component {
@@ -18,6 +21,7 @@ class Gleetchy extends Component {
       loops: [
         {
           id: 'loop0',
+          label: 'Loop 0',
           src: 'media/okthenalright4.mp3',
           gain: 0.6,
           loopStart: 0,
@@ -25,6 +29,7 @@ class Gleetchy extends Component {
         },
         {
           id: 'loop1',
+          label: 'Loop 1',
           src: 'media/fmloop.mp3',
           gain: 0.16,
           loopStart: 0.95,
@@ -55,18 +60,24 @@ class Gleetchy extends Component {
     const { loops, isPlaying } = this.state
 
     return (
-      <div>
+      <div className={classNames.root}>
         <Panel>
           <PlayPauseButton
             isPlaying={this.state.isPlaying}
             onClick={this.handlePlayPause}
           />
         </Panel>
-        {loops.map(({ loopStart, loopEnd, gain, src, id }, index) => (
+        {loops.map(({ loopStart, loopEnd, gain, src, id, label }, index) => (
           <Panel
-            style={index === 0 ? { borderTop: '1px solid #fee' } : {}}
+            style={{
+              height: '10em',
+              ...(index === 0
+                ? { borderTop: '1px solid #fee' }
+                : { marginTop: '1em' }),
+            }}
             key={id}
           >
+            <div className={classNames.label}>{label}</div>
             <AudioLooper
               gain={gain}
               loopStart={loopStart}

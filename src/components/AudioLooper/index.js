@@ -127,13 +127,11 @@ class AudioLooper extends Component {
       <div className={classNames.root}>
         <div className={classNames.waveContainer}>
           <div className={classNames.waveFormContainer}>
-            <WaveForm buffer={buffer} width={600} height={100} />
+            <WaveForm buffer={buffer} />
           </div>
           {buffer ? (
             <div className={classNames.loopRegionContainer}>
               <LoopRegion
-                width={600}
-                height={100}
                 loopStart={loopStart}
                 loopEnd={loopEnd}
                 onLoopStartDrag={this.handleLoopStartDrag}

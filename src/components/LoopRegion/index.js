@@ -34,7 +34,7 @@ class LoopRegion extends Component {
   }
 
   handleLoopStartDrag(event) {
-    this.props.onLoopStartDrag(event.movementX / this.props.width)
+    this.props.onLoopStartDrag(event.movementX / this.rootNode.offsetWidth)
   }
 
   handleLoopStartUp() {
@@ -48,7 +48,7 @@ class LoopRegion extends Component {
   }
 
   handleLoopEndDrag(event) {
-    this.props.onLoopEndDrag(event.movementX / this.props.width)
+    this.props.onLoopEndDrag(event.movementX / this.rootNode.offsetWidth)
   }
 
   handleLoopEndUp() {
@@ -62,7 +62,7 @@ class LoopRegion extends Component {
   }
 
   handleActiveRegionDrag({ movementX }) {
-    this.props.onLoopRegionDrag(movementX / this.props.width)
+    this.props.onLoopRegionDrag(movementX / this.rootNode.offsetWidth)
   }
 
   handleActiveRegionUp() {
@@ -80,7 +80,13 @@ class LoopRegion extends Component {
     const { loopStart, loopEnd, width, height } = this.props
 
     return (
-      <div className={classNames.root} style={{ width, height }}>
+      <div
+        className={classNames.root}
+        style={{ width, height }}
+        ref={c => {
+          this.rootNode = c
+        }}
+      >
         <div
           className={classNames.handleContainer}
           style={{ left: `${loopStart * 100}%` }}

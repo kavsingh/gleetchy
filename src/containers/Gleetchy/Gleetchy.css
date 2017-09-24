@@ -1,0 +1,13 @@
+.root {
+  max-width: 58em;
+  margin: 0 auto;
+}
+
+.panel {
+  padding: 1.4em;
+}
+
+.label {
+  font-size: 0.8em;
+  margin-bottom: 0.6em;
+}
