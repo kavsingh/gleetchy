@@ -6,7 +6,7 @@ const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === true
 const fromRoot = path.resolve.bind(path, __dirname)
-const publicPath = '/'
+const publicPath = ''
 
 module.exports = {
   entry: {
@@ -95,7 +95,7 @@ module.exports = {
       isProduction ? '[name].[contenthash:20].css' : '[name].css',
     ),
     new HtmlWebpackPlugin({
-      title: 'Basics',
+      title: 'WA',
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),

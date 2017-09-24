@@ -1,7 +1,9 @@
 import 'babel-polyfill'
 import './index.css'
-import { once } from 'ramda'
-import { docReady } from './util'
-import gleetchy from './gleetchy'
+import Inferno, { render } from 'inferno'
+import Gleetchy from './containers/Gleetchy'
 
-docReady().then(once(gleetchy))
+const container = document.createElement('div')
+document.body.appendChild(container)
+
+render(<Gleetchy />, container)
