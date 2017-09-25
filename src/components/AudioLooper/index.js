@@ -68,7 +68,7 @@ class AudioLooper extends Component {
           {() => (
             <span>
               {`${label}${name ? ` / ${name}` : ''}${name && buffer
-                ? ` - ${buffer.duration}s`
+                ? ` - ${buffer.duration.toFixed(2)}s`
                 : ''}`}
               {buffer ? (
                 <span
