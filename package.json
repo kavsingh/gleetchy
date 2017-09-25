@@ -1,11 +1,11 @@
 {
-  "name": "basics",
+  "name": "gleetchy",
   "version": "1.0.0",
-  "description": "Basic business",
+  "description": "looping business",
   "author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
   "license": "ISC",
   "repository": {
-    "url": "git@github.com:kavsingh/basics.git",
+    "url": "git@github.com:kavsingh/gleetchy.git",
     "type": "git"
   },
   "main": "index.js",
