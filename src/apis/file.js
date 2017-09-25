@@ -1,5 +1,3 @@
-import { log } from '../util'
-
 export const loadAudioFiles = () => {
   let input = document.createElement('input')
 
