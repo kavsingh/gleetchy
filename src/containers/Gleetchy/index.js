@@ -118,17 +118,7 @@ class Gleetchy extends Component {
     if (!file) throw new Error('No file selected')
 
     file.buffer = await this.decodeAudioData(file.buffer)
-
-    this.setState(state => {
-      const loops = [...state.loops]
-      const loopState = loops.find(loop => loop.id === id)
-
-      if (!loopState) return {}
-
-      loopState.file = file
-
-      return { ...state, loops }
-    })
+    this.updateLoopState(id, { file })
 
     return file
   }
