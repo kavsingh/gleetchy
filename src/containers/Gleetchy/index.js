@@ -168,7 +168,10 @@ class Gleetchy extends Component {
                 loopEnd={loopEnd}
                 label={label}
                 file={file || {}}
-                loadAudio={() => this.loadAudioToLooper(id)}
+                loadAudio={() =>
+                  this.loadAudioToLooper(id).catch(error => {
+                    alert(error) // eslint-disable-line
+                  })}
                 isPlaying={isPlaying}
                 onGainChange={val => this.updateLoopState(id, { gain: val })}
                 onPlaybackRateChange={val =>
