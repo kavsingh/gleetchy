@@ -39,16 +39,18 @@ export const createAudioLooperNode = curry((context, initProps) => {
   const replaceBufferSourceNode = () => {
     removeBufferSourceNode()
 
-    if (!props.buffer) return
+    const { loopStart, buffer } = props
+
+    if (!buffer) return
 
     bufferSourceNode = context.createBufferSource()
-    bufferSourceNode.buffer = props.buffer
+    bufferSourceNode.buffer = buffer
     bufferSourceNode.loop = true
 
     transferPropsToBufferSourceNode()
 
     bufferSourceNode.connect(gainNode)
-    if (isPlaying) bufferSourceNode.start(0, props.loopStart)
+    if (isPlaying) bufferSourceNode.start(0, loopStart * buffer.duration)
   }
 
   return {
