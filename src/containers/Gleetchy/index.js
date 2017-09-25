@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { tryCatch, head } from 'ramda'
-import { warn, decodeAudioDataP, log } from '../../util'
+import { warn, decodeAudioDataP } from '../../util'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
+import { createAudioLooperNode } from '../../audio/audioLooperNode'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
 import classNames from './Gleetchy.css'
@@ -53,6 +54,18 @@ class Gleetchy extends Component {
 
     const context = new AudioContext()
     const out = context.destination
+
+    this.audioLooperNodes = this.state.loops.reduce((acc, loop) => {
+      acc[loop.id] = createAudioLooperNode(context, {
+        buffer: (loop.file || {}).buffer,
+        playbackRate: loop.playbackRate,
+        loopStart: loop.loopStart,
+        loopEnd: loop.loopEnd,
+        gain: loop.gain,
+      })
+
+      return acc
+    }, {})
 
     this.decodeAudioData = decodeAudioDataP(context)
     this.connectOut = tryCatch(node => node.connect(out), warn)
