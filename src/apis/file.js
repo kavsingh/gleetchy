@@ -17,6 +17,8 @@ const getFileInput = () => {
 export const loadAudioFiles = () => {
   const input = getFileInput()
 
+  if (!input) return Promise.reject(new Error('Cannot load files'))
+
   return new Promise((resolve, reject) => {
     input.onchange = () => {
       const { files } = input
