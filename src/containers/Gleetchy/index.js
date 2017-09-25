@@ -68,6 +68,29 @@ class Gleetchy extends Component {
 
     this.decodeAudioData = decodeAudioDataP(context)
     this.handlePlayPause = this.handlePlayPause.bind(this)
+
+    Object.values(this.audioLooperNodes).forEach(node =>
+      node.connectTo(context.destination),
+    )
+  }
+
+  componentDidUpdate() {
+    const { loops, isPlaying } = this.state
+
+    loops.forEach(loop => {
+      const node = this.audioLooperNodes[loop.id]
+
+      node.set({
+        buffer: (loop.file || {}).buffer,
+        playbackRate: loop.playbackRate,
+        loopStart: loop.loopStart,
+        loopEnd: loop.loopEnd,
+        gain: loop.gain,
+      })
+
+      if (isPlaying) node.play()
+      else node.stop()
+    })
   }
 
   updateLoopState(id, newState) {

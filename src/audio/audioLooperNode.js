@@ -4,8 +4,9 @@ const defaultProps = {
   gain: 1,
   loopStart: 0,
   loopEnd: 1,
-  playRate: 1,
+  playbackRate: 1,
   detune: 0,
+  buffer: undefined,
 }
 
 const pickProps = pick(Object.keys(defaultProps))
@@ -22,10 +23,10 @@ export const createAudioLooperNode = curry((context, initProps) => {
   const transferPropsToBufferSourceNode = () => {
     const { buffer: { duration } } = props
 
-    bufferSourceNode.buffer = props.buffer
     bufferSourceNode.loopStart = props.loopStart * duration
     bufferSourceNode.loopEnd = props.loopEnd * duration
-    bufferSourceNode.playRate.value = props.playRate
+    bufferSourceNode.playbackRate.value = props.playbackRate
+    bufferSourceNode.detune.value = props.detune
   }
 
   const removeBufferSourceNode = () => {
@@ -41,10 +42,12 @@ export const createAudioLooperNode = curry((context, initProps) => {
     if (!props.buffer) return
 
     bufferSourceNode = context.createBufferSource()
+    bufferSourceNode.buffer = props.buffer
     bufferSourceNode.loop = true
 
     transferPropsToBufferSourceNode()
 
+    bufferSourceNode.connect(gainNode)
     if (isPlaying) bufferSourceNode.start(0, props.loopStart)
   }
 
@@ -66,7 +69,7 @@ export const createAudioLooperNode = curry((context, initProps) => {
     set(newProps = {}) {
       const prevProps = { ...props }
 
-      Object.assign(props, ...pickProps(newProps))
+      Object.assign(props, pickProps(newProps))
 
       const { gain, buffer } = props
 
@@ -78,11 +81,11 @@ export const createAudioLooperNode = curry((context, initProps) => {
     },
 
     connectTo(destination) {
-      gainNode.connectTo(destination)
+      gainNode.connect(destination)
     },
 
     disconnectFrom(destination) {
-      gainNode.disconnectFrom(destination)
+      gainNode.disconnect(destination)
     },
   }
 })
