@@ -2,8 +2,25 @@
   max-width: 62em;
   margin: 0 auto;
   padding: 0 2em;
+  color: #555;
 }
 
 .panel {
   padding: 1.4em;
+}
+
+.titleBar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.titleBar a {
+  transition: color 0.2s ease-out;
+  color: color(#555 a(0.4));
+}
+
+.titleBar a:hover {
+  color: #333;
 }

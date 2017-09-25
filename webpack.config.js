@@ -95,7 +95,7 @@ module.exports = {
       isProduction ? '[name].[contenthash:20].css' : '[name].css',
     ),
     new HtmlWebpackPlugin({
-      title: 'WA',
+      title: 'gleetchy',
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),

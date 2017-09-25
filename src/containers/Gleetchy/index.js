@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { head } from 'ramda'
+import GithubIcon from 'react-icons/lib/go/mark-github'
 import { decodeAudioDataP } from '../../util'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import { createAudioLooperNode } from '../../audio/audioLooperNode'
@@ -129,10 +130,20 @@ class Gleetchy extends Component {
     return (
       <div className={classNames.root}>
         <Panel>
-          <PlayPauseButton
-            isPlaying={this.state.isPlaying}
-            onClick={this.handlePlayPause}
-          />
+          <div className={classNames.titleBar}>
+            <PlayPauseButton
+              isPlaying={this.state.isPlaying}
+              onClick={this.handlePlayPause}
+            />
+            <a
+              href="https://www.github.com/kavsingh/gleetchy"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="view on github"
+            >
+              <GithubIcon />
+            </a>
+          </div>
         </Panel>
         {loops.map(
           (
