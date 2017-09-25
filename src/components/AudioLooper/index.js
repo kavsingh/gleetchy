@@ -141,7 +141,6 @@ AudioLooper.propTypes = {
   loopEnd: PropTypes.number,
   gain: PropTypes.number,
   playbackRate: PropTypes.number,
-  isPlaying: PropTypes.bool,
   label: PropTypes.string,
   file: PropTypes.shape({
     buffer: PropTypes.instanceOf(AudioBuffer),
@@ -159,7 +158,6 @@ AudioLooper.defaultProps = {
   loopEnd: 1,
   gain: 1,
   playbackRate: 1,
-  isPlaying: false,
   label: '',
   file: {},
   loadAudio: () => {},
