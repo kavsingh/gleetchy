@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { tryCatch, head } from 'ramda'
-import { warn, decodeAudioDataP } from '../../util'
+import { head } from 'ramda'
+import { decodeAudioDataP } from '../../util'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import { createAudioLooperNode } from '../../audio/audioLooperNode'
 import PlayPauseButton from '../../components/PlayPauseButton'
@@ -53,7 +53,6 @@ class Gleetchy extends Component {
     }
 
     const context = new AudioContext()
-    const out = context.destination
 
     this.audioLooperNodes = this.state.loops.reduce((acc, loop) => {
       acc[loop.id] = createAudioLooperNode(context, {
@@ -68,15 +67,20 @@ class Gleetchy extends Component {
     }, {})
 
     this.decodeAudioData = decodeAudioDataP(context)
-    this.connectOut = tryCatch(node => node.connect(out), warn)
-    this.disconnectOut = tryCatch(node => node.disconnect(out), warn)
-    this.createBufferSourceNode = tryCatch(
-      () => context.createBufferSource(),
-      warn,
-    )
-    this.createGainNode = tryCatch(() => context.createGain(), warn)
-
     this.handlePlayPause = this.handlePlayPause.bind(this)
+  }
+
+  updateLoopState(id, newState) {
+    this.setState(state => {
+      const loops = [...state.loops]
+      const loopState = loops.find(loop => loop.id === id)
+
+      if (!loopState) return {}
+
+      Object.assign(loopState, newState)
+
+      return { loops }
+    })
   }
 
   handlePlayPause() {
@@ -136,14 +140,18 @@ class Gleetchy extends Component {
                 playbackRate={playbackRate}
                 loopStart={loopStart}
                 loopEnd={loopEnd}
-                createBufferSourceNode={this.createBufferSourceNode}
-                createGainNode={this.createGainNode}
                 label={label}
                 file={file || {}}
                 loadAudio={() => this.loadAudioToLooper(id)}
-                connect={node => this.connectOut(node, id)}
-                disconnect={node => this.disconnectOut(node, id)}
                 isPlaying={isPlaying}
+                onGainChange={val => this.updateLoopState(id, { gain: val })}
+                onPlaybackRateChange={val =>
+                  this.updateLoopState(id, { playbackRate: val })}
+                onLoopRegionChange={(start, end) =>
+                  this.updateLoopState(id, {
+                    loopStart: start,
+                    loopEnd: end,
+                  })}
               />
             </Panel>
           ),

@@ -41,6 +41,7 @@ export const createAudioLooperNode = curry((context, initProps) => {
     if (!props.buffer) return
 
     bufferSourceNode = context.createBufferSource()
+    bufferSourceNode.loop = true
 
     transferPropsToBufferSourceNode()
 
