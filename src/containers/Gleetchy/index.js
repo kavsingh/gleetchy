@@ -40,7 +40,6 @@ class Gleetchy extends Component {
           loopStart: 0,
           loopEnd: 1,
           playbackRate: 1,
-          detune: 0,
         },
         {
           id: 'loop1',
@@ -50,11 +49,11 @@ class Gleetchy extends Component {
           loopStart: 0,
           loopEnd: 1,
           playbackRate: 1,
-          detune: 0,
         },
       ],
     }
 
+    const AudioContext = window.AudioContext || window.webkitAudioContext
     const context = new AudioContext()
 
     this.audioLooperNodes = this.state.loops.reduce((acc, loop) => {
