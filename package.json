@@ -15,7 +15,7 @@
     "build": "rimraf dist && NODE_ENV=production webpack",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --coverage --verbose",
-    "test:watch": "npm t -- --watch"
+    "test:watch": "NODE_ENV=test jest --watch"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
