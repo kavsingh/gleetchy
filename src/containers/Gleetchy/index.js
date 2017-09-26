@@ -40,7 +40,6 @@ class Gleetchy extends Component {
           loopStart: 0,
           loopEnd: 1,
           playbackRate: 1,
-          detune: 0,
         },
         {
           id: 'loop1',
@@ -50,11 +49,11 @@ class Gleetchy extends Component {
           loopStart: 0,
           loopEnd: 1,
           playbackRate: 1,
-          detune: 0,
         },
       ],
     }
 
+    const AudioContext = window.AudioContext || window.webkitAudioContext
     const context = new AudioContext()
 
     this.audioLooperNodes = this.state.loops.reduce((acc, loop) => {
@@ -168,7 +167,10 @@ class Gleetchy extends Component {
                 loopEnd={loopEnd}
                 label={label}
                 file={file || {}}
-                loadAudio={() => this.loadAudioToLooper(id)}
+                loadAudio={() =>
+                  this.loadAudioToLooper(id).catch(error => {
+                    alert(error) // eslint-disable-line
+                  })}
                 isPlaying={isPlaying}
                 onGainChange={val => this.updateLoopState(id, { gain: val })}
                 onPlaybackRateChange={val =>

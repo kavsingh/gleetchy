@@ -5,7 +5,6 @@ const defaultProps = {
   loopStart: 0,
   loopEnd: 1,
   playbackRate: 1,
-  detune: 0,
   buffer: undefined,
 }
 
@@ -26,7 +25,6 @@ export const createAudioLooperNode = curry((context, initProps) => {
     bufferSourceNode.loopStart = props.loopStart * duration
     bufferSourceNode.loopEnd = props.loopEnd * duration
     bufferSourceNode.playbackRate.value = props.playbackRate
-    bufferSourceNode.detune.value = props.detune
   }
 
   const removeBufferSourceNode = () => {

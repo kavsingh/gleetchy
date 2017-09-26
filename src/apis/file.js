@@ -1,24 +1,35 @@
-export const loadAudioFiles = () => {
-  let input = document.createElement('input')
+let fileInput
 
-  input.setAttribute('type', 'file')
-  input.setAttribute('accept', '.wav, .mp3, .ogg')
+const getFileInput = () => {
+  if (typeof window === 'undefined') return undefined
+
+  if (!fileInput) {
+    fileInput = document.createElement('input')
+    fileInput.setAttribute('type', 'file')
+    fileInput.setAttribute('accept', '.wav, .mp3, .ogg')
+    document.body.appendChild(fileInput)
+    fileInput.style.display = 'none'
+  }
+
+  return fileInput
+}
+
+export const loadAudioFiles = () => {
+  const input = getFileInput()
+
+  if (!input) return Promise.reject(new Error('Cannot load files'))
 
   return new Promise((resolve, reject) => {
     input.onchange = () => {
       const { files } = input
 
       resolve([...files].filter(({ type }) => type.startsWith('audio/')))
-
       input.value = null
-      input = null
     }
 
     input.onerror = error => {
       reject(error)
-
       input.value = null
-      input = null
     }
 
     input.click()
