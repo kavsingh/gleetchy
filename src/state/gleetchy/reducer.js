@@ -1,4 +1,3 @@
-import { pick } from 'ramda'
 import { warn } from '../../util'
 import {
   ENGINE_EVENTS_CLEAR,
