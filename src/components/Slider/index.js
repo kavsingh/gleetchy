@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, identity } from 'ramda'
-import classNames from './Slider.css'
 
 class Slider extends Component {
   constructor(...args) {
@@ -67,25 +66,81 @@ class Slider extends Component {
 
     return (
       <div
-        className={isVert ? classNames.rootVertical : classNames.rootHorizontal}
+        className={`root ${isVert ? 'rootVertical' : 'rootHorizontal'}`}
         title={renderTitle(value)}
       >
-        <div className={classNames.label}>{renderLabel(value)}</div>
+        <div className="label">{renderLabel(value)}</div>
         <div
           role="presentation"
-          className={classNames.barContainer}
+          className="barContainer"
           onMouseDown={this.handleMouseDown}
           ref={c => {
             this.barContainer = c
           }}
         >
-          <div className={classNames.track} />
+          <div className="track" />
           <div
-            className={classNames.bar}
+            className="bar"
             style={isVert ? { top: offVal } : { right: offVal }}
           />
         </div>
-        <div className={classNames.value}>{renderValue(value)}</div>
+        <div className="value">{renderValue(value)}</div>
+        <style jsx>{`
+          .root {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            font-size: 0.8em;
+            align-items: center;
+          }
+
+          .rootVertical {
+            flex-direction: column;
+          }
+
+          .rootHorizontal {
+            flex-direction: row;
+          }
+
+          .label {
+            flex: 0 0 auto;
+            margin-bottom: 0.4em;
+          }
+
+          .value {
+            flex: 0 0 0;
+            width: 100%;
+          }
+
+          .barContainer {
+            position: relative;
+            flex: 1 0 auto;
+            width: 100%;
+            margin-bottom: 0.2em;
+            cursor: ns-resize;
+          }
+
+          .track,
+          .bar {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+          }
+
+          .track {
+            z-index: 1;
+            width: 1px;
+            left: 50%;
+            background-color: rgba(0, 0, 0, 0.1);
+          }
+
+          .bar {
+            z-index: 2;
+            width: 3px;
+            left: calc(50% - 1px);
+            background-color: #000;
+          }
+        `}</style>
       </div>
     )
   }

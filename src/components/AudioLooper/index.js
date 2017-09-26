@@ -5,7 +5,6 @@ import TitleBar from '../TitleBar'
 import Slider from '../Slider'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
-import classNames from './AudioLooper.css'
 
 class AudioLooper extends Component {
   constructor(...args) {
@@ -70,7 +69,7 @@ class AudioLooper extends Component {
     ].join('')
 
     return (
-      <div className={classNames.root}>
+      <div className="root">
         <TitleBar>
           {() => (
             <span>
@@ -91,13 +90,13 @@ class AudioLooper extends Component {
             </span>
           )}
         </TitleBar>
-        <div className={classNames.main}>
-          <div className={classNames.waveContainer}>
-            <div className={classNames.waveFormContainer}>
+        <div className="main">
+          <div className="waveContainer">
+            <div className="waveFormContainer">
               <WaveForm buffer={audioBuffer} />
             </div>
             {audioBuffer ? (
-              <div className={classNames.loopRegionContainer}>
+              <div className="loopRegionContainer">
                 <LoopRegion
                   loopStart={loopStart}
                   loopEnd={loopEnd}
@@ -111,13 +110,13 @@ class AudioLooper extends Component {
                 role="button"
                 tabIndex={0}
                 onClick={this.props.loadAudio}
-                className={classNames.initLoadAudio}
+                className="initLoadAudio"
               >
                 Load audio file
               </div>
             )}
           </div>
-          <div className={classNames.gainSliderContainer}>
+          <div className="gainSliderContainer">
             <Slider
               value={gain}
               renderTitle={() => 'Gain'}
@@ -126,7 +125,7 @@ class AudioLooper extends Component {
               onChange={this.props.onGainChange}
             />
           </div>
-          <div className={classNames.rateSliderContainer}>
+          <div className="rateSliderContainer">
             <Slider
               value={playbackRate * 0.5}
               renderTitle={() => 'Speed'}
@@ -136,6 +135,63 @@ class AudioLooper extends Component {
             />
           </div>
         </div>
+        <style jsx>{`
+          .root {
+            width: 100%;
+            height: 100%;
+          }
+
+          .main {
+            display: flex;
+            flex-wrap: no-wrap;
+            width: 100%;
+            height: 100%;
+          }
+
+          .gainSliderContainer,
+          .rateSliderContainer {
+            width: 1.2em;
+            height: 100%;
+            margin-left: 1em;
+          }
+
+          .waveContainer {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+
+          .waveFormContainer,
+          .loopRegionContainer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+          }
+
+          .waveFormContainer {
+            z-index: 1;
+          }
+
+          .loopRegionContainer {
+            z-index: 2;
+          }
+
+          .initLoadAudio {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 3;
+            background-color: rgba(255, 255, 255, 0.96);
+          }
+        `}</style>
       </div>
     )
   }

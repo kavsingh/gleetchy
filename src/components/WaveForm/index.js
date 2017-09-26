@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { map } from 'ramda'
-import classNames from './WaveForm.css'
 
 const normaliseChannel = map(v => (v + 0.5) * 0.5)
 
@@ -101,11 +100,20 @@ class WaveForm extends Component {
     return (
       <canvas
         style={{ width: dim, height: dim }}
-        className={classNames.root}
+        className="root"
         ref={c => {
           this.canvasNode = c
         }}
-      />
+      >
+        <style jsx>{`
+          .root {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+          }
+        `}</style>
+      </canvas>
     )
   }
 }

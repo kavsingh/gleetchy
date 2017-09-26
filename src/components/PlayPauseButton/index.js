@@ -1,10 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classNames from './PlayPauseButton.css'
 
 const PlayPauseButton = ({ isPlaying, onClick }) => (
-  <div role="button" tabIndex={0} onClick={onClick} className={classNames.root}>
+  <div role="button" tabIndex={0} onClick={onClick} className="root">
     {isPlaying ? 'Stop' : 'Play'}
+    <style jsx>{`
+      .root {
+        cursor: pointer;
+      }
+    `}</style>
   </div>
 )
 

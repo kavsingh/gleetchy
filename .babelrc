@@ -8,6 +8,8 @@
     }
   }], "react"],
   "plugins": [
+    "styled-jsx/babel",
+    "ramda",
     "transform-object-rest-spread",
     "transform-runtime"
   ],

@@ -9,11 +9,15 @@ import {
 } from '../../state/gleetchy/actions'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
-import classNames from './GleetchyUI.css'
 
 const Panel = ({ children, style }) => (
-  <div className={classNames.panel} style={{ ...style }}>
+  <div className="panel" style={{ ...style }}>
     {children}
+    <style jsx>{`
+      .panel {
+        padding: 1.4em;
+      }
+    `}</style>
   </div>
 )
 
@@ -34,9 +38,9 @@ const GleetchyUI = ({
   loadLooperAudio,
   updateLooper,
 }) => (
-  <div className={classNames.root}>
+  <div className="root">
     <Panel>
-      <div className={classNames.titleBar}>
+      <div className="titleBar">
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
         <a
           href="https://www.github.com/kavsingh/gleetchy"
@@ -96,6 +100,32 @@ const GleetchyUI = ({
         </Panel>
       ),
     )}
+    <style jsx>{`
+      .root {
+        max-width: 62em;
+        margin: 0 auto;
+        padding: 0 2em;
+        color: #555;
+      }
+
+      .titleBar {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .titleBar a {
+        transition: opacity 0.2s ease-out, color 0.2s ease-out;
+        color: #555;
+        opacity: 0.4;
+      }
+
+      .titleBar a:hover {
+        color: #333;
+        opacity: 1;
+      }
+    `}</style>
   </div>
 )
 

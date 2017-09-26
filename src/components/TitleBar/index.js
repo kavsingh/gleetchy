@@ -1,9 +1,18 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import classNames from './TitleBar.css'
 
 const TitleBar = ({ children }) => (
-  <div className={classNames.root}>{children()}</div>
+  <div className="root">
+    {children()}
+    <style jsx>{`
+      .root {
+        display: flex;
+        flex-direction: row;
+        font-size: 0.8em;
+        padding: 0 0 0.6em;
+      }
+    `}</style>
+  </div>
 )
 
 TitleBar.propTypes = {

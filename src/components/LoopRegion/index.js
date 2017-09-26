@@ -1,24 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import classNames from './LoopRegion.css'
-
-const Handle = ({ align = 'left' }) => (
-  <div className={classNames.handle}>
-    <div
-      className={classNames.handleTag}
-      style={align === 'left' ? { right: 0 } : { left: 0 }}
-    />
-    <div className={classNames.handleLine} />
-  </div>
-)
-
-Handle.propTypes = {
-  align: PropTypes.oneOf(['left', 'right']),
-}
-
-Handle.defaultProps = {
-  align: 'left',
-}
+import Handle from './Handle'
 
 class LoopRegion extends Component {
   constructor(...args) {
@@ -88,14 +70,14 @@ class LoopRegion extends Component {
 
     return (
       <div
-        className={classNames.root}
+        className="root"
         ref={c => {
           this.rootNode = c
         }}
       >
         <div
           role="presentation"
-          className={classNames.handleContainer}
+          className="handleContainer"
           style={{ left: `${loopStart * 100}%` }}
           onMouseDown={this.handleLoopStartDown}
         >
@@ -103,20 +85,20 @@ class LoopRegion extends Component {
         </div>
         <div
           role="presentation"
-          className={classNames.handleContainer}
+          className="handleContainer"
           style={{ left: `${loopEnd * 100}%` }}
           onMouseDown={this.handleLoopEndDown}
         >
           <Handle align="right" />
         </div>
-        <div className={classNames.regionsContainer}>
+        <div className="regionsContainer">
           <div
-            className={classNames.inactiveRegion}
+            className="inactiveRegion"
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           <div
             role="presentation"
-            className={classNames.activeRegion}
+            className="activeRegion"
             onMouseDown={this.handleActiveRegionDown}
             style={{
               left: `${loopStart * 100}%`,
@@ -124,10 +106,51 @@ class LoopRegion extends Component {
             }}
           />
           <div
-            className={classNames.inactiveRegion}
+            className="inactiveRegion"
             style={{ left: `${loopEnd * 100}%`, right: 0 }}
           />
         </div>
+        <style jsx>{`
+          .root {
+            position: relative;
+            width: 100%;
+            height: 100%;
+          }
+
+          .handleContainer {
+            position: absolute;
+            height: 100%;
+            top: 0;
+            z-index: 2;
+            cursor: ew-resize;
+            width: 10px;
+            transform: translateX(-5px);
+          }
+
+          .regionsContainer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1;
+          }
+
+          .activeRegion,
+          .inactiveRegion {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+          }
+
+          .activeRegion {
+            cursor: move;
+          }
+
+          .inactiveRegion {
+            background-color: rgba(255, 255, 255, 0.8);
+          }
+        `}</style>
       </div>
     )
   }
