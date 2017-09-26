@@ -7,7 +7,7 @@ import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import { createAudioLooperNode } from '../../audio/audioLooperNode'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
-import classNames from './Gleetchy.css'
+import classNames from './GleetchyUI.css'
 
 const Panel = ({ children, style }) => (
   <div className={classNames.panel} style={{ ...style }}>
@@ -25,7 +25,7 @@ Panel.defaultProps = {
   style: {},
 }
 
-class Gleetchy extends Component {
+class GleetchyUI extends Component {
   constructor(...args) {
     super(...args)
 
@@ -189,4 +189,4 @@ class Gleetchy extends Component {
   }
 }
 
-export default Gleetchy
+export default GleetchyUI
