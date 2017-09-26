@@ -1,3 +1,4 @@
+import { head } from 'ramda'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
 import {
   PLAYBACK_START,
@@ -21,6 +22,16 @@ export const looperUpdateProps = (id, props) => ({
   payload: props,
 })
 
-export const looperLoadFile = id => {
+export const looperLoadFile = id => async dispatch => {
+  dispatch({ type: LOOPER_LOAD_FILE_START })
 
+  try {
+    const file = head(await loadAudioFilesToArrayBuffers())
+
+    if (!file) throw new Error('No file loaded')
+
+    dispatch({ type: LOOPER_LOAD_FILE_COMPLETE, payload: { id, file } })
+  } catch (error) {
+    dispatch({ type: LOOPER_LOAD_FILE_ERROR, payload: { id, error } })
+  }
 }
