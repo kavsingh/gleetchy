@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { pick, forEachObjIndexed, __ } from 'ramda'
-import { decodeAudioDataP } from '../../util'
+import { decodeAudioDataP } from '../../util/audio'
 import {
   ENGINE_EVENTS_CLEAR,
   PLAYBACK_START,

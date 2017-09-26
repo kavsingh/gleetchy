@@ -1,5 +1,3 @@
-import { curry } from 'ramda'
-
 /* eslint-disable no-console */
 export const log = console.log.bind(console)
 
@@ -21,21 +19,6 @@ export const inspect = (instance, groupName, predicate = () => true) => {
   console.groupEnd(name)
 }
 /* eslint-enable */
-
-export const loadSample = url =>
-  fetch(url).then(response => response.arrayBuffer())
-
-export const decodeAudioDataP = curry(
-  (audioContext, buffer) =>
-    new Promise((resolve, reject) =>
-      audioContext.decodeAudioData(buffer, resolve, reject),
-    ),
-)
-
-export const loadAudioToBuffer = curry(async (audioContext, url) => {
-  const buffer = await loadSample(url)
-  return decodeAudioDataP(audioContext, buffer)
-})
 
 export const docReady = (eventName = 'complete') =>
   new Promise(resolve => {
