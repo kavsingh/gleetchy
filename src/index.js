@@ -15,35 +15,35 @@ const App = () => (
   <div>
     <GleetchyEngine />
     <GleetchyUI />
-    <style jsx>{`
-      :global(html) {
+    <style jsx global>{`
+      html {
         box-sizing: border-box;
         user-select: none;
         font-size: 14px;
-        -webkit-font-smoothing: antialiased;
       }
 
-      :global(*),
-      :global(*::before),
-      :global(*::after) {
+      *,
+      *::before,
+      *::after {
         box-sizing: inherit;
         user-select: inherit;
       }
 
-      :global(*:focus),
-      :global(*:active) {
+      *:focus,
+      *:active {
         outline: none;
       }
 
-      :global(html),
-      :global(body) {
+      html,
+      body {
         width: 100%;
         padding: 0;
         margin: 0;
       }
 
-      :global(body) {
+      body {
         font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        -webkit-font-smoothing: antialiased;
       }
     `}</style>
   </div>
