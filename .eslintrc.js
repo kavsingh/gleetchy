@@ -5,7 +5,10 @@ module.exports = {
     'import/resolver': 'webpack',
   },
 
-  env: { browser: true },
+  env: {
+    node: true,
+    browser: false,
+  },
 
   plugins: ['prettier'],
 
@@ -26,4 +29,14 @@ module.exports = {
       },
     ],
   },
+
+  overrides: [
+    {
+      files: 'src/**/*.js',
+      env: {
+        node: false,
+        browser: true,
+      },
+    }
+  ]
 }
