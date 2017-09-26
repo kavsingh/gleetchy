@@ -8,8 +8,8 @@ import LoopRegion from '../LoopRegion'
 import classNames from './AudioLooper.css'
 
 class AudioLooper extends Component {
-  constructor(props, ...rest) {
-    super(props, ...rest)
+  constructor(...args) {
+    super(...args)
 
     this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
     this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
@@ -128,11 +128,11 @@ class AudioLooper extends Component {
           </div>
           <div className={classNames.rateSliderContainer}>
             <Slider
-              value={playbackRate}
+              value={playbackRate * 0.5}
               renderTitle={() => 'Speed'}
               renderLabel={() => 'S'}
               renderValue={() => playbackRate.toFixed(2)}
-              onChange={this.props.onPlaybackRateChange}
+              onChange={val => this.props.onPlaybackRateChange(val * 2)}
             />
           </div>
         </div>

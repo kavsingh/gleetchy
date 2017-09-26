@@ -12,7 +12,7 @@ import {
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
 } from '../../state/gleetchy/actionTypes'
-import { createAudioLooperNode } from '../../audio/audioLooperNode'
+import { createAudioLooperNode } from '../../audioNodes/audioLooperNode'
 
 class GleetchyEngine extends Component {
   constructor(...args) {
