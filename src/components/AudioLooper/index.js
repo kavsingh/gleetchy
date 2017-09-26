@@ -54,7 +54,8 @@ class AudioLooper extends Component {
 
   render() {
     const {
-      file: { buffer, name },
+      fileName,
+      audioBuffer,
       label,
       loopEnd,
       loopStart,
@@ -62,15 +63,19 @@ class AudioLooper extends Component {
       playbackRate,
     } = this.props
 
+    const title = [
+      label,
+      fileName ? ` / ${fileName}` : '',
+      fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : '',
+    ].join('')
+
     return (
       <div className={classNames.root}>
         <TitleBar>
           {() => (
             <span>
-              {`${label}${name ? ` / ${name}` : ''}${name && buffer
-                ? ` - ${buffer.duration.toFixed(2)}s`
-                : ''}`}
-              {buffer ? (
+              {title}
+              {audioBuffer ? (
                 <span
                   role="button"
                   tabIndex={0}
@@ -89,9 +94,9 @@ class AudioLooper extends Component {
         <div className={classNames.main}>
           <div className={classNames.waveContainer}>
             <div className={classNames.waveFormContainer}>
-              <WaveForm buffer={buffer} />
+              <WaveForm buffer={audioBuffer} />
             </div>
-            {buffer ? (
+            {audioBuffer ? (
               <div className={classNames.loopRegionContainer}>
                 <LoopRegion
                   loopStart={loopStart}
@@ -142,11 +147,8 @@ AudioLooper.propTypes = {
   gain: PropTypes.number,
   playbackRate: PropTypes.number,
   label: PropTypes.string,
-  file: PropTypes.shape({
-    buffer: PropTypes.instanceOf(AudioBuffer),
-    name: PropTypes.string,
-    type: PropTypes.string,
-  }),
+  audioBuffer: PropTypes.instanceOf(AudioBuffer),
+  fileName: PropTypes.string,
   loadAudio: PropTypes.func,
   onGainChange: PropTypes.func,
   onPlaybackRateChange: PropTypes.func,
@@ -159,7 +161,8 @@ AudioLooper.defaultProps = {
   gain: 1,
   playbackRate: 1,
   label: '',
-  file: {},
+  fileName: '',
+  audioBuffer: undefined,
   loadAudio: () => {},
   onGainChange: () => {},
   onPlaybackRateChange: () => {},

@@ -5,7 +5,7 @@ const defaultProps = {
   loopStart: 0,
   loopEnd: 1,
   playbackRate: 1,
-  buffer: undefined,
+  audioBuffer: undefined,
 }
 
 const pickProps = pick(Object.keys(defaultProps))
@@ -20,7 +20,7 @@ export const createAudioLooperNode = curry((context, initProps) => {
   gainNode.gain.value = props.gain
 
   const transferPropsToBufferSourceNode = () => {
-    const { buffer: { duration } } = props
+    const { audioBuffer: { duration } } = props
 
     bufferSourceNode.loopStart = props.loopStart * duration
     bufferSourceNode.loopEnd = props.loopEnd * duration
@@ -37,18 +37,18 @@ export const createAudioLooperNode = curry((context, initProps) => {
   const replaceBufferSourceNode = () => {
     removeBufferSourceNode()
 
-    const { loopStart, buffer } = props
+    const { loopStart, audioBuffer } = props
 
-    if (!buffer) return
+    if (!audioBuffer) return
 
     bufferSourceNode = context.createBufferSource()
-    bufferSourceNode.buffer = buffer
+    bufferSourceNode.buffer = audioBuffer
     bufferSourceNode.loop = true
 
     transferPropsToBufferSourceNode()
 
     bufferSourceNode.connect(gainNode)
-    if (isPlaying) bufferSourceNode.start(0, loopStart * buffer.duration)
+    if (isPlaying) bufferSourceNode.start(0, loopStart * audioBuffer.duration)
   }
 
   return {
@@ -71,15 +71,18 @@ export const createAudioLooperNode = curry((context, initProps) => {
 
       Object.assign(props, pickProps(newProps))
 
-      const { gain, buffer, loopStart } = props
+      const { gain, audioBuffer, loopStart } = props
 
       gainNode.gain.value = gain
 
-      if (prevProps.buffer !== buffer || prevProps.loopStart !== loopStart) {
+      if (
+        prevProps.audioBuffer !== audioBuffer ||
+        prevProps.loopStart !== loopStart
+      ) {
         replaceBufferSourceNode()
-      } else if (buffer && bufferSourceNode) {
+      } else if (audioBuffer && bufferSourceNode) {
         transferPropsToBufferSourceNode()
-      } else if (!buffer) {
+      } else if (!audioBuffer) {
         removeBufferSourceNode()
       }
     },

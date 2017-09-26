@@ -1,3 +1,5 @@
+import { head } from 'ramda'
+
 let fileInput
 
 const getFileInput = () => {
@@ -47,8 +49,8 @@ export const readFileToArrayBuffer = file => {
 
     fileReader.onloadend = () => {
       resolve({
-        name: file.name,
-        type: file.type,
+        fileName: file.name,
+        fileType: file.type,
         buffer: fileReader.result,
       })
 
@@ -64,3 +66,6 @@ export const readFilesToArrayBuffer = files =>
 
 export const loadAudioFilesToArrayBuffers = () =>
   loadAudioFiles().then(readFilesToArrayBuffer)
+
+export const loadAudioFileToArrayBuffer = () =>
+  loadAudioFilesToArrayBuffers().then(head)

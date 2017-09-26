@@ -17,9 +17,13 @@ export const playbackStop = () => ({
   type: PLAYBACK_STOP,
 })
 
+export const playbackToggle = () => (dispatch, getState) => {
+  dispatch(getState().gleetchy.isPlaying ? playbackStop() : playbackStart())
+}
+
 export const looperUpdateProps = (id, props) => ({
   type: LOOPER_UPDATE_PROPS,
-  payload: props,
+  payload: { id, props },
 })
 
 export const looperLoadFile = id => async dispatch => {
