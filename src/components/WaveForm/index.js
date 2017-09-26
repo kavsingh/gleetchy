@@ -40,9 +40,6 @@ class WaveForm extends Component {
     const { width, height } = this.state
     const context = this.canvasNode.getContext('2d')
 
-    this.canvasNode.width = width
-    this.canvasNode.height = height
-
     context.fillStyle = '#fff'
     context.fillRect(0, 0, width, height)
     context.fillStyle = '#000'
@@ -53,10 +50,6 @@ class WaveForm extends Component {
   drawWaveForm() {
     const { buffer } = this.props
     const { width, height } = this.state
-
-    this.canvasNode.width = width
-    this.canvasNode.height = height
-
     const context = this.canvasNode.getContext('2d')
     const halfHeight = height / 2
     const leftChannel = normaliseChannel(buffer.getChannelData(0))
@@ -82,6 +75,13 @@ class WaveForm extends Component {
   updateWaveForm() {
     if (!this.canvasNode) return
 
+    const { width, height } = this.state
+    const pixelRatio =
+      typeof window === 'undefined' ? 1 : window.devicePixelRatio
+
+    this.canvasNode.width = width * pixelRatio
+    this.canvasNode.height = height * pixelRatio
+
     if (this.props.buffer) this.drawWaveForm()
     else this.drawTempWaveform()
   }
@@ -94,8 +94,13 @@ class WaveForm extends Component {
   }
 
   render() {
+    const pixelRatio =
+      typeof window === 'undefined' ? 1 : window.devicePixelRatio
+    const dim = `${100 * pixelRatio}%`
+
     return (
       <canvas
+        style={{ width: dim, height: dim }}
         className={classNames.root}
         ref={c => {
           this.canvasNode = c
