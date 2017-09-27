@@ -9,6 +9,7 @@ import {
 } from '../../state/gleetchy/actions'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
+import Delay from '../../components/Delay'
 
 const Panel = ({ children, style }) => (
   <div className="panel" style={{ ...style }}>
@@ -100,6 +101,15 @@ const GleetchyUI = ({
         </Panel>
       ),
     )}
+    <Panel
+      style={{
+        height: '10em',
+        marginTop: '2em',
+        borderTop: '1px solid #fee',
+      }}
+    >
+      <Delay />
+    </Panel>
     <style jsx>{`
       .root {
         max-width: 62em;

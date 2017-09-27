@@ -7,6 +7,7 @@ import {
   LOOPER_LOAD_FILE_START,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
+  DELAY_UPDATE_PROPS,
 } from './actionTypes'
 
 export const playbackStart = () => ({
@@ -39,3 +40,8 @@ export const looperLoadFile = id => async dispatch => {
     dispatch({ type: LOOPER_LOAD_FILE_ERROR, payload: { id, error } })
   }
 }
+
+export const delayUpdateProps = props => ({
+  type: DELAY_UPDATE_PROPS,
+  payload: { props },
+})
