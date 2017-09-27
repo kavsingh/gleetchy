@@ -1,11 +1,15 @@
-import { head } from 'ramda'
+import { curry, head } from 'ramda'
 import { loadAudioFilesToArrayBuffers } from '../../apis/file'
+import { decodeAudioDataP } from '../../util/audio'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
+  ENGINE_EVENTS_CLEAR,
   LOOPER_UPDATE_PROPS,
   LOOPER_LOAD_FILE_START,
   LOOPER_LOAD_FILE_COMPLETE,
+  LOOPER_LOAD_FILE_DECODE_START,
+  LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
   DELAY_UPDATE_PROPS,
 } from './actionTypes'
@@ -28,7 +32,7 @@ export const looperUpdateProps = (id, props) => ({
 })
 
 export const looperLoadFile = id => async dispatch => {
-  dispatch({ type: LOOPER_LOAD_FILE_START })
+  dispatch({ type: LOOPER_LOAD_FILE_START, payload: { id } })
 
   try {
     const file = head(await loadAudioFilesToArrayBuffers())
@@ -41,7 +45,38 @@ export const looperLoadFile = id => async dispatch => {
   }
 }
 
+export const looperLoadFileDecode = curry(
+  (audioContext, id, { buffer, fileName, fileType } = {}) => async dispatch => {
+    dispatch({ type: LOOPER_LOAD_FILE_DECODE_START, payload: { id } })
+
+    try {
+      if (!buffer) throw new Error(`No buffer for ${fileName}`)
+
+      const audioBuffer = await decodeAudioDataP(audioContext, buffer)
+
+      dispatch({
+        type: LOOPER_LOAD_FILE_DECODE_COMPLETE,
+        payload: {
+          id,
+          props: {
+            audioBuffer,
+            fileName,
+            fileType,
+          },
+        },
+      })
+    } catch (error) {
+      dispatch({
+        type: LOOPER_LOAD_FILE_ERROR,
+        payload: { id, error },
+      })
+    }
+  },
+)
+
 export const delayUpdateProps = props => ({
   type: DELAY_UPDATE_PROPS,
   payload: { props },
 })
+
+export const engineEventsClear = () => ({ type: ENGINE_EVENTS_CLEAR })
