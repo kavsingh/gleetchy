@@ -7,11 +7,13 @@ import {
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
+  DELAY_UPDATE_PROPS,
 } from './actionTypes'
 
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
+  delay: { delayTime: 0.3, wetDryRatio: 0 },
   loopers: [
     {
       id: 'loop0',
@@ -81,6 +83,12 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
     case LOOPER_LOAD_FILE_ERROR:
       warn(payload.error, type, payload)
       return state
+    case DELAY_UPDATE_PROPS:
+      return {
+        ...state,
+        delay: { ...state.delay, ...payload.props },
+        engineEvents: [...state.engineEvents, { type, payload }],
+      }
     case ENGINE_EVENTS_CLEAR:
       return { ...state, engineEvents: [] }
     default:

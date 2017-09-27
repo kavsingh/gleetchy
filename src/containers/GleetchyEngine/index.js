@@ -8,6 +8,7 @@ import {
   LOOPER_UPDATE_PROPS,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
+  DELAY_UPDATE_PROPS,
 } from '../../state/gleetchy/actionTypes'
 import {
   looperLoadFileDecode,
@@ -79,6 +80,9 @@ class GleetchyEngine extends Component {
         break
       case LOOPER_LOAD_FILE_DECODE_COMPLETE:
         this.updateAudioLooper(payload)
+        break
+      case DELAY_UPDATE_PROPS:
+        this.delayNode.set(payload.props)
         break
       default:
         break

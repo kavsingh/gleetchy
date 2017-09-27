@@ -6,6 +6,7 @@ import {
   looperUpdateProps,
   looperLoadFile,
   playbackToggle,
+  delayUpdateProps,
 } from '../../state/gleetchy/actions'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
@@ -34,10 +35,12 @@ Panel.defaultProps = {
 
 const GleetchyUI = ({
   loopers,
+  delay,
   isPlaying,
   togglePlayback,
   loadLooperAudio,
   updateLooper,
+  updateDelay,
 }) => (
   <div className="root">
     <Panel>
@@ -108,7 +111,12 @@ const GleetchyUI = ({
         borderTop: '1px solid #fee',
       }}
     >
-      <Delay />
+      <Delay
+        wetDryRatio={delay.wetDryRatio}
+        delayTime={delay.delayTime}
+        onDelayTimeChange={delayTime => updateDelay({ delayTime })}
+        onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
+      />
     </Panel>
     <style jsx>{`
       .root {
@@ -140,29 +148,35 @@ const GleetchyUI = ({
 )
 
 GleetchyUI.propTypes = {
+  delay: PropTypes.shape(),
   loopers: PropTypes.arrayOf(PropTypes.shape()),
   isPlaying: PropTypes.bool,
   togglePlayback: PropTypes.func,
   loadLooperAudio: PropTypes.func,
   updateLooper: PropTypes.func,
+  updateDelay: PropTypes.func,
 }
 
 GleetchyUI.defaultProps = {
+  delay: {},
   loopers: [],
   isPlaying: false,
   togglePlayback: () => {},
   loadLooperAudio: () => {},
   updateLooper: () => {},
+  updateDelay: () => {},
 }
 
 export default connect(
   ({ gleetchy }) => ({
     loopers: gleetchy.loopers,
     isPlaying: gleetchy.isPlaying,
+    delay: gleetchy.delay,
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),
     loadLooperAudio: id => dispatch(looperLoadFile(id)),
     updateLooper: (id, props) => dispatch(looperUpdateProps(id, props)),
+    updateDelay: props => dispatch(delayUpdateProps(props)),
   }),
 )(GleetchyUI)

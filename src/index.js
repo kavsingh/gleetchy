@@ -19,6 +19,7 @@ const App = () => (
       html {
         box-sizing: border-box;
         user-select: none;
+        cursor: default;
         font-size: 14px;
       }
 
@@ -27,11 +28,17 @@ const App = () => (
       *::after {
         box-sizing: inherit;
         user-select: inherit;
+        cursor: inherit;
       }
 
       *:focus,
       *:active {
         outline: none;
+      }
+
+      a,
+      button {
+        cursor: initial;
       }
 
       html,

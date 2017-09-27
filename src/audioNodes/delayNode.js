@@ -3,14 +3,14 @@ import { createConnect, createDisconnect } from './connection'
 
 const defaultProps = {
   delayTime: 0,
-  wetDry: 0.5,
+  wetDryRatio: 0.5,
 }
 
 const pickProps = pick(Object.keys(defaultProps))
 
-const updateWetDry = (wetDry, wetGainNode, dryGainNode) => {
-  Object.assign(wetGainNode.gain, { value: wetDry })
-  Object.assign(dryGainNode.gain, { value: 1 - wetDry })
+const updateWetDry = (wetDryRatio, wetGainNode, dryGainNode) => {
+  Object.assign(wetGainNode.gain, { value: wetDryRatio })
+  Object.assign(dryGainNode.gain, { value: 1 - wetDryRatio })
 }
 
 export const createDelayNode = curry((audioContext, initProps) => {
@@ -27,16 +27,16 @@ export const createDelayNode = curry((audioContext, initProps) => {
   wetGainNode.connect(outNode)
   dryGainNode.connect(outNode)
 
-  updateWetDry(props.wetDry, wetGainNode, dryGainNode)
+  updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
 
-  delayNode.delayTime.value = 4
+  delayNode.delayTime.value = props.delayTime
 
   return {
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
 
       delayNode.delayTime.value = props.delayTime
-      updateWetDry(props.wetDry, wetGainNode, dryGainNode)
+      updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
     },
 
     getInNode() {

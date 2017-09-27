@@ -1,54 +1,67 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import Knob from '../Knob'
+import TitleBar from '../TitleBar'
 
-const Delay = ({ dryWet, delayTime, onDryWetChange, onDelayTimeChange }) => (
+const Delay = ({
+  wetDryRatio,
+  delayTime,
+  onWetDryRatioChange,
+  onDelayTimeChange,
+}) => (
   <div className="root">
-    <div className="knobContainer">
-      <Knob
-        value={dryWet}
-        onChange={onDryWetChange}
-        renderLabel={() => 'W / D'}
-        renderTitle={() => 'Wet / Dry ratio'}
-        renderValue={() => `${(dryWet * 100).toFixed(1)}%`}
-      />
-    </div>
-    <div className="knobContainer">
-      <Knob
-        value={delayTime}
-        onChange={onDelayTimeChange}
-        renderLabel={() => 'T'}
-        renderTitle={() => 'Delay time'}
-        renderValue={() => delayTime.toFixed(2)}
-      />
+    <TitleBar>{() => 'Delay'}</TitleBar>
+    <div className="knobs">
+      <div className="knobContainer">
+        <Knob
+          radius="2.4em"
+          value={delayTime}
+          onChange={onDelayTimeChange}
+          renderLabel={() => 'T'}
+          renderTitle={() => 'Delay time'}
+          renderValue={() => delayTime.toFixed(2)}
+        />
+      </div>
+      <div className="knobContainer">
+        <Knob
+          radius="2.4em"
+          value={wetDryRatio}
+          onChange={onWetDryRatioChange}
+          renderLabel={() => 'W / D'}
+          renderTitle={() => 'Wet / Dry ratio'}
+          renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
+        />
+      </div>
     </div>
     <style jsx>{`
       .root {
+        width: 100%;
+      }
+
+      .knobs {
         width: 100%;
         display: flex;
       }
 
       .knobContainer {
-        flex: 0 0 2.4em;
-        width: 2.4em;
-        height: 2.4em;
+        flex: 0 0 3em;
       }
     `}</style>
   </div>
 )
 
 Delay.propTypes = {
-  dryWet: PropTypes.number,
+  wetDryRatio: PropTypes.number,
   delayTime: PropTypes.number,
   onDelayTimeChange: PropTypes.func,
-  onDryWetChange: PropTypes.func,
+  onWetDryRatioChange: PropTypes.func,
 }
 
 Delay.defaultProps = {
-  dryWet: 0.5,
+  wetDryRatio: 0.5,
   delayTime: 1,
   onDelayTimeChange: () => {},
-  onDryWetChange: () => {},
+  onWetDryRatioChange: () => {},
 }
 
 export default Delay
