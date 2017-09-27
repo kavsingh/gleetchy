@@ -8,8 +8,8 @@
     }
   }], "react"],
   "plugins": [
+    ["lodash", { "id": ["ramda"] }],
     "styled-jsx/babel",
-    "ramda",
     "transform-object-rest-spread",
     "transform-runtime"
   ],
