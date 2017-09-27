@@ -40,9 +40,10 @@ class GleetchyEngine extends Component {
     }, {})
     this.forEachAudioLooper = forEachObjIndexed(__, this.audioLooperNodes)
 
-    this.forEachAudioLooper(node => node.connect(this.delayNode))
+    // this.forEachAudioLooper(node => node.connect(this.delayNode))
+    this.forEachAudioLooper(node => node.connect(this.mainOut))
 
-    this.delayNode.connect(this.mainOut)
+    // this.delayNode.connect(this.mainOut)
   }
 
   shouldComponentUpdate(props) {
