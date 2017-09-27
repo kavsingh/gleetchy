@@ -59,6 +59,7 @@ class GleetchyEngine extends Component {
   }
 
   componentWillUnmount() {
+    this.props.clearEngineEvents()
     this.audioContext.close()
   }
 
