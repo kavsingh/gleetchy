@@ -1,4 +1,5 @@
 import { curry, pick } from 'ramda'
+import { createConnect, createDisconnect } from './connection'
 
 const defaultProps = {
   gain: 1,
@@ -87,12 +88,16 @@ export const createAudioLooperNode = curry((context, initProps) => {
       }
     },
 
-    connectTo(destination) {
-      gainNode.connect(destination)
+    getInNode() {
+      return gainNode
     },
 
-    disconnectFrom(destination) {
-      gainNode.disconnect(destination)
+    getOutNode() {
+      return gainNode
     },
+
+    connect: createConnect(() => gainNode),
+
+    disconnect: createDisconnect(() => gainNode),
   }
 })

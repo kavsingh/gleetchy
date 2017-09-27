@@ -13,6 +13,7 @@ import {
   LOOPER_LOAD_FILE_ERROR,
 } from '../../state/gleetchy/actionTypes'
 import { createAudioLooperNode } from '../../audioNodes/audioLooperNode'
+import { createDelayNode } from '../../audioNodes/delayNode'
 
 class GleetchyEngine extends Component {
   constructor(...args) {
@@ -24,6 +25,8 @@ class GleetchyEngine extends Component {
     const AudioContext = window.AudioContext || window.webkitAudioContext
 
     this.audioContext = new AudioContext()
+    this.mainOut = this.audioContext.destination
+    this.delayNode = createDelayNode(this.audioContext, { delayTime: 1 })
     this.audioLooperNodes = this.props.loopers.reduce((acc, looper) => {
       acc[looper.id] = createAudioLooperNode(
         this.audioContext,
@@ -37,9 +40,9 @@ class GleetchyEngine extends Component {
     }, {})
     this.forEachAudioLooper = forEachObjIndexed(__, this.audioLooperNodes)
 
-    this.forEachAudioLooper(node =>
-      node.connectTo(this.audioContext.destination),
-    )
+    this.forEachAudioLooper(node => node.connect(this.delayNode))
+
+    this.delayNode.connect(this.mainOut)
   }
 
   shouldComponentUpdate(props) {
