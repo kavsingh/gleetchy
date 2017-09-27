@@ -2,16 +2,17 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { pick, forEachObjIndexed, __ } from 'ramda'
-import { decodeAudioDataP } from '../../util/audio'
 import {
-  ENGINE_EVENTS_CLEAR,
   PLAYBACK_START,
   PLAYBACK_STOP,
   LOOPER_UPDATE_PROPS,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
-  LOOPER_LOAD_FILE_ERROR,
 } from '../../state/gleetchy/actionTypes'
+import {
+  looperLoadFileDecode,
+  engineEventsClear,
+} from '../../state/gleetchy/actions'
 import { createAudioLooperNode } from '../../audioNodes/audioLooperNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 
@@ -75,7 +76,7 @@ class GleetchyEngine extends Component {
         this.updateAudioLooper(payload)
         break
       case LOOPER_LOAD_FILE_COMPLETE:
-        this.decodeLooperFile(payload)
+        this.props.decodeLooperFile(this.audioContext, payload.id, payload.file)
         break
       case LOOPER_LOAD_FILE_DECODE_COMPLETE:
         this.updateAudioLooper(payload)
@@ -93,27 +94,6 @@ class GleetchyEngine extends Component {
     looperNode.set(props)
   }
 
-  decodeLooperFile({ id, file: { buffer, fileName, fileType } = {} }) {
-    if (!buffer) {
-      this.props.onDecodedLooperBufferError(
-        id,
-        new Error(`No buffer for ${fileName}`),
-      )
-    }
-
-    decodeAudioDataP(this.audioContext, buffer)
-      .then(audioBuffer =>
-        this.props.onDecodedLooperBuffer(id, {
-          audioBuffer,
-          fileName,
-          fileType,
-        }),
-      )
-      .catch(error => {
-        this.props.onDecodedLooperBufferError(id, error)
-      })
-  }
-
   /* eslint-disable class-methods-use-this */
   render() {
     return null
@@ -124,16 +104,14 @@ class GleetchyEngine extends Component {
 GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape()),
   loopers: PropTypes.arrayOf(PropTypes.shape()),
-  onDecodedLooperBuffer: PropTypes.func,
-  onDecodedLooperBufferError: PropTypes.func,
+  decodeLooperFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
 
 GleetchyEngine.defaultProps = {
   engineEvents: [],
   loopers: [],
-  onDecodedLooperBuffer: () => {},
-  onDecodedLooperBufferError: () => {},
+  decodeLooperFile: () => {},
   clearEngineEvents: () => {},
 }
 
@@ -143,16 +121,8 @@ export default connect(
     loopers: gleetchy.loopers,
   }),
   dispatch => ({
-    clearEngineEvents: () => dispatch({ type: ENGINE_EVENTS_CLEAR }),
-    onDecodedLooperBuffer: (id, props) =>
-      dispatch({
-        type: LOOPER_LOAD_FILE_DECODE_COMPLETE,
-        payload: { id, props },
-      }),
-    onDecodedLooperBufferError: (id, error) =>
-      dispatch({
-        type: LOOPER_LOAD_FILE_ERROR,
-        payload: { id, error },
-      }),
+    clearEngineEvents: () => dispatch(engineEventsClear()),
+    decodeLooperFile: (audioContext, id, file) =>
+      dispatch(looperLoadFileDecode(audioContext, id, file)),
   }),
 )(GleetchyEngine)
