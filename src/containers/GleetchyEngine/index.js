@@ -28,7 +28,7 @@ class GleetchyEngine extends Component {
 
     this.audioContext = new AudioContext()
     this.mainOut = this.audioContext.destination
-    this.delayNode = createDelayNode(this.audioContext, { delayTime: 1 })
+    this.delayNode = createDelayNode(this.audioContext, this.props.delay)
     this.audioLooperNodes = this.props.loopers.reduce((acc, looper) => {
       acc[looper.id] = createAudioLooperNode(
         this.audioContext,
@@ -107,6 +107,7 @@ class GleetchyEngine extends Component {
 GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape()),
   loopers: PropTypes.arrayOf(PropTypes.shape()),
+  delay: PropTypes.shape(),
   decodeLooperFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
@@ -114,6 +115,7 @@ GleetchyEngine.propTypes = {
 GleetchyEngine.defaultProps = {
   engineEvents: [],
   loopers: [],
+  delay: {},
   decodeLooperFile: () => {},
   clearEngineEvents: () => {},
 }
@@ -122,6 +124,7 @@ export default connect(
   ({ gleetchy }) => ({
     engineEvents: gleetchy.engineEvents,
     loopers: gleetchy.loopers,
+    delay: gleetchy.delay,
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(engineEventsClear()),
