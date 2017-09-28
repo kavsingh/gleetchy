@@ -52,6 +52,9 @@ export const createAudioLooperNode = curry((context, initProps) => {
     if (isPlaying) bufferSourceNode.start(0, loopStart * audioBuffer.duration)
   }
 
+  const getInNode = () => gainNode
+  const getOutNode = () => gainNode
+
   return {
     play() {
       if (isPlaying) return
@@ -88,16 +91,9 @@ export const createAudioLooperNode = curry((context, initProps) => {
       }
     },
 
-    getInNode() {
-      return gainNode
-    },
-
-    getOutNode() {
-      return gainNode
-    },
-
-    connect: createConnect(() => gainNode),
-
-    disconnect: createDisconnect(() => gainNode),
+    getInNode,
+    getOutNode,
+    connect: createConnect(getOutNode),
+    disconnect: createDisconnect(getOutNode),
   }
 })

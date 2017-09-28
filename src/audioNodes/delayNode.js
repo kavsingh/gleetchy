@@ -31,6 +31,9 @@ export const createDelayNode = curry((audioContext, initProps) => {
 
   delayNode.delayTime.value = props.delayTime
 
+  const getInNode = () => inNode
+  const getOutNode = () => outNode
+
   return {
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
@@ -39,16 +42,9 @@ export const createDelayNode = curry((audioContext, initProps) => {
       updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
     },
 
-    getInNode() {
-      return inNode
-    },
-
-    getOutNode() {
-      return outNode
-    },
-
-    connect: createConnect(() => outNode),
-
-    disconnect: createDisconnect(() => outNode),
+    getInNode,
+    getOutNode,
+    connect: createConnect(getOutNode),
+    disconnect: createDisconnect(getOutNode),
   }
 })
