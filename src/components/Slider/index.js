@@ -30,10 +30,10 @@ class Slider extends Component {
     const vert = orient === 'vertical'
     const movement = vert ? event.movementY : event.movementX
     const dim = vert
-      ? this.barContainer.offsetHeight
+      ? this.barContainer.offsetHeight * -1
       : this.barContainer.offsetWidth
 
-    this.props.onChange(clamp(0, 1, movement / -dim + value))
+    this.props.onChange(clamp(0, 1, movement / dim + value))
   }
 
   handleMouseUp(event) {
@@ -56,7 +56,7 @@ class Slider extends Component {
       ? this.barContainer.offsetHeight
       : this.barContainer.offsetWidth
 
-    this.props.onChange(clamp(0, 1, 1 - offset / dim))
+    this.props.onChange(clamp(0, 1, vert ? 1 - offset / dim : offset / dim))
   }
 
   render() {
@@ -90,7 +90,6 @@ class Slider extends Component {
             width: 100%;
             height: 100%;
             display: flex;
-            font-size: 0.8em;
             align-items: center;
           }
 
@@ -100,45 +99,87 @@ class Slider extends Component {
 
           .slider_horizontal {
             flex-direction: row;
+            align-items: stretch;
           }
 
-          .slider__label {
-            flex: 0 0 auto;
-            margin-bottom: 0.4em;
-          }
-
+          .slider__label,
           .slider__value {
-            flex: 0 0 0;
-            width: 100%;
+            flex: 0 0 auto;
+            font-size: 0.8em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .slider_horizontal .slider__value,
+          .slider_horizontal .slider__label {
+            display: flex;
+            align-items: center;
+            width: 3em;
           }
 
           .slider__barContainer {
             position: relative;
-            flex: 1 0 auto;
+            flex: 1 1;
+          }
+
+          .slider_vertical .slider__barContainer {
             width: 100%;
-            margin-bottom: 0.2em;
             cursor: ns-resize;
+            margin: 0.4em auto 0.2em;
+          }
+
+          .slider_horizontal .slider__barContainer {
+            cursor: ew-resize;
+            height: 100%;
+            margin: auto 0.6em;
           }
 
           .slider__track,
           .slider__bar {
             position: absolute;
-            top: 0;
-            bottom: 0;
           }
 
           .slider__track {
             z-index: 1;
-            width: 1px;
-            left: 50%;
             background-color: rgba(0, 0, 0, 0.1);
           }
 
           .slider__bar {
             z-index: 2;
+            background-color: #000;
+          }
+
+          .slider_vertical .slider__track,
+          .slider_vertical .slider__bar {
+            top: 0;
+            bottom: 0;
+          }
+
+          .slider_horizontal .slider__track,
+          .slider_horizontal .slider__bar {
+            left: 0;
+            right: 0;
+          }
+
+          .slider_vertical .slider__track {
+            width: 1px;
+            left: 50%;
+          }
+
+          .slider_vertical .slider__bar {
             width: 3px;
             left: calc(50% - 1px);
-            background-color: #000;
+          }
+
+          .slider_horizontal .slider__track {
+            height: 1px;
+            top: 50%;
+          }
+
+          .slider_horizontal .slider__bar {
+            height: 3px;
+            top: calc(50% - 1px);
           }
         `}</style>
       </div>

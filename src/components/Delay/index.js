@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DELAY_UPPER_BOUND } from '../../constants/audio'
 import Knob from '../Knob'
+import Slider from '../Slider'
 import TitleBar from '../TitleBar'
 
 const Delay = ({
@@ -33,6 +34,24 @@ const Delay = ({
           renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
         />
       </div>
+    </div>
+    <div>
+      <Slider
+        orient="horizontal"
+        value={delayTime / DELAY_UPPER_BOUND}
+        onChange={val => onDelayTimeChange(val * DELAY_UPPER_BOUND)}
+        renderLabel={() => 'T'}
+        renderTitle={() => 'Delay time'}
+        renderValue={() => delayTime.toFixed(2)}
+      />
+      <Slider
+        orient="horizontal"
+        value={wetDryRatio}
+        onChange={onWetDryRatioChange}
+        renderLabel={() => 'W / D'}
+        renderTitle={() => 'Wet / Dry ratio'}
+        renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
+      />
     </div>
     <style jsx>{`
       .delay {
