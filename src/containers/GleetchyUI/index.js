@@ -106,17 +106,18 @@ const GleetchyUI = ({
     )}
     <Panel
       style={{
-        height: '10em',
         marginTop: '2em',
         borderTop: '1px solid #fee',
       }}
     >
-      <Delay
-        wetDryRatio={delay.wetDryRatio}
-        delayTime={delay.delayTime}
-        onDelayTimeChange={delayTime => updateDelay({ delayTime })}
-        onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
-      />
+      <Panel style={{ width: '50%' }}>
+        <Delay
+          wetDryRatio={delay.wetDryRatio}
+          delayTime={delay.delayTime}
+          onDelayTimeChange={delayTime => updateDelay({ delayTime })}
+          onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
+        />
+      </Panel>
     </Panel>
     <style jsx>{`
       .gleetchy {
