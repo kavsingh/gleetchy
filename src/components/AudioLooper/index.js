@@ -156,7 +156,7 @@ class AudioLooper extends Component {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-around;
+            justify-content: space-between;
           }
 
           .audioLooper__controlContainer {
