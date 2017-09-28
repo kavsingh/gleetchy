@@ -100,13 +100,13 @@ class WaveForm extends Component {
     return (
       <canvas
         style={{ width: dim, height: dim }}
-        className="root"
+        className="waveForm"
         ref={c => {
           this.canvasNode = c
         }}
       >
         <style jsx>{`
-          .root {
+          .waveForm {
             position: relative;
             width: 100%;
             height: 100%;

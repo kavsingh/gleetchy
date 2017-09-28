@@ -10,10 +10,10 @@ const Delay = ({
   onWetDryRatioChange,
   onDelayTimeChange,
 }) => (
-  <div className="root">
+  <div className="delay">
     <TitleBar>{() => 'Delay'}</TitleBar>
-    <div className="knobs">
-      <div className="knobContainer">
+    <div className="delay__controls">
+      <div className="delay__knobContainer">
         <Knob
           radius="2.4em"
           value={delayTime / DELAY_UPPER_BOUND}
@@ -23,7 +23,7 @@ const Delay = ({
           renderValue={() => delayTime.toFixed(2)}
         />
       </div>
-      <div className="knobContainer">
+      <div className="delay__knobContainer">
         <Knob
           radius="2.4em"
           value={wetDryRatio}
@@ -35,16 +35,16 @@ const Delay = ({
       </div>
     </div>
     <style jsx>{`
-      .root {
+      .delay {
         width: 100%;
       }
 
-      .knobs {
+      .delay__controls {
         width: 100%;
         display: flex;
       }
 
-      .knobContainer {
+      .delay__knobContainer {
         flex: 0 0 3em;
       }
     `}</style>

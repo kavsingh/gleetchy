@@ -2,10 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const TitleBar = ({ children }) => (
-  <div className="root">
+  <div className="titleBar">
     {children()}
     <style jsx>{`
-      .root {
+      .titleBar {
         display: flex;
         flex-direction: row;
         font-size: 0.8em;

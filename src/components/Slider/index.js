@@ -66,27 +66,27 @@ class Slider extends Component {
 
     return (
       <div
-        className={`root ${isVert ? 'rootVertical' : 'rootHorizontal'}`}
+        className={`slider ${isVert ? 'slider_vertical' : 'slider_horizontal'}`}
         title={renderTitle(value)}
       >
-        <div className="label">{renderLabel(value)}</div>
+        <div className="slider__label">{renderLabel(value)}</div>
         <div
           role="presentation"
-          className="barContainer"
+          className="slider__barContainer"
           onMouseDown={this.handleMouseDown}
           ref={c => {
             this.barContainer = c
           }}
         >
-          <div className="track" />
+          <div className="slider__track" />
           <div
-            className="bar"
+            className="slider__bar"
             style={isVert ? { top: offVal } : { right: offVal }}
           />
         </div>
-        <div className="value">{renderValue(value)}</div>
+        <div className="slider__value">{renderValue(value)}</div>
         <style jsx>{`
-          .root {
+          .slider {
             width: 100%;
             height: 100%;
             display: flex;
@@ -94,25 +94,25 @@ class Slider extends Component {
             align-items: center;
           }
 
-          .rootVertical {
+          .slider_vertical {
             flex-direction: column;
           }
 
-          .rootHorizontal {
+          .slider_horizontal {
             flex-direction: row;
           }
 
-          .label {
+          .slider__label {
             flex: 0 0 auto;
             margin-bottom: 0.4em;
           }
 
-          .value {
+          .slider__value {
             flex: 0 0 0;
             width: 100%;
           }
 
-          .barContainer {
+          .slider__barContainer {
             position: relative;
             flex: 1 0 auto;
             width: 100%;
@@ -120,21 +120,21 @@ class Slider extends Component {
             cursor: ns-resize;
           }
 
-          .track,
-          .bar {
+          .slider__track,
+          .slider__bar {
             position: absolute;
             top: 0;
             bottom: 0;
           }
 
-          .track {
+          .slider__track {
             z-index: 1;
             width: 1px;
             left: 50%;
             background-color: rgba(0, 0, 0, 0.1);
           }
 
-          .bar {
+          .slider__bar {
             z-index: 2;
             width: 3px;
             left: calc(50% - 1px);

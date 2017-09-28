@@ -42,9 +42,9 @@ const GleetchyUI = ({
   updateLooper,
   updateDelay,
 }) => (
-  <div className="root">
+  <div className="gleetchy">
     <Panel>
-      <div className="titleBar">
+      <div className="gleetchy__masthead">
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
         <a
           href="https://www.github.com/kavsingh/gleetchy"
@@ -119,27 +119,27 @@ const GleetchyUI = ({
       />
     </Panel>
     <style jsx>{`
-      .root {
+      .gleetchy {
         max-width: 62em;
         margin: 0 auto;
         padding: 0 2em;
         color: #555;
       }
 
-      .titleBar {
+      .gleetchy__masthead {
         width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
       }
 
-      .titleBar a {
+      .gleetchy__masthead a {
         transition: opacity 0.2s ease-out, color 0.2s ease-out;
         color: #555;
         opacity: 0.4;
       }
 
-      .titleBar a:hover {
+      .gleetchy__masthead a:hover {
         color: #333;
         opacity: 1;
       }

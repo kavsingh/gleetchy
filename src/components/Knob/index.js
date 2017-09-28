@@ -39,27 +39,27 @@ class Knob extends Component {
     const { value, radius, renderTitle, renderLabel, renderValue } = this.props
 
     return (
-      <div className="root" title={renderTitle()}>
-        <div className="label">{renderLabel()}</div>
+      <div className="knob" title={renderTitle()}>
+        <div className="knob__label">{renderLabel()}</div>
         <div
           role="presentation"
-          className="knob"
+          className="knob__knobContainer"
           style={{ width: radius, height: radius }}
           onMouseDown={this.handleMouseDown}
           ref={c => {
             this.knobNode = c
           }}
         >
-          <div className="trackContainer">
+          <div className="knob__trackContainer">
             <SVGArc startAngle={0} endAngle={360} strokeWidth={1} />
           </div>
-          <div className="barContainer">
+          <div className="knob__barContainer">
             <SVGArc startAngle={0} endAngle={value * 360} strokeWidth={2} />
           </div>
         </div>
-        <div className="value">{renderValue()}</div>
+        <div className="knob__value">{renderValue()}</div>
         <style jsx>{`
-          .root {
+          .knob {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -67,20 +67,20 @@ class Knob extends Component {
             height: 100%;
           }
 
-          .knob {
+          .knob__knobContainer {
             flex: 0 0 auto;
             position: relative;
             cursor: ew-resize;
           }
 
-          .knob :global(svg) {
+          .knob__knobContainer :global(svg) {
             width: 100%;
             height: 100%;
             fill: transparent;
           }
 
-          .trackContainer,
-          .barContainer {
+          .knob__trackContainer,
+          .knob__barContainer {
             width: 100%;
             height: 100%;
             position: absolute;
@@ -88,33 +88,33 @@ class Knob extends Component {
             left: 0;
           }
 
-          .trackContainer {
+          .knob__trackContainer {
             z-index: 1;
           }
 
-          .trackContainer :global(svg) {
+          .knob__trackContainer :global(svg) {
             stroke: rgba(0, 0, 0, 0.1);
           }
 
-          .trackContainer {
+          .knob__barContainer {
             z-index: 2;
           }
 
-          .barContainer :global(svg) {
+          .knob__barContainer :global(svg) {
             stroke: #000;
           }
 
-          .label,
-          .value {
+          .knob__label,
+          .knob__value {
             font-size: 0.8em;
             flex: 0 0 auto;
           }
 
-          .label {
+          .knob__label {
             margin-bottom: 0.4em;
           }
 
-          .value {
+          .knob__value {
             margin-top: 0.4em;
           }
         `}</style>

@@ -1,68 +1,68 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import Handle from './Handle'
+import LoopHandle from './LoopHandle'
 
 class LoopRegion extends Component {
   constructor(...args) {
     super(...args)
 
-    this.handleLoopStartDown = this.handleLoopStartDown.bind(this)
-    this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
-    this.handleLoopStartUp = this.handleLoopStartUp.bind(this)
-    this.handleLoopEndDown = this.handleLoopEndDown.bind(this)
-    this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
-    this.handleLoopEndUp = this.handleLoopEndUp.bind(this)
-    this.handleActiveRegionDown = this.handleActiveRegionDown.bind(this)
-    this.handleActiveRegionDrag = this.handleActiveRegionDrag.bind(this)
-    this.handleActiveRegionUp = this.handleActiveRegionUp.bind(this)
+    this.handleStartHandleMouseDown = this.handleStartHandleMouseDown.bind(this)
+    this.handleStartHandleMouseMove = this.handleStartHandleMouseMove.bind(this)
+    this.handleStartHandleMouseUp = this.handleStartHandleMouseUp.bind(this)
+    this.handleEndHandleMouseDown = this.handleEndHandleMouseDown.bind(this)
+    this.handleEndHandleMouseMove = this.handleEndHandleMouseMove.bind(this)
+    this.handleEndHandleMouseUp = this.handleEndHandleMouseUp.bind(this)
+    this.handleLoopRegionMouseDown = this.handleLoopRegionMouseDown.bind(this)
+    this.handleLoopRegionMouseMove = this.handleLoopRegionMouseMove.bind(this)
+    this.handleLoopRegionMouseUp = this.handleLoopRegionMouseUp.bind(this)
   }
 
   componentWillUnmount() {
-    this.handleLoopStartUp()
-    this.handleLoopEndUp()
-    this.handleActiveRegionUp()
+    this.handleStartHandleMouseUp()
+    this.handleEndHandleMouseUp()
+    this.handleLoopRegionMouseUp()
   }
 
-  handleLoopStartDown() {
-    window.addEventListener('mousemove', this.handleLoopStartDrag)
-    window.addEventListener('mouseup', this.handleLoopStartUp)
+  handleStartHandleMouseDown() {
+    window.addEventListener('mousemove', this.handleStartHandleMouseMove)
+    window.addEventListener('mouseup', this.handleStartHandleMouseUp)
   }
 
-  handleLoopStartDrag(event) {
+  handleStartHandleMouseMove(event) {
     this.props.onLoopStartDrag(event.movementX / this.rootNode.offsetWidth)
   }
 
-  handleLoopStartUp() {
-    window.removeEventListener('mouseup', this.handleLoopStartUp)
-    window.removeEventListener('mousemove', this.handleLoopStartDrag)
+  handleStartHandleMouseUp() {
+    window.removeEventListener('mouseup', this.handleStartHandleMouseUp)
+    window.removeEventListener('mousemove', this.handleStartHandleMouseMove)
   }
 
-  handleLoopEndDown() {
-    window.addEventListener('mousemove', this.handleLoopEndDrag)
-    window.addEventListener('mouseup', this.handleLoopEndUp)
+  handleEndHandleMouseDown() {
+    window.addEventListener('mousemove', this.handleEndHandleMouseMove)
+    window.addEventListener('mouseup', this.handleEndHandleMouseUp)
   }
 
-  handleLoopEndDrag(event) {
+  handleEndHandleMouseMove(event) {
     this.props.onLoopEndDrag(event.movementX / this.rootNode.offsetWidth)
   }
 
-  handleLoopEndUp() {
-    window.removeEventListener('mouseup', this.handleLoopEndUp)
-    window.removeEventListener('mousemove', this.handleLoopEndDrag)
+  handleEndHandleMouseUp() {
+    window.removeEventListener('mouseup', this.handleEndHandleMouseUp)
+    window.removeEventListener('mousemove', this.handleEndHandleMouseMove)
   }
 
-  handleActiveRegionDown() {
-    window.addEventListener('mousemove', this.handleActiveRegionDrag)
-    window.addEventListener('mouseup', this.handleActiveRegionUp)
+  handleLoopRegionMouseDown() {
+    window.addEventListener('mousemove', this.handleLoopRegionMouseMove)
+    window.addEventListener('mouseup', this.handleLoopRegionMouseUp)
   }
 
-  handleActiveRegionDrag({ movementX }) {
+  handleLoopRegionMouseMove({ movementX }) {
     this.props.onLoopRegionDrag(movementX / this.rootNode.offsetWidth)
   }
 
-  handleActiveRegionUp() {
-    window.removeEventListener('mousemove', this.handleActiveRegionDrag)
-    window.removeEventListener('mouseup', this.handleActiveRegionUp)
+  handleLoopRegionMouseUp() {
+    window.removeEventListener('mousemove', this.handleLoopRegionMouseMove)
+    window.removeEventListener('mouseup', this.handleLoopRegionMouseUp)
   }
 
   render() {
@@ -70,54 +70,54 @@ class LoopRegion extends Component {
 
     return (
       <div
-        className="root"
+        className="loopRegion"
         ref={c => {
           this.rootNode = c
         }}
       >
         <div
           role="presentation"
-          className="handleContainer"
+          className="loopRegion__handleContainer"
           style={{ left: `${loopStart * 100}%` }}
-          onMouseDown={this.handleLoopStartDown}
+          onMouseDown={this.handleStartHandleMouseDown}
         >
-          <Handle align="left" />
+          <LoopHandle align="left" />
         </div>
         <div
           role="presentation"
-          className="handleContainer"
+          className="loopRegion__handleContainer"
           style={{ left: `${loopEnd * 100}%` }}
-          onMouseDown={this.handleLoopEndDown}
+          onMouseDown={this.handleEndHandleMouseDown}
         >
-          <Handle align="right" />
+          <LoopHandle align="right" />
         </div>
-        <div className="regionsContainer">
+        <div className="loopRegion__regionsContainer">
           <div
-            className="inactiveRegion"
+            className="loopRegion__inactiveRegion"
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           <div
             role="presentation"
-            className="activeRegion"
-            onMouseDown={this.handleActiveRegionDown}
+            className="loopRegion__activeRegion"
+            onMouseDown={this.handleLoopRegionMouseDown}
             style={{
               left: `${loopStart * 100}%`,
               right: `${(1 - loopEnd) * 100}%`,
             }}
           />
           <div
-            className="inactiveRegion"
+            className="loopRegion__inactiveRegion"
             style={{ left: `${loopEnd * 100}%`, right: 0 }}
           />
         </div>
         <style jsx>{`
-          .root {
+          .loopRegion {
             position: relative;
             width: 100%;
             height: 100%;
           }
 
-          .handleContainer {
+          .loopRegion__handleContainer {
             position: absolute;
             height: 100%;
             top: 0;
@@ -127,7 +127,7 @@ class LoopRegion extends Component {
             transform: translateX(-5px);
           }
 
-          .regionsContainer {
+          .loopRegion__regionsContainer {
             position: absolute;
             width: 100%;
             height: 100%;
@@ -136,18 +136,18 @@ class LoopRegion extends Component {
             z-index: 1;
           }
 
-          .activeRegion,
-          .inactiveRegion {
+          .loopRegion__activeRegion,
+          .loopRegion__inactiveRegion {
             position: absolute;
             top: 0;
             bottom: 0;
           }
 
-          .activeRegion {
+          .loopRegion__activeRegion {
             cursor: move;
           }
 
-          .inactiveRegion {
+          .loopRegion__inactiveRegion {
             background-color: rgba(255, 255, 255, 0.8);
           }
         `}</style>

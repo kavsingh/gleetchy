@@ -69,7 +69,7 @@ class AudioLooper extends Component {
     ].join('')
 
     return (
-      <div className="root">
+      <div className="audioLooper">
         <TitleBar>
           {() => (
             <span>
@@ -90,13 +90,13 @@ class AudioLooper extends Component {
             </span>
           )}
         </TitleBar>
-        <div className="main">
-          <div className="waveContainer">
-            <div className="waveFormContainer">
+        <div className="audioLooper__main">
+          <div className="audioLooper__sampleContainer">
+            <div className="audioLooper__waveFormContainer">
               <WaveForm buffer={audioBuffer} />
             </div>
             {audioBuffer ? (
-              <div className="loopRegionContainer">
+              <div className="audioLooper__loopRegionContainer">
                 <LoopRegion
                   loopStart={loopStart}
                   loopEnd={loopEnd}
@@ -110,13 +110,13 @@ class AudioLooper extends Component {
                 role="button"
                 tabIndex={0}
                 onClick={this.props.loadAudio}
-                className="initLoadAudio"
+                className="audioLooper__initLoadButon"
               >
                 Load audio file
               </div>
             )}
           </div>
-          <div className="gainSliderContainer">
+          <div className="audioLooper__gainSliderContainer">
             <Slider
               value={gain}
               renderTitle={() => 'Gain'}
@@ -125,7 +125,7 @@ class AudioLooper extends Component {
               onChange={this.props.onGainChange}
             />
           </div>
-          <div className="rateSliderContainer">
+          <div className="audioLooper__rateSliderContainer">
             <Slider
               value={playbackRate * 0.5}
               renderTitle={() => 'Speed'}
@@ -136,33 +136,33 @@ class AudioLooper extends Component {
           </div>
         </div>
         <style jsx>{`
-          .root {
+          .audioLooper {
             width: 100%;
             height: 100%;
           }
 
-          .main {
+          .audioLooper__main {
             display: flex;
             flex-wrap: no-wrap;
             width: 100%;
             height: 100%;
           }
 
-          .gainSliderContainer,
-          .rateSliderContainer {
+          .audioLooper__gainSliderContainer,
+          .audioLooper__rateSliderContainer {
             width: 1.2em;
             height: 100%;
             margin-left: 1em;
           }
 
-          .waveContainer {
+          .audioLooper__sampleContainer {
             position: relative;
             width: 100%;
             height: 100%;
           }
 
-          .waveFormContainer,
-          .loopRegionContainer {
+          .audioLooper__waveFormContainer,
+          .audioLooper__loopRegionContainer {
             position: absolute;
             top: 0;
             left: 0;
@@ -170,15 +170,15 @@ class AudioLooper extends Component {
             height: 100%;
           }
 
-          .waveFormContainer {
+          .audioLooper__waveFormContainer {
             z-index: 1;
           }
 
-          .loopRegionContainer {
+          .audioLooper__loopRegionContainer {
             z-index: 2;
           }
 
-          .initLoadAudio {
+          .audioLooper__initLoadButon {
             width: 100%;
             height: 100%;
             position: absolute;
