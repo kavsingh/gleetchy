@@ -134,7 +134,7 @@ Knob.propTypes = {
 
 Knob.defaultProps = {
   value: 0.5,
-  radius: '2.6em',
+  radius: '2.4em',
   renderTitle: () => {},
   renderLabel: () => {},
   renderValue: () => {},

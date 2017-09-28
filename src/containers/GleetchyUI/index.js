@@ -17,7 +17,7 @@ const Panel = ({ children, style }) => (
     {children}
     <style jsx>{`
       .panel {
-        padding: 1.4em;
+        padding: 1.4em 0.4em;
       }
     `}</style>
   </div>
@@ -74,7 +74,7 @@ const GleetchyUI = ({
         <Panel
           style={{
             height: '24vh',
-            minHeight: '10em',
+            minHeight: '12em',
             maxHeight: '20em',
             ...(index === 0
               ? { borderTop: '1px solid #fee' }
@@ -108,6 +108,7 @@ const GleetchyUI = ({
       style={{
         marginTop: '2em',
         borderTop: '1px solid #fee',
+        padding: 0,
       }}
     >
       <Panel style={{ width: '50%' }}>

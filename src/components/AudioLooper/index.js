@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import TitleBar from '../TitleBar'
-import Slider from '../Slider'
+import Knob from '../Knob'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
@@ -116,23 +116,25 @@ class AudioLooper extends Component {
               </div>
             )}
           </div>
-          <div className="audioLooper__gainSliderContainer">
-            <Slider
-              value={gain}
-              renderTitle={() => 'Gain'}
-              renderLabel={() => 'G'}
-              renderValue={() => gain.toFixed(2)}
-              onChange={this.props.onGainChange}
-            />
-          </div>
-          <div className="audioLooper__rateSliderContainer">
-            <Slider
-              value={playbackRate * 0.5}
-              renderTitle={() => 'Speed'}
-              renderLabel={() => 'S'}
-              renderValue={() => playbackRate.toFixed(2)}
-              onChange={val => this.props.onPlaybackRateChange(val * 2)}
-            />
+          <div className="audioLooper__controls">
+            <div className="audioLooper__controlContainer">
+              <Knob
+                value={gain}
+                renderTitle={() => 'Gain'}
+                renderLabel={() => 'G'}
+                renderValue={() => gain.toFixed(2)}
+                onChange={this.props.onGainChange}
+              />
+            </div>
+            <div className="audioLooper__controlContainer">
+              <Knob
+                value={playbackRate * 0.5}
+                renderTitle={() => 'Speed'}
+                renderLabel={() => 'S'}
+                renderValue={() => playbackRate.toFixed(2)}
+                onChange={val => this.props.onPlaybackRateChange(val * 2)}
+              />
+            </div>
           </div>
         </div>
         <style jsx>{`
@@ -148,11 +150,17 @@ class AudioLooper extends Component {
             height: 100%;
           }
 
-          .audioLooper__gainSliderContainer,
-          .audioLooper__rateSliderContainer {
-            width: 1.2em;
+          .audioLooper__controls {
             height: 100%;
-            margin-left: 1em;
+            margin-left: 1.2em;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          .audioLooper__controlContainer {
+            height: calc(50% - 0.6em);
           }
 
           .audioLooper__sampleContainer {
