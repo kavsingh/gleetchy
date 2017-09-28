@@ -17,6 +17,17 @@ import {
 import { createAudioLooperNode } from '../../audioNodes/audioLooperNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 
+const pickLooperProps = pick([
+  'loopStart',
+  'loopEnd',
+  'gain',
+  'playbackRate',
+  'audioBuffer',
+  'lowGain',
+  'midGain',
+  'highGain',
+])
+
 class GleetchyEngine extends Component {
   constructor(...args) {
     super(...args)
@@ -32,10 +43,7 @@ class GleetchyEngine extends Component {
     this.audioLooperNodes = this.props.loopers.reduce((acc, looper) => {
       acc[looper.id] = createAudioLooperNode(
         this.audioContext,
-        pick(
-          ['loopStart', 'loopEnd', 'gain', 'playbackRate', 'audioBuffer'],
-          looper,
-        ),
+        pickLooperProps(looper),
       )
 
       return acc

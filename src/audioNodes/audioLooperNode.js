@@ -1,4 +1,5 @@
 import { curry, pick } from 'ramda'
+import { createEq3Node } from './eq3Node'
 import { createConnect, createDisconnect } from './connection'
 
 const defaultProps = {
@@ -7,17 +8,25 @@ const defaultProps = {
   loopEnd: 1,
   playbackRate: 1,
   audioBuffer: undefined,
+  lowGain: 1,
+  midGain: 1,
+  highGain: 1,
 }
 
 const pickProps = pick(Object.keys(defaultProps))
+const pickEqProps = pick(['lowGain', 'midGain', 'highGain'])
 
-export const createAudioLooperNode = curry((context, initProps) => {
+export const createAudioLooperNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }
-  const gainNode = context.createGain()
+  const eq3Node = createEq3Node(audioContext, pickEqProps(initProps))
+  const gainNode = audioContext.createGain()
+  const getInNode = () => gainNode
+  const getOutNode = () => gainNode
 
   let isPlaying = false
   let bufferSourceNode = null
 
+  eq3Node.connect(gainNode)
   gainNode.gain.value = props.gain
 
   const transferPropsToBufferSourceNode = () => {
@@ -31,7 +40,7 @@ export const createAudioLooperNode = curry((context, initProps) => {
   const removeBufferSourceNode = () => {
     if (!bufferSourceNode) return
 
-    bufferSourceNode.disconnect(gainNode)
+    bufferSourceNode.disconnect(eq3Node.getInNode())
     bufferSourceNode = null
   }
 
@@ -42,18 +51,15 @@ export const createAudioLooperNode = curry((context, initProps) => {
 
     if (!audioBuffer) return
 
-    bufferSourceNode = context.createBufferSource()
+    bufferSourceNode = audioContext.createBufferSource()
     bufferSourceNode.buffer = audioBuffer
     bufferSourceNode.loop = true
 
     transferPropsToBufferSourceNode()
 
-    bufferSourceNode.connect(gainNode)
+    bufferSourceNode.connect(eq3Node.getInNode())
     if (isPlaying) bufferSourceNode.start(0, loopStart * audioBuffer.duration)
   }
-
-  const getInNode = () => gainNode
-  const getOutNode = () => gainNode
 
   return {
     play() {
@@ -77,6 +83,7 @@ export const createAudioLooperNode = curry((context, initProps) => {
 
       const { gain, audioBuffer, loopStart } = props
 
+      eq3Node.set(pickEqProps(props))
       gainNode.gain.value = gain
 
       if (

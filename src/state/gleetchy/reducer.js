@@ -25,6 +25,9 @@ const defaultState = {
       loopStart: 0,
       loopEnd: 1,
       playbackRate: 1,
+      lowGain: 0,
+      midGain: 0,
+      highGain: 0,
     },
     {
       id: 'loop1',
@@ -36,6 +39,9 @@ const defaultState = {
       loopStart: 0,
       loopEnd: 1,
       playbackRate: 1,
+      lowGain: 0,
+      midGain: 0,
+      highGain: 0,
     },
   ],
 }

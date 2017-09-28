@@ -15,7 +15,7 @@ const updateWetDry = (wetDryRatio, wetGainNode, dryGainNode) => {
 }
 
 export const createDelayNode = curry((audioContext, initProps) => {
-  const props = { ...defaultProps, ...pickProps(initProps) }
+  const props = { ...defaultProps, ...pickProps(initProps || {}) }
   const delayNode = audioContext.createDelay(DELAY_UPPER_BOUND)
   const inNode = audioContext.createGain()
   const outNode = audioContext.createGain()
