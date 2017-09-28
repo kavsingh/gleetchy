@@ -8,12 +8,14 @@ import {
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
   DELAY_UPDATE_PROPS,
+  REVERB_UPDATE_PROPS,
 } from './actionTypes'
 
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
-  delay: { delayTime: 1, wetDryRatio: 0 },
+  delay: { delayTime: 0.6, wetDryRatio: 0 },
+  reverb: { wetDryRatio: 0 },
   loopers: [
     {
       id: 'loop0',
@@ -93,6 +95,12 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       return {
         ...state,
         delay: { ...state.delay, ...payload.props },
+        engineEvents: [...state.engineEvents, { type, payload }],
+      }
+    case REVERB_UPDATE_PROPS:
+      return {
+        ...state,
+        reverb: { ...state.reverb, ...payload.props },
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     case ENGINE_EVENTS_CLEAR:

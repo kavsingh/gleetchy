@@ -7,10 +7,12 @@ import {
   looperLoadFile,
   playbackToggle,
   delayUpdateProps,
+  reverbUpdateProps,
 } from '../../state/gleetchy/actions'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
 import Delay from '../../components/Delay'
+import Reverb from '../../components/Reverb'
 import ErrorBoundary from '../../components/ErrorBoundary'
 
 const Panel = ({ children, style }) => (
@@ -19,6 +21,7 @@ const Panel = ({ children, style }) => (
     <style jsx>{`
       .panel {
         padding: 1.4em 0.4em;
+        display: flex;
       }
     `}</style>
   </div>
@@ -37,11 +40,13 @@ Panel.defaultProps = {
 const GleetchyUI = ({
   loopers,
   delay,
+  reverb,
   isPlaying,
   togglePlayback,
   loadLooperAudio,
   updateLooper,
   updateDelay,
+  updateReverb,
 }) => (
   <div className="gleetchy">
     <Panel>
@@ -119,12 +124,18 @@ const GleetchyUI = ({
         padding: 0,
       }}
     >
-      <Panel style={{ width: '50%' }}>
+      <Panel style={{ width: '25%' }}>
         <Delay
           wetDryRatio={delay.wetDryRatio}
           delayTime={delay.delayTime}
           onDelayTimeChange={delayTime => updateDelay({ delayTime })}
           onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
+        />
+      </Panel>
+      <Panel style={{ width: '25%' }}>
+        <Reverb
+          wetDryRatio={reverb.wetDryRatio}
+          onWetDryRatioChange={wetDryRatio => updateReverb({ wetDryRatio })}
         />
       </Panel>
     </Panel>
@@ -159,22 +170,26 @@ const GleetchyUI = ({
 
 GleetchyUI.propTypes = {
   delay: PropTypes.shape(),
+  reverb: PropTypes.shape(),
   loopers: PropTypes.arrayOf(PropTypes.shape()),
   isPlaying: PropTypes.bool,
   togglePlayback: PropTypes.func,
   loadLooperAudio: PropTypes.func,
   updateLooper: PropTypes.func,
   updateDelay: PropTypes.func,
+  updateReverb: PropTypes.func,
 }
 
 GleetchyUI.defaultProps = {
   delay: {},
+  reverb: {},
   loopers: [],
   isPlaying: false,
   togglePlayback: () => {},
   loadLooperAudio: () => {},
   updateLooper: () => {},
   updateDelay: () => {},
+  updateReverb: () => {},
 }
 
 export default connect(
@@ -182,11 +197,13 @@ export default connect(
     loopers: gleetchy.loopers,
     isPlaying: gleetchy.isPlaying,
     delay: gleetchy.delay,
+    reverb: gleetchy.reverb,
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),
     loadLooperAudio: id => dispatch(looperLoadFile(id)),
     updateLooper: (id, props) => dispatch(looperUpdateProps(id, props)),
     updateDelay: props => dispatch(delayUpdateProps(props)),
+    updateReverb: props => dispatch(reverbUpdateProps(props)),
   }),
 )(GleetchyUI)

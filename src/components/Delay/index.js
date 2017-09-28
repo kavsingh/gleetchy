@@ -2,7 +2,6 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { DELAY_UPPER_BOUND } from '../../constants/audio'
 import Knob from '../Knob'
-import Slider from '../Slider'
 import TitleBar from '../TitleBar'
 
 const Delay = ({

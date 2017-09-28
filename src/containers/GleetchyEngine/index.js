@@ -9,6 +9,7 @@ import {
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   DELAY_UPDATE_PROPS,
+  REVERB_UPDATE_PROPS,
 } from '../../state/gleetchy/actionTypes'
 import {
   looperLoadFileDecode,
@@ -16,6 +17,7 @@ import {
 } from '../../state/gleetchy/actions'
 import { createAudioLooperNode } from '../../audioNodes/audioLooperNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
+import { createReverbNode } from '../../audioNodes/reverbNode'
 
 const pickLooperProps = pick([
   'loopStart',
@@ -40,6 +42,7 @@ class GleetchyEngine extends Component {
     this.audioContext = new AudioContext()
     this.mainOut = this.audioContext.destination
     this.delayNode = createDelayNode(this.audioContext, this.props.delay)
+    this.reverbNode = createReverbNode(this.audioContext, this.props.reverb)
     this.audioLooperNodes = this.props.loopers.reduce((acc, looper) => {
       acc[looper.id] = createAudioLooperNode(
         this.audioContext,
@@ -52,7 +55,8 @@ class GleetchyEngine extends Component {
 
     this.forEachAudioLooper(node => node.connect(this.delayNode))
 
-    this.delayNode.connect(this.mainOut)
+    this.delayNode.connect(this.reverbNode)
+    this.reverbNode.connect(this.mainOut)
   }
 
   shouldComponentUpdate(props) {
@@ -92,6 +96,9 @@ class GleetchyEngine extends Component {
       case DELAY_UPDATE_PROPS:
         this.delayNode.set(payload.props)
         break
+      case REVERB_UPDATE_PROPS:
+        this.reverbNode.set(payload.props)
+        break
       default:
         break
     }
@@ -116,6 +123,7 @@ GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape()),
   loopers: PropTypes.arrayOf(PropTypes.shape()),
   delay: PropTypes.shape(),
+  reverb: PropTypes.shape(),
   decodeLooperFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
@@ -124,6 +132,7 @@ GleetchyEngine.defaultProps = {
   engineEvents: [],
   loopers: [],
   delay: {},
+  reverb: {},
   decodeLooperFile: () => {},
   clearEngineEvents: () => {},
 }
@@ -133,6 +142,7 @@ export default connect(
     engineEvents: gleetchy.engineEvents,
     loopers: gleetchy.loopers,
     delay: gleetchy.delay,
+    reverb: gleetchy.reverb,
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(engineEventsClear()),

@@ -12,6 +12,7 @@ import {
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
   DELAY_UPDATE_PROPS,
+  REVERB_UPDATE_PROPS,
 } from './actionTypes'
 
 export const playbackStart = () => ({
@@ -76,6 +77,11 @@ export const looperLoadFileDecode = curry(
 
 export const delayUpdateProps = props => ({
   type: DELAY_UPDATE_PROPS,
+  payload: { props },
+})
+
+export const reverbUpdateProps = props => ({
+  type: REVERB_UPDATE_PROPS,
   payload: { props },
 })
 
