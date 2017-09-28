@@ -11,6 +11,7 @@ import {
 import PlayPauseButton from '../../components/PlayPauseButton'
 import AudioLooper from '../../components/AudioLooper'
 import Delay from '../../components/Delay'
+import ErrorBoundary from '../../components/ErrorBoundary'
 
 const Panel = ({ children, style }) => (
   <div className="panel" style={{ ...style }}>
@@ -68,39 +69,46 @@ const GleetchyUI = ({
           id,
           label,
           playbackRate,
+          eqLow,
+          eqMid,
+          eqHigh,
         },
         index,
       ) => (
         <Panel
           style={{
-            height: '24vh',
-            minHeight: '12em',
-            maxHeight: '20em',
+            height: '14em',
             ...(index === 0
               ? { borderTop: '1px solid #fee' }
               : { marginTop: '1em' }),
           }}
           key={id}
         >
-          <AudioLooper
-            gain={gain}
-            playbackRate={playbackRate}
-            loopStart={loopStart}
-            loopEnd={loopEnd}
-            label={label}
-            fileName={fileName}
-            fileType={fileType}
-            audioBuffer={audioBuffer}
-            loadAudio={() => loadLooperAudio(id)}
-            onGainChange={val => updateLooper(id, { gain: val })}
-            onPlaybackRateChange={val =>
-              updateLooper(id, { playbackRate: val })}
-            onLoopRegionChange={(start, end) =>
-              updateLooper(id, {
-                loopStart: start,
-                loopEnd: end,
-              })}
-          />
+          <ErrorBoundary>
+            <AudioLooper
+              gain={gain}
+              eqLow={eqLow}
+              eqMid={eqMid}
+              eqHigh={eqHigh}
+              playbackRate={playbackRate}
+              loopStart={loopStart}
+              loopEnd={loopEnd}
+              label={label}
+              fileName={fileName}
+              fileType={fileType}
+              audioBuffer={audioBuffer}
+              loadAudio={() => loadLooperAudio(id)}
+              onGainChange={val => updateLooper(id, { gain: val })}
+              onPlaybackRateChange={val =>
+                updateLooper(id, { playbackRate: val })}
+              onLoopRegionChange={(start, end) =>
+                updateLooper(id, {
+                  loopStart: start,
+                  loopEnd: end,
+                })}
+              onEqChange={props => updateLooper(id, props)}
+            />
+          </ErrorBoundary>
         </Panel>
       ),
     )}

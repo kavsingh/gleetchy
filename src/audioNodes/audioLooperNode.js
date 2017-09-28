@@ -8,13 +8,13 @@ const defaultProps = {
   loopEnd: 1,
   playbackRate: 1,
   audioBuffer: undefined,
-  lowGain: 1,
-  midGain: 1,
-  highGain: 1,
+  eqMid: 0,
+  eqLow: 0,
+  eqHigh: 0,
 }
 
 const pickProps = pick(Object.keys(defaultProps))
-const pickEqProps = pick(['lowGain', 'midGain', 'highGain'])
+const pickEqProps = pick(['eqLow', 'eqMid', 'eqHigh'])
 
 export const createAudioLooperNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }

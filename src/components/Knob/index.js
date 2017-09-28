@@ -71,6 +71,7 @@ class Knob extends Component {
             flex: 0 0 auto;
             position: relative;
             cursor: ew-resize;
+            margin: 0.4em auto 0.3em;
           }
 
           .knob__knobContainer :global(svg) {
@@ -108,14 +109,6 @@ class Knob extends Component {
           .knob__value {
             font-size: 0.8em;
             flex: 0 0 auto;
-          }
-
-          .knob__label {
-            margin-bottom: 0.4em;
-          }
-
-          .knob__value {
-            margin-top: 0.4em;
           }
         `}</style>
       </div>

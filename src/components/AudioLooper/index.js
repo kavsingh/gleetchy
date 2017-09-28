@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import TitleBar from '../TitleBar'
 import Knob from '../Knob'
+import Slider from '../Slider'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
@@ -60,6 +61,13 @@ class AudioLooper extends Component {
       loopStart,
       gain,
       playbackRate,
+      eqLow,
+      eqMid,
+      eqHigh,
+      loadAudio,
+      onGainChange,
+      onPlaybackRateChange,
+      onEqChange,
     } = this.props
 
     const title = [
@@ -79,7 +87,7 @@ class AudioLooper extends Component {
                   role="button"
                   tabIndex={0}
                   style={{ cursor: 'pointer' }}
-                  onClick={this.props.loadAudio}
+                  onClick={loadAudio}
                 >
                   {' '}
                   / Load audio file
@@ -109,7 +117,7 @@ class AudioLooper extends Component {
               <div
                 role="button"
                 tabIndex={0}
-                onClick={this.props.loadAudio}
+                onClick={loadAudio}
                 className="audioLooper__initLoadButon"
               >
                 Load audio file
@@ -117,23 +125,54 @@ class AudioLooper extends Component {
             )}
           </div>
           <div className="audioLooper__controls">
-            <div className="audioLooper__controlContainer">
-              <Knob
-                value={gain}
-                renderTitle={() => 'Gain'}
-                renderLabel={() => 'G'}
-                renderValue={() => gain.toFixed(2)}
-                onChange={this.props.onGainChange}
-              />
+            <div className="audioLooper__playbackControls">
+              <div className="audioLooper__playbackControlContainer">
+                <Knob
+                  value={gain}
+                  renderTitle={() => 'Gain'}
+                  renderLabel={() => 'G'}
+                  renderValue={() => gain.toFixed(2)}
+                  onChange={onGainChange}
+                />
+              </div>
+              <div className="audioLooper__playbackControlContainer">
+                <Knob
+                  value={playbackRate * 0.5}
+                  renderTitle={() => 'Speed'}
+                  renderLabel={() => 'S'}
+                  renderValue={() => playbackRate.toFixed(2)}
+                  onChange={val => onPlaybackRateChange(val * 2)}
+                />
+              </div>
             </div>
-            <div className="audioLooper__controlContainer">
-              <Knob
-                value={playbackRate * 0.5}
-                renderTitle={() => 'Speed'}
-                renderLabel={() => 'S'}
-                renderValue={() => playbackRate.toFixed(2)}
-                onChange={val => this.props.onPlaybackRateChange(val * 2)}
-              />
+            <div className="audioLooper__eqControls">
+              <div className="audioLooper__eqControlContainer">
+                <Slider
+                  value={eqLow * 0.5 + 0.5}
+                  renderTitle={() => 'EQ low gain'}
+                  renderLabel={() => 'L'}
+                  renderValue={() => eqLow.toFixed(1)}
+                  onChange={val => onEqChange({ eqLow: val * 2 - 1 })}
+                />
+              </div>
+              <div className="audioLooper__eqControlContainer">
+                <Slider
+                  value={eqMid * 0.5 + 0.5}
+                  renderTitle={() => 'EQ mid gain'}
+                  renderLabel={() => 'M'}
+                  renderValue={() => eqMid.toFixed(1)}
+                  onChange={val => onEqChange({ eqMid: val * 2 - 1 })}
+                />
+              </div>
+              <div className="audioLooper__eqControlContainer">
+                <Slider
+                  value={eqHigh * 0.5 + 0.5}
+                  renderTitle={() => 'EQ high gain'}
+                  renderLabel={() => 'H'}
+                  renderValue={() => eqHigh.toFixed(1)}
+                  onChange={val => onEqChange({ eqHigh: val * 2 - 1 })}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -154,13 +193,29 @@ class AudioLooper extends Component {
             height: 100%;
             margin-left: 1.2em;
             display: flex;
+          }
+
+          .audioLooper__playbackControls {
+            height: 100%;
+            display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
           }
 
-          .audioLooper__controlContainer {
+          .audioLooper__playbackControlContainer {
             height: calc(50% - 0.6em);
+          }
+
+          .audioLooper__eqControls {
+            height: 100%;
+            margin-left: 0.6em;
+            display: flex;
+          }
+
+          .audioLooper__eqControlContainer {
+            width: 2em;
+            height: 100%;
           }
 
           .audioLooper__sampleContainer {
@@ -210,6 +265,9 @@ AudioLooper.propTypes = {
   loopEnd: PropTypes.number,
   gain: PropTypes.number,
   playbackRate: PropTypes.number,
+  eqLow: PropTypes.number,
+  eqMid: PropTypes.number,
+  eqHigh: PropTypes.number,
   label: PropTypes.string,
   audioBuffer: PropTypes.instanceOf(AudioBuffer),
   fileName: PropTypes.string,
@@ -217,6 +275,7 @@ AudioLooper.propTypes = {
   onGainChange: PropTypes.func,
   onPlaybackRateChange: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
+  onEqChange: PropTypes.func,
 }
 
 AudioLooper.defaultProps = {
@@ -224,6 +283,9 @@ AudioLooper.defaultProps = {
   loopEnd: 1,
   gain: 1,
   playbackRate: 1,
+  eqLow: 0,
+  eqMid: 0,
+  eqHigh: 0,
   label: '',
   fileName: '',
   audioBuffer: undefined,
@@ -231,6 +293,7 @@ AudioLooper.defaultProps = {
   onGainChange: () => {},
   onPlaybackRateChange: () => {},
   onLoopRegionChange: () => {},
+  onEqChange: () => {},
 }
 
 export default AudioLooper

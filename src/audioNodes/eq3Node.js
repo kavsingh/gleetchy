@@ -2,9 +2,9 @@ import { always, curry, pick } from 'ramda'
 import { createConnect, createDisconnect } from './connection'
 
 const defaultProps = {
-  lowGain: 1,
-  midGain: 1,
-  highGain: 1,
+  eqMid: 0,
+  eqLow: 0,
+  eqHigh: 0,
 }
 
 const pickProps = pick(Object.keys(defaultProps))
@@ -18,9 +18,9 @@ export const createEq3Node = curry((audioContext, initProps) => {
   const getOutNode = always(eqLowNode)
 
   const transferProps = () => {
-    eqLowNode.gain.value = props.lowGain * 40
-    eqMidNode.gain.value = props.midGain * 40
-    eqHighNode.gain.value = props.highGain * 40
+    eqLowNode.gain.value = props.eqLow * 40
+    eqMidNode.gain.value = props.eqMid * 40
+    eqHighNode.gain.value = props.eqHigh * 40
   }
 
   eqLowNode.type = 'lowshelf'
@@ -40,6 +40,7 @@ export const createEq3Node = curry((audioContext, initProps) => {
 
   return {
     set(newProps = {}) {
+      console.log(newProps)
       Object.assign(props, pickProps(newProps))
       transferProps()
     },

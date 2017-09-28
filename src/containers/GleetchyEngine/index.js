@@ -23,9 +23,9 @@ const pickLooperProps = pick([
   'gain',
   'playbackRate',
   'audioBuffer',
-  'lowGain',
-  'midGain',
-  'highGain',
+  'eqMid',
+  'eqLow',
+  'eqHigh',
 ])
 
 class GleetchyEngine extends Component {
