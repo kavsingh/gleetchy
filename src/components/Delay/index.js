@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { DELAY_UPPER_BOUND } from '../../constants/audio'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
 
@@ -15,8 +16,8 @@ const Delay = ({
       <div className="knobContainer">
         <Knob
           radius="2.4em"
-          value={delayTime}
-          onChange={onDelayTimeChange}
+          value={delayTime / DELAY_UPPER_BOUND}
+          onChange={val => onDelayTimeChange(val * DELAY_UPPER_BOUND)}
           renderLabel={() => 'T'}
           renderTitle={() => 'Delay time'}
           renderValue={() => delayTime.toFixed(2)}

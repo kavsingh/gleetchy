@@ -13,7 +13,7 @@ import {
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
-  delay: { delayTime: 0.3, wetDryRatio: 0 },
+  delay: { delayTime: 1, wetDryRatio: 0 },
   loopers: [
     {
       id: 'loop0',
