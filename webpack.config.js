@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const BabelMinifyPlugin = require('babel-minify-webpack-plugin')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === true
@@ -46,7 +47,7 @@ module.exports = {
     }),
     !isProduction && new webpack.HotModuleReplacementPlugin(),
     isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
-    isProduction && new webpack.optimize.UglifyJsPlugin({ sourceMap: true }),
+    isProduction && new BabelMinifyPlugin(),
   ].filter(Boolean),
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
