@@ -1,16 +1,27 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-
-const cancelEvent = event => {
-  event.preventDefault()
-  event.stopPropagation()
-  return false
-}
+import { cancelEvent } from '../../util'
 
 class FileDropRegion extends Component {
   constructor(...args) {
     super(...args)
+
+    this.state = { dropActive: false }
+
     this.handleFileDrop = this.handleFileDrop.bind(this)
+    this.handleDragEnter = this.handleDragEnter.bind(this)
+    this.handleDragLeave = this.handleDragLeave.bind(this)
+    this.handleDragEnd = this.handleDragLeave.bind(this)
+  }
+
+  handleDragEnter(event) {
+    cancelEvent(event)
+    this.setState(() => ({ dropActive: true }))
+  }
+
+  handleDragLeave(event) {
+    cancelEvent(event)
+    this.setState(() => ({ dropActive: false }))
   }
 
   handleFileDrop(event) {
@@ -22,17 +33,20 @@ class FileDropRegion extends Component {
 
     if (!receivable.length) this.props.onNoFiles()
     else this.props.onFiles(receivable)
+
+    this.setState(() => ({ dropActive: false }))
   }
 
   render() {
     return this.props.children({
       onDrag: cancelEvent,
       onDragStart: cancelEvent,
-      onDragEnd: cancelEvent,
       onDragOver: cancelEvent,
-      onDragEnter: cancelEvent,
-      onDragLeave: cancelEvent,
+      onDragEnd: this.handleDragEnd,
+      onDragEnter: this.handleDragEnter,
+      onDragLeave: this.handleDragLeave,
       onDrop: this.handleFileDrop,
+      dropActive: this.state.dropActive,
     })
   }
 }

@@ -4,7 +4,8 @@ import { connect } from 'react-redux'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 import {
   looperUpdateProps,
-  looperLoadFile,
+  looperSelectAudioFile,
+  looperReceiveAudioFile,
   playbackToggle,
   delayUpdateProps,
   reverbUpdateProps,
@@ -43,7 +44,8 @@ const GleetchyUI = ({
   reverb,
   isPlaying,
   togglePlayback,
-  loadLooperAudio,
+  looperSelectFile,
+  looperReceiveFile,
   updateLooper,
   updateDelay,
   updateReverb,
@@ -102,8 +104,8 @@ const GleetchyUI = ({
               fileName={fileName}
               fileType={fileType}
               audioBuffer={audioBuffer}
-              selectAudioFile={() => loadLooperAudio(id)}
-              receiveAudioFile={file => console.log(file)}
+              selectAudioFile={() => looperSelectFile(id)}
+              receiveAudioFile={file => looperReceiveFile(id, file)}
               onGainChange={val => updateLooper(id, { gain: val })}
               onPlaybackRateChange={val =>
                 updateLooper(id, { playbackRate: val })}
@@ -175,7 +177,8 @@ GleetchyUI.propTypes = {
   loopers: PropTypes.arrayOf(PropTypes.shape()),
   isPlaying: PropTypes.bool,
   togglePlayback: PropTypes.func,
-  loadLooperAudio: PropTypes.func,
+  looperSelectFile: PropTypes.func,
+  looperReceiveFile: PropTypes.func,
   updateLooper: PropTypes.func,
   updateDelay: PropTypes.func,
   updateReverb: PropTypes.func,
@@ -187,7 +190,8 @@ GleetchyUI.defaultProps = {
   loopers: [],
   isPlaying: false,
   togglePlayback: () => {},
-  loadLooperAudio: () => {},
+  looperSelectFile: () => {},
+  looperReceiveFile: () => {},
   updateLooper: () => {},
   updateDelay: () => {},
   updateReverb: () => {},
@@ -202,7 +206,8 @@ export default connect(
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),
-    loadLooperAudio: id => dispatch(looperLoadFile(id)),
+    looperSelectFile: id => dispatch(looperSelectAudioFile(id)),
+    looperReceiveFile: (id, file) => dispatch(looperReceiveAudioFile(id, file)),
     updateLooper: (id, props) => dispatch(looperUpdateProps(id, props)),
     updateDelay: props => dispatch(delayUpdateProps(props)),
     updateReverb: props => dispatch(reverbUpdateProps(props)),

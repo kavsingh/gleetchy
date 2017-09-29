@@ -1,5 +1,8 @@
 import { curry, head } from 'ramda'
-import { loadAudioFilesToArrayBuffers } from '../../apis/file'
+import {
+  readFileToArrayBuffer,
+  loadAudioFilesToArrayBuffers,
+} from '../../apis/file'
 import { decodeAudioDataP } from '../../util/audio'
 import {
   PLAYBACK_START,
@@ -32,7 +35,7 @@ export const looperUpdateProps = (id, props) => ({
   payload: { id, props },
 })
 
-export const looperLoadFile = id => async dispatch => {
+export const looperSelectAudioFile = id => async dispatch => {
   dispatch({ type: LOOPER_LOAD_FILE_START, payload: { id } })
 
   try {
@@ -41,6 +44,21 @@ export const looperLoadFile = id => async dispatch => {
     if (!file) throw new Error('No file loaded')
 
     dispatch({ type: LOOPER_LOAD_FILE_COMPLETE, payload: { id, file } })
+  } catch (error) {
+    dispatch({ type: LOOPER_LOAD_FILE_ERROR, payload: { id, error } })
+  }
+}
+
+export const looperReceiveAudioFile = (id, file) => async dispatch => {
+  dispatch({ type: LOOPER_LOAD_FILE_START, payload: { id } })
+
+  try {
+    const withBuffer = await readFileToArrayBuffer(file)
+
+    dispatch({
+      type: LOOPER_LOAD_FILE_COMPLETE,
+      payload: { id, file: withBuffer },
+    })
   } catch (error) {
     dispatch({ type: LOOPER_LOAD_FILE_ERROR, payload: { id, error } })
   }

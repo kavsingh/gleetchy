@@ -101,7 +101,7 @@ class AudioLooper extends Component {
           fileFilter={({ type }) => type.startsWith('audio')}
           onFiles={files => this.props.receiveAudioFile(files[0])}
         >
-          {fileDropEvents => (
+          {({ dropActive, ...fileDropEvents }) => (
             <div style={{ width: '100%', height: '100%' }} {...fileDropEvents}>
               <TitleBar>
                 {() => renderTitle(title, audioBuffer, selectAudioFile)}
@@ -149,6 +149,7 @@ class AudioLooper extends Component {
           .audioLooper {
             width: 100%;
             height: 100%;
+            position: relative;
           }
 
           .audioLooper__main {
@@ -156,6 +157,7 @@ class AudioLooper extends Component {
             flex-wrap: no-wrap;
             width: 100%;
             height: 100%;
+            border-top: 1px solid rgba(0, 0, 0, 0);
           }
 
           .audioLooper__controls {
