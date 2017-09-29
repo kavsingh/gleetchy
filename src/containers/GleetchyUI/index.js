@@ -102,7 +102,8 @@ const GleetchyUI = ({
               fileName={fileName}
               fileType={fileType}
               audioBuffer={audioBuffer}
-              loadAudio={() => loadLooperAudio(id)}
+              selectAudioFile={() => loadLooperAudio(id)}
+              receiveAudioFile={file => console.log(file)}
               onGainChange={val => updateLooper(id, { gain: val })}
               onPlaybackRateChange={val =>
                 updateLooper(id, { playbackRate: val })}

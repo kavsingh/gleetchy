@@ -2,10 +2,29 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import TitleBar from '../TitleBar'
-import Knob from '../Knob'
-import Slider from '../Slider'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
+import FileDropRegion from '../FileDropRegion'
+import { renderEqControls, renderPlaybackControls } from './controls'
+
+const renderTitle = (title, audioBuffer, selectAudioFile) => (
+  <span>
+    {title}
+    {audioBuffer ? (
+      <span
+        role="button"
+        tabIndex={0}
+        style={{ cursor: 'pointer' }}
+        onClick={selectAudioFile}
+      >
+        {' '}
+        / Load audio file
+      </span>
+    ) : (
+      ''
+    )}
+  </span>
+)
 
 class AudioLooper extends Component {
   constructor(...args) {
@@ -64,7 +83,7 @@ class AudioLooper extends Component {
       eqLow,
       eqMid,
       eqHigh,
-      loadAudio,
+      selectAudioFile,
       onGainChange,
       onPlaybackRateChange,
       onEqChange,
@@ -78,104 +97,54 @@ class AudioLooper extends Component {
 
     return (
       <div className="audioLooper">
-        <TitleBar>
-          {() => (
-            <span>
-              {title}
-              {audioBuffer ? (
-                <span
-                  role="button"
-                  tabIndex={0}
-                  style={{ cursor: 'pointer' }}
-                  onClick={loadAudio}
-                >
-                  {' '}
-                  / Load audio file
-                </span>
-              ) : (
-                ''
-              )}
-            </span>
+        <FileDropRegion
+          fileFilter={({ type }) => type.startsWith('audio')}
+          onFiles={files => this.props.receiveAudioFile(files[0])}
+        >
+          {fileDropEvents => (
+            <div style={{ width: '100%', height: '100%' }} {...fileDropEvents}>
+              <TitleBar>
+                {() => renderTitle(title, audioBuffer, selectAudioFile)}
+              </TitleBar>
+              <div className="audioLooper__main">
+                <div className="audioLooper__sampleContainer">
+                  <div className="audioLooper__waveFormContainer">
+                    <WaveForm buffer={audioBuffer} />
+                  </div>
+                  {audioBuffer ? (
+                    <div className="audioLooper__loopRegionContainer">
+                      <LoopRegion
+                        loopStart={loopStart}
+                        loopEnd={loopEnd}
+                        onLoopStartDrag={this.handleLoopStartDrag}
+                        onLoopEndDrag={this.handleLoopEndDrag}
+                        onLoopRegionDrag={this.handleLoopRegionDrag}
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      onClick={selectAudioFile}
+                      className="audioLooper__initLoadButon"
+                    >
+                      Click to load audio file or drag it here
+                    </div>
+                  )}
+                </div>
+                <div className="audioLooper__controls">
+                  {renderPlaybackControls(
+                    gain,
+                    playbackRate,
+                    onGainChange,
+                    onPlaybackRateChange,
+                  )}
+                  {renderEqControls(eqLow, eqMid, eqHigh, onEqChange)}
+                </div>
+              </div>
+            </div>
           )}
-        </TitleBar>
-        <div className="audioLooper__main">
-          <div className="audioLooper__sampleContainer">
-            <div className="audioLooper__waveFormContainer">
-              <WaveForm buffer={audioBuffer} />
-            </div>
-            {audioBuffer ? (
-              <div className="audioLooper__loopRegionContainer">
-                <LoopRegion
-                  loopStart={loopStart}
-                  loopEnd={loopEnd}
-                  onLoopStartDrag={this.handleLoopStartDrag}
-                  onLoopEndDrag={this.handleLoopEndDrag}
-                  onLoopRegionDrag={this.handleLoopRegionDrag}
-                />
-              </div>
-            ) : (
-              <div
-                role="button"
-                tabIndex={0}
-                onClick={loadAudio}
-                className="audioLooper__initLoadButon"
-              >
-                Load audio file
-              </div>
-            )}
-          </div>
-          <div className="audioLooper__controls">
-            <div className="audioLooper__playbackControls">
-              <div className="audioLooper__playbackControlContainer">
-                <Knob
-                  value={gain}
-                  renderTitle={() => 'Gain'}
-                  renderLabel={() => 'G'}
-                  renderValue={() => gain.toFixed(2)}
-                  onChange={onGainChange}
-                />
-              </div>
-              <div className="audioLooper__playbackControlContainer">
-                <Knob
-                  value={playbackRate * 0.5}
-                  renderTitle={() => 'Speed'}
-                  renderLabel={() => 'S'}
-                  renderValue={() => playbackRate.toFixed(2)}
-                  onChange={val => onPlaybackRateChange(val * 2)}
-                />
-              </div>
-            </div>
-            <div className="audioLooper__eqControls">
-              <div className="audioLooper__eqControlContainer">
-                <Slider
-                  value={eqLow * 0.5 + 0.5}
-                  renderTitle={() => 'EQ low gain'}
-                  renderLabel={() => 'L'}
-                  renderValue={() => eqLow.toFixed(1)}
-                  onChange={val => onEqChange({ eqLow: val * 2 - 1 })}
-                />
-              </div>
-              <div className="audioLooper__eqControlContainer">
-                <Slider
-                  value={eqMid * 0.5 + 0.5}
-                  renderTitle={() => 'EQ mid gain'}
-                  renderLabel={() => 'M'}
-                  renderValue={() => eqMid.toFixed(1)}
-                  onChange={val => onEqChange({ eqMid: val * 2 - 1 })}
-                />
-              </div>
-              <div className="audioLooper__eqControlContainer">
-                <Slider
-                  value={eqHigh * 0.5 + 0.5}
-                  renderTitle={() => 'EQ high gain'}
-                  renderLabel={() => 'H'}
-                  renderValue={() => eqHigh.toFixed(1)}
-                  onChange={val => onEqChange({ eqHigh: val * 2 - 1 })}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        </FileDropRegion>
         <style jsx>{`
           .audioLooper {
             width: 100%;
@@ -193,29 +162,6 @@ class AudioLooper extends Component {
             height: 100%;
             margin-left: 1.2em;
             display: flex;
-          }
-
-          .audioLooper__playbackControls {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-          }
-
-          .audioLooper__playbackControlContainer {
-            height: calc(50% - 0.6em);
-          }
-
-          .audioLooper__eqControls {
-            height: 100%;
-            margin-left: 0.6em;
-            display: flex;
-          }
-
-          .audioLooper__eqControlContainer {
-            width: 2em;
-            height: 100%;
           }
 
           .audioLooper__sampleContainer {
@@ -271,7 +217,8 @@ AudioLooper.propTypes = {
   label: PropTypes.string,
   audioBuffer: PropTypes.instanceOf(AudioBuffer),
   fileName: PropTypes.string,
-  loadAudio: PropTypes.func,
+  selectAudioFile: PropTypes.func,
+  receiveAudioFile: PropTypes.func,
   onGainChange: PropTypes.func,
   onPlaybackRateChange: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
@@ -289,7 +236,8 @@ AudioLooper.defaultProps = {
   label: '',
   fileName: '',
   audioBuffer: undefined,
-  loadAudio: () => {},
+  selectAudioFile: () => {},
+  receiveAudioFile: () => {},
   onGainChange: () => {},
   onPlaybackRateChange: () => {},
   onLoopRegionChange: () => {},

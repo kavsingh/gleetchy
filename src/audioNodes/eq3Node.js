@@ -40,7 +40,6 @@ export const createEq3Node = curry((audioContext, initProps) => {
 
   return {
     set(newProps = {}) {
-      console.log(newProps)
       Object.assign(props, pickProps(newProps))
       transferProps()
     },

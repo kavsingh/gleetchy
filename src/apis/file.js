@@ -25,7 +25,7 @@ export const loadAudioFiles = () => {
     input.onchange = () => {
       const { files } = input
 
-      resolve([...files].filter(({ type }) => type.startsWith('audio/')))
+      resolve(Array.from(files).filter(({ type }) => type.startsWith('audio/')))
       input.value = null
     }
 
