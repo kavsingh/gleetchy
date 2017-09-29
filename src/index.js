@@ -4,6 +4,9 @@ import { Provider } from 'react-redux'
 import { configureStore } from './state/configureStore'
 import GleetchyEngine from './containers/GleetchyEngine'
 import GleetchyUI from './containers/GleetchyUI'
+import offlineInstall from './util/offlineInstall'
+
+offlineInstall('gleetchy-sw.js')
 
 const container = document.createElement('div')
 document.body.appendChild(container)

@@ -2,6 +2,8 @@ const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin')
+const SWPrecachePlugin = require('sw-precache-webpack-plugin')
+const PWAManifest = require('webpack-pwa-manifest')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === true
@@ -10,7 +12,7 @@ const publicPath = ''
 
 module.exports = {
   entry: {
-    app: ['./src/index.js'],
+    gleetchy: ['./src/index.js'],
   },
   output: {
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
@@ -48,6 +50,33 @@ module.exports = {
     !isProduction && new webpack.HotModuleReplacementPlugin(),
     isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
     isProduction && new BabelMinifyPlugin(),
+    isProduction &&
+      new PWAManifest({
+        name: 'Gleetchy',
+        short_name: 'Gleetchy',
+        start_url: '/',
+        display: 'browser',
+        theme_color: '#fff',
+        background_color: '#fff',
+      }),
+    isProduction &&
+      new SWPrecachePlugin({
+        cacheId: 'gleetchy-sw',
+        filename: 'gleetchy-sw.js',
+        minify: true,
+        forceDelete: true,
+        runtimeCaching: [
+          // Example with different handlers
+          {
+            handler: 'fastest',
+            urlPattern: /[.](png|jpg|css|wav|ogg|mp3)/,
+          },
+          {
+            handler: 'networkFirst',
+            urlPattern: /^http.*/, // cache all files
+          },
+        ],
+      }),
   ].filter(Boolean),
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
