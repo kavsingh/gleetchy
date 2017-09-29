@@ -15,7 +15,7 @@ import {
   looperLoadFileDecode,
   engineEventsClear,
 } from '../../state/gleetchy/actions'
-import { createAudioLooperNode } from '../../audioNodes/audioLooperNode'
+import { createLooperNode } from '../../audioNodes/looperNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 import { createReverbNode } from '../../audioNodes/reverbNode'
 
@@ -43,17 +43,17 @@ class GleetchyEngine extends Component {
     this.mainOut = this.audioContext.destination
     this.delayNode = createDelayNode(this.audioContext, this.props.delay)
     this.reverbNode = createReverbNode(this.audioContext, this.props.reverb)
-    this.audioLooperNodes = this.props.loopers.reduce((acc, looper) => {
-      acc[looper.id] = createAudioLooperNode(
+    this.looperNodes = this.props.loopers.reduce((acc, looper) => {
+      acc[looper.id] = createLooperNode(
         this.audioContext,
         pickLooperProps(looper),
       )
 
       return acc
     }, {})
-    this.forEachAudioLooper = forEachObjIndexed(__, this.audioLooperNodes)
+    this.forEachLooper = forEachObjIndexed(__, this.looperNodes)
 
-    this.forEachAudioLooper(node => node.connect(this.delayNode))
+    this.forEachLooper(node => node.connect(this.delayNode))
 
     this.delayNode.connect(this.reverbNode)
     this.reverbNode.connect(this.mainOut)
@@ -79,19 +79,19 @@ class GleetchyEngine extends Component {
   processAudioEvent({ type, payload = {} }) {
     switch (type) {
       case PLAYBACK_START:
-        this.forEachAudioLooper(node => node.play())
+        this.forEachLooper(node => node.play())
         break
       case PLAYBACK_STOP:
-        this.forEachAudioLooper(node => node.stop())
+        this.forEachLooper(node => node.stop())
         break
       case LOOPER_UPDATE_PROPS:
-        this.updateAudioLooper(payload)
+        this.updateLooper(payload)
         break
       case LOOPER_LOAD_FILE_COMPLETE:
         this.props.decodeLooperFile(this.audioContext, payload.id, payload.file)
         break
       case LOOPER_LOAD_FILE_DECODE_COMPLETE:
-        this.updateAudioLooper(payload)
+        this.updateLooper(payload)
         break
       case DELAY_UPDATE_PROPS:
         this.delayNode.set(payload.props)
@@ -104,8 +104,8 @@ class GleetchyEngine extends Component {
     }
   }
 
-  updateAudioLooper({ id, props }) {
-    const looperNode = this.audioLooperNodes[id]
+  updateLooper({ id, props }) {
+    const looperNode = this.looperNodes[id]
 
     if (!looperNode) return
 

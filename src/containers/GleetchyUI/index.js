@@ -11,7 +11,9 @@ import {
   reverbUpdateProps,
 } from '../../state/gleetchy/actions'
 import PlayPauseButton from '../../components/PlayPauseButton'
-import AudioLooper from '../../components/AudioLooper'
+import Looper from '../../components/Looper'
+import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
+import LooperEqControls from '../../components/Looper/LooperEqControls'
 import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
 import ErrorBoundary from '../../components/ErrorBoundary'
@@ -92,11 +94,8 @@ const GleetchyUI = ({
           key={id}
         >
           <ErrorBoundary>
-            <AudioLooper
+            <Looper
               gain={gain}
-              eqLow={eqLow}
-              eqMid={eqMid}
-              eqHigh={eqHigh}
               playbackRate={playbackRate}
               loopStart={loopStart}
               loopEnd={loopEnd}
@@ -106,15 +105,28 @@ const GleetchyUI = ({
               audioBuffer={audioBuffer}
               selectAudioFile={() => looperSelectFile(id)}
               receiveAudioFile={file => looperReceiveFile(id, file)}
-              onGainChange={val => updateLooper(id, { gain: val })}
-              onPlaybackRateChange={val =>
-                updateLooper(id, { playbackRate: val })}
               onLoopRegionChange={(start, end) =>
                 updateLooper(id, {
                   loopStart: start,
                   loopEnd: end,
                 })}
-              onEqChange={props => updateLooper(id, props)}
+              renderControls={() => [
+                <LooperPlaybackControls
+                  key="playback"
+                  gain={gain}
+                  playbackRate={playbackRate}
+                  onGainChange={val => updateLooper(id, { gain: val })}
+                  onPlaybackRateChange={val =>
+                    updateLooper(id, { playbackRate: val })}
+                />,
+                <LooperEqControls
+                  key="eq"
+                  eqLow={eqLow}
+                  eqMid={eqMid}
+                  eqHigh={eqHigh}
+                  onEqChange={props => updateLooper(id, props)}
+                />,
+              ]}
             />
           </ErrorBoundary>
         </Panel>
