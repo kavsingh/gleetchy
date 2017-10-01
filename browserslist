@@ -1,0 +1,6 @@
+[production]
+> 2%
+last 2 versions
+
+[development]
+last 1 versions
