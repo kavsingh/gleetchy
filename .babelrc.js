@@ -6,9 +6,6 @@ module.exports = {
         modules: false,
         useBuiltIns: 'usage',
         loose: true,
-        targets: {
-          browsers: '> 1%, Last 2 versions',
-        },
       },
     ],
     'react',
