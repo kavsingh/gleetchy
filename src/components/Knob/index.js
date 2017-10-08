@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import SVGArc from '../SVGArc'
 
-class Knob extends Component {
+class Knob extends PureComponent {
   constructor(...args) {
     super(...args)
 

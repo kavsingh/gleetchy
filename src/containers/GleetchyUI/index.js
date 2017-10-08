@@ -10,6 +10,12 @@ import {
   delayUpdateProps,
   reverbUpdateProps,
 } from '../../state/gleetchy/actions'
+import {
+  loopersSelector,
+  delaySelector,
+  reverbSelector,
+  isPlayingSelector,
+} from '../../state/gleetchy/selectors'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import Looper from '../../components/Looper'
 import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
@@ -210,11 +216,11 @@ GleetchyUI.defaultProps = {
 }
 
 export default connect(
-  ({ gleetchy }) => ({
-    loopers: gleetchy.loopers,
-    isPlaying: gleetchy.isPlaying,
-    delay: gleetchy.delay,
-    reverb: gleetchy.reverb,
+  state => ({
+    loopers: loopersSelector(state),
+    isPlaying: isPlayingSelector(state),
+    delay: delaySelector(state),
+    reverb: reverbSelector(state),
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),

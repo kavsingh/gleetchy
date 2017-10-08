@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, identity } from 'ramda'
 
-class Slider extends Component {
+class Slider extends PureComponent {
   constructor(...args) {
     super(...args)
 

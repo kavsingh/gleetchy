@@ -17,6 +17,13 @@ class LoopRegion extends Component {
     this.handleLoopRegionMouseUp = this.handleLoopRegionMouseUp.bind(this)
   }
 
+  shouldComponentUpdate(props) {
+    return (
+      this.props.loopStart !== props.loopStart ||
+      this.props.loopEnd !== props.loopEnd
+    )
+  }
+
   componentWillUnmount() {
     this.handleStartHandleMouseUp()
     this.handleEndHandleMouseUp()

@@ -12,6 +12,12 @@ import {
   REVERB_UPDATE_PROPS,
 } from '../../state/gleetchy/actionTypes'
 import {
+  loopersSelector,
+  delaySelector,
+  reverbSelector,
+  engineEventsSelector,
+} from '../../state/gleetchy/selectors'
+import {
   looperLoadFileDecode,
   engineEventsClear,
 } from '../../state/gleetchy/actions'
@@ -138,11 +144,11 @@ GleetchyEngine.defaultProps = {
 }
 
 export default connect(
-  ({ gleetchy }) => ({
-    engineEvents: gleetchy.engineEvents,
-    loopers: gleetchy.loopers,
-    delay: gleetchy.delay,
-    reverb: gleetchy.reverb,
+  state => ({
+    engineEvents: engineEventsSelector(state),
+    loopers: loopersSelector(state),
+    delay: delaySelector(state),
+    reverb: reverbSelector(state),
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(engineEventsClear()),
