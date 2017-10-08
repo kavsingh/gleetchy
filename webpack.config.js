@@ -66,14 +66,13 @@ module.exports = {
         minify: true,
         forceDelete: true,
         runtimeCaching: [
-          // Example with different handlers
           {
             handler: 'fastest',
             urlPattern: /[.](png|jpg|css|wav|ogg|mp3)/,
           },
           {
             handler: 'networkFirst',
-            urlPattern: /^http.*/, // cache all files
+            urlPattern: /^http.*/,
           },
         ],
       }),
