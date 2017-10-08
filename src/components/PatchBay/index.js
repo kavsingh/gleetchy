@@ -3,22 +3,42 @@ import PropTypes from 'prop-types'
 
 const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <div className="patchBay">
+    <div className="patchBay__row" key="titles">
+      <div className="patchBay__label patchBay__label_horizontal">In / Out</div>
+      {fromNodes.map(({ id, label }) => (
+        <div className="patchBay__label patchBay__label_vertical" key={id}>
+          {label}
+        </div>
+      ))}
+    </div>
     {toNodes.map(toNode => (
       <div className="patchBay__row" key={toNode.id}>
-        {fromNodes.map(fromNode => (
-          <div
-            key={fromNode.id}
-            className={`patchBay__node ${checkActiveNode(fromNode, toNode)
-              ? ' patchBay__node_active'
-              : ''}`}
-            onClick={() => onNodeClick(fromNode, toNode)}
-            role="button"
-            tabIndex={0}
-            onKeyUp={e => {
-              if (e.key === 'Enter') onNodeClick(fromNode, toNode)
-            }}
-          />
-        ))}
+        <div className="patchBay__label patchBay__label_horizontal">
+          {toNode.label}
+        </div>
+        {fromNodes.map(
+          fromNode =>
+            fromNode.id === toNode.id ? (
+              <div
+                key={fromNode.id}
+                className="patchBay__node patchBay__node_dummy"
+              />
+            ) : (
+              <div
+                key={fromNode.id}
+                className={`patchBay__node ${checkActiveNode(fromNode, toNode)
+                  ? ' patchBay__node_active'
+                  : ''}`}
+                onClick={() => onNodeClick(fromNode, toNode)}
+                role="button"
+                tabIndex={0}
+                onKeyUp={e => {
+                  if (e.key === 'Enter') onNodeClick(fromNode, toNode)
+                }}
+                title={`${fromNode.title} > ${toNode.title}`}
+              />
+            ),
+        )}
       </div>
     ))}
     <style jsx>{`
@@ -27,24 +47,47 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         height: 100%;
       }
 
+      .patchBay__label {
+        font-size: 0.68em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .patchBay__label_horizontal {
+        width: 4em;
+      }
+
+      .patchBay__label_vertical {
+        width: 0.94rem;
+        margin: 0.94rem;
+      }
+
       .patchBay__row {
         display: flex;
         align-items: center;
       }
 
       .patchBay__node {
-        width: 1em;
-        height: 1em;
+        width: 0.94rem;
+        height: 0.94rem;
         border-radius: 50%;
-        border: 1px solid #eee;
-        margin: 1em;
+        border: 1px solid black;
+        margin: 0.9rem;
         cursor: pointer;
         background-color: transparent;
+        opacity: 0.1;
+        transition: opacity 0.2s ease-out;
       }
 
       .patchBay__node_active {
-        border-color: #000;
-        background-color: #000;
+        background-color: black;
+        opacity: 1;
+      }
+
+      .patchBay__node_dummy {
+        background-color: black;
+        cursor: default;
       }
     `}</style>
   </div>

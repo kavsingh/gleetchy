@@ -18,13 +18,9 @@ import {
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
-  connections: [
-    ['loop0', 'mainOut'],
-    ['loop1', 'reverb'],
-    ['reverb', 'mainOut'],
-  ],
-  delay: { delayTime: 0.6, wetDryRatio: 0 },
-  reverb: { wetDryRatio: 0 },
+  connections: [['loop0', 'mainOut'], ['loop1', 'mainOut']],
+  delay: { delayTime: 0.6, wetDryRatio: 0.5 },
+  reverb: { wetDryRatio: 0.5 },
   loopers: [
     {
       id: 'loop0',
@@ -74,6 +70,8 @@ const updateConnections = (state, connection, type) => {
   const currentIdx = connections.findIndex(equals(connection))
 
   if (type === 'add' && currentIdx === -1) {
+    if (connection[0] === connection[1]) return state
+
     return { ...state, connections: connections.concat([connection]) }
   }
 

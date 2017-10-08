@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { equals, pick } from 'ramda'
+import { equals, head } from 'ramda'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 import {
   looperUpdateProps,
@@ -159,23 +159,7 @@ const GleetchyUI = ({
         padding: 0,
       }}
     >
-      <Panel style={{ width: '70%' }}>
-        <PatchBay
-          fromNodes={[
-            ...loopers.map(({ id, label }) => ({ id, label: `${label} out` })),
-            { id: 'reverb', label: 'Reverb out' },
-            { id: 'delay', label: 'Delay out' },
-          ]}
-          toNodes={[
-            { id: 'reverb', label: 'Reverb in' },
-            { id: 'delay', label: 'Delay in' },
-            { id: 'mainOut', label: 'Main out' },
-          ]}
-          onNodeClick={(from, to) => toggleConnection(from.id, to.id)}
-          checkActiveNode={(from, to) => checkActiveNode(from, to, connections)}
-        />
-      </Panel>
-      <Panel style={{ width: '30%' }}>
+      <Panel style={{ flexGrow: 1, flexShrink: 0 }}>
         <Delay
           isActive={activeFx.includes('delay')}
           wetDryRatio={delay.wetDryRatio}
@@ -187,6 +171,29 @@ const GleetchyUI = ({
           isActive={activeFx.includes('reverb')}
           wetDryRatio={reverb.wetDryRatio}
           onWetDryRatioChange={wetDryRatio => updateReverb({ wetDryRatio })}
+        />
+      </Panel>
+      <Panel style={{ flexGrow: 0, flexShrink: 0 }}>
+        <PatchBay
+          fromNodes={[
+            ...loopers.map(({ id, label }) => ({
+              id,
+              label: label
+                .split(' ')
+                .map(head)
+                .join(''),
+              title: `${label} out`,
+            })),
+            { id: 'delay', label: 'D', title: 'Delay out' },
+            { id: 'reverb', label: 'R', title: 'Reverb out' },
+          ]}
+          toNodes={[
+            { id: 'reverb', label: 'R', title: 'Reverb in' },
+            { id: 'delay', label: 'D', title: 'Delay in' },
+            { id: 'mainOut', label: 'M', title: 'Main out' },
+          ]}
+          onNodeClick={(from, to) => toggleConnection(from.id, to.id)}
+          checkActiveNode={(from, to) => checkActiveNode(from, to, connections)}
         />
       </Panel>
     </Panel>
