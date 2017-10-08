@@ -35,5 +35,11 @@ module.exports = {
         browser: true,
       },
     },
+    {
+      files: 'scripts/bin/**/*.js',
+      rules: {
+        'no-console': 'off',
+      },
+    },
   ],
 }

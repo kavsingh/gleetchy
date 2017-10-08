@@ -15,7 +15,8 @@
     "build": "rimraf dist && NODE_ENV=production webpack",
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --coverage --verbose",
-    "test:watch": "NODE_ENV=test jest --watch"
+    "test:watch": "NODE_ENV=test jest --watch",
+    "component": "node ./scripts/bin/component.js"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-beta.2",
@@ -31,6 +32,8 @@
     "babel-preset-react": "^7.0.0-beta.2",
     "babel-register": "^7.0.0-beta.2",
     "babel-runtime": "^7.0.0-beta.2",
+    "chalk": "^2.1.0",
+    "common-tags": "^1.4.0",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-config-airbnb-base": "^12.0.2",
