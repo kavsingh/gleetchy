@@ -32,7 +32,7 @@ const Panel = ({ children, style }) => (
 
 Panel.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.shape(),
+  style: PropTypes.shape({}),
 }
 
 Panel.defaultProps = {
@@ -184,9 +184,9 @@ const GleetchyUI = ({
 )
 
 GleetchyUI.propTypes = {
-  delay: PropTypes.shape(),
-  reverb: PropTypes.shape(),
-  loopers: PropTypes.arrayOf(PropTypes.shape()),
+  delay: PropTypes.shape({}),
+  reverb: PropTypes.shape({}),
+  loopers: PropTypes.arrayOf(PropTypes.shape({})),
   isPlaying: PropTypes.bool,
   togglePlayback: PropTypes.func,
   looperSelectFile: PropTypes.func,

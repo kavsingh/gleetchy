@@ -120,10 +120,10 @@ class GleetchyEngine extends Component {
 }
 
 GleetchyEngine.propTypes = {
-  engineEvents: PropTypes.arrayOf(PropTypes.shape()),
-  loopers: PropTypes.arrayOf(PropTypes.shape()),
-  delay: PropTypes.shape(),
-  reverb: PropTypes.shape(),
+  engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
+  loopers: PropTypes.arrayOf(PropTypes.shape({})),
+  delay: PropTypes.shape({}),
+  reverb: PropTypes.shape({}),
   decodeLooperFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
