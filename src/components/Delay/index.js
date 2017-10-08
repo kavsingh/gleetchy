@@ -9,8 +9,9 @@ const Delay = ({
   delayTime,
   onWetDryRatioChange,
   onDelayTimeChange,
+  isActive,
 }) => (
-  <div className="delay">
+  <div className={`delay${!isActive ? ' delay_inactive' : ''}`}>
     <TitleBar>{() => 'Delay'}</TitleBar>
     <div className="delay__controls">
       <div className="delay__knobContainer">
@@ -37,6 +38,12 @@ const Delay = ({
     <style jsx>{`
       .delay {
         width: 100%;
+        opacity: 1;
+        transition: opacity 0.2s ease-out;
+      }
+
+      .delay_inactive {
+        opacity: 0.4;
       }
 
       .delay__controls {
@@ -54,6 +61,7 @@ const Delay = ({
 Delay.propTypes = {
   wetDryRatio: PropTypes.number,
   delayTime: PropTypes.number,
+  isActive: PropTypes.bool,
   onDelayTimeChange: PropTypes.func,
   onWetDryRatioChange: PropTypes.func,
 }
@@ -61,6 +69,7 @@ Delay.propTypes = {
 Delay.defaultProps = {
   wetDryRatio: 0.5,
   delayTime: 1,
+  isActive: true,
   onDelayTimeChange: () => {},
   onWetDryRatioChange: () => {},
 }

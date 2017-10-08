@@ -13,7 +13,9 @@ export const createConnect = getOutNode => node => {
 export const createDisconnect = getOutNode => node => {
   const outNode = getOutNode()
 
-  if (node instanceof AudioNode) {
+  if (!node) {
+    outNode.disconnect()
+  } else if (node instanceof AudioNode) {
     outNode.disconnect(node)
   } else if (typeof node.getInNode === 'function') {
     outNode.disconnect(node.getInNode())

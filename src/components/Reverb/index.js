@@ -3,8 +3,8 @@ import PropTypes from 'prop-types'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
 
-const Reverb = ({ wetDryRatio, onWetDryRatioChange }) => (
-  <div className="reverb">
+const Reverb = ({ wetDryRatio, onWetDryRatioChange, isActive }) => (
+  <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
     <TitleBar>{() => 'Reverb'}</TitleBar>
     <div className="reverb__controls">
       <div className="reverb__knobContainer">
@@ -19,8 +19,14 @@ const Reverb = ({ wetDryRatio, onWetDryRatioChange }) => (
       </div>
     </div>
     <style jsx>{`
-      .delay {
+      .reverb {
         width: 100%;
+        opacity: 1;
+        transition: opacity 0.2s ease-out;
+      }
+
+      .reverb_inactive {
+        opacity: 0.4;
       }
 
       .reverb__controls {
@@ -37,11 +43,13 @@ const Reverb = ({ wetDryRatio, onWetDryRatioChange }) => (
 
 Reverb.propTypes = {
   wetDryRatio: PropTypes.number,
+  isActive: PropTypes.bool,
   onWetDryRatioChange: PropTypes.func,
 }
 
 Reverb.defaultProps = {
   wetDryRatio: 0.5,
+  isActive: true,
   onWetDryRatioChange: () => {},
 }
 

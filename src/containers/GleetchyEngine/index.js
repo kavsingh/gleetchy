@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { pick, forEachObjIndexed, __ } from 'ramda'
+import { pick } from 'ramda'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
@@ -10,12 +10,14 @@ import {
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   DELAY_UPDATE_PROPS,
   REVERB_UPDATE_PROPS,
+  GRAPH_UPDATE,
 } from '../../state/gleetchy/actionTypes'
 import {
   loopersSelector,
   delaySelector,
   reverbSelector,
   engineEventsSelector,
+  connectionsSelector,
 } from '../../state/gleetchy/selectors'
 import {
   looperLoadFileDecode,
@@ -46,23 +48,29 @@ class GleetchyEngine extends Component {
     const AudioContext = window.AudioContext || window.webkitAudioContext
 
     this.audioContext = new AudioContext()
-    this.mainOut = this.audioContext.destination
-    this.delayNode = createDelayNode(this.audioContext, this.props.delay)
-    this.reverbNode = createReverbNode(this.audioContext, this.props.reverb)
-    this.looperNodes = this.props.loopers.reduce((acc, looper) => {
-      acc[looper.id] = createLooperNode(
-        this.audioContext,
-        pickLooperProps(looper),
-      )
 
-      return acc
-    }, {})
-    this.forEachLooper = forEachObjIndexed(__, this.looperNodes)
+    const { loopers } = this.props
+    const looperIds = loopers.map(({ id }) => id)
 
-    this.forEachLooper(node => node.connect(this.delayNode))
+    this.audioNodes = loopers.reduce(
+      (acc, looper) => {
+        acc[looper.id] = createLooperNode(
+          this.audioContext,
+          pickLooperProps(looper),
+        )
 
-    this.delayNode.connect(this.reverbNode)
-    this.reverbNode.connect(this.mainOut)
+        return acc
+      },
+      {
+        mainOut: this.audioContext.destination,
+        delay: createDelayNode(this.audioContext, this.props.delay),
+        reverb: createReverbNode(this.audioContext, this.props.reverb),
+      },
+    )
+
+    this.forEachLooper = fn => looperIds.forEach(id => fn(this.audioNodes[id]))
+
+    this.updateAudioGraph()
   }
 
   shouldComponentUpdate(props) {
@@ -80,6 +88,18 @@ class GleetchyEngine extends Component {
   componentWillUnmount() {
     this.props.clearEngineEvents()
     this.audioContext.close()
+  }
+
+  updateAudioGraph() {
+    Object.values(this.audioNodes).forEach(node => node.disconnect())
+
+    const { connections } = this.props
+
+    if (!connections.length) return
+
+    connections.forEach(([fromId, toId]) => {
+      this.audioNodes[fromId].connect(this.audioNodes[toId])
+    })
   }
 
   processAudioEvent({ type, payload = {} }) {
@@ -100,10 +120,13 @@ class GleetchyEngine extends Component {
         this.updateLooper(payload)
         break
       case DELAY_UPDATE_PROPS:
-        this.delayNode.set(payload.props)
+        this.audioNodes.delay.set(payload.props)
         break
       case REVERB_UPDATE_PROPS:
-        this.reverbNode.set(payload.props)
+        this.audioNodes.reverb.set(payload.props)
+        break
+      case GRAPH_UPDATE:
+        this.updateAudioGraph()
         break
       default:
         break
@@ -111,7 +134,7 @@ class GleetchyEngine extends Component {
   }
 
   updateLooper({ id, props }) {
-    const looperNode = this.looperNodes[id]
+    const looperNode = this.audioNodes[id]
 
     if (!looperNode) return
 
@@ -130,6 +153,7 @@ GleetchyEngine.propTypes = {
   loopers: PropTypes.arrayOf(PropTypes.shape({})),
   delay: PropTypes.shape({}),
   reverb: PropTypes.shape({}),
+  connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   decodeLooperFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
@@ -139,6 +163,7 @@ GleetchyEngine.defaultProps = {
   loopers: [],
   delay: {},
   reverb: {},
+  connections: [],
   decodeLooperFile: () => {},
   clearEngineEvents: () => {},
 }
@@ -149,6 +174,7 @@ export default connect(
     loopers: loopersSelector(state),
     delay: delaySelector(state),
     reverb: reverbSelector(state),
+    connections: connectionsSelector(state),
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(engineEventsClear()),

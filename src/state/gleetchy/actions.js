@@ -1,4 +1,4 @@
-import { curry, head } from 'ramda'
+import { curry, head, equals } from 'ramda'
 import {
   readFileToArrayBuffer,
   loadAudioFilesToArrayBuffers,
@@ -16,7 +16,10 @@ import {
   LOOPER_LOAD_FILE_ERROR,
   DELAY_UPDATE_PROPS,
   REVERB_UPDATE_PROPS,
+  CONNECTION_ADD,
+  CONNECTION_REMOVE,
 } from './actionTypes'
+import { connectionsSelector } from './selectors'
 
 export const playbackStart = () => ({
   type: PLAYBACK_START,
@@ -102,5 +105,23 @@ export const reverbUpdateProps = props => ({
   type: REVERB_UPDATE_PROPS,
   payload: { props },
 })
+
+export const connectionAdd = (fromId, toId) => ({
+  type: CONNECTION_ADD,
+  payload: { connection: [fromId, toId] },
+})
+
+export const connectionRemove = (fromId, toId) => ({
+  type: CONNECTION_REMOVE,
+  payload: { connection: [fromId, toId] },
+})
+
+export const connectionToggle = (fromId, toId) => (dispatch, getState) => {
+  const connections = connectionsSelector(getState())
+  const current = connections.find(equals([fromId, toId]))
+
+  if (current) dispatch(connectionRemove(fromId, toId))
+  else dispatch(connectionAdd(fromId, toId))
+}
 
 export const engineEventsClear = () => ({ type: ENGINE_EVENTS_CLEAR })
