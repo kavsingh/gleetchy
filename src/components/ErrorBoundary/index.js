@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 class ErrorBoundary extends Component {
@@ -8,20 +8,22 @@ class ErrorBoundary extends Component {
   }
 
   componentDidCatch(error) {
-    /* continue on silently for now */
     this.setState(() => ({ error }))
   }
 
   render() {
+    if (this.state.error) return this.props.renderError(this.state.error)
     return this.props.children
   }
 }
 
 ErrorBoundary.propTypes = {
+  renderError: PropTypes.func,
   children: PropTypes.node,
 }
 
 ErrorBoundary.defaultProps = {
+  renderError: error => <div>{error.toString()}</div>,
   children: [],
 }
 

@@ -32,6 +32,9 @@ const LooperSample = ({
         tabIndex={0}
         onClick={selectAudioFile}
         className="looper__initLoadButon"
+        onKeyDown={({ key }) => {
+          if (key === 'Enter') selectAudioFile()
+        }}
       >
         Click to load audio file or drag it here
       </div>

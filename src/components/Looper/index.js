@@ -14,13 +14,14 @@ const renderTitle = (title, audioBuffer, selectAudioFile) => (
         tabIndex={0}
         style={{ cursor: 'pointer' }}
         onClick={selectAudioFile}
+        onKeyDown={({ key }) => {
+          if (key === 'Enter') selectAudioFile()
+        }}
       >
         {' '}
         / Load audio file
       </span>
-    ) : (
-      ''
-    )}
+    ) : null}
   </span>
 )
 

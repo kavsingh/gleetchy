@@ -28,6 +28,15 @@ module.exports = {
         bracketSpacing: true,
       },
     ],
+    // Styled-jsx requires braces around CSS template literal,
+    // causing lint errors
+    'react/jsx-curly-brace-presence': [
+      'error',
+      {
+        props: 'never',
+        children: 'ignore',
+      },
+    ],
   },
 
   overrides: [

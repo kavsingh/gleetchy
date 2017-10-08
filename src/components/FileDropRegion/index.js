@@ -59,7 +59,6 @@ FileDropRegion.propTypes = {
 }
 
 FileDropRegion.defaultProps = {
-  style: {},
   fileFilter: () => true,
   onFiles: () => {},
   onNoFiles: () => {},
