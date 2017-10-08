@@ -6,23 +6,27 @@ module.exports = componentName =>
   import React from 'react'
   import PropTypes from 'prop-types'
 
-  const ${componentName} = ({ name }) => (
-    <div className="${lowerFirst(componentName)}">
-      {name}
+  const ${componentName} = ({ style }) => (
+    <div className="${lowerFirst(componentName)}" style={style}>
+      ${componentName}
       <style jsx>{\`
         .${lowerFirst(componentName)} {
+          width: 100%;
+          height: 100%;
           display: flex;
+          align-items: center;
+          justify-content: center;
         }
       \`}</style>
     </div>
   )
 
   ${componentName}.propTypes = {
-    name: PropTypes.string,
+    style: PropTypes.shape({}),
   }
 
   ${componentName}.defaultProps = {
-    name: ${componentName},
+    style: {},
   }
 
   export default ${componentName}
