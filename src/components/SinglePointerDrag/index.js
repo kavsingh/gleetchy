@@ -2,14 +2,33 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 const normalizeEvent = event => {
-  console.log(event.type)
+  const { currentTarget, touches, timeStamp } = event
+  const { clientX, clientY } = touches ? touches[0] : event
 
-  return event.touches ? { ...event, ...event.touches[0] } : event
+  const normalized = { currentTarget, clientX, clientY, timeStamp }
+
+  return normalized
 }
 
 class SinglePointerDrag extends Component {
   constructor(...args) {
     super(...args)
+
+    this.state = {
+      targetRect: null,
+      target: null,
+      isDragging: false,
+      startX: 0,
+      startY: 0,
+      x: 0,
+      y: 0,
+      dx: 0,
+      dy: 0,
+      targetStartX: 0,
+      targetStartY: 0,
+      targetX: 0,
+      targetY: 0,
+    }
 
     this.handleDragStart = this.handleDragStart.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
@@ -31,12 +50,32 @@ class SinglePointerDrag extends Component {
   }
 
   handleDragStart(event) {
+    const { currentTarget, clientX, clientY } = normalizeEvent(event)
     const { move, end } = this.eventNames
+
+    const targetRect = currentTarget.getBoundingClientRect()
+    const targetStartX = clientX - targetRect.top
+    const targetStartY = clientY - targetRect.left
 
     window.addEventListener(move, this.handleDragMove)
     window.addEventListener(end, this.handleDragEnd)
 
-    this.props.onDragStart(normalizeEvent(event))
+    this.setState(
+      () => ({
+        targetRect,
+        targetStartX,
+        targetStartY,
+        x: clientX,
+        y: clientY,
+        isDragging: true,
+        target: currentTarget,
+        startX: clientX,
+        startY: clientY,
+        targetX: targetStartX,
+        targetY: targetStartY,
+      }),
+      () => this.props.onDragStart(this.state),
+    )
   }
 
   handleDragMove(event) {
@@ -59,7 +98,7 @@ class SinglePointerDrag extends Component {
         ? { onTouchStart: this.handleDragStart }
         : { onMouseDown: this.handleDragStart }
 
-    return this.props.children({ dragEvents })
+    return this.props.children({ dragEvents, dragState: { ...this.state } })
   }
 }
 
