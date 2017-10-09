@@ -98,22 +98,26 @@ class WaveForm extends Component {
     const dim = `${100 * pixelRatio}%`
 
     return (
-      <canvas
-        style={{ width: dim, height: dim }}
-        className="waveForm"
-        ref={c => {
-          this.canvasNode = c
-        }}
-      >
+      <div className="waveForm">
+        <canvas
+          style={{ width: dim, height: dim }}
+          className="waveForm__canvas"
+          ref={c => {
+            this.canvasNode = c
+          }}
+        />
         <style jsx>{`
-          .waveForm {
-            position: relative;
+          .waveForm,
+          .waveForm__canvas {
             width: 100%;
             height: 100%;
-            pointer-events: none;
+          }
+
+          .waveForm {
+            overflow: hidden;
           }
         `}</style>
-      </canvas>
+      </div>
     )
   }
 }
