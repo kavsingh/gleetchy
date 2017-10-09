@@ -1,31 +1,24 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, identity } from 'ramda'
+import PointerDragable from '../PointerDragable'
 
 class Slider extends PureComponent {
   constructor(...args) {
     super(...args)
 
-    this.state = { mouseDownStartTime: 0 }
+    this.state = { dragStartTime: 0 }
 
-    this.handleMouseDown = this.handleMouseDown.bind(this)
-    this.handleMouseMove = this.handleMouseMove.bind(this)
-    this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleDragStart = this.handleDragStart.bind(this)
+    this.handleDragMove = this.handleDragMove.bind(this)
+    this.handleDragEnd = this.handleDragEnd.bind(this)
   }
 
-  componentWillUnmount() {
-    window.removeEventListener('mousemove', this.handleMouseMove)
-    window.removeEventListener('mouseup', this.handleMouseUp)
+  handleDragStart({ timeStamp }) {
+    this.setState({ dragStartTime: timeStamp })
   }
 
-  handleMouseDown({ timeStamp }) {
-    this.setState({ mouseDownStartTime: timeStamp })
-
-    window.addEventListener('mousemove', this.handleMouseMove)
-    window.addEventListener('mouseup', this.handleMouseUp)
-  }
-
-  handleMouseMove(event) {
+  handleDragMove(event) {
     const { orient, value } = this.props
     const vert = orient === 'vertical'
     const movement = vert ? event.movementY : event.movementX
@@ -36,22 +29,23 @@ class Slider extends PureComponent {
     this.props.onChange(clamp(0, 1, movement / dim + value))
   }
 
-  handleMouseUp(event) {
-    window.removeEventListener('mousemove', this.handleMouseMove)
-    window.removeEventListener('mouseup', this.handleMouseUp)
-
+  handleDragEnd(event) {
     const movement =
       this.props.orient === 'vertical' ? event.movementY : event.movementX
-    const clickTime = event.timeStamp - this.state.mouseDownStartTime < 300
+    const clickTime = event.timeStamp - this.state.dragStartTime < 300
     const clickMove = movement < 4
 
-    if (clickTime && clickMove) this.registerClick(event)
+    if (clickTime && clickMove)
+      this.registerClick({
+        offsetX: event.offsetX,
+        offsetY: event.offsetY,
+      })
   }
 
-  registerClick(event) {
+  registerClick({ offsetX, offsetY }) {
     const { orient } = this.props
     const vert = orient === 'vertical'
-    const offset = vert ? event.offsetY : event.offsetX
+    const offset = vert ? offsetY : offsetX
     const dim = vert
       ? this.barContainer.offsetHeight
       : this.barContainer.offsetWidth
@@ -70,20 +64,28 @@ class Slider extends PureComponent {
         title={renderTitle(value)}
       >
         <div className="slider__label">{renderLabel(value)}</div>
-        <div
-          role="presentation"
-          className="slider__barContainer"
-          onMouseDown={this.handleMouseDown}
-          ref={c => {
-            this.barContainer = c
-          }}
+        <PointerDragable
+          onDragStart={this.handleDragStart}
+          onDragMove={this.handleDragMove}
+          onDragEnd={this.handleDragEnd}
         >
-          <div className="slider__track" />
-          <div
-            className="slider__bar"
-            style={isVert ? { top: offVal } : { right: offVal }}
-          />
-        </div>
+          {({ dragEvents }) => (
+            <div
+              {...dragEvents}
+              role="presentation"
+              className="slider__barContainer"
+              ref={c => {
+                this.barContainer = c
+              }}
+            >
+              <div className="slider__track" />
+              <div
+                className="slider__bar"
+                style={isVert ? { top: offVal } : { right: offVal }}
+              />
+            </div>
+          )}
+        </PointerDragable>
         <div className="slider__value">{renderValue(value)}</div>
         <style jsx>{`
           .slider {
