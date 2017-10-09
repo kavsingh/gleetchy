@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, identity } from 'ramda'
-import PointerDragable from '../PointerDragable'
+import SinglePointerDrag from '../SinglePointerDrag'
 
 class Slider extends PureComponent {
   constructor(...args) {
@@ -64,7 +64,7 @@ class Slider extends PureComponent {
         title={renderTitle(value)}
       >
         <div className="slider__label">{renderLabel(value)}</div>
-        <PointerDragable
+        <SinglePointerDrag
           onDragStart={this.handleDragStart}
           onDragMove={this.handleDragMove}
           onDragEnd={this.handleDragEnd}
@@ -85,7 +85,7 @@ class Slider extends PureComponent {
               />
             </div>
           )}
-        </PointerDragable>
+        </SinglePointerDrag>
         <div className="slider__value">{renderValue(value)}</div>
         <style jsx>{`
           .slider {

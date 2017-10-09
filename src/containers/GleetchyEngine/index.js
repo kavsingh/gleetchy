@@ -1,7 +1,8 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { pick } from 'ramda'
+import { pick, tryCatch } from 'ramda'
+import { warn } from '../../util'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
@@ -37,6 +38,8 @@ const pickLooperProps = pick([
   'eqLow',
   'eqHigh',
 ])
+
+const setNodeProps = tryCatch(({ node, props }) => node.set(props), warn)
 
 class GleetchyEngine extends Component {
   constructor(...args) {
@@ -119,11 +122,12 @@ class GleetchyEngine extends Component {
       case LOOPER_LOAD_FILE_DECODE_COMPLETE:
         this.updateLooper(payload)
         break
-      case DELAY_UPDATE_PROPS:
-        this.audioNodes.delay.set(payload.props)
+      case DELAY_UPDATE_PROPS: {
+        setNodeProps({ node: this.audioNodes.delay, props: payload.props })
         break
+      }
       case REVERB_UPDATE_PROPS:
-        this.audioNodes.reverb.set(payload.props)
+        setNodeProps({ node: this.audioNodes.reverb, props: payload.props })
         break
       case GRAPH_UPDATE:
         this.updateAudioGraph()
@@ -138,7 +142,7 @@ class GleetchyEngine extends Component {
 
     if (!looperNode) return
 
-    looperNode.set(props)
+    setNodeProps({ node: looperNode, props })
   }
 
   /* eslint-disable class-methods-use-this */

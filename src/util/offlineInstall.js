@@ -1,5 +1,5 @@
-/* global process */
 /* eslint-disable no-console, no-param-reassign */
+/* global process */
 /*
   Install offline service worker
   from https://github.com/ooade/NextSimpleStarter
@@ -7,7 +7,7 @@
 
 const offlineInstall = serviceWorkerUrl => {
   navigator.serviceWorker
-    .register(serviceWorkerUrl, { scope: './' })
+    .register(serviceWorkerUrl, { scope: '/' })
     .then(reg => {
       reg.onupdatefound = function regOnUpdateFound() {
         const installingWorker = reg.installing
@@ -35,9 +35,8 @@ const offlineInstall = serviceWorkerUrl => {
     })
 }
 
-const supported =
-  process.env.NODE_ENV === 'production' &&
-  typeof window !== 'undefined' &&
-  'serviceWorker' in navigator
-
-export default (supported ? offlineInstall : () => {})
+export default (process.env.NODE_ENV === 'production' &&
+typeof window !== 'undefined' &&
+'serviceWorker' in navigator
+  ? offlineInstall
+  : () => {})

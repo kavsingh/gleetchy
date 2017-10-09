@@ -159,43 +159,46 @@ const GleetchyUI = ({
         padding: 0,
       }}
     >
-      <Panel style={{ flexGrow: 1, flexShrink: 0 }}>
-        <Delay
-          isActive={activeFx.includes('delay')}
-          wetDryRatio={delay.wetDryRatio}
-          delayTime={delay.delayTime}
-          onDelayTimeChange={delayTime => updateDelay({ delayTime })}
-          onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
-        />
-        <Reverb
-          isActive={activeFx.includes('reverb')}
-          wetDryRatio={reverb.wetDryRatio}
-          onWetDryRatioChange={wetDryRatio => updateReverb({ wetDryRatio })}
-        />
-      </Panel>
-      <Panel style={{ flexGrow: 0, flexShrink: 0 }}>
-        <PatchBay
-          fromNodes={[
-            ...loopers.map(({ id, label }) => ({
-              id,
-              label: label
-                .split(' ')
-                .map(head)
-                .join(''),
-              title: `${label} out`,
-            })),
-            { id: 'delay', label: 'D', title: 'Delay out' },
-            { id: 'reverb', label: 'R', title: 'Reverb out' },
-          ]}
-          toNodes={[
-            { id: 'reverb', label: 'R', title: 'Reverb in' },
-            { id: 'delay', label: 'D', title: 'Delay in' },
-            { id: 'mainOut', label: 'M', title: 'Main out' },
-          ]}
-          onNodeClick={(from, to) => toggleConnection(from.id, to.id)}
-          checkActiveNode={(from, to) => checkActiveNode(from, to, connections)}
-        />
-      </Panel>
+      <ErrorBoundary silent>
+        <Panel style={{ flexGrow: 1, flexShrink: 0 }}>
+          <Delay
+            isActive={activeFx.includes('delay')}
+            wetDryRatio={delay.wetDryRatio}
+            delayTime={delay.delayTime}
+            onDelayTimeChange={delayTime => updateDelay({ delayTime })}
+            onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
+          />
+          <Reverb
+            isActive={activeFx.includes('reverb')}
+            wetDryRatio={reverb.wetDryRatio}
+            onWetDryRatioChange={wetDryRatio => updateReverb({ wetDryRatio })}
+          />
+        </Panel>
+        <Panel style={{ flexGrow: 0, flexShrink: 0 }}>
+          <PatchBay
+            fromNodes={[
+              ...loopers.map(({ id, label }) => ({
+                id,
+                label: label
+                  .split(' ')
+                  .map(head)
+                  .join(''),
+                title: `${label} out`,
+              })),
+              { id: 'delay', label: 'D', title: 'Delay out' },
+              { id: 'reverb', label: 'R', title: 'Reverb out' },
+            ]}
+            toNodes={[
+              { id: 'reverb', label: 'R', title: 'Reverb in' },
+              { id: 'delay', label: 'D', title: 'Delay in' },
+              { id: 'mainOut', label: 'M', title: 'Main out' },
+            ]}
+            onNodeClick={(from, to) => toggleConnection(from.id, to.id)}
+            checkActiveNode={(from, to) =>
+              checkActiveNode(from, to, connections)}
+          />
+        </Panel>
+      </ErrorBoundary>
     </Panel>
     <style jsx>{`
       .gleetchy {

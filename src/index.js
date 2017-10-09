@@ -6,7 +6,7 @@ import GleetchyEngine from './containers/GleetchyEngine'
 import GleetchyUI from './containers/GleetchyUI'
 import offlineInstall from './util/offlineInstall'
 
-offlineInstall('gleetchy-sw.js')
+offlineInstall('/gleetchy-sw.js')
 
 const container = document.createElement('div')
 document.body.appendChild(container)

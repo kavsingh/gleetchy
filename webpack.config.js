@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -8,7 +9,9 @@ const PWAManifest = require('webpack-pwa-manifest')
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === true
 const fromRoot = path.resolve.bind(path, __dirname)
-const publicPath = ''
+const publicPath = '/'
+
+const themeColor = '#fff'
 
 module.exports = {
   entry: {
@@ -43,22 +46,22 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin('NODE_ENV'),
     new HtmlWebpackPlugin({
-      title: 'gleetchy',
+      themeColor,
+      title: 'Gleetchy',
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),
     !isProduction && new webpack.HotModuleReplacementPlugin(),
     isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
     isProduction && new BabelMinifyPlugin(),
-    isProduction &&
-      new PWAManifest({
-        name: 'Gleetchy',
-        short_name: 'Gleetchy',
-        start_url: '/',
-        display: 'browser',
-        theme_color: '#fff',
-        background_color: '#fff',
-      }),
+    new PWAManifest({
+      name: 'Gleetchy',
+      short_name: 'Gleetchy',
+      start_url: '/',
+      display: 'fullscreen',
+      theme_color: themeColor,
+      background_color: themeColor,
+    }),
     isProduction &&
       new SWPrecachePlugin({
         cacheId: 'gleetchy-sw',

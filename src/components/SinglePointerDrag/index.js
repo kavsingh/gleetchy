@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-const normalizeEvent = event => (event.touches ? event.touches[0] : event)
+const normalizeEvent = event => {
+  console.log(event.type)
 
-class PointerDragable extends Component {
+  return event.touches ? { ...event, ...event.touches[0] } : event
+}
+
+class SinglePointerDrag extends Component {
   constructor(...args) {
     super(...args)
 
@@ -59,18 +63,18 @@ class PointerDragable extends Component {
   }
 }
 
-PointerDragable.propTypes = {
+SinglePointerDrag.propTypes = {
   children: PropTypes.func,
   onDragStart: PropTypes.func,
   onDragMove: PropTypes.func,
   onDragEnd: PropTypes.func,
 }
 
-PointerDragable.defaultProps = {
+SinglePointerDrag.defaultProps = {
   children: () => <div />,
   onDragStart: () => {},
   onDragMove: () => {},
   onDragEnd: () => {},
 }
 
-export default PointerDragable
+export default SinglePointerDrag

@@ -12,7 +12,10 @@ class ErrorBoundary extends Component {
   }
 
   render() {
-    if (this.state.error) return this.props.renderError(this.state.error)
+    if (this.state.error && !this.props.silent) {
+      return this.props.renderError(this.state.error)
+    }
+
     return this.props.children
   }
 }
@@ -20,11 +23,13 @@ class ErrorBoundary extends Component {
 ErrorBoundary.propTypes = {
   renderError: PropTypes.func,
   children: PropTypes.node,
+  silent: PropTypes.bool,
 }
 
 ErrorBoundary.defaultProps = {
   renderError: error => <div>{error.toString()}</div>,
   children: [],
+  silent: false,
 }
 
 export default ErrorBoundary

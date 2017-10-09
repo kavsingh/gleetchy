@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
-import PointerDragable from '../PointerDragable'
+import SinglePointerDrag from '../SinglePointerDrag'
 import SVGArc from '../SVGArc'
 
 class Knob extends PureComponent {
@@ -10,8 +10,10 @@ class Knob extends PureComponent {
     this.handleDragMove = this.handleDragMove.bind(this)
   }
 
-  handleDragMove({ movementX }) {
+  handleDragMove(event) {
     if (!this.knobNode) return
+
+    const { movementX } = event
 
     this.props.onChange(
       clamp(0, 1, this.props.value + movementX / this.knobNode.offsetWidth),
@@ -22,7 +24,7 @@ class Knob extends PureComponent {
     const { value, radius, renderTitle, renderLabel, renderValue } = this.props
 
     return (
-      <PointerDragable onDragMove={this.handleDragMove}>
+      <SinglePointerDrag onDragMove={this.handleDragMove}>
         {({ dragEvents }) => (
           <div className="knob" title={renderTitle()}>
             <div className="knob__label">{renderLabel()}</div>
@@ -98,7 +100,7 @@ class Knob extends PureComponent {
             `}</style>
           </div>
         )}
-      </PointerDragable>
+      </SinglePointerDrag>
     )
   }
 }
