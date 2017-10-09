@@ -36,10 +36,12 @@ class SinglePointerDrag extends Component {
   }
 
   componentWillMount() {
-    this.eventNames =
-      'ontouchstart' in document || 'ontouchstart' in document.documentElement
-        ? { start: 'touchstart', move: 'touchmove', end: 'touchend' }
-        : { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
+    this.eventNames = { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
+
+    // this.eventNames =
+    //   'ontouchstart' in document || 'ontouchstart' in document.documentElement
+    //     ? { start: 'touchstart', move: 'touchmove', end: 'touchend' }
+    //     : { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
   }
 
   componentWillUnmount() {
@@ -60,26 +62,28 @@ class SinglePointerDrag extends Component {
     window.addEventListener(move, this.handleDragMove)
     window.addEventListener(end, this.handleDragEnd)
 
-    this.setState(
-      () => ({
-        targetRect,
-        targetStartX,
-        targetStartY,
-        x: clientX,
-        y: clientY,
-        isDragging: true,
-        target: currentTarget,
-        startX: clientX,
-        startY: clientY,
-        targetX: targetStartX,
-        targetY: targetStartY,
-      }),
-      () => this.props.onDragStart(this.state),
-    )
+    this.props.onDragStart(event)
+
+    // this.setState(
+    //   () => ({
+    //     targetRect,
+    //     targetStartX,
+    //     targetStartY,
+    //     x: clientX,
+    //     y: clientY,
+    //     isDragging: true,
+    //     target: currentTarget,
+    //     startX: clientX,
+    //     startY: clientY,
+    //     targetX: targetStartX,
+    //     targetY: targetStartY,
+    //   }),
+    //   () => this.props.onDragStart(this.state),
+    // )
   }
 
   handleDragMove(event) {
-    this.props.onDragMove(normalizeEvent(event))
+    this.props.onDragMove(event)
   }
 
   handleDragEnd(event) {
@@ -88,7 +92,7 @@ class SinglePointerDrag extends Component {
     window.removeEventListener(move, this.handleDragMove)
     window.removeEventListener(end, this.handleDragEnd)
 
-    this.props.onDragEnd(normalizeEvent(event))
+    this.props.onDragEnd(event)
   }
 
   render() {
