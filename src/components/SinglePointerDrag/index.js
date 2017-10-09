@@ -24,6 +24,7 @@ class SinglePointerDrag extends Component {
       y: 0,
       dx: 0,
       dy: 0,
+      timeStamp: 0,
       targetStartX: 0,
       targetStartY: 0,
       targetX: 0,
@@ -36,12 +37,10 @@ class SinglePointerDrag extends Component {
   }
 
   componentWillMount() {
-    this.eventNames = { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
-
-    // this.eventNames =
-    //   'ontouchstart' in document || 'ontouchstart' in document.documentElement
-    //     ? { start: 'touchstart', move: 'touchmove', end: 'touchend' }
-    //     : { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
+    this.eventNames =
+      'ontouchstart' in document || 'ontouchstart' in document.documentElement
+        ? { start: 'touchstart', move: 'touchmove', end: 'touchend' }
+        : { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
   }
 
   componentWillUnmount() {
@@ -52,7 +51,7 @@ class SinglePointerDrag extends Component {
   }
 
   handleDragStart(event) {
-    const { currentTarget, clientX, clientY } = normalizeEvent(event)
+    const { currentTarget, clientX, clientY, timeStamp } = normalizeEvent(event)
     const { move, end } = this.eventNames
 
     const targetRect = currentTarget.getBoundingClientRect()
@@ -62,28 +61,43 @@ class SinglePointerDrag extends Component {
     window.addEventListener(move, this.handleDragMove)
     window.addEventListener(end, this.handleDragEnd)
 
-    this.props.onDragStart(event)
-
-    // this.setState(
-    //   () => ({
-    //     targetRect,
-    //     targetStartX,
-    //     targetStartY,
-    //     x: clientX,
-    //     y: clientY,
-    //     isDragging: true,
-    //     target: currentTarget,
-    //     startX: clientX,
-    //     startY: clientY,
-    //     targetX: targetStartX,
-    //     targetY: targetStartY,
-    //   }),
-    //   () => this.props.onDragStart(this.state),
-    // )
+    this.setState(
+      () => ({
+        targetRect,
+        targetStartX,
+        targetStartY,
+        timeStamp,
+        x: clientX,
+        y: clientY,
+        isDragging: true,
+        target: currentTarget,
+        startX: clientX,
+        startY: clientY,
+        targetX: targetStartX,
+        targetY: targetStartY,
+      }),
+      () => this.props.onDragStart({ ...this.state }),
+    )
   }
 
   handleDragMove(event) {
-    this.props.onDragMove(event)
+    const { clientX, clientY, timeStamp } = normalizeEvent(event)
+    const { startX, startY } = this.state
+    const dx = clientX - startX
+    const dy = clientY - startY
+
+    this.setState(
+      ({ targetX, targetY }) => ({
+        dx,
+        dy,
+        timeStamp,
+        x: clientX,
+        y: clientY,
+        targetX: targetX + dx,
+        targetY: targetY + dy,
+      }),
+      () => this.props.onDragMove({ ...this.state }),
+    )
   }
 
   handleDragEnd(event) {
@@ -102,7 +116,7 @@ class SinglePointerDrag extends Component {
         ? { onTouchStart: this.handleDragStart }
         : { onMouseDown: this.handleDragStart }
 
-    return this.props.children({ dragEvents, dragState: { ...this.state } })
+    return this.props.children({ dragEvents })
   }
 }
 
