@@ -5,8 +5,14 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <div className="patchBay">
     <div className="patchBay__row" key="titles">
       <div className="patchBay__label patchBay__label_horizontal">In / Out</div>
-      {fromNodes.map(({ id, label }) => (
-        <div className="patchBay__label patchBay__label_vertical" key={id}>
+      {fromNodes.map(({ id, label }, i) => (
+        <div
+          className={`patchBay__label patchBay__label_vertical ${i ===
+          fromNodes.length - 1
+            ? ' patchBay__rowItem_last'
+            : ''}`}
+          key={id}
+        >
           {label}
         </div>
       ))}
@@ -17,17 +23,22 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
           {toNode.label}
         </div>
         {fromNodes.map(
-          fromNode =>
+          (fromNode, i) =>
             fromNode.id === toNode.id ? (
               <div
                 key={fromNode.id}
-                className="patchBay__node patchBay__node_dummy"
+                className={`patchBay__node patchBay__node_dummy ${i ===
+                fromNodes.length - 1
+                  ? ' patchBay__rowItem_last'
+                  : ''}`}
               />
             ) : (
               <div
                 key={fromNode.id}
                 className={`patchBay__node ${checkActiveNode(fromNode, toNode)
                   ? ' patchBay__node_active'
+                  : ''} ${i === fromNodes.length - 1
+                  ? ' patchBay__rowItem_last'
                   : ''}`}
                 onClick={() => onNodeClick(fromNode, toNode)}
                 role="button"
@@ -60,12 +71,14 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
 
       .patchBay__label_vertical {
         width: 0.94rem;
-        margin: 0.94rem;
+        margin: 0 0.9rem;
+        text-align: center;
       }
 
       .patchBay__row {
         display: flex;
         align-items: center;
+        margin-bottom: 1rem;
       }
 
       .patchBay__node {
@@ -73,7 +86,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         height: 0.94rem;
         border-radius: 50%;
         border: 1px solid black;
-        margin: 0.9rem;
+        margin: 0 0.9rem;
         cursor: pointer;
         background-color: transparent;
         opacity: 0.1;
@@ -88,6 +101,10 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
       .patchBay__node_dummy {
         background-color: black;
         cursor: default;
+      }
+
+      .patchBay__rowItem_last {
+        margin-right: 0;
       }
     `}</style>
   </div>
