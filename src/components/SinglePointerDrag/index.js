@@ -3,11 +3,9 @@ import PropTypes from 'prop-types'
 
 const normalizeEvent = event => {
   const { currentTarget, touches, timeStamp } = event
-  const { clientX, clientY } = touches ? touches[0] : event
+  const { clientX, clientY } = touches && touches.length ? touches[0] : event
 
-  const normalized = { currentTarget, clientX, clientY, timeStamp }
-
-  return normalized
+  return { currentTarget, clientX, clientY, timeStamp }
 }
 
 class SinglePointerDrag extends Component {
@@ -39,15 +37,23 @@ class SinglePointerDrag extends Component {
   componentWillMount() {
     this.eventNames =
       'ontouchstart' in document || 'ontouchstart' in document.documentElement
-        ? { start: 'touchstart', move: 'touchmove', end: 'touchend' }
-        : { start: 'mousedown', move: 'mousemove', end: 'mouseup' }
+        ? {
+            start: ['touchstart'],
+            move: ['touchmove'],
+            end: ['touchend', 'touchcancel'],
+          }
+        : { start: ['mousedown'], move: ['mousemove'], end: ['mouseup'] }
   }
 
   componentWillUnmount() {
     const { move, end } = this.eventNames
 
-    window.removeEventListener(move, this.handleDragMove)
-    window.removeEventListener(end, this.handleDragEnd)
+    move.forEach(eventName =>
+      window.removeEventListener(eventName, this.handleDragMove),
+    )
+    end.forEach(eventName =>
+      window.removeEventListener(eventName, this.handleDragEnd),
+    )
   }
 
   handleDragStart(event) {
@@ -58,8 +64,12 @@ class SinglePointerDrag extends Component {
     const targetStartX = clientX - targetRect.top
     const targetStartY = clientY - targetRect.left
 
-    window.addEventListener(move, this.handleDragMove)
-    window.addEventListener(end, this.handleDragEnd)
+    move.forEach(eventName =>
+      window.addEventListener(eventName, this.handleDragMove),
+    )
+    end.forEach(eventName =>
+      window.addEventListener(eventName, this.handleDragEnd),
+    )
 
     this.setState(
       () => ({
@@ -82,19 +92,16 @@ class SinglePointerDrag extends Component {
 
   handleDragMove(event) {
     const { clientX, clientY, timeStamp } = normalizeEvent(event)
-    const { startX, startY } = this.state
-    const dx = clientX - startX
-    const dy = clientY - startY
 
     this.setState(
-      ({ targetX, targetY }) => ({
-        dx,
-        dy,
+      ({ targetRect, x, y }) => ({
         timeStamp,
+        dx: clientX - x,
+        dy: clientY - y,
         x: clientX,
         y: clientY,
-        targetX: targetX + dx,
-        targetY: targetY + dy,
+        targetX: clientX - targetRect.left,
+        targetY: clientY - targetRect.top,
       }),
       () => this.props.onDragMove({ ...this.state }),
     )
@@ -102,17 +109,37 @@ class SinglePointerDrag extends Component {
 
   handleDragEnd(event) {
     const { move, end } = this.eventNames
+    let { clientX, clientY } = normalizeEvent(event)
 
-    window.removeEventListener(move, this.handleDragMove)
-    window.removeEventListener(end, this.handleDragEnd)
+    if (clientX === undefined) ({ x: clientX } = this.state)
+    if (clientY === undefined) ({ y: clientY } = this.state)
 
-    this.props.onDragEnd(event)
+    move.forEach(eventName =>
+      window.removeEventListener(eventName, this.handleDragMove),
+    )
+    end.forEach(eventName =>
+      window.removeEventListener(eventName, this.handleDragEnd),
+    )
+
+    this.setState(
+      ({ targetRect, x, y }) => ({
+        dx: clientX - x,
+        dy: clientY - y,
+        x: clientX,
+        y: clientY,
+        timeStamp: event.timeStamp,
+        isDragging: false,
+        targetX: clientX - targetRect.left,
+        targetY: clientY - targetRect.top,
+      }),
+      () => this.props.onDragEnd({ ...this.state }),
+    )
   }
 
   render() {
-    const { start } = this.eventNames
+    const { start: [startEventName] } = this.eventNames
     const dragEvents =
-      start === 'touchstart'
+      startEventName === 'touchstart'
         ? { onTouchStart: this.handleDragStart }
         : { onMouseDown: this.handleDragStart }
 

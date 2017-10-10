@@ -10,13 +10,11 @@ class Knob extends PureComponent {
     this.handleDragMove = this.handleDragMove.bind(this)
   }
 
-  handleDragMove(event) {
+  handleDragMove({ dx }) {
     if (!this.knobNode) return
 
-    const { movementX } = event
-
     this.props.onChange(
-      clamp(0, 1, this.props.value + movementX / this.knobNode.offsetWidth),
+      clamp(0, 1, this.props.value + dx / this.knobNode.offsetWidth),
     )
   }
 

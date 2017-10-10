@@ -18,10 +18,10 @@ class Slider extends PureComponent {
     this.setState({ dragStartTime: timeStamp })
   }
 
-  handleDragMove(event) {
+  handleDragMove({ dx, dy }) {
     const { orient, value } = this.props
     const vert = orient === 'vertical'
-    const movement = vert ? event.movementY : event.movementX
+    const movement = vert ? dy : dx
     const dim = vert
       ? this.barContainer.offsetHeight * -1
       : this.barContainer.offsetWidth
@@ -29,17 +29,14 @@ class Slider extends PureComponent {
     this.props.onChange(clamp(0, 1, movement / dim + value))
   }
 
-  handleDragEnd(event) {
-    const movement =
-      this.props.orient === 'vertical' ? event.movementY : event.movementX
-    const clickTime = event.timeStamp - this.state.dragStartTime < 300
+  handleDragEnd({ dx, dy, timeStamp, targetX, targetY }) {
+    const movement = this.props.orient === 'vertical' ? dy : dx
+    const clickTime = timeStamp - this.state.dragStartTime < 300
     const clickMove = movement < 4
 
-    if (clickTime && clickMove)
-      this.registerClick({
-        offsetX: event.offsetX,
-        offsetY: event.offsetY,
-      })
+    if (clickTime && clickMove) {
+      this.registerClick({ offsetX: targetX, offsetY: targetY })
+    }
   }
 
   registerClick({ offsetX, offsetY }) {
