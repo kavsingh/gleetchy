@@ -42,9 +42,9 @@ class LoopRegion extends Component {
         }}
       >
         <SinglePointerDrag onDragMove={this.handleStartHandleDrag}>
-          {({ dragEvents }) => (
+          {({ dragListeners }) => (
             <div
-              {...dragEvents}
+              {...dragListeners}
               role="presentation"
               className="loopRegion__handleContainer"
               style={{ left: `${loopStart * 100}%` }}
@@ -54,9 +54,9 @@ class LoopRegion extends Component {
           )}
         </SinglePointerDrag>
         <SinglePointerDrag onDragMove={this.handleEndHandleDrag}>
-          {({ dragEvents }) => (
+          {({ dragListeners }) => (
             <div
-              {...dragEvents}
+              {...dragListeners}
               role="presentation"
               className="loopRegion__handleContainer"
               style={{ left: `${loopEnd * 100}%` }}
@@ -71,9 +71,9 @@ class LoopRegion extends Component {
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           <SinglePointerDrag onDragMove={this.handleLoopRegionDrag}>
-            {({ dragEvents }) => (
+            {({ dragListeners }) => (
               <div
-                {...dragEvents}
+                {...dragListeners}
                 role="presentation"
                 className="loopRegion__activeRegion"
                 style={{

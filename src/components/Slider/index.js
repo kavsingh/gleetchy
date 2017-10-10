@@ -66,9 +66,9 @@ class Slider extends PureComponent {
           onDragMove={this.handleDragMove}
           onDragEnd={this.handleDragEnd}
         >
-          {({ dragEvents }) => (
+          {({ dragListeners }) => (
             <div
-              {...dragEvents}
+              {...dragListeners}
               role="presentation"
               className="slider__barContainer"
               ref={c => {

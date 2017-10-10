@@ -23,11 +23,11 @@ class Knob extends PureComponent {
 
     return (
       <SinglePointerDrag onDragMove={this.handleDragMove}>
-        {({ dragEvents }) => (
+        {({ dragListeners }) => (
           <div className="knob" title={renderTitle()}>
             <div className="knob__label">{renderLabel()}</div>
             <div
-              {...dragEvents}
+              {...dragListeners}
               role="presentation"
               className="knob__knobContainer"
               style={{ width: radius, height: radius }}

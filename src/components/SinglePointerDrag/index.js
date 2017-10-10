@@ -138,12 +138,12 @@ class SinglePointerDrag extends Component {
 
   render() {
     const { start: [startEventName] } = this.eventNames
-    const dragEvents =
+    const dragListeners =
       startEventName === 'touchstart'
         ? { onTouchStart: this.handleDragStart }
         : { onMouseDown: this.handleDragStart }
 
-    return this.props.children({ dragEvents })
+    return this.props.children({ dragListeners })
   }
 }
 
