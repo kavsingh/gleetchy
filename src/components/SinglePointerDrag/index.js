@@ -27,6 +27,8 @@ class SinglePointerDrag extends Component {
       targetStartY: 0,
       targetX: 0,
       targetY: 0,
+      startTime: 0,
+      duration: 0,
     }
 
     this.handleDragStart = this.handleDragStart.bind(this)
@@ -80,6 +82,8 @@ class SinglePointerDrag extends Component {
         x: clientX,
         y: clientY,
         isDragging: true,
+        duration: 0,
+        startTime: timeStamp,
         target: currentTarget,
         startX: clientX,
         startY: clientY,
@@ -94,12 +98,13 @@ class SinglePointerDrag extends Component {
     const { clientX, clientY, timeStamp } = normalizeEvent(event)
 
     this.setState(
-      ({ targetRect, x, y }) => ({
+      ({ targetRect, x, y, startTime }) => ({
         timeStamp,
         dx: clientX - x,
         dy: clientY - y,
         x: clientX,
         y: clientY,
+        duration: timeStamp - startTime,
         targetX: clientX - targetRect.left,
         targetY: clientY - targetRect.top,
       }),
@@ -122,12 +127,13 @@ class SinglePointerDrag extends Component {
     )
 
     this.setState(
-      ({ targetRect, x, y }) => ({
+      ({ targetRect, x, y, startTime }) => ({
         dx: clientX - x,
         dy: clientY - y,
         x: clientX,
         y: clientY,
         timeStamp: event.timeStamp,
+        duration: event.timeStamp - startTime,
         isDragging: false,
         targetX: clientX - targetRect.left,
         targetY: clientY - targetRect.top,

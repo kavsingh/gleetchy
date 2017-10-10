@@ -7,15 +7,8 @@ class Slider extends PureComponent {
   constructor(...args) {
     super(...args)
 
-    this.state = { dragStartTime: 0 }
-
-    this.handleDragStart = this.handleDragStart.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
     this.handleDragEnd = this.handleDragEnd.bind(this)
-  }
-
-  handleDragStart({ timeStamp }) {
-    this.setState({ dragStartTime: timeStamp })
   }
 
   handleDragMove({ dx, dy }) {
@@ -29,20 +22,14 @@ class Slider extends PureComponent {
     this.props.onChange(clamp(0, 1, movement / dim + value))
   }
 
-  handleDragEnd({ dx, dy, timeStamp, targetX, targetY }) {
+  handleDragEnd({ dx, dy, duration, targetX, targetY }) {
     const movement = this.props.orient === 'vertical' ? dy : dx
-    const clickTime = timeStamp - this.state.dragStartTime < 300
-    const clickMove = movement < 4
 
-    if (clickTime && clickMove) {
-      this.registerClick({ offsetX: targetX, offsetY: targetY })
-    }
-  }
+    if (duration > 300 || movement > 4) return
 
-  registerClick({ offsetX, offsetY }) {
     const { orient } = this.props
     const vert = orient === 'vertical'
-    const offset = vert ? offsetY : offsetX
+    const offset = vert ? targetY : targetX
     const dim = vert
       ? this.barContainer.offsetHeight
       : this.barContainer.offsetWidth
@@ -62,7 +49,6 @@ class Slider extends PureComponent {
       >
         <div className="slider__label">{renderLabel(value)}</div>
         <SinglePointerDrag
-          onDragStart={this.handleDragStart}
           onDragMove={this.handleDragMove}
           onDragEnd={this.handleDragEnd}
         >
