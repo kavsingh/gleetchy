@@ -9,7 +9,10 @@ const PWAManifest = require('webpack-pwa-manifest')
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === true
 const fromRoot = path.resolve.bind(path, __dirname)
-const publicPath = '/'
+// Setting public path to '/' means everything will attempt lookup
+// from root of hosting environment, so we can't just drop dist builds into a
+// subfolder of some other thing.
+const publicPath = ''
 
 const themeColor = '#fff'
 
