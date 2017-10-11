@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { pipe, tap } from 'ramda'
+import { cancelEvent } from '../../util'
 
 const normalizeEvent = event => {
   const { currentTarget, touches, timeStamp } = event
@@ -7,6 +9,8 @@ const normalizeEvent = event => {
 
   return { currentTarget, clientX, clientY, timeStamp }
 }
+
+const cancelAndNormalizeEvent = pipe(tap(cancelEvent), normalizeEvent)
 
 class SinglePointerDrag extends Component {
   constructor(...args) {
@@ -59,7 +63,12 @@ class SinglePointerDrag extends Component {
   }
 
   handleDragStart(event) {
-    const { currentTarget, clientX, clientY, timeStamp } = normalizeEvent(event)
+    const {
+      currentTarget,
+      clientX,
+      clientY,
+      timeStamp,
+    } = cancelAndNormalizeEvent(event)
     const { move, end } = this.eventNames
 
     const targetRect = currentTarget.getBoundingClientRect()
@@ -95,7 +104,7 @@ class SinglePointerDrag extends Component {
   }
 
   handleDragMove(event) {
-    const { clientX, clientY, timeStamp } = normalizeEvent(event)
+    const { clientX, clientY, timeStamp } = cancelAndNormalizeEvent(event)
 
     this.setState(
       ({ targetRect, x, y, startTime }) => ({
@@ -114,7 +123,7 @@ class SinglePointerDrag extends Component {
 
   handleDragEnd(event) {
     const { move, end } = this.eventNames
-    let { clientX, clientY } = normalizeEvent(event)
+    let { clientX, clientY } = cancelAndNormalizeEvent(event)
 
     if (clientX === undefined) ({ x: clientX } = this.state)
     if (clientY === undefined) ({ y: clientY } = this.state)
