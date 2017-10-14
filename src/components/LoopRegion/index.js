@@ -99,10 +99,9 @@ class LoopRegion extends Component {
             position: absolute;
             height: 100%;
             top: 0;
-            z-index: 2;
             cursor: ew-resize;
             width: 10px;
-            transform: translateX(-5px);
+            z-index: 1;
           }
 
           .loopRegion__regionsContainer {
@@ -111,7 +110,6 @@ class LoopRegion extends Component {
             height: 100%;
             top: 0;
             left: 0;
-            z-index: 1;
           }
 
           .loopRegion__activeRegion,
@@ -122,10 +120,12 @@ class LoopRegion extends Component {
           }
 
           .loopRegion__activeRegion {
+            z-index: 2;
             cursor: move;
           }
 
           .loopRegion__inactiveRegion {
+            z-index: 0;
             background-color: rgba(255, 255, 255, 0.8);
           }
         `}</style>
