@@ -7,27 +7,47 @@ import SVGArc from '../SVGArc'
 class Knob extends PureComponent {
   constructor(...args) {
     super(...args)
+
+    this.state = { axis: undefined }
+
+    this.resetAxis = this.resetAxis.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
   }
 
+  resetAxis() {
+    this.setState(() => ({ axis: undefined }))
+  }
+
   handleDragMove({ dx, dy }) {
+    const { axis } = this.state
     const { knobNode } = this
 
     if (!knobNode) return
 
+    const moveAxis = axis || (Math.abs(dx) > Math.abs(dy) ? 'x' : 'y')
+
     const move =
-      Math.abs(dx) > Math.abs(dy)
-        ? dx / knobNode.offsetWidth
-        : -dy / knobNode.offsetHeight
+      moveAxis === 'x' ? dx / knobNode.offsetWidth : -dy / knobNode.offsetHeight
 
     this.props.onChange(clamp(0, 1, this.props.value + move))
+
+    if (!axis) this.setState(() => ({ axis: moveAxis }))
   }
 
   render() {
+    const { axis } = this.state
     const { value, radius, renderTitle, renderLabel, renderValue } = this.props
 
+    const cursorStyles = axis
+      ? { cursor: axis === 'x' ? 'ew-resize' : 'ns-resize' }
+      : {}
+
     return (
-      <SinglePointerDrag onDragMove={this.handleDragMove}>
+      <SinglePointerDrag
+        onDragStart={this.resetAxis}
+        onDragEnd={this.resetAxis}
+        onDragMove={this.handleDragMove}
+      >
         {({ dragListeners }) => (
           <div className="knob" title={renderTitle()}>
             <div className="knob__label">{renderLabel()}</div>
@@ -35,7 +55,11 @@ class Knob extends PureComponent {
               {...dragListeners}
               role="presentation"
               className="knob__knobContainer"
-              style={{ width: radius, height: radius }}
+              style={{
+                width: radius,
+                height: radius,
+                ...cursorStyles,
+              }}
               ref={c => {
                 this.knobNode = c
               }}
