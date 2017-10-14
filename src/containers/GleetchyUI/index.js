@@ -89,18 +89,20 @@ const GleetchyUI = ({
     {loopers.map(
       (
         {
-          loopStart,
-          loopEnd,
-          gain,
-          fileName,
-          fileType,
-          audioBuffer,
           id,
           label,
-          playbackRate,
-          eqLow,
-          eqMid,
-          eqHigh,
+          props: {
+            loopStart,
+            loopEnd,
+            gain,
+            fileName,
+            fileType,
+            audioBuffer,
+            playbackRate,
+            eqLow,
+            eqMid,
+            eqHigh,
+          },
         },
         index,
       ) => (
@@ -163,14 +165,14 @@ const GleetchyUI = ({
         <Panel style={{ flexGrow: 1, flexShrink: 0 }}>
           <Delay
             isActive={activeFx.includes('delay')}
-            wetDryRatio={delay.wetDryRatio}
-            delayTime={delay.delayTime}
+            wetDryRatio={delay.props.wetDryRatio}
+            delayTime={delay.props.delayTime}
             onDelayTimeChange={delayTime => updateDelay({ delayTime })}
             onWetDryRatioChange={wetDryRatio => updateDelay({ wetDryRatio })}
           />
           <Reverb
             isActive={activeFx.includes('reverb')}
-            wetDryRatio={reverb.wetDryRatio}
+            wetDryRatio={reverb.props.wetDryRatio}
             onWetDryRatioChange={wetDryRatio => updateReverb({ wetDryRatio })}
           />
         </Panel>

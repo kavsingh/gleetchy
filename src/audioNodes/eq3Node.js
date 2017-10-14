@@ -1,4 +1,5 @@
 import { always, curry, pick } from 'ramda'
+import { FX_EQ } from '../constants/nodeTypes'
 import { createConnect, createDisconnect } from './connection'
 
 const defaultProps = {
@@ -39,6 +40,8 @@ export const createEq3Node = curry((audioContext, initProps) => {
   transferProps()
 
   return {
+    type: FX_EQ,
+
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
       transferProps()

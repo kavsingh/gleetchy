@@ -1,4 +1,5 @@
 import { curry, pick } from 'ramda'
+import { INS_LOOPER } from '../constants/nodeTypes'
 import { createEq3Node } from './eq3Node'
 import { createConnect, createDisconnect } from './connection'
 
@@ -62,6 +63,8 @@ export const createLooperNode = curry((audioContext, initProps) => {
   }
 
   return {
+    type: INS_LOOPER,
+
     play() {
       if (isPlaying) return
 

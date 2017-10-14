@@ -1,8 +1,10 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { pick, tryCatch } from 'ramda'
+import { tryCatch, cond, equals, pipe, prop, always } from 'ramda'
 import { warn } from '../../util'
+import { isInstrument } from '../../util/audio'
+import { FX_DELAY, FX_REVERB, INS_LOOPER } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
@@ -14,9 +16,7 @@ import {
   GRAPH_UPDATE,
 } from '../../state/gleetchy/actionTypes'
 import {
-  loopersSelector,
-  delaySelector,
-  reverbSelector,
+  nodesSelector,
   engineEventsSelector,
   connectionsSelector,
 } from '../../state/gleetchy/selectors'
@@ -28,18 +28,16 @@ import { createLooperNode } from '../../audioNodes/looperNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 import { createReverbNode } from '../../audioNodes/reverbNode'
 
-const pickLooperProps = pick([
-  'loopStart',
-  'loopEnd',
-  'gain',
-  'playbackRate',
-  'audioBuffer',
-  'eqMid',
-  'eqLow',
-  'eqHigh',
-])
-
 const setNodeProps = tryCatch(({ node, props }) => node.set(props), warn)
+
+const getNodeCreator = pipe(
+  prop('type'),
+  cond([
+    [equals(FX_DELAY), always(createDelayNode)],
+    [equals(FX_REVERB), always(createReverbNode)],
+    [equals(INS_LOOPER), always(createLooperNode)],
+  ]),
+)
 
 class GleetchyEngine extends Component {
   constructor(...args) {
@@ -52,26 +50,21 @@ class GleetchyEngine extends Component {
 
     this.audioContext = new AudioContext()
 
-    const { loopers } = this.props
-    const looperIds = loopers.map(({ id }) => id)
+    this.audioNodes = this.props.nodes.reduce(
+      (acc, node) => {
+        const nodeCreator = getNodeCreator(node)
 
-    this.audioNodes = loopers.reduce(
-      (acc, looper) => {
-        acc[looper.id] = createLooperNode(
-          this.audioContext,
-          pickLooperProps(looper),
-        )
+        acc[node.id] = nodeCreator(this.audioContext, node.props)
 
         return acc
       },
-      {
-        mainOut: this.audioContext.destination,
-        delay: createDelayNode(this.audioContext, this.props.delay),
-        reverb: createReverbNode(this.audioContext, this.props.reverb),
-      },
+      { mainOut: this.audioContext.destination },
     )
 
-    this.forEachLooper = fn => looperIds.forEach(id => fn(this.audioNodes[id]))
+    this.forEachInstrument = cb =>
+      Object.values(this.audioNodes)
+        .filter(isInstrument)
+        .forEach(cb)
 
     this.updateAudioGraph()
   }
@@ -105,29 +98,37 @@ class GleetchyEngine extends Component {
     })
   }
 
+  updateNode({ id, props }) {
+    const node = this.audioNodes[id]
+
+    if (!node) return
+
+    setNodeProps({ node, props })
+  }
+
   processAudioEvent({ type, payload = {} }) {
     switch (type) {
       case PLAYBACK_START:
-        this.forEachLooper(node => node.play())
+        this.forEachInstrument(node => node.play())
         break
       case PLAYBACK_STOP:
-        this.forEachLooper(node => node.stop())
+        this.forEachInstrument(node => node.stop())
         break
       case LOOPER_UPDATE_PROPS:
-        this.updateLooper(payload)
+        this.updateNode(payload)
         break
       case LOOPER_LOAD_FILE_COMPLETE:
         this.props.decodeLooperFile(this.audioContext, payload.id, payload.file)
         break
       case LOOPER_LOAD_FILE_DECODE_COMPLETE:
-        this.updateLooper(payload)
+        this.updateNode(payload)
         break
       case DELAY_UPDATE_PROPS: {
-        setNodeProps({ node: this.audioNodes.delay, props: payload.props })
+        this.updateNode({ id: 'delay', props: payload.props })
         break
       }
       case REVERB_UPDATE_PROPS:
-        setNodeProps({ node: this.audioNodes.reverb, props: payload.props })
+        this.updateNode({ id: 'reverb', props: payload.props })
         break
       case GRAPH_UPDATE:
         this.updateAudioGraph()
@@ -135,14 +136,6 @@ class GleetchyEngine extends Component {
       default:
         break
     }
-  }
-
-  updateLooper({ id, props }) {
-    const looperNode = this.audioNodes[id]
-
-    if (!looperNode) return
-
-    setNodeProps({ node: looperNode, props })
   }
 
   /* eslint-disable class-methods-use-this */
@@ -154,9 +147,7 @@ class GleetchyEngine extends Component {
 
 GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
-  loopers: PropTypes.arrayOf(PropTypes.shape({})),
-  delay: PropTypes.shape({}),
-  reverb: PropTypes.shape({}),
+  nodes: PropTypes.arrayOf(PropTypes.shape({})),
   connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   decodeLooperFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
@@ -164,9 +155,7 @@ GleetchyEngine.propTypes = {
 
 GleetchyEngine.defaultProps = {
   engineEvents: [],
-  loopers: [],
-  delay: {},
-  reverb: {},
+  nodes: [],
   connections: [],
   decodeLooperFile: () => {},
   clearEngineEvents: () => {},
@@ -175,9 +164,7 @@ GleetchyEngine.defaultProps = {
 export default connect(
   state => ({
     engineEvents: engineEventsSelector(state),
-    loopers: loopersSelector(state),
-    delay: delaySelector(state),
-    reverb: reverbSelector(state),
+    nodes: nodesSelector(state),
     connections: connectionsSelector(state),
   }),
   dispatch => ({

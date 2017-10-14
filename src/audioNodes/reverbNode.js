@@ -1,5 +1,6 @@
 import { curry, pick } from 'ramda'
 import reverbImpulse from '../media/impulse_reverb.wav'
+import { FX_REVERB } from '../constants/nodeTypes'
 import { decodeAudioDataP } from '../util/audio'
 import { createConnect, createDisconnect } from './connection'
 
@@ -45,6 +46,8 @@ export const createReverbNode = curry((audioContext, initProps) => {
   })
 
   return {
+    type: FX_REVERB,
+
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
       updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)

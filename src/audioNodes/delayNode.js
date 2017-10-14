@@ -1,5 +1,6 @@
 import { curry, pick } from 'ramda'
 import { DELAY_UPPER_BOUND } from '../constants/audio'
+import { FX_DELAY } from '../constants/nodeTypes'
 import { createConnect, createDisconnect } from './connection'
 
 const defaultProps = {
@@ -36,6 +37,8 @@ export const createDelayNode = curry((audioContext, initProps) => {
   const getOutNode = () => outNode
 
   return {
+    type: FX_DELAY,
+
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
 

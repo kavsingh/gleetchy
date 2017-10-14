@@ -1,18 +1,38 @@
 import { createSelector } from 'reselect'
-import { identity } from 'ramda'
+import { identity, filter, pipe, head, propEq } from 'ramda'
+import { FX_DELAY, FX_REVERB, INS_LOOPER } from '../../constants/nodeTypes'
+import { isFx, isInstrument } from '../../util/audio'
 
-const loopersStateSelector = state => state.gleetchy.loopers
-const delayStateSelector = state => state.gleetchy.delay
-const reverbStateSelector = state => state.gleetchy.reverb
+const typeEquals = propEq('type')
+
+const nodeStateSelector = state => state.gleetchy.nodes
 const isPlayingStateSelector = state => state.gleetchy.isPlaying
 const engineEventsStateSelector = state => state.gleetchy.engineEvents
 const connectionsStateSelector = state => state.gleetchy.connections
 
-export const loopersSelector = createSelector(loopersStateSelector, identity)
+export const nodesSelector = createSelector(nodeStateSelector, identity)
 
-export const delaySelector = createSelector(delayStateSelector, identity)
+export const fxSelector = createSelector(nodesSelector, filter(isFx))
 
-export const reverbSelector = createSelector(reverbStateSelector, identity)
+export const instrumentsSelector = createSelector(
+  nodesSelector,
+  filter(isInstrument),
+)
+
+export const loopersSelector = createSelector(
+  instrumentsSelector,
+  filter(typeEquals(INS_LOOPER)),
+)
+
+export const delaySelector = createSelector(
+  fxSelector,
+  pipe(filter(typeEquals(FX_DELAY)), head),
+)
+
+export const reverbSelector = createSelector(
+  fxSelector,
+  pipe(filter(typeEquals(FX_REVERB)), head),
+)
 
 export const isPlayingSelector = createSelector(
   isPlayingStateSelector,

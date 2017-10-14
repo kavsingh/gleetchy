@@ -1,5 +1,7 @@
 import { equals } from 'ramda'
 import { warn } from '../../util'
+import { FX_REVERB, FX_DELAY, INS_LOOPER } from '../../constants/nodeTypes'
+import nodeProps from '../../constants/nodeProps'
 import {
   ENGINE_EVENTS_CLEAR,
   PLAYBACK_START,
@@ -19,49 +21,43 @@ const defaultState = {
   isPlaying: false,
   engineEvents: [],
   connections: [['loop0', 'mainOut'], ['loop1', 'mainOut']],
-  delay: { delayTime: 0.6, wetDryRatio: 0.5 },
-  reverb: { wetDryRatio: 0.5 },
-  loopers: [
+  nodes: [
+    {
+      id: 'reverb',
+      label: 'Reverb',
+      type: FX_REVERB,
+      props: { ...nodeProps[FX_REVERB] },
+    },
+    {
+      id: 'delay',
+      label: 'Delay',
+      type: FX_DELAY,
+      props: { ...nodeProps[FX_DELAY] },
+    },
     {
       id: 'loop0',
       label: 'Loop 0',
-      fileName: '',
-      fileType: '',
-      audioBuffer: undefined,
-      gain: 0.5,
-      loopStart: 0,
-      loopEnd: 1,
-      playbackRate: 1,
-      eqLow: 0,
-      eqMid: 0,
-      eqHigh: 0,
+      type: INS_LOOPER,
+      props: { ...nodeProps[INS_LOOPER] },
     },
     {
       id: 'loop1',
       label: 'Loop 1',
-      fileName: '',
-      fileType: '',
-      audioBuffer: undefined,
-      gain: 0.5,
-      loopStart: 0,
-      loopEnd: 1,
-      playbackRate: 1,
-      eqLow: 0,
-      eqMid: 0,
-      eqHigh: 0,
+      type: INS_LOOPER,
+      props: { ...nodeProps[INS_LOOPER] },
     },
   ],
 }
 
-const updateLooper = (state, { id, props = {} }) => {
-  const loopers = [...state.loopers]
-  const looperState = state.loopers.find(looper => looper.id === id)
+const updateNode = (state, { id, props = {} }) => {
+  const nodes = [...state.nodes]
+  const nodeState = nodes.find(node => node.id === id)
 
-  if (!looperState) return state
+  if (!nodeState) return state
 
-  Object.assign(looperState, props)
+  Object.assign(nodeState.props, props)
 
-  return { ...state, loopers }
+  return { ...state, nodes }
 }
 
 const updateConnections = (state, connection, type) => {
@@ -108,7 +104,7 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       }
     }
     case LOOPER_UPDATE_PROPS: {
-      const nextState = updateLooper(state, payload)
+      const nextState = updateNode(state, payload)
 
       if (nextState === state) return state
 
@@ -124,7 +120,7 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       }
     case LOOPER_LOAD_FILE_DECODE_COMPLETE:
       return {
-        ...updateLooper(state, payload),
+        ...updateNode(state, payload),
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     case LOOPER_LOAD_FILE_ERROR:
@@ -132,15 +128,13 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       return state
     case DELAY_UPDATE_PROPS: {
       return {
-        ...state,
-        delay: { ...state.delay, ...payload.props },
+        ...updateNode(state, { id: 'delay', props: payload.props }),
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     }
     case REVERB_UPDATE_PROPS: {
       return {
-        ...state,
-        reverb: { ...state.reverb, ...payload.props },
+        ...updateNode(state, { id: 'reverb', props: payload.props }),
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     }
