@@ -21,16 +21,16 @@ const defaultState = {
   connections: [['loop0', 'mainOut'], ['loop1', 'mainOut']],
   nodes: [
     {
-      id: 'reverb',
-      label: 'Reverb',
+      id: 'reverb0',
+      label: 'Reverb 0',
       type: FX_REVERB,
       props: { ...nodeProps[FX_REVERB] },
     },
     {
-      id: 'delay',
-      label: 'Delay',
-      type: FX_DELAY,
-      props: { ...nodeProps[FX_DELAY] },
+      id: 'reverb1',
+      label: 'Reverb 1',
+      type: FX_REVERB,
+      props: { ...nodeProps[FX_REVERB] },
     },
     {
       id: 'loop0',

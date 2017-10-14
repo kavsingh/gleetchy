@@ -1,27 +1,66 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
+import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
+import { fxSelector, activeFXSelector } from '../../state/gleetchy/selectors'
+import { nodeUpdateProps } from '../../state/gleetchy/actions'
+import Delay from '../../components/Delay'
+import Reverb from '../../components/Reverb'
 
-const FX = ({ style }) => (
-  <div className="fX" style={style}>
-    FX
+const FX = ({ fx, activeFx, updateFx }) => (
+  <div className="fx">
+    {fx.map(({ id, type, props, label }) => {
+      if (type === FX_DELAY) {
+        return (
+          <Delay
+            key={id}
+            label={label}
+            isActive={activeFx.includes(id)}
+            wetDryRatio={props.wetDryRatio}
+            delayTime={props.delayTime}
+            onDelayTimeChange={delayTime => updateFx(id, { delayTime })}
+            onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
+          />
+        )
+      } else if (type === FX_REVERB) {
+        return (
+          <Reverb
+            key={id}
+            label={label}
+            isActive={activeFx.includes(id)}
+            wetDryRatio={props.wetDryRatio}
+            onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
+          />
+        )
+      }
+      return null
+    })}
     <style jsx>{`
-      .fX {
-        width: 100%;
-        height: 100%;
+      .fx {
         display: flex;
-        align-items: center;
-        justify-content: center;
       }
     `}</style>
   </div>
 )
 
 FX.propTypes = {
-  style: PropTypes.shape({}),
+  fx: PropTypes.arrayOf(PropTypes.shape({})),
+  activeFx: PropTypes.arrayOf(PropTypes.string),
+  updateFx: PropTypes.func,
 }
 
 FX.defaultProps = {
-  style: {},
+  fx: [],
+  activeFx: [],
+  updateFx: () => {},
 }
 
-export default FX
+export default connect(
+  state => ({
+    fx: fxSelector(state),
+    activeFx: activeFXSelector(state),
+  }),
+  dispatch => ({
+    updateFx: (id, props) => dispatch(nodeUpdateProps(id, props)),
+  }),
+)(FX)
