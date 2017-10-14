@@ -12,6 +12,7 @@ class Knob extends PureComponent {
 
     this.resetAxis = this.resetAxis.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
+    this.handleDoubleClick = this.handleDoubleClick.bind(this)
   }
 
   resetAxis() {
@@ -34,6 +35,10 @@ class Knob extends PureComponent {
     if (!axis) this.setState(() => ({ axis: moveAxis }))
   }
 
+  handleDoubleClick() {
+    this.props.onChange(this.props.defaultValue)
+  }
+
   render() {
     const { axis } = this.state
     const { value, radius, renderTitle, renderLabel, renderValue } = this.props
@@ -53,6 +58,7 @@ class Knob extends PureComponent {
             <div className="knob__label">{renderLabel()}</div>
             <div
               {...dragListeners}
+              onDoubleClick={this.handleDoubleClick}
               role="presentation"
               className="knob__knobContainer"
               style={{
@@ -134,6 +140,7 @@ class Knob extends PureComponent {
 
 Knob.propTypes = {
   value: PropTypes.number,
+  defaultValue: PropTypes.number,
   radius: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
   renderTitle: PropTypes.func,
   renderLabel: PropTypes.func,
@@ -143,6 +150,7 @@ Knob.propTypes = {
 
 Knob.defaultProps = {
   value: 0.5,
+  defaultValue: 0.5,
   radius: '2.4em',
   renderTitle: () => {},
   renderLabel: () => {},
