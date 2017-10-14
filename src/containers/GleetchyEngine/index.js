@@ -8,11 +8,9 @@ import { FX_DELAY, FX_REVERB, INS_LOOPER } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
-  LOOPER_UPDATE_PROPS,
+  NODE_UPDATE_PROPS,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
-  DELAY_UPDATE_PROPS,
-  REVERB_UPDATE_PROPS,
   GRAPH_UPDATE,
 } from '../../state/gleetchy/actionTypes'
 import {
@@ -114,7 +112,7 @@ class GleetchyEngine extends Component {
       case PLAYBACK_STOP:
         this.forEachInstrument(node => node.stop())
         break
-      case LOOPER_UPDATE_PROPS:
+      case NODE_UPDATE_PROPS:
         this.updateNode(payload)
         break
       case LOOPER_LOAD_FILE_COMPLETE:
@@ -122,13 +120,6 @@ class GleetchyEngine extends Component {
         break
       case LOOPER_LOAD_FILE_DECODE_COMPLETE:
         this.updateNode(payload)
-        break
-      case DELAY_UPDATE_PROPS: {
-        this.updateNode({ id: 'delay', props: payload.props })
-        break
-      }
-      case REVERB_UPDATE_PROPS:
-        this.updateNode({ id: 'reverb', props: payload.props })
         break
       case GRAPH_UPDATE:
         this.updateAudioGraph()

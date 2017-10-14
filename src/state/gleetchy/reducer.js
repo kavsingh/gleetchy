@@ -6,12 +6,10 @@ import {
   ENGINE_EVENTS_CLEAR,
   PLAYBACK_START,
   PLAYBACK_STOP,
-  LOOPER_UPDATE_PROPS,
+  NODE_UPDATE_PROPS,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
-  DELAY_UPDATE_PROPS,
-  REVERB_UPDATE_PROPS,
   CONNECTION_ADD,
   CONNECTION_REMOVE,
   GRAPH_UPDATE,
@@ -103,7 +101,7 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     }
-    case LOOPER_UPDATE_PROPS: {
+    case NODE_UPDATE_PROPS: {
       const nextState = updateNode(state, payload)
 
       if (nextState === state) return state
@@ -126,18 +124,6 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
     case LOOPER_LOAD_FILE_ERROR:
       warn(payload.error, type, payload)
       return state
-    case DELAY_UPDATE_PROPS: {
-      return {
-        ...updateNode(state, { id: 'delay', props: payload.props }),
-        engineEvents: [...state.engineEvents, { type, payload }],
-      }
-    }
-    case REVERB_UPDATE_PROPS: {
-      return {
-        ...updateNode(state, { id: 'reverb', props: payload.props }),
-        engineEvents: [...state.engineEvents, { type, payload }],
-      }
-    }
     case CONNECTION_ADD: {
       const nextState = updateConnections(state, payload.connection, 'add')
 

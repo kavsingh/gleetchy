@@ -4,16 +4,11 @@ import { connect } from 'react-redux'
 import { equals, head } from 'ramda'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 import {
-  looperUpdateProps,
-  looperSelectAudioFile,
-  looperReceiveAudioFile,
   playbackToggle,
-  delayUpdateProps,
-  reverbUpdateProps,
+  nodeUpdateProps,
   connectionToggle,
 } from '../../state/gleetchy/actions'
 import {
-  loopersSelector,
   delaySelector,
   reverbSelector,
   isPlayingSelector,
@@ -22,13 +17,11 @@ import {
 } from '../../state/gleetchy/selectors'
 import Panel from '../../components/Panel'
 import PlayPauseButton from '../../components/PlayPauseButton'
-import Looper from '../../components/Looper'
-import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
-import LooperEqControls from '../../components/Looper/LooperEqControls'
 import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import PatchBay from '../../components/PatchBay'
+import Instruments from '../Instruments'
 
 const checkActiveNode = (from, to, connections) => {
   const [fromId, toId] = [from, to].map(({ id }) => id)
@@ -44,9 +37,6 @@ const GleetchyUI = ({
   activeFx,
   connections,
   togglePlayback,
-  looperSelectFile,
-  looperReceiveFile,
-  updateLooper,
   updateDelay,
   updateReverb,
   toggleConnection,
@@ -65,74 +55,9 @@ const GleetchyUI = ({
         </a>
       </div>
     </Panel>
-    {loopers.map(
-      (
-        {
-          id,
-          label,
-          props: {
-            loopStart,
-            loopEnd,
-            gain,
-            fileName,
-            fileType,
-            audioBuffer,
-            playbackRate,
-            eqLow,
-            eqMid,
-            eqHigh,
-          },
-        },
-        index,
-      ) => (
-        <Panel
-          style={{
-            height: '14em',
-            ...(index === 0
-              ? { borderTop: '1px solid #fee' }
-              : { marginTop: '1em' }),
-          }}
-          key={id}
-        >
-          <ErrorBoundary>
-            <Looper
-              gain={gain}
-              playbackRate={playbackRate}
-              loopStart={loopStart}
-              loopEnd={loopEnd}
-              label={label}
-              fileName={fileName}
-              fileType={fileType}
-              audioBuffer={audioBuffer}
-              selectAudioFile={() => looperSelectFile(id)}
-              receiveAudioFile={file => looperReceiveFile(id, file)}
-              onLoopRegionChange={(start, end) =>
-                updateLooper(id, {
-                  loopStart: start,
-                  loopEnd: end,
-                })}
-              renderControls={() => [
-                <LooperPlaybackControls
-                  key="playback"
-                  gain={gain}
-                  playbackRate={playbackRate}
-                  onGainChange={val => updateLooper(id, { gain: val })}
-                  onPlaybackRateChange={val =>
-                    updateLooper(id, { playbackRate: val })}
-                />,
-                <LooperEqControls
-                  key="eq"
-                  eqLow={eqLow}
-                  eqMid={eqMid}
-                  eqHigh={eqHigh}
-                  onEqChange={props => updateLooper(id, props)}
-                />,
-              ]}
-            />
-          </ErrorBoundary>
-        </Panel>
-      ),
-    )}
+    <Panel>
+      <Instruments />
+    </Panel>
     <Panel
       style={{
         marginTop: '2em',
@@ -218,9 +143,6 @@ GleetchyUI.propTypes = {
   connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   activeFx: PropTypes.arrayOf(PropTypes.string),
   togglePlayback: PropTypes.func,
-  looperSelectFile: PropTypes.func,
-  looperReceiveFile: PropTypes.func,
-  updateLooper: PropTypes.func,
   updateDelay: PropTypes.func,
   updateReverb: PropTypes.func,
   toggleConnection: PropTypes.func,
@@ -234,9 +156,6 @@ GleetchyUI.defaultProps = {
   connections: [],
   activeFx: [],
   togglePlayback: () => {},
-  looperSelectFile: () => {},
-  looperReceiveFile: () => {},
-  updateLooper: () => {},
   updateDelay: () => {},
   updateReverb: () => {},
   toggleConnection: () => {},
@@ -244,7 +163,6 @@ GleetchyUI.defaultProps = {
 
 export default connect(
   state => ({
-    loopers: loopersSelector(state),
     isPlaying: isPlayingSelector(state),
     delay: delaySelector(state),
     reverb: reverbSelector(state),
@@ -253,11 +171,8 @@ export default connect(
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),
-    looperSelectFile: id => dispatch(looperSelectAudioFile(id)),
-    looperReceiveFile: (id, file) => dispatch(looperReceiveAudioFile(id, file)),
-    updateLooper: (id, props) => dispatch(looperUpdateProps(id, props)),
-    updateDelay: props => dispatch(delayUpdateProps(props)),
-    updateReverb: props => dispatch(reverbUpdateProps(props)),
+    updateDelay: props => dispatch(nodeUpdateProps('delay', props)),
+    updateReverb: props => dispatch(nodeUpdateProps('reverb', props)),
     toggleConnection: (fromId, toId) =>
       dispatch(connectionToggle(fromId, toId)),
   }),

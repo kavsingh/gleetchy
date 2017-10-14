@@ -8,14 +8,12 @@ import {
   PLAYBACK_START,
   PLAYBACK_STOP,
   ENGINE_EVENTS_CLEAR,
-  LOOPER_UPDATE_PROPS,
+  NODE_UPDATE_PROPS,
   LOOPER_LOAD_FILE_START,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_START,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
-  DELAY_UPDATE_PROPS,
-  REVERB_UPDATE_PROPS,
   CONNECTION_ADD,
   CONNECTION_REMOVE,
 } from './actionTypes'
@@ -33,8 +31,8 @@ export const playbackToggle = () => (dispatch, getState) => {
   dispatch(getState().gleetchy.isPlaying ? playbackStop() : playbackStart())
 }
 
-export const looperUpdateProps = (id, props) => ({
-  type: LOOPER_UPDATE_PROPS,
+export const nodeUpdateProps = (id, props) => ({
+  type: NODE_UPDATE_PROPS,
   payload: { id, props },
 })
 
@@ -95,16 +93,6 @@ export const looperLoadFileDecode = curry(
     }
   },
 )
-
-export const delayUpdateProps = props => ({
-  type: DELAY_UPDATE_PROPS,
-  payload: { props },
-})
-
-export const reverbUpdateProps = props => ({
-  type: REVERB_UPDATE_PROPS,
-  payload: { props },
-})
 
 export const connectionAdd = (fromId, toId) => ({
   type: CONNECTION_ADD,

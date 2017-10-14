@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 import { identity, filter, pipe, head, propEq } from 'ramda'
-import { FX_DELAY, FX_REVERB, INS_LOOPER } from '../../constants/nodeTypes'
+import { FX_DELAY, FX_REVERB } from '../../constants/nodeTypes'
 import { isFx, isInstrument } from '../../util/audio'
 
 const typeEquals = propEq('type')
@@ -17,11 +17,6 @@ export const fxSelector = createSelector(nodesSelector, filter(isFx))
 export const instrumentsSelector = createSelector(
   nodesSelector,
   filter(isInstrument),
-)
-
-export const loopersSelector = createSelector(
-  instrumentsSelector,
-  filter(typeEquals(INS_LOOPER)),
 )
 
 export const delaySelector = createSelector(
