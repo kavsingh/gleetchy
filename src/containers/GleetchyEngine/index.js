@@ -60,10 +60,7 @@ class GleetchyEngine extends Component {
       { mainOut: this.audioContext.destination },
     )
 
-    this.forEachInstrument = cb =>
-      Object.values(this.audioNodes)
-        .filter(isInstrument)
-        .forEach(cb)
+    this.forEachInstrument = this.forEachInstrument.bind(this)
 
     this.updateAudioGraph()
   }
@@ -83,6 +80,12 @@ class GleetchyEngine extends Component {
   componentWillUnmount() {
     this.props.clearEngineEvents()
     this.audioContext.close()
+  }
+
+  forEachInstrument(fn) {
+    Object.values(this.audioNodes)
+      .filter(isInstrument)
+      .forEach(fn)
   }
 
   updateAudioGraph() {
@@ -127,6 +130,8 @@ class GleetchyEngine extends Component {
         break
       case GRAPH_UPDATE:
         this.updateAudioGraph()
+        break
+      case NODE_ADD:
         break
       default:
         break
