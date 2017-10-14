@@ -37,6 +37,7 @@ const FX = ({ fx, activeFx, updateFx }) => (
     })}
     <style jsx>{`
       .fx {
+        width: 100%;
         display: flex;
       }
     `}</style>

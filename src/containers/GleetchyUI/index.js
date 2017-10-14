@@ -1,32 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { equals, head } from 'ramda'
 import GithubIcon from 'react-icons/lib/go/mark-github'
-import { playbackToggle, connectionToggle } from '../../state/gleetchy/actions'
+import { playbackToggle } from '../../state/gleetchy/actions'
 import {
   isPlayingSelector,
   connectionsSelector,
 } from '../../state/gleetchy/selectors'
 import Panel from '../../components/Panel'
 import PlayPauseButton from '../../components/PlayPauseButton'
-import PatchBay from '../../components/PatchBay'
 import Instruments from '../Instruments'
 import FX from '../FX'
+import PatchBay from '../PatchBay'
 
-const checkActiveNode = (from, to, connections) => {
-  const [fromId, toId] = [from, to].map(({ id }) => id)
-
-  return !!connections.find(equals([fromId, toId]))
-}
-
-const GleetchyUI = ({
-  loopers,
-  isPlaying,
-  connections,
-  togglePlayback,
-  toggleConnection,
-}) => (
+const GleetchyUI = ({ isPlaying, togglePlayback }) => (
   <div className="gleetchy">
     <Panel>
       <div className="gleetchy__masthead">
@@ -55,27 +42,7 @@ const GleetchyUI = ({
         <FX />
       </Panel>
       <Panel style={{ flexGrow: 0, flexShrink: 0 }}>
-        <PatchBay
-          fromNodes={[
-            ...loopers.map(({ id, label }) => ({
-              id,
-              label: label
-                .split(' ')
-                .map(head)
-                .join(''),
-              title: `${label} out`,
-            })),
-            { id: 'delay', label: 'D', title: 'Delay out' },
-            { id: 'reverb', label: 'R', title: 'Reverb out' },
-          ]}
-          toNodes={[
-            { id: 'reverb', label: 'R', title: 'Reverb in' },
-            { id: 'delay', label: 'D', title: 'Delay in' },
-            { id: 'mainOut', label: 'M', title: 'Main out' },
-          ]}
-          onNodeClick={(from, to) => toggleConnection(from.id, to.id)}
-          checkActiveNode={(from, to) => checkActiveNode(from, to, connections)}
-        />
+        <PatchBay />
       </Panel>
     </Panel>
     <style jsx>{`
@@ -108,19 +75,13 @@ const GleetchyUI = ({
 )
 
 GleetchyUI.propTypes = {
-  loopers: PropTypes.arrayOf(PropTypes.shape({})),
   isPlaying: PropTypes.bool,
-  connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
   togglePlayback: PropTypes.func,
-  toggleConnection: PropTypes.func,
 }
 
 GleetchyUI.defaultProps = {
-  loopers: [],
   isPlaying: false,
-  connections: [],
   togglePlayback: () => {},
-  toggleConnection: () => {},
 }
 
 export default connect(
@@ -130,7 +91,5 @@ export default connect(
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),
-    toggleConnection: (fromId, toId) =>
-      dispatch(connectionToggle(fromId, toId)),
   }),
 )(GleetchyUI)

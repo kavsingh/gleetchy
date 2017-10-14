@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { identity, filter } from 'ramda'
+import { identity, filter, head } from 'ramda'
 import { isFx, isInstrument } from '../../util/audio'
 
 const nodeStateSelector = state => state.gleetchy.nodes
@@ -42,4 +42,37 @@ export const activeFXSelector = createSelector(
 
       return accum
     }, []),
+)
+
+const shortLabel = label =>
+  label
+    .split(' ')
+    .map(head)
+    .join('')
+
+export const fromNodesSelector = createSelector(
+  instrumentsSelector,
+  fxSelector,
+  (instruments, fx) => [
+    ...instruments.map(({ id, label }) => ({
+      id,
+      label: shortLabel(label),
+      title: `${label} out`,
+    })),
+    ...fx.map(({ id, label }) => ({
+      id,
+      label: shortLabel(label),
+      title: `${label} out`,
+    })),
+  ],
+)
+
+export const toNodesSelector = createSelector(fxSelector, fx =>
+  fx
+    .map(({ id, label }) => ({
+      id,
+      label: shortLabel(label),
+      title: `${label} out`,
+    }))
+    .concat({ id: 'mainOut', label: 'M', title: 'Main out' }),
 )
