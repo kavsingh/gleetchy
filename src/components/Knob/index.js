@@ -10,12 +10,17 @@ class Knob extends PureComponent {
     this.handleDragMove = this.handleDragMove.bind(this)
   }
 
-  handleDragMove({ dx }) {
-    if (!this.knobNode) return
+  handleDragMove({ dx, dy }) {
+    const { knobNode } = this
 
-    this.props.onChange(
-      clamp(0, 1, this.props.value + dx / this.knobNode.offsetWidth),
-    )
+    if (!knobNode) return
+
+    const move =
+      Math.abs(dx) > Math.abs(dy)
+        ? dx / knobNode.offsetWidth
+        : -dy / knobNode.offsetHeight
+
+    this.props.onChange(clamp(0, 1, this.props.value + move))
   }
 
   render() {
@@ -55,7 +60,7 @@ class Knob extends PureComponent {
               .knob__knobContainer {
                 flex: 0 0 auto;
                 position: relative;
-                cursor: ew-resize;
+                cursor: move;
                 margin: 0.4em auto 0.3em;
               }
 
