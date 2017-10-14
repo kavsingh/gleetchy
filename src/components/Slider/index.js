@@ -9,6 +9,7 @@ class Slider extends PureComponent {
 
     this.handleDragMove = this.handleDragMove.bind(this)
     this.handleDragEnd = this.handleDragEnd.bind(this)
+    this.handleDoubleClick = this.handleDoubleClick.bind(this)
   }
 
   handleDragMove({ dx, dy }) {
@@ -37,6 +38,10 @@ class Slider extends PureComponent {
     this.props.onChange(clamp(0, 1, isVert ? 1 - offset / dim : offset / dim))
   }
 
+  handleDoubleClick() {
+    this.props.onChange(this.props.defaultValue)
+  }
+
   render() {
     const { orient, value, renderLabel, renderValue, renderTitle } = this.props
     const isVert = orient === 'vertical'
@@ -51,12 +56,14 @@ class Slider extends PureComponent {
         <SinglePointerDrag
           onDragMove={this.handleDragMove}
           onDragEnd={this.handleDragEnd}
+          onDoubleClick={this.handleDoubleClick}
         >
           {({ dragListeners }) => (
             <div
               {...dragListeners}
-              role="presentation"
               className="slider__barContainer"
+              role="presentation"
+              onDoubleClick={this.handleDoubleClick}
               ref={c => {
                 this.barContainer = c
               }}
@@ -174,6 +181,7 @@ class Slider extends PureComponent {
 
 Slider.propTypes = {
   value: PropTypes.number,
+  defaultValue: PropTypes.number,
   onChange: PropTypes.func,
   orient: PropTypes.oneOf(['vertical', 'horizontal']),
   renderLabel: PropTypes.func,
@@ -183,6 +191,7 @@ Slider.propTypes = {
 
 Slider.defaultProps = {
   value: 0.5,
+  defaultValue: 0.5,
   onChange: () => {},
   orient: 'vertical',
   renderLabel: identity,
