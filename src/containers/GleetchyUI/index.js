@@ -20,6 +20,7 @@ import {
   connectionsSelector,
   activeFXSelector,
 } from '../../state/gleetchy/selectors'
+import Panel from '../../components/Panel'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import Looper from '../../components/Looper'
 import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
@@ -28,28 +29,6 @@ import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import PatchBay from '../../components/PatchBay'
-
-const Panel = ({ children, style }) => (
-  <div className="panel" style={{ ...style }}>
-    {children}
-    <style jsx>{`
-      .panel {
-        padding: 1.4em 0.4em;
-        display: flex;
-      }
-    `}</style>
-  </div>
-)
-
-Panel.propTypes = {
-  children: PropTypes.node,
-  style: PropTypes.shape({}),
-}
-
-Panel.defaultProps = {
-  children: [],
-  style: {},
-}
 
 const checkActiveNode = (from, to, connections) => {
   const [fromId, toId] = [from, to].map(({ id }) => id)
