@@ -1,4 +1,4 @@
-import { equals } from 'ramda'
+import { equals, propEq } from 'ramda'
 import { warn } from '../../util'
 import { FX_REVERB, FX_DELAY, INS_LOOPER } from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
@@ -7,6 +7,7 @@ import {
   PLAYBACK_START,
   PLAYBACK_STOP,
   NODE_UPDATE_PROPS,
+  NODE_ADD,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   LOOPER_LOAD_FILE_ERROR,
@@ -80,6 +81,28 @@ const updateConnections = (state, connection, type) => {
   return state
 }
 
+const addNode = (state, { type }) => {
+  if (type === INS_LOOPER) {
+    const loopers = state.nodes.filter(propEq('type', INS_LOOPER))
+    const id = loopers.length
+
+    const node = {
+      type,
+      id: `looper${id}`,
+      label: `Looper ${id}`,
+      props: { ...nodeProps.INS_LOOPER },
+    }
+
+    return {
+      ...state,
+      nodes: state.nodes.concat(node),
+      connections: state.connections.concat([[node.id, 'mainOut']]),
+    }
+  }
+
+  return state
+}
+
 /* eslint-disable complexity */
 const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
   switch (type) {
@@ -142,6 +165,16 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       return {
         ...nextState,
         engineEvents: [...state.engineEvents, { type: GRAPH_UPDATE }],
+      }
+    }
+    case NODE_ADD: {
+      return {
+        ...addNode(state, payload),
+        engineEvents: [
+          ...state.engineEvents,
+          { type: NODE_ADD },
+          { type: GRAPH_UPDATE },
+        ],
       }
     }
     case ENGINE_EVENTS_CLEAR:

@@ -9,6 +9,7 @@ import {
   PLAYBACK_START,
   PLAYBACK_STOP,
   NODE_UPDATE_PROPS,
+  NODE_ADD,
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   GRAPH_UPDATE,
@@ -92,7 +93,10 @@ class GleetchyEngine extends Component {
     if (!connections.length) return
 
     connections.forEach(([fromId, toId]) => {
-      this.audioNodes[fromId].connect(this.audioNodes[toId])
+      const from = this.audioNodes[fromId]
+      const to = this.audioNodes[toId]
+
+      if (from && to) from.connect(to)
     })
   }
 

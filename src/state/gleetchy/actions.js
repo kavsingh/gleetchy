@@ -4,10 +4,12 @@ import {
   loadAudioFilesToArrayBuffers,
 } from '../../apis/file'
 import { decodeAudioDataP } from '../../util/audio'
+import { INS_LOOPER } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
   ENGINE_EVENTS_CLEAR,
+  NODE_ADD,
   NODE_UPDATE_PROPS,
   LOOPER_LOAD_FILE_START,
   LOOPER_LOAD_FILE_COMPLETE,
@@ -111,5 +113,10 @@ export const connectionToggle = (fromId, toId) => (dispatch, getState) => {
   if (current) dispatch(connectionRemove(fromId, toId))
   else dispatch(connectionAdd(fromId, toId))
 }
+
+export const looperAdd = () => ({
+  type: NODE_ADD,
+  payload: { type: INS_LOOPER },
+})
 
 export const engineEventsClear = () => ({ type: ENGINE_EVENTS_CLEAR })

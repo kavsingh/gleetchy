@@ -7,6 +7,7 @@ import {
   nodeUpdateProps,
   looperReceiveAudioFile,
   looperSelectAudioFile,
+  looperAdd,
 } from '../../state/gleetchy/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import Panel from '../../components/Panel'
@@ -19,6 +20,7 @@ const Instruments = ({
   looperSelectFile,
   looperReceiveFile,
   updateInstrument,
+  addLooper,
 }) => (
   <div className="instruments">
     {instruments.map(({ id, label, type, props }, index) => (
@@ -65,9 +67,24 @@ const Instruments = ({
         </ErrorBoundary>
       </Panel>
     ))}
+    <Panel>
+      <div
+        className="instruments__addButton"
+        onClick={addLooper}
+        role="button"
+        tabIndex={0}
+        onKeyDown={addLooper}
+      >
+        +
+      </div>
+    </Panel>
     <style jsx>{`
       .instruments {
         width: 100%;
+      }
+
+      .instruments__addButton {
+        cursor: pointer;
       }
     `}</style>
   </div>
@@ -78,6 +95,7 @@ Instruments.propTypes = {
   looperSelectFile: PropTypes.func,
   looperReceiveFile: PropTypes.func,
   updateInstrument: PropTypes.func,
+  addLooper: PropTypes.func,
 }
 
 Instruments.defaultProps = {
@@ -85,6 +103,7 @@ Instruments.defaultProps = {
   looperSelectFile: () => {},
   looperReceiveFile: () => {},
   updateInstrument: () => {},
+  addLooper: () => {},
 }
 
 export default connect(
@@ -95,5 +114,6 @@ export default connect(
     looperSelectFile: id => dispatch(looperSelectAudioFile(id)),
     looperReceiveFile: (id, file) => dispatch(looperReceiveAudioFile(id, file)),
     updateInstrument: (id, props) => dispatch(nodeUpdateProps(id, props)),
+    addLooper: () => dispatch(looperAdd()),
   }),
 )(Instruments)
