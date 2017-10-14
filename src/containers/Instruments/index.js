@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { INS_LOOPER } from '../../constants/nodeTypes'
 import { instrumentsSelector } from '../../state/gleetchy/selectors'
 import {
   nodeUpdateProps,
@@ -20,45 +21,21 @@ const Instruments = ({
   updateInstrument,
 }) => (
   <div className="instruments">
-    {instruments.map(
-      (
-        {
-          id,
-          label,
-          props: {
-            loopStart,
-            loopEnd,
-            gain,
-            fileName,
-            fileType,
-            audioBuffer,
-            playbackRate,
-            eqLow,
-            eqMid,
-            eqHigh,
-          },
-        },
-        index,
-      ) => (
-        <Panel
-          style={{
-            height: '14em',
-            ...(index === 0
-              ? { borderTop: '1px solid #fee' }
-              : { marginTop: '1em' }),
-          }}
-          key={id}
-        >
-          <ErrorBoundary>
+    {instruments.map(({ id, label, type, props }, index) => (
+      <Panel
+        style={{
+          height: '14em',
+          ...(index === 0
+            ? { borderTop: '1px solid #fee' }
+            : { marginTop: '1em' }),
+        }}
+        key={id}
+      >
+        <ErrorBoundary>
+          {type === INS_LOOPER ? (
             <Looper
-              gain={gain}
-              playbackRate={playbackRate}
-              loopStart={loopStart}
-              loopEnd={loopEnd}
+              {...props}
               label={label}
-              fileName={fileName}
-              fileType={fileType}
-              audioBuffer={audioBuffer}
               selectAudioFile={() => looperSelectFile(id)}
               receiveAudioFile={file => looperReceiveFile(id, file)}
               onLoopRegionChange={(start, end) =>
@@ -69,25 +46,25 @@ const Instruments = ({
               renderControls={() => [
                 <LooperPlaybackControls
                   key="playback"
-                  gain={gain}
-                  playbackRate={playbackRate}
+                  gain={props.gain}
+                  playbackRate={props.playbackRate}
                   onGainChange={val => updateInstrument(id, { gain: val })}
                   onPlaybackRateChange={val =>
                     updateInstrument(id, { playbackRate: val })}
                 />,
                 <LooperEqControls
                   key="eq"
-                  eqLow={eqLow}
-                  eqMid={eqMid}
-                  eqHigh={eqHigh}
-                  onEqChange={props => updateInstrument(id, props)}
+                  eqLow={props.eqLow}
+                  eqMid={props.eqMid}
+                  eqHigh={props.eqHigh}
+                  onEqChange={eqProps => updateInstrument(id, eqProps)}
                 />,
               ]}
             />
-          </ErrorBoundary>
-        </Panel>
-      ),
-    )}
+          ) : null}
+        </ErrorBoundary>
+      </Panel>
+    ))}
     <style jsx>{`
       .instruments {
         width: 100%;
