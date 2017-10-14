@@ -27,10 +27,10 @@ const defaultState = {
       props: { ...nodeProps[FX_REVERB] },
     },
     {
-      id: 'reverb1',
-      label: 'Reverb 1',
-      type: FX_REVERB,
-      props: { ...nodeProps[FX_REVERB] },
+      id: 'delay0',
+      label: 'Delay 0',
+      type: FX_DELAY,
+      props: { ...nodeProps[FX_DELAY] },
     },
     {
       id: 'loop0',
