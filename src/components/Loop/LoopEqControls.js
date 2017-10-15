@@ -2,9 +2,9 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Slider from '../Slider'
 
-const LooperEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
-  <div className="looper__eqControls">
-    <div className="looper__eqControlContainer">
+const LoopEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
+  <div className="loop__eqControls">
+    <div className="loop__eqControlContainer">
       <Slider
         value={eqLow * 0.5 + 0.5}
         renderTitle={() => 'EQ low gain'}
@@ -13,7 +13,7 @@ const LooperEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
         onChange={val => onEqChange({ eqLow: val * 2 - 1 })}
       />
     </div>
-    <div className="looper__eqControlContainer">
+    <div className="loop__eqControlContainer">
       <Slider
         value={eqMid * 0.5 + 0.5}
         renderTitle={() => 'EQ mid gain'}
@@ -22,7 +22,7 @@ const LooperEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
         onChange={val => onEqChange({ eqMid: val * 2 - 1 })}
       />
     </div>
-    <div className="looper__eqControlContainer">
+    <div className="loop__eqControlContainer">
       <Slider
         value={eqHigh * 0.5 + 0.5}
         renderTitle={() => 'EQ high gain'}
@@ -32,13 +32,13 @@ const LooperEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
       />
     </div>
     <style jsx>{`
-      .looper__eqControls {
+      .loop__eqControls {
         height: 100%;
         margin-left: 0.6em;
         display: flex;
       }
 
-      .looper__eqControlContainer {
+      .loop__eqControlContainer {
         width: 2em;
         height: 100%;
       }
@@ -46,18 +46,18 @@ const LooperEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
   </div>
 )
 
-LooperEqControls.propTypes = {
+LoopEqControls.propTypes = {
   eqLow: PropTypes.number,
   eqMid: PropTypes.number,
   eqHigh: PropTypes.number,
   onEqChange: PropTypes.func,
 }
 
-LooperEqControls.defaultProps = {
+LoopEqControls.defaultProps = {
   eqLow: 0,
   eqMid: 0,
   eqHigh: 0,
   onEqChange: () => {},
 }
 
-export default LooperEqControls
+export default LoopEqControls

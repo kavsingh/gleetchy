@@ -2,14 +2,14 @@ import React from 'react'
 import Knob from '../Knob'
 import PropTypes from 'prop-types'
 
-const LooperPlaybackControls = ({
+const LoopPlaybackControls = ({
   gain,
   playbackRate,
   onGainChange,
   onPlaybackRateChange,
 }) => (
-  <div className="looper__playbackControls">
-    <div className="looper__playbackControlContainer">
+  <div className="loop__playbackControls">
+    <div className="loop__playbackControlContainer">
       <Knob
         value={gain}
         renderTitle={() => 'Gain'}
@@ -18,7 +18,7 @@ const LooperPlaybackControls = ({
         onChange={onGainChange}
       />
     </div>
-    <div className="looper__playbackControlContainer">
+    <div className="loop__playbackControlContainer">
       <Knob
         value={playbackRate * 0.5}
         renderTitle={() => 'Speed'}
@@ -28,7 +28,7 @@ const LooperPlaybackControls = ({
       />
     </div>
     <style jsx>{`
-      .looper__playbackControls {
+      .loop__playbackControls {
         height: 100%;
         display: flex;
         flex-direction: column;
@@ -39,18 +39,18 @@ const LooperPlaybackControls = ({
   </div>
 )
 
-LooperPlaybackControls.propTypes = {
+LoopPlaybackControls.propTypes = {
   gain: PropTypes.number,
   playbackRate: PropTypes.number,
   onGainChange: PropTypes.func,
   onPlaybackRateChange: PropTypes.func,
 }
 
-LooperPlaybackControls.defaultProps = {
+LoopPlaybackControls.defaultProps = {
   gain: 1,
   playbackRate: 1,
   onGainChange: () => {},
   onPlaybackRateChange: () => {},
 }
 
-export default LooperPlaybackControls
+export default LoopPlaybackControls

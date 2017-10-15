@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
-const LooperSample = ({
+const LoopSample = ({
   fromSaved,
   audioBuffer,
   loopStart,
@@ -13,12 +13,12 @@ const LooperSample = ({
   onLoopRegionDrag,
   selectAudioFile,
 }) => (
-  <div className="looper__sample">
-    <div className="looper__waveFormContainer">
+  <div className="loop__sample">
+    <div className="loop__waveFormContainer">
       <WaveForm buffer={audioBuffer} />
     </div>
     {audioBuffer ? (
-      <div className="looper__loopRegionContainer">
+      <div className="loop__loopRegionContainer">
         <LoopRegion
           loopStart={loopStart}
           loopEnd={loopEnd}
@@ -32,7 +32,7 @@ const LooperSample = ({
         role="button"
         tabIndex={0}
         onClick={selectAudioFile}
-        className="looper__initLoadButon"
+        className="loop__initLoadButon"
         onKeyDown={({ key }) => {
           if (key === 'Enter') selectAudioFile()
         }}
@@ -50,14 +50,14 @@ const LooperSample = ({
       </div>
     )}
     <style jsx>{`
-      .looper__sample {
+      .loop__sample {
         position: relative;
         width: 100%;
         height: 100%;
       }
 
-      .looper__waveFormContainer,
-      .looper__loopRegionContainer {
+      .loop__waveFormContainer,
+      .loop__loopRegionContainer {
         position: absolute;
         top: 0;
         left: 0;
@@ -65,15 +65,15 @@ const LooperSample = ({
         height: 100%;
       }
 
-      .looper__waveFormContainer {
+      .loop__waveFormContainer {
         z-index: 1;
       }
 
-      .looper__loopRegionContainer {
+      .loop__loopRegionContainer {
         z-index: 2;
       }
 
-      .looper__initLoadButon {
+      .loop__initLoadButon {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -89,7 +89,7 @@ const LooperSample = ({
         padding: 3em;
       }
 
-      .looper__initLoadButon span {
+      .loop__initLoadButon span {
         display: block;
         text-align: center;
       }
@@ -97,7 +97,7 @@ const LooperSample = ({
   </div>
 )
 
-LooperSample.propTypes = {
+LoopSample.propTypes = {
   fromSaved: PropTypes.bool,
   audioBuffer: PropTypes.instanceOf(AudioBuffer),
   loopStart: PropTypes.number,
@@ -108,7 +108,7 @@ LooperSample.propTypes = {
   selectAudioFile: PropTypes.func,
 }
 
-LooperSample.defaultProps = {
+LoopSample.defaultProps = {
   fromSaved: false,
   audioBuffer: undefined,
   loopStart: 0,
@@ -119,4 +119,4 @@ LooperSample.defaultProps = {
   selectAudioFile: () => {},
 }
 
-export default LooperSample
+export default LoopSample

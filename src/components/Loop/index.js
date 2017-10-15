@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
-import LooperSample from './LooperSample'
+import LoopSample from './LoopSample'
 
 const renderTitle = (title, fileName, selectAudioFile) => (
   <span>
@@ -25,7 +25,7 @@ const renderTitle = (title, fileName, selectAudioFile) => (
   </span>
 )
 
-class Looper extends Component {
+class Loop extends Component {
   constructor(...args) {
     super(...args)
 
@@ -82,26 +82,26 @@ class Looper extends Component {
     } = this.props
 
     const title = [
-      label,
+      `${label} (Loop)`,
       fileName ? ` / ${fileName}` : '',
       fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : '',
     ].join('')
 
     return (
-      <div className="looper">
+      <div className="loop">
         <FileDropRegion
           fileFilter={({ type }) => type.startsWith('audio')}
           onFiles={files => receiveAudioFile(files[0])}
         >
           {({ dropActive, ...fileDropEvents }) => (
-            <div className="looper__wrap" {...fileDropEvents}>
-              <div className="looper__title">
+            <div className="loop__wrap" {...fileDropEvents}>
+              <div className="loop__title">
                 <TitleBar>
                   {() => renderTitle(title, fileName, selectAudioFile)}
                 </TitleBar>
               </div>
-              <div className="looper__main">
-                <LooperSample
+              <div className="loop__main">
+                <LoopSample
                   fromSaved={!!(fileName && !audioBuffer)}
                   audioBuffer={audioBuffer}
                   loopStart={loopStart}
@@ -111,7 +111,7 @@ class Looper extends Component {
                   onLoopRegionDrag={this.handleLoopRegionDrag}
                   selectAudioFile={selectAudioFile}
                 />
-                <div className="looper__controlsContainer">
+                <div className="loop__controlsContainer">
                   {this.props.renderControls()}
                 </div>
               </div>
@@ -119,26 +119,26 @@ class Looper extends Component {
           )}
         </FileDropRegion>
         <style jsx>{`
-          .looper,
-          .looper__wrap {
+          .loop,
+          .loop__wrap {
             width: 100%;
             height: 100%;
           }
 
-          .looper__wrap {
+          .loop__wrap {
             display: flex;
             flex-direction: column;
             align-items: stretch;
             justify-content: stretch;
           }
 
-          .looper__title {
+          .loop__title {
             flex-grow: 0;
             flex-shrink: 0;
             width: 100%;
           }
 
-          .looper__main {
+          .loop__main {
             display: flex;
             flex-wrap: nowrap;
             flex-grow: 1;
@@ -148,7 +148,7 @@ class Looper extends Component {
             border-top: 1px solid rgba(0, 0, 0, 0);
           }
 
-          .looper__controlsContainer {
+          .loop__controlsContainer {
             height: 100%;
             margin-left: 1.2em;
             display: flex;
@@ -159,7 +159,7 @@ class Looper extends Component {
   }
 }
 
-Looper.propTypes = {
+Loop.propTypes = {
   loopStart: PropTypes.number,
   loopEnd: PropTypes.number,
   label: PropTypes.string,
@@ -171,7 +171,7 @@ Looper.propTypes = {
   renderControls: PropTypes.func,
 }
 
-Looper.defaultProps = {
+Loop.defaultProps = {
   loopStart: 0,
   loopEnd: 1,
   label: '',
@@ -183,4 +183,4 @@ Looper.defaultProps = {
   renderControls: () => <div />,
 }
 
-export default Looper
+export default Loop

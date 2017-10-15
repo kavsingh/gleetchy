@@ -29,25 +29,25 @@ const defaultState = {
   nodes: [
     {
       id: 'reverb0',
-      label: 'Reverb 0',
+      label: 'R0',
       type: FX_REVERB,
       props: { ...nodeProps[FX_REVERB] },
     },
     {
       id: 'delay0',
-      label: 'Delay 0',
+      label: 'D0',
       type: FX_DELAY,
       props: { ...nodeProps[FX_DELAY] },
     },
     {
       id: 'looper0',
-      label: 'Loop 0',
+      label: 'L0',
       type: INS_LOOPER,
       props: { ...nodeProps[INS_LOOPER] },
     },
     {
       id: 'looper1',
-      label: 'Loop 1',
+      label: 'L1',
       type: INS_LOOPER,
       props: { ...nodeProps[INS_LOOPER] },
     },
@@ -95,7 +95,7 @@ const addNode = (state, { type }) => {
     const node = {
       type,
       id: `looper${id}`,
-      label: `Loop ${id}`,
+      label: `L${id}`,
       props: { ...nodeProps.INS_LOOPER },
     }
 

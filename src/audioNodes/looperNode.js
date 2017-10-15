@@ -1,10 +1,10 @@
 import { curry, pick } from 'ramda'
-import { INS_LOOPER } from '../constants/nodeTypes'
+import { INS_LOOP } from '../constants/nodeTypes'
 import nodeProps from '../constants/nodeProps'
 import { createEq3Node, pickProps as pickEq3Props } from './eq3Node'
 import { createConnect, createDisconnect } from './connection'
 
-const defaultProps = { ...nodeProps[INS_LOOPER] }
+const defaultProps = { ...nodeProps[INS_LOOP] }
 
 export const pickProps = pick(Object.keys(defaultProps))
 
@@ -54,7 +54,7 @@ export const createLooperNode = curry((audioContext, initProps) => {
   }
 
   return {
-    type: INS_LOOPER,
+    type: INS_LOOP,
 
     play() {
       if (isPlaying) return
