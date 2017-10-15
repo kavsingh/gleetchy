@@ -12,6 +12,7 @@ import {
   PLAYBACK_STOP,
   ENGINE_EVENTS_CLEAR,
   NODE_ADD,
+  NODE_UPDATE_LABEL,
   NODE_UPDATE_PROPS,
   LOOP_LOAD_FILE_START,
   LOOP_LOAD_FILE_COMPLETE,
@@ -40,6 +41,11 @@ export const playbackToggle = () => (dispatch, getState) => {
 export const nodeUpdateProps = (id, props) => ({
   type: NODE_UPDATE_PROPS,
   payload: { id, props },
+})
+
+export const nodeUpdateLabel = (id, label) => ({
+  type: NODE_UPDATE_LABEL,
+  payload: { id, label },
 })
 
 export const loopSelectAudioFile = id => async dispatch => {

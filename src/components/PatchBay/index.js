@@ -3,59 +3,62 @@ import PropTypes from 'prop-types'
 
 const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <table className="patchBay">
-    <tr className="patchBay__row" key="titles">
-      <th className="patchBay__label">To / From</th>
-      {fromNodes.map((fromNode, i) => (
-        <th
-          className={`patchBay__label ${i === fromNodes.length - 1
-            ? ' patchBay__rowItem_last'
-            : ''}`}
-          title={`From ${fromNode.label} to ...`}
-          key={fromNode.id}
-        >
-          {fromNode.label}
-        </th>
-      ))}
-    </tr>
-    {toNodes.map(toNode => (
-      <tr className="patchBay__row" key={toNode.id}>
-        <td className="patchBay__label" title={`From ... to ${toNode.label}`}>
-          {toNode.label}
-        </td>
-        {fromNodes.map(
-          (fromNode, i) =>
-            fromNode.id === toNode.id ? (
-              <td>
-                <div
-                  key={fromNode.id}
-                  className={`patchBay__node patchBay__node_dummy ${i ===
-                  fromNodes.length - 1
-                    ? ' patchBay__rowItem_last'
-                    : ''}`}
-                />
-              </td>
-            ) : (
-              <td>
-                <div
-                  key={fromNode.id}
-                  className={`patchBay__node ${checkActiveNode(fromNode, toNode)
-                    ? ' patchBay__node_active'
-                    : ''} ${i === fromNodes.length - 1
-                    ? ' patchBay__rowItem_last'
-                    : ''}`}
-                  onClick={() => onNodeClick(fromNode, toNode)}
-                  role="button"
-                  tabIndex={0}
-                  onKeyUp={e => {
-                    if (e.key === 'Enter') onNodeClick(fromNode, toNode)
-                  }}
-                  title={`From ${fromNode.label} to ${toNode.label}`}
-                />
-              </td>
-            ),
-        )}
+    <tbody>
+      <tr className="patchBay__row" key="titles">
+        <th className="patchBay__label">To / From</th>
+        {fromNodes.map((fromNode, i) => (
+          <th
+            className={`patchBay__label ${i === fromNodes.length - 1
+              ? ' patchBay__rowItem_last'
+              : ''}`}
+            title={`From ${fromNode.label} to ...`}
+            key={fromNode.id}
+          >
+            {fromNode.label}
+          </th>
+        ))}
       </tr>
-    ))}
+      {toNodes.map(toNode => (
+        <tr className="patchBay__row" key={toNode.id}>
+          <td className="patchBay__label" title={`From ... to ${toNode.label}`}>
+            {toNode.label}
+          </td>
+          {fromNodes.map(
+            (fromNode, i) =>
+              fromNode.id === toNode.id ? (
+                <td key={fromNode.id}>
+                  <div
+                    className={`patchBay__node patchBay__node_dummy ${i ===
+                    fromNodes.length - 1
+                      ? ' patchBay__rowItem_last'
+                      : ''}`}
+                  />
+                </td>
+              ) : (
+                <td key={fromNode.id}>
+                  <div
+                    className={`patchBay__node ${checkActiveNode(
+                      fromNode,
+                      toNode,
+                    )
+                      ? ' patchBay__node_active'
+                      : ''} ${i === fromNodes.length - 1
+                      ? ' patchBay__rowItem_last'
+                      : ''}`}
+                    onClick={() => onNodeClick(fromNode, toNode)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyUp={e => {
+                      if (e.key === 'Enter') onNodeClick(fromNode, toNode)
+                    }}
+                    title={`From ${fromNode.label} to ${toNode.label}`}
+                  />
+                </td>
+              ),
+          )}
+        </tr>
+      ))}
+    </tbody>
     <style jsx>{`
       .patchBay {
         width: 100%;

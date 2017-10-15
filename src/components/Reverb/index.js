@@ -5,7 +5,7 @@ import TitleBar from '../TitleBar'
 
 const Reverb = ({ label, wetDryRatio, onWetDryRatioChange, isActive }) => (
   <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
-    <TitleBar>{() => `${label} (Reverb)`}</TitleBar>
+    <TitleBar>{() => `Reverb : ${label}`}</TitleBar>
     <div className="reverb__controls">
       <div className="reverb__knobContainer">
         <Knob

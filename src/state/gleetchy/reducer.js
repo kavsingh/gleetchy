@@ -7,6 +7,7 @@ import {
   ENGINE_EVENTS_CLEAR,
   PLAYBACK_START,
   PLAYBACK_STOP,
+  NODE_UPDATE_LABEL,
   NODE_UPDATE_PROPS,
   NODE_ADD,
   LOOP_LOAD_FILE_COMPLETE,
@@ -48,6 +49,17 @@ const defaultState = {
       props: { ...nodeProps[INS_LOOP] },
     },
   ],
+}
+
+const updateNodeLabel = (state, { id, label = '' }) => {
+  const nodes = [...state.nodes]
+  const nodeState = nodes.find(node => node.id === id)
+
+  if (!nodeState) return state
+
+  Object.assign(nodeState, { label })
+
+  return { ...state, nodes }
 }
 
 const updateNode = (state, { id, props = {} }) => {
@@ -126,6 +138,8 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     }
+    case NODE_UPDATE_LABEL:
+      return updateNodeLabel(state, payload)
     case NODE_UPDATE_PROPS: {
       const nextState = updateNode(state, payload)
 

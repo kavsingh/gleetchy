@@ -1,27 +1,52 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
+import TextInput from '../TextInput'
 import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
 import LoopSample from './LoopSample'
 
-const renderTitle = (title, fileName, selectAudioFile) => (
-  <span>
-    {title}
-    {fileName ? (
-      <span
-        role="button"
-        tabIndex={0}
-        style={{ cursor: 'pointer' }}
-        onClick={selectAudioFile}
-        onKeyDown={({ key }) => {
-          if (key === 'Enter') selectAudioFile()
-        }}
-      >
-        {' '}
-        / Load audio file
-      </span>
-    ) : null}
+const renderTitle = (
+  label,
+  fileName,
+  audioBuffer,
+  selectAudioFile,
+  onChange,
+) => (
+  <span className="loop__titleSpan">
+    <div>Loop : </div>
+    <div className="loop__labelContainer">
+      <TextInput onChange={onChange} value={label} />
+    </div>
+    <div>
+      {fileName ? ` / ${fileName}` : ''}
+      {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
+      {fileName ? (
+        <span
+          role="button"
+          tabIndex={0}
+          style={{ cursor: 'pointer' }}
+          onClick={selectAudioFile}
+          onKeyDown={({ key }) => {
+            if (key === 'Enter') selectAudioFile()
+          }}
+        >
+          {' '}
+          / Load audio file
+        </span>
+      ) : null}
+    </div>
+    <style jsx>{`
+      .loop__titleSpan {
+        display: flex;
+        align-items: center;
+      }
+
+      .loop__labelContainer {
+        width: auto;
+        margin-left: 0.3em;
+      }
+    `}</style>
   </span>
 )
 
@@ -79,13 +104,8 @@ class Loop extends Component {
       loopStart,
       selectAudioFile,
       receiveAudioFile,
+      onLabelChange,
     } = this.props
-
-    const title = [
-      `${label} (Loop)`,
-      fileName ? ` / ${fileName}` : '',
-      fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : '',
-    ].join('')
 
     return (
       <div className="loop">
@@ -97,7 +117,14 @@ class Loop extends Component {
             <div className="loop__wrap" {...fileDropEvents}>
               <div className="loop__title">
                 <TitleBar>
-                  {() => renderTitle(title, fileName, selectAudioFile)}
+                  {() =>
+                    renderTitle(
+                      label,
+                      fileName,
+                      audioBuffer,
+                      selectAudioFile,
+                      onLabelChange,
+                    )}
                 </TitleBar>
               </div>
               <div className="loop__main">
@@ -168,6 +195,7 @@ Loop.propTypes = {
   selectAudioFile: PropTypes.func,
   receiveAudioFile: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
+  onLabelChange: PropTypes.func,
   renderControls: PropTypes.func,
 }
 
@@ -180,6 +208,7 @@ Loop.defaultProps = {
   selectAudioFile: () => {},
   receiveAudioFile: () => {},
   onLoopRegionChange: () => {},
+  onLabelChange: () => {},
   renderControls: () => <div />,
 }
 

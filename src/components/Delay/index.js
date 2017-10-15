@@ -13,7 +13,7 @@ const Delay = ({
   isActive,
 }) => (
   <div className={`delay${!isActive ? ' delay_inactive' : ''}`}>
-    <TitleBar>{() => `${label} (Delay)`}</TitleBar>
+    <TitleBar>{() => `Delay : ${label}`}</TitleBar>
     <div className="delay__controls">
       <div className="delay__knobContainer">
         <Knob

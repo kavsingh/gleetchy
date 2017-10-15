@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { INS_LOOP } from '../../constants/nodeTypes'
 import { instrumentsSelector } from '../../state/gleetchy/selectors'
 import {
+  nodeUpdateLabel,
   nodeUpdateProps,
   loopReceiveAudioFile,
   loopSelectAudioFile,
@@ -20,6 +21,7 @@ const Instruments = ({
   loopSelectFile,
   loopReceiveFile,
   updateInstrument,
+  updateInstrumentLabel,
   addLoop,
 }) => (
   <div className="instruments">
@@ -38,6 +40,7 @@ const Instruments = ({
                 label={label}
                 selectAudioFile={() => loopSelectFile(id)}
                 receiveAudioFile={file => loopReceiveFile(id, file)}
+                onLabelChange={val => updateInstrumentLabel(id, val)}
                 onLoopRegionChange={(start, end) =>
                   updateInstrument(id, {
                     loopStart: start,
@@ -71,7 +74,9 @@ const Instruments = ({
       onClick={addLoop}
       role="button"
       tabIndex={0}
-      onKeyDown={addLoop}
+      onKeyDown={({ key }) => {
+        if (key === 'Enter') addLoop()
+      }}
     >
       + Add loop
     </div>
@@ -107,6 +112,7 @@ Instruments.propTypes = {
   loopSelectFile: PropTypes.func,
   loopReceiveFile: PropTypes.func,
   updateInstrument: PropTypes.func,
+  updateInstrumentLabel: PropTypes.func,
   addLoop: PropTypes.func,
 }
 
@@ -115,6 +121,7 @@ Instruments.defaultProps = {
   loopSelectFile: () => {},
   loopReceiveFile: () => {},
   updateInstrument: () => {},
+  updateInstrumentLabel: () => {},
   addLoop: () => {},
 }
 
@@ -126,6 +133,7 @@ export default connect(
     loopSelectFile: id => dispatch(loopSelectAudioFile(id)),
     loopReceiveFile: (id, file) => dispatch(loopReceiveAudioFile(id, file)),
     updateInstrument: (id, props) => dispatch(nodeUpdateProps(id, props)),
+    updateInstrumentLabel: (id, label) => dispatch(nodeUpdateLabel(id, label)),
     addLoop: () => dispatch(loopAdd()),
   }),
 )(Instruments)
