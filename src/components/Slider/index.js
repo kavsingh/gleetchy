@@ -82,11 +82,11 @@ class Slider extends PureComponent {
             width: 100%;
             height: 100%;
             display: flex;
-            align-items: center;
           }
 
           .slider_vertical {
             flex-direction: column;
+            align-items: center;
           }
 
           .slider_horizontal {
@@ -96,11 +96,21 @@ class Slider extends PureComponent {
 
           .slider__label,
           .slider__value {
-            flex: 0 0 auto;
+            flex-grow: 0 0 auto;
             font-size: 0.8em;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+          }
+
+          .slider_vertical .slider__value,
+          .slider_vertical .slider__label {
+            height: 1.4em;
+          }
+
+          .slider_vertical .slider__value {
+            display: flex;
+            align-items: flex-end;
           }
 
           .slider_horizontal .slider__value,

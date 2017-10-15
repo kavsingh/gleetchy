@@ -10,7 +10,6 @@ import {
   looperAdd,
 } from '../../state/gleetchy/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
-import Panel from '../../components/Panel'
 import Looper from '../../components/Looper'
 import LooperEqControls from '../../components/Looper/LooperEqControls'
 import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
@@ -24,13 +23,10 @@ const Instruments = ({
 }) => (
   <div className="instruments">
     {instruments.map(({ id, label, type, props }, index) => (
-      <Panel
-        style={{
-          height: '14em',
-          ...(index === 0
-            ? { borderTop: '1px solid #fee' }
-            : { marginTop: '1em' }),
-        }}
+      <div
+        className={`instruments__instrumentContainer${index === 0
+          ? ' instruments__instrumentContainer_first'
+          : ''}`}
         key={id}
       >
         <ErrorBoundary>
@@ -65,25 +61,32 @@ const Instruments = ({
             />
           ) : null}
         </ErrorBoundary>
-      </Panel>
-    ))}
-    <Panel>
-      <div
-        className="instruments__addButton"
-        onClick={addLooper}
-        role="button"
-        tabIndex={0}
-        onKeyDown={addLooper}
-      >
-        +
       </div>
-    </Panel>
+    ))}
+    <div
+      className="instruments__addButton"
+      onClick={addLooper}
+      role="button"
+      tabIndex={0}
+      onKeyDown={addLooper}
+    >
+      +
+    </div>
     <style jsx>{`
       .instruments {
         width: 100%;
       }
 
-      .instruments__addButton {
+      .instruments__instrumentContainer {
+        height: 12em;
+        margin-top: 2em;
+      }
+
+      .instruments__instrumentContainer_first {
+        margin-top: 0;
+      }
+
+      .instruments__addbutton {
         cursor: pointer;
       }
     `}</style>

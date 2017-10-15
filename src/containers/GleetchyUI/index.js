@@ -28,7 +28,12 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
         </a>
       </div>
     </Panel>
-    <Panel>
+    <Panel
+      style={{
+        borderTop: '1px solid #fee',
+        paddingBottom: 0,
+      }}
+    >
       <Instruments />
     </Panel>
     <Panel

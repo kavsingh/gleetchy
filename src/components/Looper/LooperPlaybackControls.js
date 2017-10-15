@@ -35,10 +35,6 @@ const LooperPlaybackControls = ({
         align-items: center;
         justify-content: space-between;
       }
-
-      .looper__playbackControlContainer {
-        height: calc(50% - 0.6em);
-      }
     `}</style>
   </div>
 )

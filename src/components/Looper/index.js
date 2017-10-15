@@ -94,10 +94,12 @@ class Looper extends Component {
           onFiles={files => receiveAudioFile(files[0])}
         >
           {({ dropActive, ...fileDropEvents }) => (
-            <div style={{ width: '100%', height: '100%' }} {...fileDropEvents}>
-              <TitleBar>
-                {() => renderTitle(title, audioBuffer, selectAudioFile)}
-              </TitleBar>
+            <div className="looper__wrap" {...fileDropEvents}>
+              <div className="looper__title">
+                <TitleBar>
+                  {() => renderTitle(title, audioBuffer, selectAudioFile)}
+                </TitleBar>
+              </div>
               <div className="looper__main">
                 <LooperSample
                   audioBuffer={audioBuffer}
@@ -116,17 +118,32 @@ class Looper extends Component {
           )}
         </FileDropRegion>
         <style jsx>{`
-          .looper {
+          .looper,
+          .looper__wrap {
             width: 100%;
             height: 100%;
-            position: relative;
+          }
+
+          .looper__wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            justify-content: stretch;
+          }
+
+          .looper__title {
+            flex-grow: 0;
+            flex-shrink: 0;
+            width: 100%;
           }
 
           .looper__main {
             display: flex;
-            flex-wrap: no-wrap;
+            flex-wrap: nowrap;
+            flex-grow: 1;
+            flex-shrink: 0;
+            flex-basis: 10em;
             width: 100%;
-            height: 100%;
             border-top: 1px solid rgba(0, 0, 0, 0);
           }
 
