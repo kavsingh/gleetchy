@@ -5,6 +5,7 @@ import { configureStore } from './state/configureStore'
 import GleetchyEngine from './containers/GleetchyEngine'
 import GleetchyUI from './containers/GleetchyUI'
 import offlineInstall from './util/offlineInstall'
+import { stateConsume, stateExport } from './state/gleetchy/actions'
 
 offlineInstall('gleetchy-sw.js')
 
@@ -57,6 +58,14 @@ const App = () => (
     `}</style>
   </div>
 )
+
+/* global process */
+/* eslint-disable no-underscore-dangle */
+if (typeof window !== 'undefined' && process.env.NODE_ENV === 'development') {
+  window.__gSave = () => store.dispatch(stateExport())
+  window.__gLoad = () => store.dispatch(stateConsume())
+}
+/* eslint-enable no-underscore-dangle */
 
 render(
   <Provider store={store}>

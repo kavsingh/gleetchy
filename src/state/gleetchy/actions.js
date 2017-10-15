@@ -3,6 +3,8 @@ import {
   readFileToArrayBuffer,
   loadAudioFilesToArrayBuffers,
 } from '../../apis/file'
+import { sendJsonString, consumeJsonString } from '../../apis/state'
+import { warn } from '../../util'
 import { decodeAudioDataP } from '../../util/audio'
 import { INS_LOOPER } from '../../constants/nodeTypes'
 import {
@@ -18,8 +20,10 @@ import {
   LOOPER_LOAD_FILE_ERROR,
   CONNECTION_ADD,
   CONNECTION_REMOVE,
+  STATE_REPLACE,
 } from './actionTypes'
 import { connectionsSelector } from './selectors'
+import { serialize, deserialize } from '../serialization'
 
 export const playbackStart = () => ({
   type: PLAYBACK_START,
@@ -112,6 +116,21 @@ export const connectionToggle = (fromId, toId) => (dispatch, getState) => {
 
   if (current) dispatch(connectionRemove(fromId, toId))
   else dispatch(connectionAdd(fromId, toId))
+}
+
+export const stateExport = () => (dispatch, getState) => {
+  sendJsonString(serialize(getState()))
+}
+
+export const stateConsume = () => dispatch => {
+  dispatch(playbackStop())
+
+  consumeJsonString()
+    .then(deserialize)
+    .then(nextState =>
+      dispatch({ type: STATE_REPLACE, payload: { nextState } }),
+    )
+    .catch(warn)
 }
 
 export const looperAdd = () => ({

@@ -5,23 +5,27 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <div className="patchBay">
     <div className="patchBay__row" key="titles">
       <div className="patchBay__label patchBay__label_horizontal">
-        In &nbsp;/ Out
+        To / From
       </div>
-      {fromNodes.map(({ id, label }, i) => (
+      {fromNodes.map((fromNode, i) => (
         <div
           className={`patchBay__label patchBay__label_vertical ${i ===
           fromNodes.length - 1
             ? ' patchBay__rowItem_last'
             : ''}`}
-          key={id}
+          title={`From ${fromNode.title} to ...`}
+          key={fromNode.id}
         >
-          {label}
+          {fromNode.label}
         </div>
       ))}
     </div>
     {toNodes.map(toNode => (
       <div className="patchBay__row" key={toNode.id}>
-        <div className="patchBay__label patchBay__label_horizontal">
+        <div
+          className="patchBay__label patchBay__label_horizontal"
+          title={`From ... to ${toNode.title}`}
+        >
           {toNode.label}
         </div>
         {fromNodes.map(
@@ -48,7 +52,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
                 onKeyUp={e => {
                   if (e.key === 'Enter') onNodeClick(fromNode, toNode)
                 }}
-                title={`${fromNode.title} > ${toNode.title}`}
+                title={`From ${fromNode.title} to ${toNode.title}`}
               />
             ),
         )}
@@ -68,7 +72,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
       }
 
       .patchBay__label_horizontal {
-        width: 4em;
+        width: 5em;
       }
 
       .patchBay__label_vertical {

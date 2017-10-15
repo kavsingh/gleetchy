@@ -4,6 +4,7 @@ import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
 const LooperSample = ({
+  fromSaved,
   audioBuffer,
   loopStart,
   loopEnd,
@@ -36,7 +37,16 @@ const LooperSample = ({
           if (key === 'Enter') selectAudioFile()
         }}
       >
-        Click to load audio file or drag it here
+        {fromSaved
+          ? [
+              <span key="line1">
+                Unfortunately audio data is not saved with a project
+              </span>,
+              <span key="line2">
+                Click here (or drag and drop) to load files again
+              </span>,
+            ]
+          : 'Click to load audio file or drag it here'}
       </div>
     )}
     <style jsx>{`
@@ -70,17 +80,25 @@ const LooperSample = ({
         top: 0;
         left: 0;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: center;
+        justify-content: space-around;
         cursor: pointer;
         z-index: 3;
         background-color: rgba(255, 255, 255, 0.96);
+        padding: 3em;
+      }
+
+      .looper__initLoadButon span {
+        display: block;
+        text-align: center;
       }
     `}</style>
   </div>
 )
 
 LooperSample.propTypes = {
+  fromSaved: PropTypes.bool,
   audioBuffer: PropTypes.instanceOf(AudioBuffer),
   loopStart: PropTypes.number,
   loopEnd: PropTypes.number,
@@ -91,6 +109,7 @@ LooperSample.propTypes = {
 }
 
 LooperSample.defaultProps = {
+  fromSaved: false,
   audioBuffer: undefined,
   loopStart: 0,
   loopEnd: 1,

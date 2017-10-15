@@ -1,5 +1,10 @@
+/*
+{"gleetchy":{"nodes":[{"id":"reverb0","label":"Reverb 0","type":"FX_REVERB","props":{"wetDryRatio":0.5}},{"id":"delay0","label":"Delay 0","type":"FX_DELAY","props":{"delayTime":0.6,"wetDryRatio":0.5}},{"id":"looper0","label":"Loop 0","type":"INS_LOOPER","props":{"fileName":"","fileType":"","gain":0,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0.8703703703703705,"eqMid":0.6851851851851856,"eqHigh":0}},{"id":"looper1","label":"Loop 1","type":"INS_LOOPER","props":{"fileName":"","fileType":"","gain":0.5,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0,"eqMid":0,"eqHigh":0}}],"connections":[["loop0","mainOut"],["loop1","mainOut"]]}}
+*/
+
 import { equals, propEq } from 'ramda'
 import { warn } from '../../util'
+import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_REVERB, FX_DELAY, INS_LOOPER } from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
 import {
@@ -14,12 +19,13 @@ import {
   CONNECTION_ADD,
   CONNECTION_REMOVE,
   GRAPH_UPDATE,
+  STATE_REPLACE,
 } from './actionTypes'
 
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
-  connections: [['loop0', 'mainOut'], ['loop1', 'mainOut']],
+  connections: [['looper0', MAIN_OUT_ID], ['looper1', MAIN_OUT_ID]],
   nodes: [
     {
       id: 'reverb0',
@@ -96,7 +102,7 @@ const addNode = (state, { type }) => {
     return {
       ...state,
       nodes: state.nodes.concat(node),
-      connections: state.connections.concat([[node.id, 'mainOut']]),
+      connections: state.connections.concat([[node.id, MAIN_OUT_ID]]),
     }
   }
 
@@ -177,6 +183,12 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
         ],
       }
     }
+    case STATE_REPLACE:
+      return {
+        ...defaultState,
+        ...payload.nextState.gleetchy,
+        engineEvents: [{ type, payload }],
+      }
     case ENGINE_EVENTS_CLEAR:
       return { ...state, engineEvents: [] }
     default:

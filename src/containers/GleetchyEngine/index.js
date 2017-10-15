@@ -4,6 +4,7 @@ import PropTypes from 'prop-types'
 import { tryCatch, cond, equals, pipe, prop, always } from 'ramda'
 import { warn } from '../../util'
 import { isInstrument } from '../../util/audio'
+import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_DELAY, FX_REVERB, INS_LOOPER } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
@@ -13,6 +14,7 @@ import {
   LOOPER_LOAD_FILE_COMPLETE,
   LOOPER_LOAD_FILE_DECODE_COMPLETE,
   GRAPH_UPDATE,
+  STATE_REPLACE,
 } from '../../state/gleetchy/actionTypes'
 import {
   nodesSelector,
@@ -77,11 +79,17 @@ class GleetchyEngine extends Component {
       .forEach(fn)
   }
 
+  disconnectAllNodes() {
+    if (!this.audioNodes) return
+
+    Object.values(this.audioNodes).forEach(node => node.disconnect())
+  }
+
   updateAudioNodes() {
     const { nodes, isPlaying } = this.props
 
     this.audioNodes = this.audioNodes || {
-      mainOut: this.audioContext.destination,
+      [MAIN_OUT_ID]: this.audioContext.destination,
     }
 
     nodes.filter(node => !this.audioNodes[node.id]).forEach(node => {
@@ -98,7 +106,7 @@ class GleetchyEngine extends Component {
   }
 
   updateAudioGraph() {
-    Object.values(this.audioNodes).forEach(node => node.disconnect())
+    this.disconnectAllNodes()
 
     const { connections } = this.props
 
@@ -118,6 +126,15 @@ class GleetchyEngine extends Component {
     if (!node) return
 
     setNodeProps({ node, props })
+  }
+
+  rebuildAll() {
+    this.disconnectAllNodes()
+
+    this.audioNodes = undefined
+
+    this.updateAudioNodes()
+    this.updateAudioGraph()
   }
 
   processAudioEvent({ type, payload = {} }) {
@@ -143,6 +160,9 @@ class GleetchyEngine extends Component {
       case NODE_ADD:
         this.updateAudioNodes()
         this.updateAudioGraph()
+        break
+      case STATE_REPLACE:
+        this.rebuildAll()
         break
       default:
         break

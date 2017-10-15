@@ -5,10 +5,10 @@ import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
 import LooperSample from './LooperSample'
 
-const renderTitle = (title, audioBuffer, selectAudioFile) => (
+const renderTitle = (title, fileName, selectAudioFile) => (
   <span>
     {title}
-    {audioBuffer ? (
+    {fileName ? (
       <span
         role="button"
         tabIndex={0}
@@ -97,11 +97,12 @@ class Looper extends Component {
             <div className="looper__wrap" {...fileDropEvents}>
               <div className="looper__title">
                 <TitleBar>
-                  {() => renderTitle(title, audioBuffer, selectAudioFile)}
+                  {() => renderTitle(title, fileName, selectAudioFile)}
                 </TitleBar>
               </div>
               <div className="looper__main">
                 <LooperSample
+                  fromSaved={!!(fileName && !audioBuffer)}
                   audioBuffer={audioBuffer}
                   loopStart={loopStart}
                   loopEnd={loopEnd}
