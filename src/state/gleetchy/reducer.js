@@ -34,13 +34,13 @@ const defaultState = {
       props: { ...nodeProps[FX_DELAY] },
     },
     {
-      id: 'loop0',
+      id: 'looper0',
       label: 'Loop 0',
       type: INS_LOOPER,
       props: { ...nodeProps[INS_LOOPER] },
     },
     {
-      id: 'loop1',
+      id: 'looper1',
       label: 'Loop 1',
       type: INS_LOOPER,
       props: { ...nodeProps[INS_LOOPER] },
@@ -89,7 +89,7 @@ const addNode = (state, { type }) => {
     const node = {
       type,
       id: `looper${id}`,
-      label: `Looper ${id}`,
+      label: `Loop ${id}`,
       props: { ...nodeProps.INS_LOOPER },
     }
 
