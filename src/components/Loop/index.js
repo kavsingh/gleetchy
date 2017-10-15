@@ -152,6 +152,7 @@ class Loop extends Component {
             flex-basis: 10em;
             width: 100%;
             border-top: 1px solid rgba(0, 0, 0, 0);
+            padding-left: 0.2em;
           }
 
           .loop__controlsContainer {

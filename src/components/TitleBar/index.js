@@ -15,7 +15,7 @@ const TitleBar = ({ type, children, onLabelChange, label }) => (
         flex-direction: row;
         align-items: center;
         font-size: 0.8em;
-        height: 2em;
+        height: 1em;
         margin-bottom: 0.6em;
       }
 

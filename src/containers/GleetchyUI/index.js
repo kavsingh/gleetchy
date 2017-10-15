@@ -60,6 +60,7 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
 
       .gleetchy__instrumentsContainer {
         max-height: 36em;
+        overflow-x: visible;
         overflow-y: scroll;
       }
 
