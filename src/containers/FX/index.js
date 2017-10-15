@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
 import { fxSelector, activeFXSelector } from '../../state/gleetchy/selectors'
-import { nodeUpdateProps } from '../../state/gleetchy/actions'
+import { nodeUpdateProps, nodeUpdateLabel } from '../../state/gleetchy/actions'
 import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
 
-const FX = ({ fx, activeFx, updateFx }) => (
+const FX = ({ fx, activeFx, updateFx, updateFxLabel }) => (
   <div className="fx">
     {fx.map(({ id, type, props, label }) => {
       if (type === FX_DELAY) {
@@ -20,6 +20,7 @@ const FX = ({ fx, activeFx, updateFx }) => (
             delayTime={props.delayTime}
             onDelayTimeChange={delayTime => updateFx(id, { delayTime })}
             onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
+            onLabelChange={val => updateFxLabel(id, val)}
           />
         )
       } else if (type === FX_REVERB) {
@@ -30,6 +31,7 @@ const FX = ({ fx, activeFx, updateFx }) => (
             isActive={activeFx.includes(id)}
             wetDryRatio={props.wetDryRatio}
             onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
+            onLabelChange={val => updateFxLabel(id, val)}
           />
         )
       }
@@ -48,12 +50,14 @@ FX.propTypes = {
   fx: PropTypes.arrayOf(PropTypes.shape({})),
   activeFx: PropTypes.arrayOf(PropTypes.string),
   updateFx: PropTypes.func,
+  updateFxLabel: PropTypes.func,
 }
 
 FX.defaultProps = {
   fx: [],
   activeFx: [],
   updateFx: () => {},
+  updateFxLabel: () => {},
 }
 
 export default connect(
@@ -63,5 +67,6 @@ export default connect(
   }),
   dispatch => ({
     updateFx: (id, props) => dispatch(nodeUpdateProps(id, props)),
+    updateFxLabel: (id, label) => dispatch(nodeUpdateLabel(id, label)),
   }),
 )(FX)

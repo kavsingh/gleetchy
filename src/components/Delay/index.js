@@ -11,9 +11,10 @@ const Delay = ({
   onWetDryRatioChange,
   onDelayTimeChange,
   isActive,
+  onLabelChange,
 }) => (
   <div className={`delay${!isActive ? ' delay_inactive' : ''}`}>
-    <TitleBar>{() => `Delay : ${label}`}</TitleBar>
+    <TitleBar type="Delay" label={label} onLabelChange={onLabelChange} />
     <div className="delay__controls">
       <div className="delay__knobContainer">
         <Knob
@@ -66,6 +67,7 @@ Delay.propTypes = {
   isActive: PropTypes.bool,
   onDelayTimeChange: PropTypes.func,
   onWetDryRatioChange: PropTypes.func,
+  onLabelChange: PropTypes.func,
 }
 
 Delay.defaultProps = {
@@ -75,6 +77,7 @@ Delay.defaultProps = {
   isActive: true,
   onDelayTimeChange: () => {},
   onWetDryRatioChange: () => {},
+  onLabelChange: () => {},
 }
 
 export default Delay

@@ -15,7 +15,7 @@ class TextInput extends PureComponent {
   }
 
   render() {
-    const { value, placeholder } = this.props
+    const { value, placeholder, type } = this.props
 
     return (
       <div className="textInput">
@@ -23,6 +23,7 @@ class TextInput extends PureComponent {
           value={value}
           placeholder={placeholder}
           onChange={this.handleChange}
+          type={type}
         />
         <style jsx>{`
           .textInput :global(input) {
@@ -30,6 +31,7 @@ class TextInput extends PureComponent {
             color: currentColor;
             border: none;
             border-bottom: 1px solid #fefefe;
+            cursor: initial;
           }
 
           .textInput :global(input:focus) {
@@ -42,12 +44,14 @@ class TextInput extends PureComponent {
 }
 
 TextInput.propTypes = {
+  type: PropTypes.oneOf(['text', 'number']),
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   placeholder: PropTypes.string,
   onChange: PropTypes.func,
 }
 
 TextInput.defaultProps = {
+  type: 'text',
   value: '',
   placeholder: '',
   onChange: () => {},

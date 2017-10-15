@@ -3,9 +3,15 @@ import PropTypes from 'prop-types'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
 
-const Reverb = ({ label, wetDryRatio, onWetDryRatioChange, isActive }) => (
+const Reverb = ({
+  label,
+  wetDryRatio,
+  onWetDryRatioChange,
+  isActive,
+  onLabelChange,
+}) => (
   <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
-    <TitleBar>{() => `Reverb : ${label}`}</TitleBar>
+    <TitleBar type="Reverb" label={label} onLabelChange={onLabelChange} />
     <div className="reverb__controls">
       <div className="reverb__knobContainer">
         <Knob
@@ -46,6 +52,7 @@ Reverb.propTypes = {
   wetDryRatio: PropTypes.number,
   isActive: PropTypes.bool,
   onWetDryRatioChange: PropTypes.func,
+  onLabelChange: PropTypes.func,
 }
 
 Reverb.defaultProps = {
@@ -53,6 +60,7 @@ Reverb.defaultProps = {
   wetDryRatio: 0.5,
   isActive: true,
   onWetDryRatioChange: () => {},
+  onLabelChange: () => {},
 }
 
 export default Reverb

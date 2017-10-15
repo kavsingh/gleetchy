@@ -1,49 +1,31 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
-import TextInput from '../TextInput'
 import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
 import LoopSample from './LoopSample'
 
-const renderTitle = (
-  label,
-  fileName,
-  audioBuffer,
-  selectAudioFile,
-  onChange,
-) => (
+const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
   <span className="loop__titleSpan">
-    <div>Loop : </div>
-    <div className="loop__labelContainer">
-      <TextInput onChange={onChange} value={label} />
-    </div>
-    <div>
-      {fileName ? ` / ${fileName}` : ''}
-      {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
-      {fileName ? (
-        <span
-          role="button"
-          tabIndex={0}
-          style={{ cursor: 'pointer' }}
-          onClick={selectAudioFile}
-          onKeyDown={({ key }) => {
-            if (key === 'Enter') selectAudioFile()
-          }}
-        >
-          {' '}
-          / Load audio file
-        </span>
-      ) : null}
-    </div>
+    {fileName ? `${fileName}` : ''}
+    {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
+    {fileName ? (
+      <span
+        role="button"
+        tabIndex={0}
+        className="loop__titleLoadAudio"
+        onClick={selectAudioFile}
+        onKeyDown={({ key }) => {
+          if (key === 'Enter') selectAudioFile()
+        }}
+      >
+        {'/ Load audio file'}
+      </span>
+    ) : null}
     <style jsx>{`
-      .loop__titleSpan {
-        display: flex;
-        align-items: center;
-      }
-
-      .loop__labelContainer {
-        width: auto;
+      .loop__titleLoadAudio {
+        display: inline-block;
+        cursor: pointer;
         margin-left: 0.3em;
       }
     `}</style>
@@ -116,15 +98,12 @@ class Loop extends Component {
           {({ dropActive, ...fileDropEvents }) => (
             <div className="loop__wrap" {...fileDropEvents}>
               <div className="loop__title">
-                <TitleBar>
-                  {() =>
-                    renderTitle(
-                      label,
-                      fileName,
-                      audioBuffer,
-                      selectAudioFile,
-                      onLabelChange,
-                    )}
+                <TitleBar
+                  type="Loop"
+                  label={label}
+                  onLabelChange={onLabelChange}
+                >
+                  {() => renderTitle(fileName, audioBuffer, selectAudioFile)}
                 </TitleBar>
               </div>
               <div className="loop__main">
