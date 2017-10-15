@@ -4,7 +4,9 @@ import PropTypes from 'prop-types'
 const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <div className="patchBay">
     <div className="patchBay__row" key="titles">
-      <div className="patchBay__label patchBay__label_horizontal">In / Out</div>
+      <div className="patchBay__label patchBay__label_horizontal">
+        In &nbsp;/ Out
+      </div>
       {fromNodes.map(({ id, label }, i) => (
         <div
           className={`patchBay__label patchBay__label_vertical ${i ===

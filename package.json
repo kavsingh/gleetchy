@@ -38,8 +38,7 @@
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^16.0.0",
     "eslint-config-airbnb-base": "^12.0.2",
-    "eslint-config-mongrel-react":
-      "kavsingh/eslint-config-mongrel-react.git#5.0.0",
+    "eslint-config-mongrel-react": "kavsingh/eslint-config-mongrel-react.git#5.0.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-babel": "^4.1.2",
@@ -58,6 +57,7 @@
     "webpack-pwa-manifest": "^3.3.2"
   },
   "dependencies": {
+    "popmotion": "^7.8.2",
     "prop-types": "^15.6.0",
     "ramda": "^0.24.1",
     "react": "^16.0.0",

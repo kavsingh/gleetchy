@@ -10,6 +10,7 @@ import {
   looperAdd,
 } from '../../state/gleetchy/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
+import AnimIn from '../../components/AnimIn'
 import Looper from '../../components/Looper'
 import LooperEqControls from '../../components/Looper/LooperEqControls'
 import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
@@ -30,36 +31,38 @@ const Instruments = ({
         key={id}
       >
         <ErrorBoundary>
-          {type === INS_LOOPER ? (
-            <Looper
-              {...props}
-              label={label}
-              selectAudioFile={() => looperSelectFile(id)}
-              receiveAudioFile={file => looperReceiveFile(id, file)}
-              onLoopRegionChange={(start, end) =>
-                updateInstrument(id, {
-                  loopStart: start,
-                  loopEnd: end,
-                })}
-              renderControls={() => [
-                <LooperPlaybackControls
-                  key="playback"
-                  gain={props.gain}
-                  playbackRate={props.playbackRate}
-                  onGainChange={val => updateInstrument(id, { gain: val })}
-                  onPlaybackRateChange={val =>
-                    updateInstrument(id, { playbackRate: val })}
-                />,
-                <LooperEqControls
-                  key="eq"
-                  eqLow={props.eqLow}
-                  eqMid={props.eqMid}
-                  eqHigh={props.eqHigh}
-                  onEqChange={eqProps => updateInstrument(id, eqProps)}
-                />,
-              ]}
-            />
-          ) : null}
+          <AnimIn>
+            {type === INS_LOOPER ? (
+              <Looper
+                {...props}
+                label={label}
+                selectAudioFile={() => looperSelectFile(id)}
+                receiveAudioFile={file => looperReceiveFile(id, file)}
+                onLoopRegionChange={(start, end) =>
+                  updateInstrument(id, {
+                    loopStart: start,
+                    loopEnd: end,
+                  })}
+                renderControls={() => [
+                  <LooperPlaybackControls
+                    key="playback"
+                    gain={props.gain}
+                    playbackRate={props.playbackRate}
+                    onGainChange={val => updateInstrument(id, { gain: val })}
+                    onPlaybackRateChange={val =>
+                      updateInstrument(id, { playbackRate: val })}
+                  />,
+                  <LooperEqControls
+                    key="eq"
+                    eqLow={props.eqLow}
+                    eqMid={props.eqMid}
+                    eqHigh={props.eqHigh}
+                    onEqChange={eqProps => updateInstrument(id, eqProps)}
+                  />,
+                ]}
+              />
+            ) : null}
+          </AnimIn>
         </ErrorBoundary>
       </div>
     ))}
