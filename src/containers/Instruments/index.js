@@ -73,11 +73,13 @@ const Instruments = ({
       tabIndex={0}
       onKeyDown={addLooper}
     >
-      +
+      + Add loop
     </div>
     <style jsx>{`
       .instruments {
         width: 100%;
+        display: flex;
+        flex-direction: column;
       }
 
       .instruments__instrumentContainer {
@@ -89,8 +91,12 @@ const Instruments = ({
         margin-top: 0;
       }
 
-      .instruments__addbutton {
+      .instruments__addButton {
         cursor: pointer;
+        margin: 2em 0 0;
+        padding: 1em 0;
+        width: 100%;
+        text-align: center;
       }
     `}</style>
   </div>
