@@ -1,19 +1,17 @@
 import { curry, pick } from 'ramda'
 import { DELAY_UPPER_BOUND } from '../constants/audio'
 import { FX_DELAY } from '../constants/nodeTypes'
+import nodeProps from '../constants/nodeProps'
 import { createConnect, createDisconnect } from './connection'
-
-const defaultProps = {
-  delayTime: 0,
-  wetDryRatio: 0.5,
-}
-
-const pickProps = pick(Object.keys(defaultProps))
 
 const updateWetDry = (wetDryRatio, wetGainNode, dryGainNode) => {
   Object.assign(wetGainNode.gain, { value: wetDryRatio })
   Object.assign(dryGainNode.gain, { value: 1 - wetDryRatio })
 }
+
+const defaultProps = { ...nodeProps[FX_DELAY] }
+
+export const pickProps = pick(Object.keys(defaultProps))
 
 export const createDelayNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }

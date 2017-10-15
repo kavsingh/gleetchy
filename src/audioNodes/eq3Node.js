@@ -8,7 +8,7 @@ const defaultProps = {
   eqHigh: 0,
 }
 
-const pickProps = pick(Object.keys(defaultProps))
+export const pickProps = pick(Object.keys(defaultProps))
 
 export const createEq3Node = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }

@@ -1,14 +1,9 @@
 import { curry, pick } from 'ramda'
 import reverbImpulse from '../media/impulse_reverb.wav'
 import { FX_REVERB } from '../constants/nodeTypes'
+import nodeProps from '../constants/nodeProps'
 import { decodeAudioDataP } from '../util/audio'
 import { createConnect, createDisconnect } from './connection'
-
-const defaultProps = {
-  wetDryRatio: 0.5,
-}
-
-const pickProps = pick(Object.keys(defaultProps))
 
 const updateWetDry = (wetDryRatio, wetGainNode, dryGainNode) => {
   Object.assign(wetGainNode.gain, { value: wetDryRatio })
@@ -21,6 +16,10 @@ const loadImpulse = async (audioContext, url) => {
 
   return decodeAudioDataP(audioContext, arrayBuffer)
 }
+
+const defaultProps = { ...nodeProps[FX_REVERB] }
+
+export const pickProps = pick(Object.keys(defaultProps))
 
 export const createReverbNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }

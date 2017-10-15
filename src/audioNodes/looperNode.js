@@ -1,25 +1,16 @@
 import { curry, pick } from 'ramda'
 import { INS_LOOPER } from '../constants/nodeTypes'
-import { createEq3Node } from './eq3Node'
+import nodeProps from '../constants/nodeProps'
+import { createEq3Node, pickProps as pickEq3Props } from './eq3Node'
 import { createConnect, createDisconnect } from './connection'
 
-const defaultProps = {
-  gain: 1,
-  loopStart: 0,
-  loopEnd: 1,
-  playbackRate: 1,
-  audioBuffer: undefined,
-  eqMid: 0,
-  eqLow: 0,
-  eqHigh: 0,
-}
+const defaultProps = { ...nodeProps[INS_LOOPER] }
 
-const pickProps = pick(Object.keys(defaultProps))
-const pickEqProps = pick(['eqLow', 'eqMid', 'eqHigh'])
+export const pickProps = pick(Object.keys(defaultProps))
 
 export const createLooperNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }
-  const eq3Node = createEq3Node(audioContext, pickEqProps(initProps))
+  const eq3Node = createEq3Node(audioContext, pickEq3Props(initProps))
   const gainNode = audioContext.createGain()
   const getInNode = () => gainNode
   const getOutNode = () => gainNode
@@ -86,7 +77,7 @@ export const createLooperNode = curry((audioContext, initProps) => {
 
       const { gain, audioBuffer, loopStart } = props
 
-      eq3Node.set(pickEqProps(props))
+      eq3Node.set(pickEq3Props(props))
       gainNode.gain.value = gain
 
       if (
