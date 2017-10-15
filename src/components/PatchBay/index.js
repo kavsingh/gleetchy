@@ -68,6 +68,17 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         overflow: hidden;
         text-overflow: ellipsis;
         font-weight: 400;
+        max-width: 5.4em;
+      }
+
+      .patchBay__row td,
+      .patchBay__row th {
+        text-align: center;
+      }
+
+      .patchBay__row td:first-child,
+      .patchBay__row th:first-child {
+        text-align: left;
       }
 
       .patchBay__row td {
