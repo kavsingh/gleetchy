@@ -18,6 +18,7 @@ import {
   nodesSelector,
   engineEventsSelector,
   connectionsSelector,
+  isPlayingSelector,
 } from '../../state/gleetchy/selectors'
 import {
   looperLoadFileDecode,
@@ -49,19 +50,7 @@ class GleetchyEngine extends Component {
 
     this.audioContext = new AudioContext()
 
-    this.audioNodes = this.props.nodes.reduce(
-      (acc, node) => {
-        const nodeCreator = getNodeCreator(node)
-
-        acc[node.id] = nodeCreator(this.audioContext, node.props)
-
-        return acc
-      },
-      { mainOut: this.audioContext.destination },
-    )
-
-    this.forEachInstrument = this.forEachInstrument.bind(this)
-
+    this.updateAudioNodes()
     this.updateAudioGraph()
   }
 
@@ -86,6 +75,26 @@ class GleetchyEngine extends Component {
     Object.values(this.audioNodes)
       .filter(isInstrument)
       .forEach(fn)
+  }
+
+  updateAudioNodes() {
+    const { nodes, isPlaying } = this.props
+
+    this.audioNodes = this.audioNodes || {
+      mainOut: this.audioContext.destination,
+    }
+
+    nodes.filter(node => !this.audioNodes[node.id]).forEach(node => {
+      const nodeCreator = getNodeCreator(node)
+
+      if (!nodeCreator) return
+
+      const newNode = nodeCreator(this.audioContext, node.props)
+
+      this.audioNodes[node.id] = newNode
+
+      if (isPlaying && isInstrument(newNode)) newNode.play()
+    })
   }
 
   updateAudioGraph() {
@@ -132,6 +141,8 @@ class GleetchyEngine extends Component {
         this.updateAudioGraph()
         break
       case NODE_ADD:
+        this.updateAudioNodes()
+        this.updateAudioGraph()
         break
       default:
         break
@@ -146,6 +157,7 @@ class GleetchyEngine extends Component {
 }
 
 GleetchyEngine.propTypes = {
+  isPlaying: PropTypes.bool,
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
   connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
@@ -154,6 +166,7 @@ GleetchyEngine.propTypes = {
 }
 
 GleetchyEngine.defaultProps = {
+  isPlaying: false,
   engineEvents: [],
   nodes: [],
   connections: [],
@@ -163,6 +176,7 @@ GleetchyEngine.defaultProps = {
 
 export default connect(
   state => ({
+    isPlaying: isPlayingSelector(state),
     engineEvents: engineEventsSelector(state),
     nodes: nodesSelector(state),
     connections: connectionsSelector(state),
