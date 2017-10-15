@@ -1,4 +1,4 @@
-import { FX_REVERB, FX_DELAY, INS_LOOPER } from './nodeTypes'
+import { FX_REVERB, FX_DELAY, INS_LOOP } from './nodeTypes'
 
 export default {
   [FX_REVERB]: Object.freeze({
@@ -8,7 +8,7 @@ export default {
     delayTime: 0.6,
     wetDryRatio: 0.5,
   }),
-  [INS_LOOPER]: Object.freeze({
+  [INS_LOOP]: Object.freeze({
     fileName: '',
     fileType: '',
     audioBuffer: undefined,

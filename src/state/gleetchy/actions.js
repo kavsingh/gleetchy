@@ -6,18 +6,18 @@ import {
 import { sendJsonString, consumeJsonString } from '../../apis/state'
 import { warn } from '../../util'
 import { decodeAudioDataP } from '../../util/audio'
-import { INS_LOOPER } from '../../constants/nodeTypes'
+import { INS_LOOP } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
   ENGINE_EVENTS_CLEAR,
   NODE_ADD,
   NODE_UPDATE_PROPS,
-  LOOPER_LOAD_FILE_START,
-  LOOPER_LOAD_FILE_COMPLETE,
-  LOOPER_LOAD_FILE_DECODE_START,
-  LOOPER_LOAD_FILE_DECODE_COMPLETE,
-  LOOPER_LOAD_FILE_ERROR,
+  LOOP_LOAD_FILE_START,
+  LOOP_LOAD_FILE_COMPLETE,
+  LOOP_LOAD_FILE_DECODE_START,
+  LOOP_LOAD_FILE_DECODE_COMPLETE,
+  LOOP_LOAD_FILE_ERROR,
   CONNECTION_ADD,
   CONNECTION_REMOVE,
   STATE_REPLACE,
@@ -42,38 +42,38 @@ export const nodeUpdateProps = (id, props) => ({
   payload: { id, props },
 })
 
-export const looperSelectAudioFile = id => async dispatch => {
-  dispatch({ type: LOOPER_LOAD_FILE_START, payload: { id } })
+export const loopSelectAudioFile = id => async dispatch => {
+  dispatch({ type: LOOP_LOAD_FILE_START, payload: { id } })
 
   try {
     const file = head(await loadAudioFilesToArrayBuffers())
 
     if (!file) throw new Error('No file loaded')
 
-    dispatch({ type: LOOPER_LOAD_FILE_COMPLETE, payload: { id, file } })
+    dispatch({ type: LOOP_LOAD_FILE_COMPLETE, payload: { id, file } })
   } catch (error) {
-    dispatch({ type: LOOPER_LOAD_FILE_ERROR, payload: { id, error } })
+    dispatch({ type: LOOP_LOAD_FILE_ERROR, payload: { id, error } })
   }
 }
 
-export const looperReceiveAudioFile = (id, file) => async dispatch => {
-  dispatch({ type: LOOPER_LOAD_FILE_START, payload: { id } })
+export const loopReceiveAudioFile = (id, file) => async dispatch => {
+  dispatch({ type: LOOP_LOAD_FILE_START, payload: { id } })
 
   try {
     const withBuffer = await readFileToArrayBuffer(file)
 
     dispatch({
-      type: LOOPER_LOAD_FILE_COMPLETE,
+      type: LOOP_LOAD_FILE_COMPLETE,
       payload: { id, file: withBuffer },
     })
   } catch (error) {
-    dispatch({ type: LOOPER_LOAD_FILE_ERROR, payload: { id, error } })
+    dispatch({ type: LOOP_LOAD_FILE_ERROR, payload: { id, error } })
   }
 }
 
-export const looperLoadFileDecode = curry(
+export const loopLoadFileDecode = curry(
   (audioContext, id, { buffer, fileName, fileType } = {}) => async dispatch => {
-    dispatch({ type: LOOPER_LOAD_FILE_DECODE_START, payload: { id } })
+    dispatch({ type: LOOP_LOAD_FILE_DECODE_START, payload: { id } })
 
     try {
       if (!buffer) throw new Error(`No buffer for ${fileName}`)
@@ -81,7 +81,7 @@ export const looperLoadFileDecode = curry(
       const audioBuffer = await decodeAudioDataP(audioContext, buffer)
 
       dispatch({
-        type: LOOPER_LOAD_FILE_DECODE_COMPLETE,
+        type: LOOP_LOAD_FILE_DECODE_COMPLETE,
         payload: {
           id,
           props: {
@@ -93,7 +93,7 @@ export const looperLoadFileDecode = curry(
       })
     } catch (error) {
       dispatch({
-        type: LOOPER_LOAD_FILE_ERROR,
+        type: LOOP_LOAD_FILE_ERROR,
         payload: { id, error },
       })
     }
@@ -133,9 +133,9 @@ export const stateConsume = () => dispatch => {
     .catch(warn)
 }
 
-export const looperAdd = () => ({
+export const loopAdd = () => ({
   type: NODE_ADD,
-  payload: { type: INS_LOOPER },
+  payload: { type: INS_LOOP },
 })
 
 export const engineEventsClear = () => ({ type: ENGINE_EVENTS_CLEAR })

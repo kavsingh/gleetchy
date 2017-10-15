@@ -1,26 +1,26 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { INS_LOOPER } from '../../constants/nodeTypes'
+import { INS_LOOP } from '../../constants/nodeTypes'
 import { instrumentsSelector } from '../../state/gleetchy/selectors'
 import {
   nodeUpdateProps,
-  looperReceiveAudioFile,
-  looperSelectAudioFile,
-  looperAdd,
+  loopReceiveAudioFile,
+  loopSelectAudioFile,
+  loopAdd,
 } from '../../state/gleetchy/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import AnimIn from '../../components/AnimIn'
-import Looper from '../../components/Looper'
-import LooperEqControls from '../../components/Looper/LooperEqControls'
-import LooperPlaybackControls from '../../components/Looper/LooperPlaybackControls'
+import Loop from '../../components/Loop'
+import LoopEqControls from '../../components/Loop/LoopEqControls'
+import LoopPlaybackControls from '../../components/Loop/LoopPlaybackControls'
 
 const Instruments = ({
   instruments,
-  looperSelectFile,
-  looperReceiveFile,
+  loopSelectFile,
+  loopReceiveFile,
   updateInstrument,
-  addLooper,
+  addLoop,
 }) => (
   <div className="instruments">
     {instruments.map(({ id, label, type, props }, index) => (
@@ -32,19 +32,19 @@ const Instruments = ({
       >
         <ErrorBoundary>
           <AnimIn>
-            {type === INS_LOOPER ? (
-              <Looper
+            {type === INS_LOOP ? (
+              <Loop
                 {...props}
                 label={label}
-                selectAudioFile={() => looperSelectFile(id)}
-                receiveAudioFile={file => looperReceiveFile(id, file)}
+                selectAudioFile={() => loopSelectFile(id)}
+                receiveAudioFile={file => loopReceiveFile(id, file)}
                 onLoopRegionChange={(start, end) =>
                   updateInstrument(id, {
                     loopStart: start,
                     loopEnd: end,
                   })}
                 renderControls={() => [
-                  <LooperPlaybackControls
+                  <LoopPlaybackControls
                     key="playback"
                     gain={props.gain}
                     playbackRate={props.playbackRate}
@@ -52,7 +52,7 @@ const Instruments = ({
                     onPlaybackRateChange={val =>
                       updateInstrument(id, { playbackRate: val })}
                   />,
-                  <LooperEqControls
+                  <LoopEqControls
                     key="eq"
                     eqLow={props.eqLow}
                     eqMid={props.eqMid}
@@ -68,10 +68,10 @@ const Instruments = ({
     ))}
     <div
       className="instruments__addButton"
-      onClick={addLooper}
+      onClick={addLoop}
       role="button"
       tabIndex={0}
-      onKeyDown={addLooper}
+      onKeyDown={addLoop}
     >
       + Add loop
     </div>
@@ -104,18 +104,18 @@ const Instruments = ({
 
 Instruments.propTypes = {
   instruments: PropTypes.arrayOf(PropTypes.shape({})),
-  looperSelectFile: PropTypes.func,
-  looperReceiveFile: PropTypes.func,
+  loopSelectFile: PropTypes.func,
+  loopReceiveFile: PropTypes.func,
   updateInstrument: PropTypes.func,
-  addLooper: PropTypes.func,
+  addLoop: PropTypes.func,
 }
 
 Instruments.defaultProps = {
   instruments: [],
-  looperSelectFile: () => {},
-  looperReceiveFile: () => {},
+  loopSelectFile: () => {},
+  loopReceiveFile: () => {},
   updateInstrument: () => {},
-  addLooper: () => {},
+  addLoop: () => {},
 }
 
 export default connect(
@@ -123,9 +123,9 @@ export default connect(
     instruments: instrumentsSelector(state),
   }),
   dispatch => ({
-    looperSelectFile: id => dispatch(looperSelectAudioFile(id)),
-    looperReceiveFile: (id, file) => dispatch(looperReceiveAudioFile(id, file)),
+    loopSelectFile: id => dispatch(loopSelectAudioFile(id)),
+    loopReceiveFile: (id, file) => dispatch(loopReceiveAudioFile(id, file)),
     updateInstrument: (id, props) => dispatch(nodeUpdateProps(id, props)),
-    addLooper: () => dispatch(looperAdd()),
+    addLoop: () => dispatch(loopAdd()),
   }),
 )(Instruments)

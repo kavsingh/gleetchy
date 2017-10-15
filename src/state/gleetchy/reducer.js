@@ -1,11 +1,11 @@
 /*
-{"gleetchy":{"nodes":[{"id":"reverb0","label":"Reverb 0","type":"FX_REVERB","props":{"wetDryRatio":0.5}},{"id":"delay0","label":"Delay 0","type":"FX_DELAY","props":{"delayTime":0.6,"wetDryRatio":0.5}},{"id":"looper0","label":"Loop 0","type":"INS_LOOPER","props":{"fileName":"","fileType":"","gain":0,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0.8703703703703705,"eqMid":0.6851851851851856,"eqHigh":0}},{"id":"looper1","label":"Loop 1","type":"INS_LOOPER","props":{"fileName":"","fileType":"","gain":0.5,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0,"eqMid":0,"eqHigh":0}}],"connections":[["loop0","mainOut"],["loop1","mainOut"]]}}
+{"gleetchy":{"nodes":[{"id":"reverb0","label":"Reverb 0","type":"FX_REVERB","props":{"wetDryRatio":0.5}},{"id":"delay0","label":"Delay 0","type":"FX_DELAY","props":{"delayTime":0.6,"wetDryRatio":0.5}},{"id":"loop0","label":"Loop 0","type":"INS_LOOP","props":{"fileName":"","fileType":"","gain":0,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0.8703703703703705,"eqMid":0.6851851851851856,"eqHigh":0}},{"id":"loop1","label":"Loop 1","type":"INS_LOOP","props":{"fileName":"","fileType":"","gain":0.5,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0,"eqMid":0,"eqHigh":0}}],"connections":[["loop0","mainOut"],["loop1","mainOut"]]}}
 */
 
 import { equals, propEq } from 'ramda'
 import { warn } from '../../util'
 import { MAIN_OUT_ID } from '../../constants/audio'
-import { FX_REVERB, FX_DELAY, INS_LOOPER } from '../../constants/nodeTypes'
+import { FX_REVERB, FX_DELAY, INS_LOOP } from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
 import {
   ENGINE_EVENTS_CLEAR,
@@ -13,9 +13,9 @@ import {
   PLAYBACK_STOP,
   NODE_UPDATE_PROPS,
   NODE_ADD,
-  LOOPER_LOAD_FILE_COMPLETE,
-  LOOPER_LOAD_FILE_DECODE_COMPLETE,
-  LOOPER_LOAD_FILE_ERROR,
+  LOOP_LOAD_FILE_COMPLETE,
+  LOOP_LOAD_FILE_DECODE_COMPLETE,
+  LOOP_LOAD_FILE_ERROR,
   CONNECTION_ADD,
   CONNECTION_REMOVE,
   GRAPH_UPDATE,
@@ -25,7 +25,7 @@ import {
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
-  connections: [['looper0', MAIN_OUT_ID], ['looper1', MAIN_OUT_ID]],
+  connections: [['loop0', MAIN_OUT_ID], ['loop1', MAIN_OUT_ID]],
   nodes: [
     {
       id: 'reverb0',
@@ -40,16 +40,16 @@ const defaultState = {
       props: { ...nodeProps[FX_DELAY] },
     },
     {
-      id: 'looper0',
+      id: 'loop0',
       label: 'L0',
-      type: INS_LOOPER,
-      props: { ...nodeProps[INS_LOOPER] },
+      type: INS_LOOP,
+      props: { ...nodeProps[INS_LOOP] },
     },
     {
-      id: 'looper1',
+      id: 'loop1',
       label: 'L1',
-      type: INS_LOOPER,
-      props: { ...nodeProps[INS_LOOPER] },
+      type: INS_LOOP,
+      props: { ...nodeProps[INS_LOOP] },
     },
   ],
 }
@@ -88,15 +88,15 @@ const updateConnections = (state, connection, type) => {
 }
 
 const addNode = (state, { type }) => {
-  if (type === INS_LOOPER) {
-    const loopers = state.nodes.filter(propEq('type', INS_LOOPER))
-    const id = loopers.length
+  if (type === INS_LOOP) {
+    const loops = state.nodes.filter(propEq('type', INS_LOOP))
+    const id = loops.length
 
     const node = {
       type,
-      id: `looper${id}`,
+      id: `loop${id}`,
       label: `L${id}`,
-      props: { ...nodeProps.INS_LOOPER },
+      props: { ...nodeProps.INS_LOOP },
     }
 
     return {
@@ -140,17 +140,17 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
         engineEvents: [...state.engineEvents, { type, payload }],
       }
     }
-    case LOOPER_LOAD_FILE_COMPLETE:
+    case LOOP_LOAD_FILE_COMPLETE:
       return {
         ...state,
         engineEvents: [...state.engineEvents, { type, payload }],
       }
-    case LOOPER_LOAD_FILE_DECODE_COMPLETE:
+    case LOOP_LOAD_FILE_DECODE_COMPLETE:
       return {
         ...updateNode(state, payload),
         engineEvents: [...state.engineEvents, { type, payload }],
       }
-    case LOOPER_LOAD_FILE_ERROR:
+    case LOOP_LOAD_FILE_ERROR:
       warn(payload.error, type, payload)
       return state
     case CONNECTION_ADD: {

@@ -8,7 +8,7 @@ const defaultProps = { ...nodeProps[INS_LOOP] }
 
 export const pickProps = pick(Object.keys(defaultProps))
 
-export const createLooperNode = curry((audioContext, initProps) => {
+export const createLoopNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }
   const eq3Node = createEq3Node(audioContext, pickEq3Props(initProps))
   const gainNode = audioContext.createGain()

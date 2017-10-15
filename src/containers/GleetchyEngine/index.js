@@ -5,14 +5,14 @@ import { tryCatch, cond, equals, pipe, prop, always } from 'ramda'
 import { warn } from '../../util'
 import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
-import { FX_DELAY, FX_REVERB, INS_LOOPER } from '../../constants/nodeTypes'
+import { FX_DELAY, FX_REVERB, INS_LOOP } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
   NODE_UPDATE_PROPS,
   NODE_ADD,
-  LOOPER_LOAD_FILE_COMPLETE,
-  LOOPER_LOAD_FILE_DECODE_COMPLETE,
+  LOOP_LOAD_FILE_COMPLETE,
+  LOOP_LOAD_FILE_DECODE_COMPLETE,
   GRAPH_UPDATE,
   STATE_REPLACE,
 } from '../../state/gleetchy/actionTypes'
@@ -23,10 +23,10 @@ import {
   isPlayingSelector,
 } from '../../state/gleetchy/selectors'
 import {
-  looperLoadFileDecode,
+  loopLoadFileDecode,
   engineEventsClear,
 } from '../../state/gleetchy/actions'
-import { createLooperNode } from '../../audioNodes/looperNode'
+import { createLoopNode } from '../../audioNodes/loopNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 import { createReverbNode } from '../../audioNodes/reverbNode'
 
@@ -37,7 +37,7 @@ const getNodeCreator = pipe(
   cond([
     [equals(FX_DELAY), always(createDelayNode)],
     [equals(FX_REVERB), always(createReverbNode)],
-    [equals(INS_LOOPER), always(createLooperNode)],
+    [equals(INS_LOOP), always(createLoopNode)],
   ]),
 )
 
@@ -148,10 +148,10 @@ class GleetchyEngine extends Component {
       case NODE_UPDATE_PROPS:
         this.updateNode(payload)
         break
-      case LOOPER_LOAD_FILE_COMPLETE:
-        this.props.decodeLooperFile(this.audioContext, payload.id, payload.file)
+      case LOOP_LOAD_FILE_COMPLETE:
+        this.props.decodeLoopFile(this.audioContext, payload.id, payload.file)
         break
-      case LOOPER_LOAD_FILE_DECODE_COMPLETE:
+      case LOOP_LOAD_FILE_DECODE_COMPLETE:
         this.updateNode(payload)
         break
       case GRAPH_UPDATE:
@@ -181,7 +181,7 @@ GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
   connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
-  decodeLooperFile: PropTypes.func,
+  decodeLoopFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
 
@@ -190,7 +190,7 @@ GleetchyEngine.defaultProps = {
   engineEvents: [],
   nodes: [],
   connections: [],
-  decodeLooperFile: () => {},
+  decodeLoopFile: () => {},
   clearEngineEvents: () => {},
 }
 
@@ -203,7 +203,7 @@ export default connect(
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(engineEventsClear()),
-    decodeLooperFile: (audioContext, id, file) =>
-      dispatch(looperLoadFileDecode(audioContext, id, file)),
+    decodeLoopFile: (audioContext, id, file) =>
+      dispatch(loopLoadFileDecode(audioContext, id, file)),
   }),
 )(GleetchyEngine)
