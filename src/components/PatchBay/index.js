@@ -2,61 +2,59 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
-  <div className="patchBay">
-    <div className="patchBay__row" key="titles">
-      <div className="patchBay__label patchBay__label_horizontal">
-        To / From
-      </div>
+  <table className="patchBay">
+    <tr className="patchBay__row" key="titles">
+      <th className="patchBay__label">To / From</th>
       {fromNodes.map((fromNode, i) => (
-        <div
-          className={`patchBay__label patchBay__label_vertical ${i ===
-          fromNodes.length - 1
+        <th
+          className={`patchBay__label ${i === fromNodes.length - 1
             ? ' patchBay__rowItem_last'
             : ''}`}
           title={`From ${fromNode.label} to ...`}
           key={fromNode.id}
         >
           {fromNode.label}
-        </div>
+        </th>
       ))}
-    </div>
+    </tr>
     {toNodes.map(toNode => (
-      <div className="patchBay__row" key={toNode.id}>
-        <div
-          className="patchBay__label patchBay__label_horizontal"
-          title={`From ... to ${toNode.label}`}
-        >
+      <tr className="patchBay__row" key={toNode.id}>
+        <td className="patchBay__label" title={`From ... to ${toNode.label}`}>
           {toNode.label}
-        </div>
+        </td>
         {fromNodes.map(
           (fromNode, i) =>
             fromNode.id === toNode.id ? (
-              <div
-                key={fromNode.id}
-                className={`patchBay__node patchBay__node_dummy ${i ===
-                fromNodes.length - 1
-                  ? ' patchBay__rowItem_last'
-                  : ''}`}
-              />
+              <td>
+                <div
+                  key={fromNode.id}
+                  className={`patchBay__node patchBay__node_dummy ${i ===
+                  fromNodes.length - 1
+                    ? ' patchBay__rowItem_last'
+                    : ''}`}
+                />
+              </td>
             ) : (
-              <div
-                key={fromNode.id}
-                className={`patchBay__node ${checkActiveNode(fromNode, toNode)
-                  ? ' patchBay__node_active'
-                  : ''} ${i === fromNodes.length - 1
-                  ? ' patchBay__rowItem_last'
-                  : ''}`}
-                onClick={() => onNodeClick(fromNode, toNode)}
-                role="button"
-                tabIndex={0}
-                onKeyUp={e => {
-                  if (e.key === 'Enter') onNodeClick(fromNode, toNode)
-                }}
-                title={`From ${fromNode.label} to ${toNode.label}`}
-              />
+              <td>
+                <div
+                  key={fromNode.id}
+                  className={`patchBay__node ${checkActiveNode(fromNode, toNode)
+                    ? ' patchBay__node_active'
+                    : ''} ${i === fromNodes.length - 1
+                    ? ' patchBay__rowItem_last'
+                    : ''}`}
+                  onClick={() => onNodeClick(fromNode, toNode)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyUp={e => {
+                    if (e.key === 'Enter') onNodeClick(fromNode, toNode)
+                  }}
+                  title={`From ${fromNode.label} to ${toNode.label}`}
+                />
+              </td>
             ),
         )}
-      </div>
+      </tr>
     ))}
     <style jsx>{`
       .patchBay {
@@ -69,22 +67,15 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        font-weight: 400;
       }
 
-      .patchBay__label_horizontal {
-        width: 5em;
+      .patchBay__row td {
+        padding: 0.4rem 0;
       }
 
-      .patchBay__label_vertical {
-        width: 0.94rem;
-        margin: 0 0.9rem;
-        text-align: center;
-      }
-
-      .patchBay__row {
-        display: flex;
-        align-items: center;
-        margin-bottom: 1rem;
+      .patchBay__row th {
+        padding: 0 0 0.4rem;
       }
 
       .patchBay__node {
@@ -108,12 +99,8 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         background-color: black;
         cursor: default;
       }
-
-      .patchBay__rowItem_last {
-        margin-right: 0;
-      }
     `}</style>
-  </div>
+  </table>
 )
 
 PatchBay.propTypes = {
