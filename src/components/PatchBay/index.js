@@ -13,7 +13,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
           fromNodes.length - 1
             ? ' patchBay__rowItem_last'
             : ''}`}
-          title={`From ${fromNode.title} to ...`}
+          title={`From ${fromNode.label} to ...`}
           key={fromNode.id}
         >
           {fromNode.label}
@@ -24,7 +24,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
       <div className="patchBay__row" key={toNode.id}>
         <div
           className="patchBay__label patchBay__label_horizontal"
-          title={`From ... to ${toNode.title}`}
+          title={`From ... to ${toNode.label}`}
         >
           {toNode.label}
         </div>
@@ -52,7 +52,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
                 onKeyUp={e => {
                   if (e.key === 'Enter') onNodeClick(fromNode, toNode)
                 }}
-                title={`From ${fromNode.title} to ${toNode.title}`}
+                title={`From ${fromNode.label} to ${toNode.label}`}
               />
             ),
         )}

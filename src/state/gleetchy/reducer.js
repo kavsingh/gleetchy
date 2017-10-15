@@ -1,7 +1,3 @@
-/*
-{"gleetchy":{"nodes":[{"id":"reverb0","label":"Reverb 0","type":"FX_REVERB","props":{"wetDryRatio":0.5}},{"id":"delay0","label":"Delay 0","type":"FX_DELAY","props":{"delayTime":0.6,"wetDryRatio":0.5}},{"id":"loop0","label":"Loop 0","type":"INS_LOOP","props":{"fileName":"","fileType":"","gain":0,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0.8703703703703705,"eqMid":0.6851851851851856,"eqHigh":0}},{"id":"loop1","label":"Loop 1","type":"INS_LOOP","props":{"fileName":"","fileType":"","gain":0.5,"loopStart":0,"loopEnd":1,"playbackRate":1,"eqLow":0,"eqMid":0,"eqHigh":0}}],"connections":[["loop0","mainOut"],["loop1","mainOut"]]}}
-*/
-
 import { equals, propEq } from 'ramda'
 import { warn } from '../../util'
 import { MAIN_OUT_ID } from '../../constants/audio'

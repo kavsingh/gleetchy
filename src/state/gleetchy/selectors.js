@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { identity, filter } from 'ramda'
+import { identity, filter, map, pick } from 'ramda'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { isFx, isInstrument } from '../../util/audio'
 
@@ -45,29 +45,18 @@ export const activeFXSelector = createSelector(
     }, []),
 )
 
+const patchNodeProps = map(pick(['id', 'label', 'type']))
+
 export const fromNodesSelector = createSelector(
   instrumentsSelector,
   fxSelector,
-  (instruments, fx) => [
-    ...instruments.map(({ id, label }) => ({
-      id,
-      label,
-      title: label,
-    })),
-    ...fx.map(({ id, label }) => ({
-      id,
-      label,
-      title: label,
-    })),
-  ],
+  (instruments, fx) => patchNodeProps([...instruments, ...fx]),
 )
 
 export const toNodesSelector = createSelector(fxSelector, fx =>
-  fx
-    .map(({ id, label }) => ({
-      id,
-      label,
-      title: label,
-    }))
-    .concat({ id: MAIN_OUT_ID, label: 'Main', title: 'Main out' }),
+  patchNodeProps(fx).concat({
+    id: MAIN_OUT_ID,
+    label: 'Main',
+    type: 'Main out',
+  }),
 )
