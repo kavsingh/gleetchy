@@ -7,7 +7,6 @@ import {
   isPlayingSelector,
   connectionsSelector,
 } from '../../state/gleetchy/selectors'
-import Panel from '../../components/Panel'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import Instruments from '../Instruments'
 import FX from '../FX'
@@ -15,7 +14,7 @@ import PatchBay from '../PatchBay'
 
 const GleetchyUI = ({ isPlaying, togglePlayback }) => (
   <div className="gleetchy">
-    <Panel>
+    <div className="gleetchy__mastheadContainer">
       <div className="gleetchy__masthead">
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
         <a
@@ -27,35 +26,46 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
           <GithubIcon />
         </a>
       </div>
-    </Panel>
-    <Panel
-      style={{
-        borderTop: '1px solid #fee',
-        paddingBottom: 0,
-      }}
-    >
+    </div>
+    <div className="gleetchy__instrumentsContainer">
       <Instruments />
-    </Panel>
-    <Panel
-      style={{
-        marginTop: '2em',
-        borderTop: '1px solid #fee',
-        padding: 0,
-      }}
-    >
-      <Panel style={{ flexGrow: 1, flexShrink: 0 }}>
+    </div>
+    <div className="gleetchy__connectContainer">
+      <div
+        className="gleetchy_fxContainer"
+        style={{ flexGrow: 1, flexShrink: 0 }}
+      >
         <FX />
-      </Panel>
-      <Panel style={{ flexGrow: 0, flexShrink: 0 }}>
+      </div>
+      <div
+        className="gleetchy_patchBayContainer"
+        style={{ flexGrow: 0, flexShrink: 0 }}
+      >
         <PatchBay />
-      </Panel>
-    </Panel>
+      </div>
+    </div>
     <style jsx>{`
       .gleetchy {
         max-width: 92em;
         margin: 0 auto;
         padding: 0 2em;
         color: #555;
+      }
+
+      .gleetchy__mastheadContainer,
+      .gleetchy__instrumentsContainer {
+        padding: 1em 0;
+        border-bottom: 1px solid #fee;
+      }
+
+      .gleetchy__instrumentsContainer {
+        max-height: 36em;
+        overflow-y: scroll;
+      }
+
+      .gleetchy__connectContainer {
+        display: flex;
+        padding: 2em 0;
       }
 
       .gleetchy__masthead {
