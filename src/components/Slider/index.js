@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, identity } from 'ramda'
+import { COLOR_KEYLINE, COLOR_EMPHASIS } from '../../constants/style'
 import SinglePointerDrag from '../SinglePointerDrag'
 
 class Slider extends PureComponent {
@@ -144,12 +145,12 @@ class Slider extends PureComponent {
 
           .slider__track {
             z-index: 1;
-            background-color: rgba(0, 0, 0, 0.1);
+            background-color: ${COLOR_KEYLINE};
           }
 
           .slider__bar {
             z-index: 2;
-            background-color: #000;
+            background-color: ${COLOR_EMPHASIS};
           }
 
           .slider_vertical .slider__track,

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { onlyUpdateForKeys } from 'recompose'
+import color from 'color'
+import { COLOR_PAGE } from '../../constants/style'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
@@ -86,7 +88,9 @@ const LoopSample = ({
         justify-content: space-around;
         cursor: pointer;
         z-index: 3;
-        background-color: rgba(255, 255, 255, 0.96);
+        background-color: ${color(COLOR_PAGE)
+          .alpha(0.96)
+          .string()};
         padding: 3em;
       }
 

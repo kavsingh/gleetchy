@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
+import { COLOR_KEYLINE, COLOR_EMPHASIS } from '../../constants/style'
 import SinglePointerDrag from '../SinglePointerDrag'
 import SVGArc from '../SVGArc'
 
@@ -114,7 +115,7 @@ class Knob extends PureComponent {
               }
 
               .knob__trackContainer :global(svg) {
-                stroke: rgba(0, 0, 0, 0.1);
+                stroke: ${COLOR_KEYLINE};
               }
 
               .knob__barContainer {
@@ -122,7 +123,7 @@ class Knob extends PureComponent {
               }
 
               .knob__barContainer :global(svg) {
-                stroke: #000;
+                stroke: ${COLOR_EMPHASIS};
               }
 
               .knob__label,

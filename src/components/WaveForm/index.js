@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { map } from 'ramda'
+import { COLOR_EMPHASIS } from '../../constants/style'
 
 const normaliseChannel = map(v => (v + 0.5) * 0.5)
 
@@ -39,9 +40,8 @@ class WaveForm extends Component {
     const { width, height } = this.state
     const context = this.canvasNode.getContext('2d')
 
-    context.fillStyle = '#fff'
-    context.fillRect(0, 0, width, height)
-    context.fillStyle = '#000'
+    context.clearRect(0, 0, width, height)
+    context.fillStyle = this.props.color
 
     context.fillRect(0, height / 2, width, 1)
   }
@@ -58,9 +58,8 @@ class WaveForm extends Component {
         : leftChannel
     const buffStep = buffer.length / width
 
-    context.fillStyle = '#fff'
-    context.fillRect(0, 0, width, height)
-    context.fillStyle = '#000'
+    context.clearRect(0, 0, width, height)
+    context.fillStyle = this.props.color
 
     for (let i = 0; i < width; i += 1) {
       const index = Math.floor(i * buffStep)
@@ -123,10 +122,12 @@ class WaveForm extends Component {
 }
 
 WaveForm.propTypes = {
+  color: PropTypes.string,
   buffer: PropTypes.instanceOf(AudioBuffer),
 }
 
 WaveForm.defaultProps = {
+  color: COLOR_EMPHASIS,
   buffer: undefined,
 }
 

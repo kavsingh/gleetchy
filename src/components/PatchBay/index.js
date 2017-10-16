@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { COLOR_EMPHASIS } from '../../constants/style'
 
 const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <table className="patchBay">
@@ -95,7 +96,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         width: 0.94rem;
         height: 0.94rem;
         border-radius: 50%;
-        border: 1px solid black;
+        border: 1px solid ${COLOR_EMPHASIS};
         margin: 0 0.9rem;
         cursor: pointer;
         background-color: transparent;
@@ -104,12 +105,12 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
       }
 
       .patchBay__node_active {
-        background-color: black;
+        background-color: ${COLOR_EMPHASIS};
         opacity: 1;
       }
 
       .patchBay__node_dummy {
-        background-color: black;
+        background-color: ${COLOR_EMPHASIS};
         cursor: default;
       }
     `}</style>

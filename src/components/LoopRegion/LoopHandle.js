@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { COLOR_EMPHASIS } from '../../constants/style'
 
 const LoopHandle = ({ align = 'left' }) => (
   <div className={`loopHandle loopHandle_${align}`}>
@@ -27,7 +28,7 @@ const LoopHandle = ({ align = 'left' }) => (
       .loopHandle__tag {
         height: 1px;
         width: 60%;
-        background-color: #000;
+        background-color: ${COLOR_EMPHASIS};
       }
 
       .loopHandle__bar {
@@ -45,12 +46,12 @@ const LoopHandle = ({ align = 'left' }) => (
 
       .loopHandle_left .loopHandle__bar {
         left: -100%;
-        border-right: 1px solid #000;
+        border-right: 1px solid ${COLOR_EMPHASIS};
       }
 
       .loopHandle_right .loopHandle__bar {
         right: -100%;
-        border-left: 1px solid #000;
+        border-left: 1px solid ${COLOR_EMPHASIS};
       }
     `}</style>
   </div>

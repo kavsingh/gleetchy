@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import GithubIcon from 'react-icons/lib/go/mark-github'
+import { COLOR_BODY, COLOR_KEYLINE } from '../../constants/style'
 import { playbackToggle } from '../../state/gleetchy/actions'
 import {
   isPlayingSelector,
@@ -49,13 +50,13 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
         max-width: 92em;
         margin: 0 auto;
         padding: 0 2em;
-        color: #555;
+        color: ${COLOR_BODY};
       }
 
       .gleetchy__mastheadContainer,
       .gleetchy__instrumentsContainer {
         padding: 1em 0;
-        border-bottom: 1px solid #fee;
+        border-bottom: 1px solid ${COLOR_KEYLINE};
       }
 
       .gleetchy__instrumentsContainer {
@@ -77,13 +78,12 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
       }
 
       .gleetchy__masthead a {
-        transition: opacity 0.2s ease-out, color 0.2s ease-out;
-        color: #555;
+        transition: opacity 0.2s ease-out;
+        color: ${COLOR_BODY};
         opacity: 0.4;
       }
 
       .gleetchy__masthead a:hover {
-        color: #333;
         opacity: 1;
       }
     `}</style>

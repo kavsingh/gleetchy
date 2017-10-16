@@ -150,7 +150,6 @@ class Loop extends Component {
             flex-wrap: nowrap;
             flex: 1 0 10em;
             width: 100%;
-            border-top: 1px solid rgba(0, 0, 0, 0);
             padding-left: 0.2em;
           }
 
