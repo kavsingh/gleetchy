@@ -9,9 +9,15 @@ const Reverb = ({
   onWetDryRatioChange,
   isActive,
   onLabelChange,
+  remove,
 }) => (
   <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
-    <TitleBar type="Reverb" label={label} onLabelChange={onLabelChange} />
+    <TitleBar
+      type="Reverb"
+      label={label}
+      onLabelChange={onLabelChange}
+      onRemoveClick={remove}
+    />
     <div className="reverb__controls">
       <div className="reverb__knobContainer">
         <Knob
@@ -53,6 +59,7 @@ Reverb.propTypes = {
   isActive: PropTypes.bool,
   onWetDryRatioChange: PropTypes.func,
   onLabelChange: PropTypes.func,
+  remove: PropTypes.func,
 }
 
 Reverb.defaultProps = {
@@ -61,6 +68,7 @@ Reverb.defaultProps = {
   isActive: true,
   onWetDryRatioChange: () => {},
   onLabelChange: () => {},
+  remove: () => {},
 }
 
 export default Reverb

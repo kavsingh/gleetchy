@@ -10,6 +10,7 @@ import {
   NODE_UPDATE_LABEL,
   NODE_UPDATE_PROPS,
   NODE_ADD,
+  NODE_REMOVE,
   LOOP_LOAD_FILE_COMPLETE,
   LOOP_LOAD_FILE_DECODE_COMPLETE,
   LOOP_LOAD_FILE_ERROR,
@@ -85,11 +86,11 @@ const updateConnections = (state, connection, type) => {
   }
 
   if (type === 'remove' && currentIdx !== -1) {
-    const newConnections = [...connections]
+    const nextConnections = [...connections]
 
-    newConnections.splice(currentIdx, 1)
+    nextConnections.splice(currentIdx, 1)
 
-    return { ...state, connections: newConnections }
+    return { ...state, connections: nextConnections }
   }
 
   return state
@@ -115,6 +116,22 @@ const addNode = (state, { type }) => {
   }
 
   return state
+}
+
+const removeNode = (state, { id }) => {
+  const { nodes, connections } = state
+  const deleteIdx = nodes.findIndex(node => node.id === id)
+
+  if (deleteIdx === -1) return state
+
+  const nextNodes = [...nodes]
+  const nextConnections = connections.filter(
+    connection => !connection.includes(id),
+  )
+
+  nextNodes.splice(deleteIdx, 1)
+
+  return { ...state, nodes: nextNodes, connections: nextConnections }
 }
 
 /* eslint-disable complexity */
@@ -183,16 +200,16 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
         engineEvents: [...state.engineEvents, { type: GRAPH_UPDATE }],
       }
     }
-    case NODE_ADD: {
+    case NODE_ADD:
       return {
         ...addNode(state, payload),
-        engineEvents: [
-          ...state.engineEvents,
-          { type: NODE_ADD },
-          { type: GRAPH_UPDATE },
-        ],
+        engineEvents: [...state.engineEvents, { type, payload }],
       }
-    }
+    case NODE_REMOVE:
+      return {
+        ...removeNode(state, payload),
+        engineEvents: [...state.engineEvents, { type, payload }],
+      }
     case STATE_REPLACE:
       return {
         ...defaultState,

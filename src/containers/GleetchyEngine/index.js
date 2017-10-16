@@ -1,7 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { tryCatch, cond, equals, pipe, prop, always } from 'ramda'
+import { tryCatch, cond, equals, pick, pipe, prop, always } from 'ramda'
 import { warn } from '../../util'
 import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
@@ -11,6 +11,7 @@ import {
   PLAYBACK_STOP,
   NODE_UPDATE_PROPS,
   NODE_ADD,
+  NODE_REMOVE,
   LOOP_LOAD_FILE_COMPLETE,
   LOOP_LOAD_FILE_DECODE_COMPLETE,
   GRAPH_UPDATE,
@@ -88,9 +89,9 @@ class GleetchyEngine extends Component {
   updateAudioNodes() {
     const { nodes, isPlaying } = this.props
 
-    this.audioNodes = this.audioNodes || {
-      [MAIN_OUT_ID]: this.audioContext.destination,
-    }
+    this.audioNodes = this.audioNodes
+      ? pick([...nodes.map(({ id }) => id), MAIN_OUT_ID], this.audioNodes)
+      : { [MAIN_OUT_ID]: this.audioContext.destination }
 
     nodes.filter(node => !this.audioNodes[node.id]).forEach(node => {
       const nodeCreator = getNodeCreator(node)
@@ -160,6 +161,9 @@ class GleetchyEngine extends Component {
       case NODE_ADD:
         this.updateAudioNodes()
         this.updateAudioGraph()
+        break
+      case NODE_REMOVE:
+        this.rebuildAll()
         break
       case STATE_REPLACE:
         this.rebuildAll()

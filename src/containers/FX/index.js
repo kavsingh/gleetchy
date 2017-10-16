@@ -3,11 +3,15 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
 import { fxSelector, activeFXSelector } from '../../state/gleetchy/selectors'
-import { nodeUpdateProps, nodeUpdateLabel } from '../../state/gleetchy/actions'
+import {
+  nodeUpdateProps,
+  nodeUpdateLabel,
+  nodeRemove,
+} from '../../state/gleetchy/actions'
 import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
 
-const FX = ({ fx, activeFx, updateFx, updateFxLabel }) => (
+const FX = ({ fx, activeFx, updateFx, updateFxLabel, removeFx }) => (
   <div className="fx">
     {fx.map(({ id, type, props, label }) => {
       if (type === FX_DELAY) {
@@ -21,6 +25,7 @@ const FX = ({ fx, activeFx, updateFx, updateFxLabel }) => (
             onDelayTimeChange={delayTime => updateFx(id, { delayTime })}
             onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
             onLabelChange={val => updateFxLabel(id, val)}
+            remove={() => removeFx(id)}
           />
         )
       } else if (type === FX_REVERB) {
@@ -32,6 +37,7 @@ const FX = ({ fx, activeFx, updateFx, updateFxLabel }) => (
             wetDryRatio={props.wetDryRatio}
             onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
             onLabelChange={val => updateFxLabel(id, val)}
+            remove={() => removeFx(id)}
           />
         )
       }
@@ -51,6 +57,7 @@ FX.propTypes = {
   activeFx: PropTypes.arrayOf(PropTypes.string),
   updateFx: PropTypes.func,
   updateFxLabel: PropTypes.func,
+  removeFx: PropTypes.func,
 }
 
 FX.defaultProps = {
@@ -58,6 +65,7 @@ FX.defaultProps = {
   activeFx: [],
   updateFx: () => {},
   updateFxLabel: () => {},
+  removeFx: () => {},
 }
 
 export default connect(
@@ -68,5 +76,6 @@ export default connect(
   dispatch => ({
     updateFx: (id, props) => dispatch(nodeUpdateProps(id, props)),
     updateFxLabel: (id, label) => dispatch(nodeUpdateLabel(id, label)),
+    removeFx: id => dispatch(nodeRemove(id)),
   }),
 )(FX)

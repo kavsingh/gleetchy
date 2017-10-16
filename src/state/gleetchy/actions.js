@@ -12,6 +12,7 @@ import {
   PLAYBACK_STOP,
   ENGINE_EVENTS_CLEAR,
   NODE_ADD,
+  NODE_REMOVE,
   NODE_UPDATE_LABEL,
   NODE_UPDATE_PROPS,
   LOOP_LOAD_FILE_START,
@@ -142,6 +143,11 @@ export const stateConsume = () => dispatch => {
 export const loopAdd = () => ({
   type: NODE_ADD,
   payload: { type: INS_LOOP },
+})
+
+export const nodeRemove = id => ({
+  type: NODE_REMOVE,
+  payload: { id },
 })
 
 export const engineEventsClear = () => ({ type: ENGINE_EVENTS_CLEAR })

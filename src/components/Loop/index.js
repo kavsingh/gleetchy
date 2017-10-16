@@ -9,19 +9,17 @@ const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
   <span className="loop__titleSpan">
     {fileName ? `${fileName}` : ''}
     {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
-    {fileName ? (
-      <span
-        role="button"
-        tabIndex={0}
-        className="loop__titleLoadAudio"
-        onClick={selectAudioFile}
-        onKeyDown={({ key }) => {
-          if (key === 'Enter') selectAudioFile()
-        }}
-      >
-        {'/ Load audio file'}
-      </span>
-    ) : null}
+    <span
+      role="button"
+      tabIndex={0}
+      className="loop__titleLoadAudio"
+      onClick={selectAudioFile}
+      onKeyDown={({ key }) => {
+        if (key === 'Enter') selectAudioFile()
+      }}
+    >
+      {`${fileName ? ' / ' : ''}[ Load audio file ]`}
+    </span>
     <style jsx>{`
       .loop__titleLoadAudio {
         display: inline-block;
@@ -87,6 +85,7 @@ class Loop extends Component {
       selectAudioFile,
       receiveAudioFile,
       onLabelChange,
+      remove,
     } = this.props
 
     return (
@@ -102,6 +101,7 @@ class Loop extends Component {
                   type="Loop"
                   label={label}
                   onLabelChange={onLabelChange}
+                  onRemoveClick={remove}
                 >
                   {() => renderTitle(fileName, audioBuffer, selectAudioFile)}
                 </TitleBar>
@@ -176,6 +176,7 @@ Loop.propTypes = {
   onLoopRegionChange: PropTypes.func,
   onLabelChange: PropTypes.func,
   renderControls: PropTypes.func,
+  remove: PropTypes.func,
 }
 
 Loop.defaultProps = {
@@ -189,6 +190,7 @@ Loop.defaultProps = {
   onLoopRegionChange: () => {},
   onLabelChange: () => {},
   renderControls: () => <div />,
+  remove: () => {},
 }
 
 export default Loop

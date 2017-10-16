@@ -9,6 +9,7 @@ import {
   loopReceiveAudioFile,
   loopSelectAudioFile,
   loopAdd,
+  nodeRemove,
 } from '../../state/gleetchy/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import AnimIn from '../../components/AnimIn'
@@ -23,6 +24,7 @@ const Instruments = ({
   updateInstrument,
   updateInstrumentLabel,
   addLoop,
+  removeInstrument,
 }) => (
   <div className="instruments">
     <ErrorBoundary>
@@ -35,6 +37,7 @@ const Instruments = ({
                 label={label}
                 selectAudioFile={() => loopSelectFile(id)}
                 receiveAudioFile={file => loopReceiveFile(id, file)}
+                remove={() => removeInstrument(id)}
                 onLabelChange={val => updateInstrumentLabel(id, val)}
                 onLoopRegionChange={(start, end) =>
                   updateInstrument(id, {
@@ -73,7 +76,7 @@ const Instruments = ({
         if (key === 'Enter') addLoop()
       }}
     >
-      + Add loop
+      [ + Add loop ]
     </div>
     <style jsx>{`
       .instruments {
@@ -104,6 +107,7 @@ Instruments.propTypes = {
   updateInstrument: PropTypes.func,
   updateInstrumentLabel: PropTypes.func,
   addLoop: PropTypes.func,
+  removeInstrument: PropTypes.func,
 }
 
 Instruments.defaultProps = {
@@ -113,6 +117,7 @@ Instruments.defaultProps = {
   updateInstrument: () => {},
   updateInstrumentLabel: () => {},
   addLoop: () => {},
+  removeInstrument: () => {},
 }
 
 export default connect(
@@ -125,5 +130,6 @@ export default connect(
     updateInstrument: (id, props) => dispatch(nodeUpdateProps(id, props)),
     updateInstrumentLabel: (id, label) => dispatch(nodeUpdateLabel(id, label)),
     addLoop: () => dispatch(loopAdd()),
+    removeInstrument: id => dispatch(nodeRemove(id)),
   }),
 )(Instruments)
