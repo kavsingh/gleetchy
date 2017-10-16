@@ -84,12 +84,16 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         text-align: left;
       }
 
+      .patchBay__row th {
+        padding: 0 0 0.6em;
+      }
+
       .patchBay__row td {
         padding: 0.6em 0;
       }
 
-      .patchBay__row th {
-        padding: 0 0 0.6em;
+      .patchBay__row td:not(:first-child) {
+        padding: 0 0.6em;
       }
 
       .patchBay__node {
@@ -97,7 +101,7 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
         height: 0.8em;
         border-radius: 50%;
         border: 1px solid ${COLOR_EMPHASIS};
-        margin: 0 0.6em;
+        margin: 0 auto;
         cursor: pointer;
         background-color: transparent;
         opacity: 0.1;
