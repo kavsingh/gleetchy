@@ -76,19 +76,21 @@ const FX = ({
         width: 100%;
         display: flex;
         flex-wrap: wrap;
+        align-items: flex-start;
       }
-      .fx__fxContainer,
-      .fx__addFxContainer {
-        flex: 0 1 50%;
+
+      .fx__fxContainer {
+        flex: 1 0 10em;
         padding: 1em 0;
       }
 
       .fx__addFxContainer {
         min-height: 5em;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-around;
         padding: 1em 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
       }
 
       .fx__addFxButton {

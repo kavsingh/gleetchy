@@ -1,6 +1,7 @@
 import React from 'react'
 import { render } from 'react-dom'
 import { Provider } from 'react-redux'
+import { COLOR_PAGE } from './constants/style'
 import { configureStore } from './state/configureStore'
 import GleetchyEngine from './containers/GleetchyEngine'
 import GleetchyUI from './containers/GleetchyUI'
@@ -52,6 +53,7 @@ const App = () => (
       }
 
       body {
+        background-color: ${COLOR_PAGE};
         font-family: -apple-system, BlinkMacSystemFont, sans-serif;
         -webkit-font-smoothing: antialiased;
       }

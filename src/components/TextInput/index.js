@@ -2,7 +2,6 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import AutosizeInput from 'react-input-autosize'
 import { cancelEvent } from '../../util'
-import { COLOR_EMPHASIS } from '../../constants/style'
 
 class TextInput extends PureComponent {
   constructor(...args) {
@@ -34,6 +33,7 @@ class TextInput extends PureComponent {
             border: none;
             border-bottom: 1px solid transparent;
             cursor: initial;
+            background-color: transparent;
           }
 
           .textInput :global(input:focus) {

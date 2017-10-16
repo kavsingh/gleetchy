@@ -32,16 +32,10 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
       <Instruments />
     </div>
     <div className="gleetchy__connectContainer">
-      <div
-        className="gleetchy_fxContainer"
-        style={{ flexGrow: 1, flexShrink: 0 }}
-      >
+      <div className="gleetchy__fxContainer">
         <FX />
       </div>
-      <div
-        className="gleetchy_patchBayContainer"
-        style={{ flexGrow: 0, flexShrink: 0 }}
-      >
+      <div className="gleetchy__patchBayContainer">
         <PatchBay />
       </div>
     </div>
@@ -68,6 +62,16 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
       .gleetchy__connectContainer {
         display: flex;
         padding: 2em 0;
+      }
+
+      .gleetchy__fxContainer {
+        flex-grow: 1;
+        flex-shrink: 1;
+      }
+
+      .gleetchy__patchBayContainer {
+        flex-grow: 0;
+        flex-shrink: 0;
       }
 
       .gleetchy__masthead {
