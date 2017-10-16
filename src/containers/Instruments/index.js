@@ -25,14 +25,9 @@ const Instruments = ({
   addLoop,
 }) => (
   <div className="instruments">
-    {instruments.map(({ id, label, type, props }, index) => (
-      <div
-        className={`instruments__instrumentContainer${index === 0
-          ? ' instruments__instrumentContainer_first'
-          : ''}`}
-        key={id}
-      >
-        <ErrorBoundary>
+    <ErrorBoundary>
+      {instruments.map(({ id, label, type, props }) => (
+        <div className="instruments__instrumentContainer" key={id}>
           <AnimIn>
             {type === INS_LOOP ? (
               <Loop
@@ -66,9 +61,9 @@ const Instruments = ({
               />
             ) : null}
           </AnimIn>
-        </ErrorBoundary>
-      </div>
-    ))}
+        </div>
+      ))}
+    </ErrorBoundary>
     <div
       className="instruments__addButton"
       onClick={addLoop}
@@ -87,13 +82,8 @@ const Instruments = ({
         flex-direction: column;
       }
 
-      .instruments__instrumentContainer {
-        height: 12em;
+      .instruments__instrumentContainer:not(:first-child) {
         margin-top: 2em;
-      }
-
-      .instruments__instrumentContainer_first {
-        margin-top: 0;
       }
 
       .instruments__addButton {

@@ -125,13 +125,14 @@ class Loop extends Component {
           )}
         </FileDropRegion>
         <style jsx>{`
-          .loop,
-          .loop__wrap {
+          .loop {
             width: 100%;
-            height: 100%;
+            height: 12em;
           }
 
           .loop__wrap {
+            width: 100%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: stretch;
@@ -147,9 +148,7 @@ class Loop extends Component {
           .loop__main {
             display: flex;
             flex-wrap: nowrap;
-            flex-grow: 1;
-            flex-shrink: 0;
-            flex-basis: 10em;
+            flex: 1 0 10em;
             width: 100%;
             border-top: 1px solid rgba(0, 0, 0, 0);
             padding-left: 0.2em;

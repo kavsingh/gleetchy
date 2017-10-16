@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { onlyUpdateForKeys } from 'recompose'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
@@ -119,4 +120,9 @@ LoopSample.defaultProps = {
   selectAudioFile: () => {},
 }
 
-export default LoopSample
+export default onlyUpdateForKeys([
+  'fromSaved',
+  'audioBuffer',
+  'loopStart',
+  'loopEnd',
+])(LoopSample)
