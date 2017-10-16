@@ -33,6 +33,10 @@ class LoopRegion extends Component {
 
   render() {
     const { loopStart, loopEnd } = this.props
+    const regionRatio = loopEnd - loopStart
+    const preferRegionDrag = this.rootNode
+      ? regionRatio * this.rootNode.offsetWidth < 30
+      : false
 
     return (
       <div
@@ -70,7 +74,7 @@ class LoopRegion extends Component {
             className="loopRegion__inactiveRegion"
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
-          {loopStart > 0 || loopEnd < 1 ? (
+          {regionRatio < 1 ? (
             <SinglePointerDrag onDragMove={this.handleLoopRegionDrag}>
               {({ dragListeners }) => (
                 <div
@@ -80,7 +84,7 @@ class LoopRegion extends Component {
                   style={{
                     left: `${loopStart * 100}%`,
                     right: `${(1 - loopEnd) * 100}%`,
-                    zIndex: loopEnd - loopStart < 0.05 ? 2 : 0,
+                    zIndex: preferRegionDrag ? 2 : 0,
                   }}
                 />
               )}
