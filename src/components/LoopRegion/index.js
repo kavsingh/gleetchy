@@ -70,19 +70,22 @@ class LoopRegion extends Component {
             className="loopRegion__inactiveRegion"
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
-          <SinglePointerDrag onDragMove={this.handleLoopRegionDrag}>
-            {({ dragListeners }) => (
-              <div
-                {...dragListeners}
-                role="presentation"
-                className="loopRegion__activeRegion"
-                style={{
-                  left: `${loopStart * 100}%`,
-                  right: `${(1 - loopEnd) * 100}%`,
-                }}
-              />
-            )}
-          </SinglePointerDrag>
+          {loopStart > 0 || loopEnd < 1 ? (
+            <SinglePointerDrag onDragMove={this.handleLoopRegionDrag}>
+              {({ dragListeners }) => (
+                <div
+                  {...dragListeners}
+                  role="presentation"
+                  className="loopRegion__activeRegion"
+                  style={{
+                    left: `${loopStart * 100}%`,
+                    right: `${(1 - loopEnd) * 100}%`,
+                    zIndex: loopEnd - loopStart < 0.05 ? 2 : 0,
+                  }}
+                />
+              )}
+            </SinglePointerDrag>
+          ) : null}
           <div
             className="loopRegion__inactiveRegion"
             style={{ left: `${loopEnd * 100}%`, right: 0 }}
@@ -120,7 +123,6 @@ class LoopRegion extends Component {
           }
 
           .loopRegion__activeRegion {
-            z-index: 2;
             cursor: move;
           }
 

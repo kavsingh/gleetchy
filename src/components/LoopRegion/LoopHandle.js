@@ -26,7 +26,7 @@ const LoopHandle = ({ align = 'left' }) => (
 
       .loopHandle__tag {
         height: 1px;
-        width: 100%;
+        width: 60%;
         background-color: #000;
       }
 
