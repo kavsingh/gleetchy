@@ -76,7 +76,7 @@ const Instruments = ({
         if (key === 'Enter') addLoop()
       }}
     >
-      [ + Add loop ]
+      [ Add loop ]
     </div>
     <style jsx>{`
       .instruments {
@@ -95,6 +95,7 @@ const Instruments = ({
         padding: 1em 0;
         width: 100%;
         text-align: center;
+        font-size: 0.8em;
       }
     `}</style>
   </div>

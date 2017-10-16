@@ -1,5 +1,6 @@
-import { equals, propEq } from 'ramda'
+import { always, equals, propEq, cond, T } from 'ramda'
 import { warn } from '../../util'
+import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_REVERB, FX_DELAY, INS_LOOP } from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
@@ -20,36 +21,36 @@ import {
   STATE_REPLACE,
 } from './actionTypes'
 
+const getRootNameForType = cond([
+  [equals(INS_LOOP), always('loop')],
+  [equals(FX_DELAY), always('delay')],
+  [equals(FX_REVERB), always('reverb')],
+  [T, 'node'],
+])
+
+const defaultLabels = (id, type) => {
+  const rootName = getRootNameForType(type)
+
+  return {
+    id: `${rootName}${id}`,
+    label: `${rootName[0].toUpperCase()}${id}`,
+  }
+}
+
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
   connections: [['loop0', MAIN_OUT_ID], ['loop1', MAIN_OUT_ID]],
   nodes: [
-    {
-      id: 'reverb0',
-      label: 'R0',
-      type: FX_REVERB,
-      props: { ...nodeProps[FX_REVERB] },
-    },
-    {
-      id: 'delay0',
-      label: 'D0',
-      type: FX_DELAY,
-      props: { ...nodeProps[FX_DELAY] },
-    },
-    {
-      id: 'loop0',
-      label: 'L0',
-      type: INS_LOOP,
-      props: { ...nodeProps[INS_LOOP] },
-    },
-    {
-      id: 'loop1',
-      label: 'L1',
-      type: INS_LOOP,
-      props: { ...nodeProps[INS_LOOP] },
-    },
-  ],
+    [INS_LOOP, 0],
+    [INS_LOOP, 1],
+    [FX_REVERB, 0],
+    [FX_DELAY, 0],
+  ].map(([type, id]) => ({
+    type,
+    ...defaultLabels(id, type),
+    props: { ...nodeProps[type] },
+  })),
 }
 
 const updateNodeLabel = (state, { id, label = '' }) => {
@@ -97,25 +98,24 @@ const updateConnections = (state, connection, type) => {
 }
 
 const addNode = (state, { type }) => {
-  if (type === INS_LOOP) {
-    const loops = state.nodes.filter(propEq('type', INS_LOOP))
-    const id = loops.length
+  if (![INS_LOOP, FX_DELAY, FX_REVERB].includes(type)) return state
 
-    const node = {
-      type,
-      id: `loop${id}`,
-      label: `L${id}`,
-      props: { ...nodeProps.INS_LOOP },
-    }
+  const typeCount = state.nodes.filter(propEq('type', type))
+  const id = typeCount.length
 
-    return {
-      ...state,
-      nodes: state.nodes.concat(node),
-      connections: state.connections.concat([[node.id, MAIN_OUT_ID]]),
-    }
+  const node = {
+    type,
+    ...defaultLabels(id, type),
+    props: { ...nodeProps[type] },
   }
 
-  return state
+  return {
+    ...state,
+    nodes: state.nodes.concat(node),
+    connections: isInstrument(node)
+      ? state.connections.concat([[node.id, MAIN_OUT_ID]])
+      : state.connections,
+  }
 }
 
 const removeNode = (state, { id }) => {

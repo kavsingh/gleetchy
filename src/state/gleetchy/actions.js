@@ -6,7 +6,7 @@ import {
 import { sendJsonString, consumeJsonString } from '../../apis/state'
 import { warn } from '../../util'
 import { decodeAudioDataP } from '../../util/audio'
-import { INS_LOOP } from '../../constants/nodeTypes'
+import { INS_LOOP, FX_DELAY, FX_REVERB } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
   PLAYBACK_STOP,
@@ -143,6 +143,16 @@ export const stateConsume = () => dispatch => {
 export const loopAdd = () => ({
   type: NODE_ADD,
   payload: { type: INS_LOOP },
+})
+
+export const reverbAdd = () => ({
+  type: NODE_ADD,
+  payload: { type: FX_REVERB },
+})
+
+export const delayAdd = () => ({
+  type: NODE_ADD,
+  payload: { type: FX_DELAY },
 })
 
 export const nodeRemove = id => ({

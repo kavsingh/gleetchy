@@ -7,27 +7,31 @@ const TitleBar = ({ type, children, onLabelChange, label, onRemoveClick }) => (
     <div className="titleBar__labelContainer">
       <TextInput onChange={onLabelChange} value={label} />
     </div>
-    <div className="titleBar__typeContainer">/ {type} /</div>
-    {typeof children === 'function' ? children() : children}
-    <div
-      className="titleBar__removeButton"
-      role="button"
-      onClick={onRemoveClick}
-      tabIndex={0}
-      onKeyDown={event => {
-        if (event.key === 'Enter') onRemoveClick()
-      }}
-    >
-      {'[ Remove ]'}
+    <div className="titleBar__infoContainer">
+      <div className="titleBar__typeContainer">{type} /</div>
+      {typeof children === 'function' ? children() : children}
+      <div
+        className="titleBar__removeButton"
+        role="button"
+        onClick={onRemoveClick}
+        tabIndex={0}
+        onKeyDown={event => {
+          if (event.key === 'Enter') onRemoveClick()
+        }}
+      >
+        {'[ Remove ]'}
+      </div>
     </div>
     <style jsx>{`
       .titleBar {
+        font-size: 0.8em;
+        margin-bottom: 0.6em;
+      }
+
+      .titleBar__infoContainer {
         display: flex;
         flex-direction: row;
         align-items: center;
-        font-size: 0.8em;
-        height: 1em;
-        margin-bottom: 0.6em;
       }
 
       .titleBar__typeContainer {

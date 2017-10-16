@@ -62,7 +62,6 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
     <style jsx>{`
       .patchBay {
         width: 100%;
-        height: 100%;
       }
 
       .patchBay__label {
