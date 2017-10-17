@@ -11,7 +11,7 @@ module.exports = {
     'react',
   ],
   plugins: [
-    ['lodash', { id: ['ramda'] }],
+    // ['lodash', { id: ['ramda'] }],
     'styled-jsx/babel',
     'transform-object-rest-spread',
   ],
