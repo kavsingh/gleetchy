@@ -33,7 +33,7 @@
     "babel-preset-react": "^7.0.0-beta.3",
     "babel-register": "^7.0.0-beta.3",
     "babel-runtime": "^7.0.0-beta.3",
-    "chalk": "^2.1.0",
+    "chalk": "^2.2.0",
     "common-tags": "^1.4.0",
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
@@ -43,7 +43,7 @@
     "eslint-config-prettier": "^2.6.0",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-babel": "^4.1.2",
-    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-import": "^2.8.0",
     "eslint-plugin-jsx-a11y": "^6.0.2",
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.4.0",
@@ -72,6 +72,6 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
-    "styled-jsx": "^2.1.1"
+    "styled-jsx": "^2.1.2"
   }
 }
