@@ -1,5 +1,4 @@
-import { curry, propEq, anyPass, sortBy, prop, without } from 'ramda'
-import { MAIN_OUT_ID } from '../constants/audio'
+import { curry, propEq, anyPass, sortBy, prop } from 'ramda'
 import { FX_DELAY, FX_REVERB, INS_LOOP } from '../constants/nodeTypes'
 
 const typeEquals = propEq('type')
