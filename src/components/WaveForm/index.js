@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { map } from 'ramda'
-import { COLOR_EMPHASIS } from '../../constants/style'
+import colorFn from 'color'
+import { COLOR_EMPHASIS, COLOR_KEYLINE } from '../../constants/style'
 import { hasWindowWith } from '../../util/env'
 
 const normaliseChannel = map(v => (v + 0.5) * 0.5)
@@ -67,6 +68,19 @@ class WaveForm extends Component {
     }
   }
 
+  drawTimeRegions(context) {
+    const { timeRegions } = this.props
+    const { width, height } = this.state
+
+    for (let i = 0; i < timeRegions; i += 1) {
+      const x = Math.round(i * 0.25 * width)
+
+      context.moveTo(x, 0)
+      context.lineTo(x, height)
+    }
+    context.stroke()
+  }
+
   updateWaveForm() {
     if (!this.canvasNode) return
 
@@ -80,9 +94,16 @@ class WaveForm extends Component {
     context.scale(this.pixelRatio, this.pixelRatio)
     context.clearRect(0, 0, width, height)
     context.fillStyle = color
+    context.strokeStyle = colorFn(COLOR_KEYLINE)
+      .darken(0.06)
+      .hex()
 
-    if (this.props.buffer) this.drawWaveForm(context)
-    else this.drawTempWaveform(context)
+    if (this.props.buffer) {
+      this.drawTimeRegions(context)
+      this.drawWaveForm(context)
+    } else {
+      this.drawTempWaveform(context)
+    }
   }
 
   handleResize() {
@@ -119,11 +140,13 @@ class WaveForm extends Component {
 
 WaveForm.propTypes = {
   color: PropTypes.string,
+  timeRegions: PropTypes.number,
   buffer: PropTypes.instanceOf(AudioBuffer),
 }
 
 WaveForm.defaultProps = {
   color: COLOR_EMPHASIS,
+  timeRegions: 4,
   buffer: undefined,
 }
 
