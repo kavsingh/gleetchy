@@ -5,10 +5,7 @@ import GithubIcon from 'react-icons/lib/go/mark-github'
 import { COLOR_BODY, COLOR_KEYLINE } from '../../constants/style'
 import { noop } from '../../util/function'
 import { playbackToggle } from '../../state/gleetchy/actions'
-import {
-  isPlayingSelector,
-  connectionsSelector,
-} from '../../state/gleetchy/selectors'
+import { isPlayingSelector } from '../../state/gleetchy/selectors'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import Instruments from '../Instruments'
 import FX from '../FX'
@@ -108,7 +105,6 @@ GleetchyUI.defaultProps = {
 export default connect(
   state => ({
     isPlaying: isPlayingSelector(state),
-    connections: connectionsSelector(state),
   }),
   dispatch => ({
     togglePlayback: () => dispatch(playbackToggle()),

@@ -1,11 +1,11 @@
-import { curry, head, equals } from 'ramda'
+import { curry, head } from 'ramda'
 import {
   readFileToArrayBuffer,
   loadAudioFilesToArrayBuffers,
 } from '../../apis/file'
 import { sendJsonString, consumeJsonString } from '../../apis/state'
 import { warn } from '../../util/dev'
-import { decodeAudioDataP } from '../../util/audio'
+import { decodeAudioDataP, isSameConnection } from '../../util/audio'
 import { INS_LOOP, FX_DELAY, FX_REVERB } from '../../constants/nodeTypes'
 import {
   PLAYBACK_START,
@@ -109,17 +109,17 @@ export const loopLoadFileDecode = curry(
 
 export const connectionAdd = (fromId, toId) => ({
   type: CONNECTION_ADD,
-  payload: { connection: [fromId, toId] },
+  payload: { from: fromId, to: toId },
 })
 
 export const connectionRemove = (fromId, toId) => ({
   type: CONNECTION_REMOVE,
-  payload: { connection: [fromId, toId] },
+  payload: { from: fromId, to: toId },
 })
 
 export const connectionToggle = (fromId, toId) => (dispatch, getState) => {
   const connections = connectionsSelector(getState())
-  const current = connections.find(equals([fromId, toId]))
+  const current = connections.find(isSameConnection({ from: fromId, to: toId }))
 
   if (current) dispatch(connectionRemove(fromId, toId))
   else dispatch(connectionAdd(fromId, toId))

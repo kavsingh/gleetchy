@@ -40,7 +40,7 @@ export const activeFXSelector = createSelector(
   fxSelector,
   (connections, fx) =>
     fx.map(({ id }) => id).reduce((accum, fxId) => {
-      const active = connections.find(connection => connection[1] === fxId)
+      const active = connections.find(connection => connection.to === fxId)
 
       if (active) accum.push(fxId)
 

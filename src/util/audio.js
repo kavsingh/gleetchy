@@ -14,3 +14,8 @@ export const decodeAudioDataP = curry(
       audioContext.decodeAudioData(buffer, resolve, reject),
     ),
 )
+
+export const isSameConnection = curry(
+  (connection1, connection2) =>
+    connection1.from === connection2.from && connection1.to === connection2.to,
+)

@@ -1,6 +1,7 @@
 import { always, equals, propEq, cond, T } from 'ramda'
 import { warn } from '../../util/dev'
-import { isInstrument } from '../../util/audio'
+import { isInstrument, isSameConnection } from '../../util/audio'
+import COLORS from '../../constants/color'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_REVERB, FX_DELAY, INS_LOOP } from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
@@ -40,7 +41,10 @@ const defaultLabels = (id, type) => {
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
-  connections: [['loop0', MAIN_OUT_ID], ['loop1', MAIN_OUT_ID]],
+  connections: [
+    { from: 'loop0', to: MAIN_OUT_ID, color: COLORS[0] },
+    { from: 'loop1', to: MAIN_OUT_ID, color: COLORS[1] },
+  ],
   nodes: [
     [INS_LOOP, 0],
     [INS_LOOP, 1],
@@ -78,12 +82,12 @@ const updateNode = (state, { id, props = {} }) => {
 const updateConnections = (state, connection, type) => {
   const { connections } = state
 
-  const currentIdx = connections.findIndex(equals(connection))
+  const currentIdx = connections.findIndex(isSameConnection(connection))
 
   if (type === 'add' && currentIdx === -1) {
-    if (connection[0] === connection[1]) return state
+    if (connection.from === connection.to) return state
 
-    return { ...state, connections: connections.concat([connection]) }
+    return { ...state, connections: connections.concat(connection) }
   }
 
   if (type === 'remove' && currentIdx !== -1) {
@@ -113,7 +117,7 @@ const addNode = (state, { type }) => {
     ...state,
     nodes: state.nodes.concat(node),
     connections: isInstrument(node)
-      ? state.connections.concat([[node.id, MAIN_OUT_ID]])
+      ? state.connections.concat([{ from: node.id, to: MAIN_OUT_ID }])
       : state.connections,
   }
 }
@@ -126,7 +130,7 @@ const removeNode = (state, { id }) => {
 
   const nextNodes = [...nodes]
   const nextConnections = connections.filter(
-    connection => !connection.includes(id),
+    ({ from, to }) => ![from, to].includes(id),
   )
 
   nextNodes.splice(deleteIdx, 1)
@@ -181,7 +185,7 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       warn(payload.error, type, payload)
       return state
     case CONNECTION_ADD: {
-      const nextState = updateConnections(state, payload.connection, 'add')
+      const nextState = updateConnections(state, payload, 'add')
 
       if (state === nextState) return state
 
@@ -191,7 +195,7 @@ const gleetchy = (state = defaultState, { type, payload = {} } = {}) => {
       }
     }
     case CONNECTION_REMOVE: {
-      const nextState = updateConnections(state, payload.connection, 'remove')
+      const nextState = updateConnections(state, payload, 'remove')
 
       if (state === nextState) return state
 

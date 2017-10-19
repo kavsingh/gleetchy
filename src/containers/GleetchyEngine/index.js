@@ -114,7 +114,7 @@ class GleetchyEngine extends Component {
 
     if (!connections.length) return
 
-    connections.forEach(([fromId, toId]) => {
+    connections.forEach(({ from: fromId, to: toId }) => {
       const from = this.audioNodes[fromId]
       const to = this.audioNodes[toId]
 
@@ -185,7 +185,9 @@ GleetchyEngine.propTypes = {
   isPlaying: PropTypes.bool,
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
-  connections: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.string)),
+  connections: PropTypes.arrayOf(
+    PropTypes.shape({ from: PropTypes.string, to: PropTypes.string }),
+  ),
   decodeLoopFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
