@@ -1,3 +1,5 @@
+import { path, pipe, __ } from 'ramda'
+
 /* eslint-disable no-console */
 export const log = console.log.bind(console)
 
@@ -16,3 +18,14 @@ export const docReady = (eventName = 'complete') =>
       if (document.readyState === eventName) resolve()
     }
   })
+
+export const hasWindowWith = (propPaths = []) => {
+  if (typeof window === 'undefined') return false
+
+  const windowHas = pipe(path(__, window), o => typeof o !== 'undefined')
+
+  return propPaths.reduce(
+    (accum, propPath) => accum && windowHas(propPath),
+    true,
+  )
+}

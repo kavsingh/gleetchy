@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pipe, tap } from 'ramda'
-import { cancelEvent } from '../../util'
+import { pipe, tap, filter } from 'ramda'
+import { cancelEvent, hasWindowWith } from '../../util'
+
+const filterEvents = filter(
+  eventName =>
+    hasWindowWith([['document', 'documentElement']]) &&
+    (`on${eventName}` in document ||
+      `on${eventName}` in document.documentElement),
+)
 
 const normalizeEvent = event => {
   const { currentTarget, touches, timeStamp } = event
@@ -35,50 +42,66 @@ class SinglePointerDrag extends Component {
       duration: 0,
     }
 
-    this.handleDragStart = this.handleDragStart.bind(this)
+    this.handleMouseDown = this.handleMouseDown.bind(this)
+    this.handleTouchStart = this.handleTouchStart.bind(this)
     this.handleDragMove = this.handleDragMove.bind(this)
     this.handleDragEnd = this.handleDragEnd.bind(this)
   }
 
   componentWillMount() {
-    this.eventNames =
-      'ontouchstart' in document || 'ontouchstart' in document.documentElement
-        ? {
-            start: ['touchstart'],
-            move: ['touchmove'],
-            end: ['touchend', 'touchcancel'],
-          }
-        : { start: ['mousedown'], move: ['mousemove'], end: ['mouseup'] }
+    this.mouseMoveEvents = filterEvents(['mousemove'])
+    this.mouseEndEvents = filterEvents(['mouseup'])
+    this.touchMoveEvents = filterEvents(['touchmove'])
+    this.touchEndEvents = filterEvents(['touchend', 'touchcancel'])
+    this.moveEvents = [...this.mouseMoveEvents, ...this.touchMoveEvents]
+    this.endEvents = [...this.mouseEndEvents, ...this.touchEndEvents]
   }
 
   componentWillUnmount() {
-    const { move, end } = this.eventNames
-
-    move.forEach(eventName =>
+    this.moveEvents.forEach(eventName =>
       window.removeEventListener(eventName, this.handleDragMove),
     )
-    end.forEach(eventName =>
+
+    this.endEvents.forEach(eventName =>
       window.removeEventListener(eventName, this.handleDragEnd),
     )
   }
 
-  handleDragStart(event) {
-    const {
-      currentTarget,
-      clientX,
-      clientY,
-      timeStamp,
-    } = cancelAndNormalizeEvent(event)
-    const { move, end } = this.eventNames
+  // No point trying to cancel touchStart / mouseDown events - preventDefault
+  // will be blocked by Chrome since React sets these listeners as passive by
+  // default
+  handleMouseDown(event) {
+    this.registerDragStart(
+      normalizeEvent(event),
+      this.mouseMoveEvents,
+      this.mouseEndEvents,
+    )
+  }
+
+  handleTouchStart(event) {
+    this.registerDragStart(
+      normalizeEvent(event),
+      this.touchMoveEvents,
+      this.touchEndEvents,
+    )
+  }
+
+  registerDragStart(normalisedEvent, moveEvents, endEvents) {
+    if (this.state.isDragging) return
+
+    const { currentTarget, clientX, clientY, timeStamp } = normalisedEvent
 
     const targetRect = currentTarget.getBoundingClientRect()
     const targetStartX = clientX - targetRect.top
     const targetStartY = clientY - targetRect.left
 
-    move.forEach(eventName =>
-      window.addEventListener(eventName, this.handleDragMove),
+    moveEvents.forEach(eventName =>
+      window.addEventListener(eventName, this.handleDragMove, {
+        passive: false,
+      }),
     )
-    end.forEach(eventName =>
+
+    endEvents.forEach(eventName =>
       window.addEventListener(eventName, this.handleDragEnd),
     )
 
@@ -122,16 +145,16 @@ class SinglePointerDrag extends Component {
   }
 
   handleDragEnd(event) {
-    const { move, end } = this.eventNames
     let { clientX, clientY } = cancelAndNormalizeEvent(event)
 
     if (clientX === undefined) ({ x: clientX } = this.state)
     if (clientY === undefined) ({ y: clientY } = this.state)
 
-    move.forEach(eventName =>
+    this.moveEvents.forEach(eventName =>
       window.removeEventListener(eventName, this.handleDragMove),
     )
-    end.forEach(eventName =>
+
+    this.endEvents.forEach(eventName =>
       window.removeEventListener(eventName, this.handleDragEnd),
     )
 
@@ -152,13 +175,12 @@ class SinglePointerDrag extends Component {
   }
 
   render() {
-    const { start: [startEventName] } = this.eventNames
-    const dragListeners =
-      startEventName === 'touchstart'
-        ? { onTouchStart: this.handleDragStart }
-        : { onMouseDown: this.handleDragStart }
-
-    return this.props.children({ dragListeners })
+    return this.props.children({
+      dragListeners: {
+        onMouseDown: this.handleMouseDown,
+        onTouchStart: this.handleTouchStart,
+      },
+    })
   }
 }
 
