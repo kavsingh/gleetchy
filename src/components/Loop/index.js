@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { clamp } from 'ramda'
+import { clamp, always } from 'ramda'
+import { noop } from '../../util/function'
 import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
 import LoopSample from './LoopSample'
@@ -184,12 +185,12 @@ Loop.defaultProps = {
   label: '',
   fileName: '',
   audioBuffer: undefined,
-  selectAudioFile: () => {},
-  receiveAudioFile: () => {},
-  onLoopRegionChange: () => {},
-  onLabelChange: () => {},
-  renderControls: () => <div />,
-  remove: () => {},
+  selectAudioFile: noop,
+  receiveAudioFile: noop,
+  onLoopRegionChange: noop,
+  onLabelChange: noop,
+  renderControls: always(<div />),
+  remove: noop,
 }
 
 export default Loop

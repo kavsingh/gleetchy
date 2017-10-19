@@ -1,6 +1,7 @@
 import React from 'react'
-import Knob from '../Knob'
 import PropTypes from 'prop-types'
+import { noop } from '../../util/function'
+import Knob from '../Knob'
 
 const LoopPlaybackControls = ({
   gain,
@@ -49,8 +50,8 @@ LoopPlaybackControls.propTypes = {
 LoopPlaybackControls.defaultProps = {
   gain: 1,
   playbackRate: 1,
-  onGainChange: () => {},
-  onPlaybackRateChange: () => {},
+  onGainChange: noop,
+  onPlaybackRateChange: noop,
 }
 
 export default LoopPlaybackControls

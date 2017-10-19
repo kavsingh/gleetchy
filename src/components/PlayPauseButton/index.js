@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { noop } from '../../util/function'
 
 const PlayPauseButton = ({ isPlaying, onClick }) => (
   <div
@@ -27,7 +28,7 @@ PlayPauseButton.propTypes = {
 
 PlayPauseButton.defaultProps = {
   isPlaying: false,
-  onClick: () => {},
+  onClick: noop,
 }
 
 export default PlayPauseButton

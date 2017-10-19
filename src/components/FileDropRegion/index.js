@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { cancelEvent } from '../../util'
+import { T, always } from 'ramda'
+import { cancelEvent } from '../../util/event'
+import { noop } from '../../util/function'
 
 class FileDropRegion extends Component {
   constructor(...args) {
@@ -59,10 +61,10 @@ FileDropRegion.propTypes = {
 }
 
 FileDropRegion.defaultProps = {
-  fileFilter: () => true,
-  onFiles: () => {},
-  onNoFiles: () => {},
-  children: () => <div />,
+  fileFilter: T,
+  onFiles: noop,
+  onNoFiles: noop,
+  children: always(<div />),
 }
 
 export default FileDropRegion

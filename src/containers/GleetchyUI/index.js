@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 import { COLOR_BODY, COLOR_KEYLINE } from '../../constants/style'
+import { noop } from '../../util/function'
 import { playbackToggle } from '../../state/gleetchy/actions'
 import {
   isPlayingSelector,
@@ -101,7 +102,7 @@ GleetchyUI.propTypes = {
 
 GleetchyUI.defaultProps = {
   isPlaying: false,
-  togglePlayback: () => {},
+  togglePlayback: noop,
 }
 
 export default connect(

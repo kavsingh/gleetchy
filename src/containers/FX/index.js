@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
+import { noop } from '../../util/function'
 import { fxSelector, activeFXSelector } from '../../state/gleetchy/selectors'
 import {
   nodeUpdateProps,
@@ -114,11 +115,11 @@ FX.propTypes = {
 FX.defaultProps = {
   fx: [],
   activeFx: [],
-  updateFx: () => {},
-  updateFxLabel: () => {},
-  removeFx: () => {},
-  addReverb: () => {},
-  addDelay: () => {},
+  updateFx: noop,
+  updateFxLabel: noop,
+  removeFx: noop,
+  addReverb: noop,
+  addDelay: noop,
 }
 
 export default connect(

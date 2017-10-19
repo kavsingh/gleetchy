@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp } from 'ramda'
 import { COLOR_KEYLINE, COLOR_EMPHASIS } from '../../constants/style'
+import { noop } from '../../util/function'
 import SinglePointerDrag from '../SinglePointerDrag'
 import SVGArc from '../SVGArc'
 
@@ -153,10 +154,10 @@ Knob.defaultProps = {
   value: 0.5,
   defaultValue: 0.5,
   radius: '2.4em',
-  renderTitle: () => {},
-  renderLabel: () => {},
-  renderValue: () => {},
-  onChange: () => {},
+  renderTitle: noop,
+  renderLabel: noop,
+  renderValue: noop,
+  onChange: noop,
 }
 
 export default Knob

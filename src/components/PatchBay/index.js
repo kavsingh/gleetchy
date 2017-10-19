@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { F } from 'ramda'
 import { COLOR_EMPHASIS } from '../../constants/style'
+import { noop } from '../../util/function'
 
 const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
   <table className="patchBay">
@@ -131,8 +133,8 @@ PatchBay.propTypes = {
 PatchBay.defaultProps = {
   fromNodes: [],
   toNodes: [],
-  checkActiveNode: () => false,
-  onNodeClick: () => {},
+  checkActiveNode: F,
+  onNodeClick: noop,
 }
 
 export default PatchBay

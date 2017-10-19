@@ -1,7 +1,8 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import AutosizeInput from 'react-input-autosize'
-import { cancelEvent } from '../../util'
+import { noop } from '../../util/function'
+import { cancelEvent } from '../../util/event'
 
 class TextInput extends PureComponent {
   constructor(...args) {
@@ -56,7 +57,7 @@ TextInput.defaultProps = {
   type: 'text',
   value: '',
   placeholder: '',
-  onChange: () => {},
+  onChange: noop,
 }
 
 export default TextInput

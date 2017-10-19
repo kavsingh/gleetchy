@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, identity } from 'ramda'
 import { COLOR_KEYLINE, COLOR_EMPHASIS } from '../../constants/style'
+import { noop } from '../../util/function'
 import SinglePointerDrag from '../SinglePointerDrag'
 
 class Slider extends PureComponent {
@@ -193,8 +194,8 @@ class Slider extends PureComponent {
 Slider.propTypes = {
   value: PropTypes.number,
   defaultValue: PropTypes.number,
-  onChange: PropTypes.func,
   orient: PropTypes.oneOf(['vertical', 'horizontal']),
+  onChange: PropTypes.func,
   renderLabel: PropTypes.func,
   renderValue: PropTypes.func,
   renderTitle: PropTypes.func,
@@ -203,8 +204,8 @@ Slider.propTypes = {
 Slider.defaultProps = {
   value: 0.5,
   defaultValue: 0.5,
-  onChange: () => {},
   orient: 'vertical',
+  onChange: noop,
   renderLabel: identity,
   renderValue: identity,
   renderTitle: identity,

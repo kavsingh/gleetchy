@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import color from 'color'
 import { COLOR_PAGE } from '../../constants/style'
+import { noop } from '../../util/function'
 import SinglePointerDrag from '../SinglePointerDrag'
 import LoopHandle from './LoopHandle'
 
@@ -145,19 +146,19 @@ class LoopRegion extends Component {
 }
 
 LoopRegion.propTypes = {
-  onLoopEndDrag: PropTypes.func,
-  onLoopStartDrag: PropTypes.func,
-  onLoopRegionDrag: PropTypes.func,
   loopStart: PropTypes.number,
   loopEnd: PropTypes.number,
+  onLoopStartDrag: PropTypes.func,
+  onLoopEndDrag: PropTypes.func,
+  onLoopRegionDrag: PropTypes.func,
 }
 
 LoopRegion.defaultProps = {
-  onLoopEndDrag: () => {},
-  onLoopStartDrag: () => {},
-  onLoopRegionDrag: () => {},
   loopStart: 0,
   loopEnd: 1,
+  onLoopStartDrag: noop,
+  onLoopEndDrag: noop,
+  onLoopRegionDrag: noop,
 }
 
 export default LoopRegion

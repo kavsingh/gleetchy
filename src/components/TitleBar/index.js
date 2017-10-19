@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { noop } from '../../util/function'
 import TextInput from '../TextInput'
 
 const TitleBar = ({ type, children, onLabelChange, label, onRemoveClick }) => (
@@ -55,17 +56,17 @@ const TitleBar = ({ type, children, onLabelChange, label, onRemoveClick }) => (
 TitleBar.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
+  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   onLabelChange: PropTypes.func,
   onRemoveClick: PropTypes.func,
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
 }
 
 TitleBar.defaultProps = {
   label: '',
   type: '',
-  onLabelChange: () => {},
-  onRemoveClick: () => {},
   children: [],
+  onLabelChange: noop,
+  onRemoveClick: noop,
 }
 
 export default TitleBar

@@ -2,7 +2,8 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { tryCatch, cond, equals, pick, pipe, prop, always } from 'ramda'
-import { warn } from '../../util'
+import { noop } from '../../util/function'
+import { warn } from '../../util/dev'
 import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_DELAY, FX_REVERB, INS_LOOP } from '../../constants/nodeTypes'
@@ -194,8 +195,8 @@ GleetchyEngine.defaultProps = {
   engineEvents: [],
   nodes: [],
   connections: [],
-  decodeLoopFile: () => {},
-  clearEngineEvents: () => {},
+  decodeLoopFile: noop,
+  clearEngineEvents: noop,
 }
 
 export default connect(

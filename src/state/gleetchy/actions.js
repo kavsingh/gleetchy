@@ -4,7 +4,7 @@ import {
   loadAudioFilesToArrayBuffers,
 } from '../../apis/file'
 import { sendJsonString, consumeJsonString } from '../../apis/state'
-import { warn } from '../../util'
+import { warn } from '../../util/dev'
 import { decodeAudioDataP } from '../../util/audio'
 import { INS_LOOP, FX_DELAY, FX_REVERB } from '../../constants/nodeTypes'
 import {

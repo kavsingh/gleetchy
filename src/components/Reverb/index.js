@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { noop } from '../../util/function'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
 
@@ -66,9 +67,9 @@ Reverb.defaultProps = {
   label: 'Reverb',
   wetDryRatio: 0.5,
   isActive: true,
-  onWetDryRatioChange: () => {},
-  onLabelChange: () => {},
-  remove: () => {},
+  onWetDryRatioChange: noop,
+  onLabelChange: noop,
+  remove: noop,
 }
 
 export default Reverb

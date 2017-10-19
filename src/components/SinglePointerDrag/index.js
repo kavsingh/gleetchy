@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pipe, tap } from 'ramda'
-import { cancelEvent } from '../../util'
+import { pipe, tap, always } from 'ramda'
+import { cancelEvent } from '../../util/event'
 import { filterEventNames } from '../../util/env'
+import { noop } from '../../util/function'
 
 const normalizeEvent = event => {
   const { currentTarget, touches, timeStamp } = event
@@ -186,10 +187,10 @@ SinglePointerDrag.propTypes = {
 }
 
 SinglePointerDrag.defaultProps = {
-  children: () => <div />,
-  onDragStart: () => {},
-  onDragMove: () => {},
-  onDragEnd: () => {},
+  children: always(<div />),
+  onDragStart: noop,
+  onDragMove: noop,
+  onDragEnd: noop,
 }
 
 export default SinglePointerDrag

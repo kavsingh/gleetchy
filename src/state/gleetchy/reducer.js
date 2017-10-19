@@ -1,5 +1,5 @@
 import { always, equals, propEq, cond, T } from 'ramda'
-import { warn } from '../../util'
+import { warn } from '../../util/dev'
 import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_REVERB, FX_DELAY, INS_LOOP } from '../../constants/nodeTypes'

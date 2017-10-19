@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { INS_LOOP } from '../../constants/nodeTypes'
+import { noop } from '../../util/function'
 import { instrumentsSelector } from '../../state/gleetchy/selectors'
 import {
   nodeUpdateLabel,
@@ -113,12 +114,12 @@ Instruments.propTypes = {
 
 Instruments.defaultProps = {
   instruments: [],
-  loopSelectFile: () => {},
-  loopReceiveFile: () => {},
-  updateInstrument: () => {},
-  updateInstrumentLabel: () => {},
-  addLoop: () => {},
-  removeInstrument: () => {},
+  loopSelectFile: noop,
+  loopReceiveFile: noop,
+  updateInstrument: noop,
+  updateInstrumentLabel: noop,
+  addLoop: noop,
+  removeInstrument: noop,
 }
 
 export default connect(

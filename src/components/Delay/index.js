@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { DELAY_UPPER_BOUND } from '../../constants/audio'
+import { noop } from '../../util/function'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
 
@@ -82,10 +83,10 @@ Delay.defaultProps = {
   wetDryRatio: 0.5,
   delayTime: 1,
   isActive: true,
-  onDelayTimeChange: () => {},
-  onWetDryRatioChange: () => {},
-  onLabelChange: () => {},
-  remove: () => {},
+  onDelayTimeChange: noop,
+  onWetDryRatioChange: noop,
+  onLabelChange: noop,
+  remove: noop,
 }
 
 export default Delay

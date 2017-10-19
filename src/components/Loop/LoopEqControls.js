@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { noop } from '../../util/function'
 import Slider from '../Slider'
 
 const LoopEqControls = ({ eqLow, eqMid, eqHigh, onEqChange }) => (
@@ -57,7 +58,7 @@ LoopEqControls.defaultProps = {
   eqLow: 0,
   eqMid: 0,
   eqHigh: 0,
-  onEqChange: () => {},
+  onEqChange: noop,
 }
 
 export default LoopEqControls

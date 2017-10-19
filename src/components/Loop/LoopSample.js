@@ -3,6 +3,7 @@ import PropTypes from 'prop-types'
 import { onlyUpdateForKeys } from 'recompose'
 import color from 'color'
 import { COLOR_PAGE } from '../../constants/style'
+import { noop } from '../../util/function'
 import WaveForm from '../WaveForm'
 import LoopRegion from '../LoopRegion'
 
@@ -118,10 +119,10 @@ LoopSample.defaultProps = {
   audioBuffer: undefined,
   loopStart: 0,
   loopEnd: 1,
-  onLoopStartDrag: () => {},
-  onLoopEndDrag: () => {},
-  onLoopRegionDrag: () => {},
-  selectAudioFile: () => {},
+  onLoopStartDrag: noop,
+  onLoopEndDrag: noop,
+  onLoopRegionDrag: noop,
+  selectAudioFile: noop,
 }
 
 export default onlyUpdateForKeys([
