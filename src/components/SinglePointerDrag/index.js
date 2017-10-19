@@ -135,12 +135,12 @@ class SinglePointerDrag extends Component {
     this.setState(
       ({ targetRect, x, y, startTime, startX, startY }) => ({
         timeStamp,
+        x: clientX,
+        y: clientY,
         movementX: clientX - x,
         movementY: clientY - y,
         displacementX: clientX - startX,
         displacementY: clientY - startY,
-        x: clientX,
-        y: clientY,
         duration: timeStamp - startTime,
         targetX: clientX - targetRect.left,
         targetY: clientY - targetRect.top,
