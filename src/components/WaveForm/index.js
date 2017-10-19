@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { map } from 'ramda'
 import { COLOR_EMPHASIS } from '../../constants/style'
+import { hasWindowWith } from '../../util/env'
 
 const normaliseChannel = map(v => (v + 0.5) * 0.5)
 
@@ -16,6 +17,10 @@ class WaveForm extends Component {
   }
 
   componentDidMount() {
+    this.pixelRatio = hasWindowWith([['devicePixelRatio']])
+      ? window.devicePixelRatio
+      : 1
+
     this.handleResize()
     window.addEventListener('resize', this.handleResize)
   }
@@ -36,32 +41,25 @@ class WaveForm extends Component {
     window.removeEventListener('resize', this.updateWaveForm)
   }
 
-  drawTempWaveform() {
+  drawTempWaveform(context) {
     const { width, height } = this.state
-    const context = this.canvasNode.getContext('2d')
-
-    context.clearRect(0, 0, width, height)
-    context.fillStyle = this.props.color
-
     context.fillRect(0, height / 2, width, 1)
   }
 
-  drawWaveForm() {
-    const { buffer } = this.props
+  drawWaveForm(context) {
+    const { buffer, color } = this.props
     const { width, height } = this.state
-    const context = this.canvasNode.getContext('2d')
+    const { pixelRatio } = this
+
     const halfHeight = height / 2
     const leftChannel = normaliseChannel(buffer.getChannelData(0))
     const rightChannel =
       buffer.numberOfChannels > 1
         ? normaliseChannel(buffer.getChannelData(1))
         : leftChannel
-    const buffStep = buffer.length / width
+    const buffStep = buffer.length / (width * pixelRatio)
 
-    context.clearRect(0, 0, width, height)
-    context.fillStyle = this.props.color
-
-    for (let i = 0; i < width; i += 1) {
+    for (let i = 0; i < width * pixelRatio; i += 1) {
       const index = Math.floor(i * buffStep)
       const leftVal = leftChannel[index] * halfHeight
       const rightVal = rightChannel[index] * halfHeight
@@ -74,14 +72,18 @@ class WaveForm extends Component {
     if (!this.canvasNode) return
 
     const { width, height } = this.state
-    const pixelRatio =
-      typeof window === 'undefined' ? 1 : window.devicePixelRatio
+    const { color } = this.props
+    const context = this.canvasNode.getContext('2d')
 
-    this.canvasNode.width = width * pixelRatio
-    this.canvasNode.height = height * pixelRatio
+    this.canvasNode.width = width * this.pixelRatio
+    this.canvasNode.height = height * this.pixelRatio
 
-    if (this.props.buffer) this.drawWaveForm()
-    else this.drawTempWaveform()
+    context.scale(this.pixelRatio, this.pixelRatio)
+    context.clearRect(0, 0, width, height)
+    context.fillStyle = color
+
+    if (this.props.buffer) this.drawWaveForm(context)
+    else this.drawTempWaveform(context)
   }
 
   handleResize() {
@@ -92,14 +94,9 @@ class WaveForm extends Component {
   }
 
   render() {
-    const pixelRatio =
-      typeof window === 'undefined' ? 1 : window.devicePixelRatio
-    const dim = `${100 * pixelRatio}%`
-
     return (
       <div className="waveForm">
         <canvas
-          style={{ width: dim, height: dim }}
           className="waveForm__canvas"
           ref={c => {
             this.canvasNode = c

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { pipe, tap, always } from 'ramda'
 import { cancelEvent } from '../../util/event'
-import { filterEventNames } from '../../util/env'
+import { filterSupportedEvents } from '../../util/env'
 import { noop } from '../../util/function'
 
 const normalizeEvent = event => {
@@ -46,10 +46,10 @@ class SinglePointerDrag extends Component {
   }
 
   componentWillMount() {
-    this.mouseMoveEvents = filterEventNames(['mousemove'])
-    this.mouseEndEvents = filterEventNames(['mouseup'])
-    this.touchMoveEvents = filterEventNames(['touchmove'])
-    this.touchEndEvents = filterEventNames(['touchend', 'touchcancel'])
+    this.mouseMoveEvents = filterSupportedEvents(['mousemove'])
+    this.mouseEndEvents = filterSupportedEvents(['mouseup'])
+    this.touchMoveEvents = filterSupportedEvents(['touchmove'])
+    this.touchEndEvents = filterSupportedEvents(['touchend', 'touchcancel'])
     this.moveEvents = [...this.mouseMoveEvents, ...this.touchMoveEvents]
     this.endEvents = [...this.mouseEndEvents, ...this.touchEndEvents]
   }

@@ -1,7 +1,9 @@
+import { hasWindow } from '../util/env'
+
 let fileInput
 
 const getFileInput = () => {
-  if (typeof window === 'undefined') return undefined
+  if (!hasWindow()) return undefined
 
   if (!fileInput) {
     fileInput = document.createElement('input')

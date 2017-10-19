@@ -1,7 +1,9 @@
 import { pipe, path, filter, __ } from 'ramda'
 
+export const hasWindow = () => typeof window !== 'undefined'
+
 export const hasWindowWith = (propPaths = []) => {
-  if (typeof window === 'undefined') return false
+  if (!hasWindow) return false
 
   const windowHas = pipe(path(__, window), o => typeof o !== 'undefined')
 
@@ -11,9 +13,13 @@ export const hasWindowWith = (propPaths = []) => {
   )
 }
 
-export const filterEventNames = filter(
-  eventName =>
+export const isSupportedEvent = eventName => {
+  const name = eventName.startsWith('on') ? eventName : `on${eventName}`
+
+  return (
     hasWindowWith([['document', 'documentElement']]) &&
-    (`on${eventName}` in document ||
-      `on${eventName}` in document.documentElement),
-)
+    (name in document || name in document.documentElement)
+  )
+}
+
+export const filterSupportedEvents = filter(isSupportedEvent)
