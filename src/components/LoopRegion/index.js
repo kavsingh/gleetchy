@@ -22,16 +22,16 @@ class LoopRegion extends Component {
     )
   }
 
-  handleStartHandleDrag({ dx }) {
-    this.props.onLoopStartDrag(dx / this.rootNode.offsetWidth)
+  handleStartHandleDrag({ movementX }) {
+    this.props.onLoopStartDrag(movementX / this.rootNode.offsetWidth)
   }
 
-  handleEndHandleDrag({ dx }) {
-    this.props.onLoopEndDrag(dx / this.rootNode.offsetWidth)
+  handleEndHandleDrag({ movementX }) {
+    this.props.onLoopEndDrag(movementX / this.rootNode.offsetWidth)
   }
 
-  handleLoopRegionDrag({ dx }) {
-    this.props.onLoopRegionDrag(dx / this.rootNode.offsetWidth)
+  handleLoopRegionDrag({ movementX }) {
+    this.props.onLoopRegionDrag(movementX / this.rootNode.offsetWidth)
   }
 
   render() {

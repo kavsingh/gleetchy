@@ -14,10 +14,10 @@ class Slider extends PureComponent {
     this.handleDoubleClick = this.handleDoubleClick.bind(this)
   }
 
-  handleDragMove({ dx, dy }) {
+  handleDragMove({ movementX, movementY }) {
     const { orient, value } = this.props
     const isVert = orient === 'vertical'
-    const movement = isVert ? dy : dx
+    const movement = isVert ? movementY : movementX
     const dim = isVert
       ? this.barContainer.offsetHeight * -1
       : this.barContainer.offsetWidth
@@ -25,10 +25,10 @@ class Slider extends PureComponent {
     this.props.onChange(clamp(0, 1, movement / dim + value))
   }
 
-  handleDragEnd({ dx, dy, duration, targetX, targetY }) {
+  handleDragEnd({ movementX, movementY, duration, targetX, targetY }) {
     const { orient } = this.props
     const isVert = orient === 'vertical'
-    const movement = isVert ? dy : dx
+    const movement = isVert ? movementY : movementX
 
     if (duration > 300 || movement > 4) return
 

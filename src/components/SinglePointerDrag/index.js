@@ -22,17 +22,19 @@ class SinglePointerDrag extends Component {
       targetRect: null,
       target: null,
       isDragging: false,
-      startX: 0,
-      startY: 0,
       x: 0,
       y: 0,
-      dx: 0,
-      dy: 0,
-      timeStamp: 0,
-      targetStartX: 0,
-      targetStartY: 0,
       targetX: 0,
       targetY: 0,
+      startX: 0,
+      startY: 0,
+      targetStartX: 0,
+      targetStartY: 0,
+      movementX: 0,
+      movementY: 0,
+      displacementX: 0,
+      displacementY: 0,
+      timeStamp: 0,
       startTime: 0,
       duration: 0,
     }
@@ -97,7 +99,9 @@ class SinglePointerDrag extends Component {
     )
 
     endEvents.forEach(eventName =>
-      window.addEventListener(eventName, this.handleDragEnd),
+      window.addEventListener(eventName, this.handleDragEnd, {
+        passive: false,
+      }),
     )
 
     this.setState(
@@ -106,16 +110,20 @@ class SinglePointerDrag extends Component {
         targetStartX,
         targetStartY,
         timeStamp,
+        target: currentTarget,
+        isDragging: true,
         x: clientX,
         y: clientY,
-        isDragging: true,
-        duration: 0,
-        startTime: timeStamp,
-        target: currentTarget,
-        startX: clientX,
-        startY: clientY,
         targetX: targetStartX,
         targetY: targetStartY,
+        startX: clientX,
+        startY: clientY,
+        movementX: 0,
+        movementY: 0,
+        displacementX: 0,
+        displacementY: 0,
+        startTime: timeStamp,
+        duration: 0,
       }),
       () => this.props.onDragStart({ ...this.state }),
     )
@@ -125,10 +133,12 @@ class SinglePointerDrag extends Component {
     const { clientX, clientY, timeStamp } = cancelAndNormalizeEvent(event)
 
     this.setState(
-      ({ targetRect, x, y, startTime }) => ({
+      ({ targetRect, x, y, startTime, startX, startY }) => ({
         timeStamp,
-        dx: clientX - x,
-        dy: clientY - y,
+        movementX: clientX - x,
+        movementY: clientY - y,
+        displacementX: clientX - startX,
+        displacementY: clientY - startY,
         x: clientX,
         y: clientY,
         duration: timeStamp - startTime,
@@ -154,9 +164,11 @@ class SinglePointerDrag extends Component {
     )
 
     this.setState(
-      ({ targetRect, x, y, startTime }) => ({
-        dx: clientX - x,
-        dy: clientY - y,
+      ({ targetRect, x, y, startTime, startX, startY }) => ({
+        movementX: clientX - x,
+        movementY: clientY - y,
+        displacementX: clientX - startX,
+        displacementY: clientY - startY,
         x: clientX,
         y: clientY,
         timeStamp: event.timeStamp,

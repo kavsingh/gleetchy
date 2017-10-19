@@ -21,16 +21,19 @@ class Knob extends PureComponent {
     this.setState(() => ({ axis: undefined }))
   }
 
-  handleDragMove({ dx, dy }) {
+  handleDragMove({ movementX, movementY }) {
     const { axis } = this.state
     const { knobNode } = this
 
     if (!knobNode) return
 
-    const moveAxis = axis || (Math.abs(dx) > Math.abs(dy) ? 'x' : 'y')
+    const moveAxis =
+      axis || (Math.abs(movementX) > Math.abs(movementY) ? 'x' : 'y')
 
     const move =
-      moveAxis === 'x' ? dx / knobNode.offsetWidth : -dy / knobNode.offsetHeight
+      moveAxis === 'x'
+        ? movementX / knobNode.offsetWidth
+        : -movementY / knobNode.offsetHeight
 
     this.props.onChange(clamp(0, 1, this.props.value + move))
 
