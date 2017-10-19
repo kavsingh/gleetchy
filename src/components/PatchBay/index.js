@@ -1,10 +1,11 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { F } from 'ramda'
+import color from 'color'
 import { COLOR_EMPHASIS } from '../../constants/style'
 import { noop } from '../../util/function'
 
-const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
+const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
   <table className="patchBay">
     <tbody>
       <tr className="patchBay__row" key="titles">
@@ -26,9 +27,9 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
           <td className="patchBay__label" title={`From ... to ${toNode.label}`}>
             {toNode.label}
           </td>
-          {fromNodes.map(
-            (fromNode, i) =>
-              fromNode.id === toNode.id ? (
+          {fromNodes.map((fromNode, i) => {
+            if (fromNode.id === toNode.id) {
+              return (
                 <td key={fromNode.id}>
                   <div
                     className={`patchBay__node patchBay__node_dummy ${i ===
@@ -37,28 +38,43 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
                       : ''}`}
                   />
                 </td>
-              ) : (
-                <td key={fromNode.id}>
-                  <div
-                    className={`patchBay__node ${checkActiveNode(
-                      fromNode,
-                      toNode,
-                    )
-                      ? ' patchBay__node_active'
-                      : ''} ${i === fromNodes.length - 1
-                      ? ' patchBay__rowItem_last'
-                      : ''}`}
-                    onClick={() => onNodeClick(fromNode, toNode)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyUp={e => {
-                      if (e.key === 'Enter') onNodeClick(fromNode, toNode)
-                    }}
-                    title={`From ${fromNode.label} to ${toNode.label}`}
-                  />
-                </td>
-              ),
-          )}
+              )
+            }
+
+            const activeConnection = getConnection(fromNode, toNode)
+            const connection = activeConnection
+              ? { ...activeConnection, color: '#000' }
+              : activeConnection
+
+            return (
+              <td key={fromNode.id}>
+                <div
+                  style={
+                    connection
+                      ? {
+                          backgroundColor: connection.color,
+                          borderColor: color(connection.color)
+                            .darken(0.06)
+                            .hex(),
+                        }
+                      : {}
+                  }
+                  className={`patchBay__node ${connection
+                    ? ' patchBay__node_active'
+                    : ''} ${i === fromNodes.length - 1
+                    ? ' patchBay__rowItem_last'
+                    : ''}`}
+                  onClick={() => onNodeClick(fromNode, toNode)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyUp={e => {
+                    if (e.key === 'Enter') onNodeClick(fromNode, toNode)
+                  }}
+                  title={`From ${fromNode.label} to ${toNode.label}`}
+                />
+              </td>
+            )
+          })}
         </tr>
       ))}
     </tbody>
@@ -126,14 +142,14 @@ const PatchBay = ({ fromNodes, checkActiveNode, toNodes, onNodeClick }) => (
 PatchBay.propTypes = {
   fromNodes: PropTypes.arrayOf(PropTypes.shape({})),
   toNodes: PropTypes.arrayOf(PropTypes.shape({})),
-  checkActiveNode: PropTypes.func,
+  getConnection: PropTypes.func,
   onNodeClick: PropTypes.func,
 }
 
 PatchBay.defaultProps = {
   fromNodes: [],
   toNodes: [],
-  checkActiveNode: F,
+  getConnection: F,
   onNodeClick: noop,
 }
 

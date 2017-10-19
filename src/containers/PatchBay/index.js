@@ -11,8 +11,8 @@ import PatchBay from '../../components/PatchBay'
 const mapStateToProps = state => ({
   fromNodes: fromNodesSelector(state),
   toNodes: toNodesSelector(state),
-  checkActiveNode: ({ id: from }, { id: to }) =>
-    !!connectionsSelector(state).find(isSameConnection({ from, to })),
+  getConnection: ({ id: from }, { id: to }) =>
+    connectionsSelector(state).find(isSameConnection({ from, to })),
 })
 
 const mapDispatchToProps = dispatch => ({

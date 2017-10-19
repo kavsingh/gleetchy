@@ -38,12 +38,14 @@ const defaultLabels = (id, type) => {
   }
 }
 
+const palette = COLORS.sort(() => Math.floor(Math.random() * 2) - 1)
+
 const defaultState = {
   isPlaying: false,
   engineEvents: [],
   connections: [
-    { from: 'loop0', to: MAIN_OUT_ID, color: COLORS[0] },
-    { from: 'loop1', to: MAIN_OUT_ID, color: COLORS[1] },
+    { from: 'loop0', to: MAIN_OUT_ID, color: palette[0] },
+    { from: 'loop1', to: MAIN_OUT_ID, color: palette[1] },
   ],
   nodes: [
     [INS_LOOP, 0],
@@ -87,7 +89,13 @@ const updateConnections = (state, connection, type) => {
   if (type === 'add' && currentIdx === -1) {
     if (connection.from === connection.to) return state
 
-    return { ...state, connections: connections.concat(connection) }
+    return {
+      ...state,
+      connections: connections.concat({
+        ...connection,
+        color: palette[connections.length % palette.length],
+      }),
+    }
   }
 
   if (type === 'remove' && currentIdx !== -1) {
@@ -117,7 +125,11 @@ const addNode = (state, { type }) => {
     ...state,
     nodes: state.nodes.concat(node),
     connections: isInstrument(node)
-      ? state.connections.concat([{ from: node.id, to: MAIN_OUT_ID }])
+      ? state.connections.concat({
+          from: node.id,
+          to: MAIN_OUT_ID,
+          color: palette[state.connections.length % palette.length],
+        })
       : state.connections,
   }
 }
