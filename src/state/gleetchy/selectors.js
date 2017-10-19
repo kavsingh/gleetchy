@@ -1,7 +1,15 @@
 import { createSelector } from 'reselect'
 import { identity, filter, map, pick, pipe } from 'ramda'
 import { MAIN_OUT_ID } from '../../constants/audio'
-import { isFx, isInstrument, sortByType } from '../../util/audio'
+import {
+  isFx,
+  isInstrument,
+  sortByType,
+  hasDownstreamConnectionTo,
+} from '../../util/audio'
+
+const isConnectedToMain = hasDownstreamConnectionTo(MAIN_OUT_ID)
+const patchNodeProps = map(pick(['id', 'label', 'type']))
 
 const nodeStateSelector = state => state.gleetchy.nodes
 const isPlayingStateSelector = state => state.gleetchy.isPlaying
@@ -42,13 +50,25 @@ export const activeFXSelector = createSelector(
     fx.map(({ id }) => id).reduce((accum, fxId) => {
       const active = connections.find(connection => connection.to === fxId)
 
-      if (active) accum.push(fxId)
+      if (!active) return accum
+      if (!isConnectedToMain(connections, fxId)) return accum
+
+      accum.push(fxId)
 
       return accum
     }, []),
 )
 
-const patchNodeProps = map(pick(['id', 'label', 'type']))
+export const activeInstrumentsSelector = createSelector(
+  connectionsSelector,
+  instrumentsSelector,
+  (connections, instruments) =>
+    instruments.map(({ id }) => id).reduce((accum, insId) => {
+      if (isConnectedToMain(connections, insId)) accum.push(insId)
+
+      return accum
+    }, []),
+)
 
 export const fromNodesSelector = createSelector(
   instrumentsSelector,

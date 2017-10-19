@@ -7,6 +7,7 @@ import { getConnectionsFor } from '../../util/audio'
 import { noop, stubArray } from '../../util/function'
 import {
   instrumentsSelector,
+  activeInstrumentsSelector,
   connectionsSelector,
 } from '../../state/gleetchy/selectors'
 import {
@@ -25,6 +26,7 @@ import LoopPlaybackControls from '../../components/Loop/LoopPlaybackControls'
 
 const Instruments = ({
   instruments,
+  activeInstruments,
   loopSelectFile,
   loopReceiveFile,
   updateInstrument,
@@ -42,6 +44,7 @@ const Instruments = ({
               <Loop
                 {...props}
                 label={label}
+                isActive={activeInstruments.includes(id)}
                 selectAudioFile={() => loopSelectFile(id)}
                 receiveAudioFile={file => loopReceiveFile(id, file)}
                 remove={() => removeInstrument(id)}
@@ -111,6 +114,7 @@ const Instruments = ({
 
 Instruments.propTypes = {
   instruments: PropTypes.arrayOf(PropTypes.shape({})),
+  activeInstruments: PropTypes.arrayOf(PropTypes.string),
   getConnections: PropTypes.func,
   loopSelectFile: PropTypes.func,
   loopReceiveFile: PropTypes.func,
@@ -122,6 +126,7 @@ Instruments.propTypes = {
 
 Instruments.defaultProps = {
   instruments: [],
+  activeInstruments: [],
   getConnections: stubArray,
   loopSelectFile: noop,
   loopReceiveFile: noop,
@@ -134,6 +139,7 @@ Instruments.defaultProps = {
 export default connect(
   state => ({
     instruments: instrumentsSelector(state),
+    activeInstruments: activeInstrumentsSelector(state),
     getConnections: getConnectionsFor(__, connectionsSelector(state)),
   }),
   dispatch => ({

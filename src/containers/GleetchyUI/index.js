@@ -51,14 +51,9 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
         border-bottom: 1px solid ${COLOR_KEYLINE};
       }
 
-      .gleetchy__instrumentsContainer {
-        max-height: 36em;
-        overflow-x: visible;
-        overflow-y: scroll;
-      }
-
       .gleetchy__connectContainer {
         display: flex;
+        flex-wrap: wrap;
         padding: 2em 0;
       }
 

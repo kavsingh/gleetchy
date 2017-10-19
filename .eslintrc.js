@@ -36,6 +36,12 @@ module.exports = {
       },
     },
     {
+      files: 'src/**/*.test.js',
+      env: {
+        jest: true,
+      },
+    },
+    {
       files: 'scripts/bin/**/*.js',
       rules: {
         'no-console': 'off',

@@ -89,10 +89,11 @@ class Loop extends Component {
       onLabelChange,
       remove,
       connections,
+      isActive,
     } = this.props
 
     return (
-      <div className="loop">
+      <div className={`loop loop_${isActive ? 'active' : 'inactive'}`}>
         <FileDropRegion
           fileFilter={({ type }) => type.startsWith('audio')}
           onFiles={files => receiveAudioFile(files[0])}
@@ -130,8 +131,13 @@ class Loop extends Component {
         </FileDropRegion>
         <style jsx>{`
           .loop {
+            transition: opacity 0.2s ease-out;
             width: 100%;
             height: 12em;
+          }
+
+          .loop_inactive {
+            opacity: 0.4;
           }
 
           .loop__wrap {

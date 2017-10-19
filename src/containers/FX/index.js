@@ -17,6 +17,7 @@ import {
   delayAdd,
   nodeRemove,
 } from '../../state/gleetchy/actions'
+import AnimIn from '../../components/AnimIn'
 import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
 
@@ -35,31 +36,37 @@ const FX = ({
       if (type === FX_DELAY) {
         return (
           <div className="fx__fxContainer" key={id}>
-            <Delay
-              label={label}
-              connections={getConnections(id)}
-              isActive={activeFx.includes(id)}
-              wetDryRatio={props.wetDryRatio}
-              delayTime={props.delayTime}
-              onDelayTimeChange={delayTime => updateFx(id, { delayTime })}
-              onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
-              onLabelChange={val => updateFxLabel(id, val)}
-              remove={() => removeFx(id)}
-            />
+            <AnimIn>
+              <Delay
+                label={label}
+                connections={getConnections(id)}
+                isActive={activeFx.includes(id)}
+                wetDryRatio={props.wetDryRatio}
+                delayTime={props.delayTime}
+                onDelayTimeChange={delayTime => updateFx(id, { delayTime })}
+                onWetDryRatioChange={wetDryRatio =>
+                  updateFx(id, { wetDryRatio })}
+                onLabelChange={val => updateFxLabel(id, val)}
+                remove={() => removeFx(id)}
+              />
+            </AnimIn>
           </div>
         )
       } else if (type === FX_REVERB) {
         return (
           <div className="fx__fxContainer" key={id}>
-            <Reverb
-              label={label}
-              connections={getConnections(id)}
-              isActive={activeFx.includes(id)}
-              wetDryRatio={props.wetDryRatio}
-              onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
-              onLabelChange={val => updateFxLabel(id, val)}
-              remove={() => removeFx(id)}
-            />
+            <AnimIn>
+              <Reverb
+                label={label}
+                connections={getConnections(id)}
+                isActive={activeFx.includes(id)}
+                wetDryRatio={props.wetDryRatio}
+                onWetDryRatioChange={wetDryRatio =>
+                  updateFx(id, { wetDryRatio })}
+                onLabelChange={val => updateFxLabel(id, val)}
+                remove={() => removeFx(id)}
+              />
+            </AnimIn>
           </div>
         )
       }
