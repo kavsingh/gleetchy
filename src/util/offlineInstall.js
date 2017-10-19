@@ -4,6 +4,7 @@
   Install offline service worker
   from https://github.com/ooade/NextSimpleStarter
 */
+import { hasWindowWith } from './env'
 
 const offlineInstall = serviceWorkerUrl => {
   navigator.serviceWorker
@@ -35,8 +36,8 @@ const offlineInstall = serviceWorkerUrl => {
     })
 }
 
-export default (process.env.NODE_ENV === 'production' &&
-typeof window !== 'undefined' &&
-'serviceWorker' in navigator
-  ? offlineInstall
-  : () => {})
+const shouldInstall =
+  process.env.NODE_ENV === 'production' &&
+  hasWindowWith(['navigator.serviceWorker'])
+
+export default (shouldInstall ? offlineInstall : () => {})

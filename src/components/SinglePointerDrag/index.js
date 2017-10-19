@@ -1,14 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { pipe, tap, filter } from 'ramda'
-import { cancelEvent, hasWindowWith } from '../../util'
-
-const filterEvents = filter(
-  eventName =>
-    hasWindowWith([['document', 'documentElement']]) &&
-    (`on${eventName}` in document ||
-      `on${eventName}` in document.documentElement),
-)
+import { pipe, tap } from 'ramda'
+import { cancelEvent } from '../../util'
+import { filterEventNames } from '../../util/env'
 
 const normalizeEvent = event => {
   const { currentTarget, touches, timeStamp } = event
@@ -49,10 +43,10 @@ class SinglePointerDrag extends Component {
   }
 
   componentWillMount() {
-    this.mouseMoveEvents = filterEvents(['mousemove'])
-    this.mouseEndEvents = filterEvents(['mouseup'])
-    this.touchMoveEvents = filterEvents(['touchmove'])
-    this.touchEndEvents = filterEvents(['touchend', 'touchcancel'])
+    this.mouseMoveEvents = filterEventNames(['mousemove'])
+    this.mouseEndEvents = filterEventNames(['mouseup'])
+    this.touchMoveEvents = filterEventNames(['touchmove'])
+    this.touchEndEvents = filterEventNames(['touchend', 'touchcancel'])
     this.moveEvents = [...this.mouseMoveEvents, ...this.touchMoveEvents]
     this.endEvents = [...this.mouseEndEvents, ...this.touchEndEvents]
   }
