@@ -1,20 +1,24 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { always } from 'ramda'
+import { always, T } from 'ramda'
 import color from 'color'
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '../../constants/style'
 import { noop } from '../../util/function'
 
-const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
+const PatchBay = ({
+  fromNodes,
+  toNodes,
+  canConnect,
+  getConnection,
+  onNodeClick,
+}) => (
   <table className="patchBay">
     <tbody>
       <tr className="patchBay__row" key="titles">
         <th className="patchBay__label">To / From</th>
-        {fromNodes.map((fromNode, i) => (
+        {fromNodes.map(fromNode => (
           <th
-            className={`patchBay__label ${i === fromNodes.length - 1
-              ? ' patchBay__rowItem_last'
-              : ''}`}
+            className="patchBay__label"
             title={`From ${fromNode.label} to ...`}
             key={fromNode.id}
           >
@@ -27,22 +31,19 @@ const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
           <td className="patchBay__label" title={`From ... to ${toNode.label}`}>
             {toNode.label}
           </td>
-          {fromNodes.map((fromNode, i) => {
-            if (fromNode.id === toNode.id) {
+          {fromNodes.map(fromNode => {
+            const connection = getConnection(fromNode, toNode)
+
+            if (!connection && !canConnect(fromNode, toNode)) {
               return (
                 <td key={fromNode.id}>
                   <div
-                    className={`patchBay__node patchBay__node_dummy ${i ===
-                    fromNodes.length - 1
-                      ? ' patchBay__rowItem_last'
-                      : ''}`}
+                    className="patchBay__node patchBay__node_dummy"
+                    title="This will cause a circular connection, big feedback, ear bleeding, hurricanes, much sadness"
                   />
                 </td>
               )
             }
-
-            const activeConnection = getConnection(fromNode, toNode)
-            const connection = activeConnection
 
             return (
               <td key={fromNode.id}>
@@ -135,6 +136,7 @@ const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
 PatchBay.propTypes = {
   fromNodes: PropTypes.arrayOf(PropTypes.shape({})),
   toNodes: PropTypes.arrayOf(PropTypes.shape({})),
+  canConnect: PropTypes.func,
   getConnection: PropTypes.func,
   onNodeClick: PropTypes.func,
 }
@@ -142,6 +144,7 @@ PatchBay.propTypes = {
 PatchBay.defaultProps = {
   fromNodes: [],
   toNodes: [],
+  canConnect: T,
   getConnection: always(undefined),
   onNodeClick: noop,
 }

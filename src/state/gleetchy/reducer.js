@@ -52,9 +52,10 @@ const defaultState = {
     [INS_LOOP, 1],
     [FX_REVERB, 0],
     [FX_DELAY, 0],
-  ].map(([type, id]) => ({
+  ].map(([type, id], i) => ({
     type,
     ...defaultLabels(id, type),
+    color: palette[i % palette.length],
     props: { ...nodeProps[type] },
   })),
 }
@@ -117,6 +118,7 @@ const addNode = (state, { type }) => {
 
   const node = {
     type,
+    color: palette[state.nodes.length % palette.length],
     ...defaultLabels(id, type),
     props: { ...nodeProps[type] },
   }
