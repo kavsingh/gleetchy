@@ -47,9 +47,8 @@ class WaveForm extends Component {
   }
 
   drawWaveForm(context) {
-    const { buffer, color } = this.props
+    const { buffer } = this.props
     const { width, height } = this.state
-    const { pixelRatio } = this
 
     const halfHeight = height / 2
     const leftChannel = normaliseChannel(buffer.getChannelData(0))
@@ -57,9 +56,9 @@ class WaveForm extends Component {
       buffer.numberOfChannels > 1
         ? normaliseChannel(buffer.getChannelData(1))
         : leftChannel
-    const buffStep = buffer.length / (width * pixelRatio)
+    const buffStep = buffer.length / width
 
-    for (let i = 0; i < width * pixelRatio; i += 1) {
+    for (let i = 0; i < width; i += 1) {
       const index = Math.floor(i * buffStep)
       const leftVal = leftChannel[index] * halfHeight
       const rightVal = rightChannel[index] * halfHeight
