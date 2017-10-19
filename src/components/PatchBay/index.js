@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { always } from 'ramda'
 import color from 'color'
-import { COLOR_EMPHASIS } from '../../constants/style'
+import { COLOR_EMPHASIS, COLOR_KEYLINE } from '../../constants/style'
 import { noop } from '../../util/function'
 
 const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
@@ -43,8 +43,8 @@ const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
 
             const activeConnection = getConnection(fromNode, toNode)
             const connection = activeConnection
-              ? { ...activeConnection, color: '#000' }
-              : activeConnection
+            // ? { ...activeConnection, color: '#000' }
+            // : activeConnection
 
             return (
               <td key={fromNode.id}>
@@ -117,23 +117,20 @@ const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
       .patchBay__node {
         width: 0.8em;
         height: 0.8em;
-        border-radius: 50%;
-        border: 1px solid ${COLOR_EMPHASIS};
+        border: 1px solid ${COLOR_KEYLINE};
         margin: 0 auto;
         cursor: pointer;
         background-color: transparent;
-        opacity: 0.1;
-        transition: opacity 0.2s ease-out;
       }
 
       .patchBay__node_active {
         background-color: ${COLOR_EMPHASIS};
-        opacity: 1;
       }
 
       .patchBay__node_dummy {
-        background-color: ${COLOR_EMPHASIS};
+        background-color: ${COLOR_KEYLINE};
         cursor: default;
+        transform: rotate(45deg) scale(0.5);
       }
     `}</style>
   </table>

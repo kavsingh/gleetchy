@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connection as connectionProp } from '../../propTypes'
 import { noop } from '../../util/function'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
@@ -11,11 +12,13 @@ const Reverb = ({
   isActive,
   onLabelChange,
   remove,
+  connections,
 }) => (
   <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
     <TitleBar
       type="Reverb"
       label={label}
+      connections={connections}
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
@@ -58,6 +61,7 @@ Reverb.propTypes = {
   label: PropTypes.string,
   wetDryRatio: PropTypes.number,
   isActive: PropTypes.bool,
+  connections: PropTypes.arrayOf(connectionProp),
   onWetDryRatioChange: PropTypes.func,
   onLabelChange: PropTypes.func,
   remove: PropTypes.func,
@@ -67,6 +71,7 @@ Reverb.defaultProps = {
   label: 'Reverb',
   wetDryRatio: 0.5,
   isActive: true,
+  connections: [],
   onWetDryRatioChange: noop,
   onLabelChange: noop,
   remove: noop,

@@ -1,11 +1,28 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connection as connectionProp } from '../../propTypes'
 import { noop } from '../../util/function'
 import TextInput from '../TextInput'
 
-const TitleBar = ({ type, children, onLabelChange, label, onRemoveClick }) => (
+const TitleBar = ({
+  type,
+  connections,
+  children,
+  onLabelChange,
+  label,
+  onRemoveClick,
+}) => (
   <div className="titleBar">
     <div className="titleBar__labelContainer">
+      <div className="titleBar__connections">
+        {connections.map(({ color, from, to }) => (
+          <div
+            className="titleBar__connection"
+            style={{ backgroundColor: color }}
+            key={`${from}${to}`}
+          />
+        ))}
+      </div>
       <TextInput onChange={onLabelChange} value={label} />
     </div>
     <div className="titleBar__infoContainer">
@@ -29,10 +46,28 @@ const TitleBar = ({ type, children, onLabelChange, label, onRemoveClick }) => (
         margin-bottom: 0.6em;
       }
 
+      .titleBar__labelContainer,
       .titleBar__infoContainer {
         display: flex;
         flex-direction: row;
         align-items: center;
+      }
+
+      .titleBar__labelContainer {
+        justify-content: flex-start;
+      }
+
+      .titleBar__connections {
+        display: flex;
+        height: 100%;
+      }
+
+      .titleBar__connection {
+        flex-shrink: 0;
+        flex-grow: 0;
+        width: 0.8em;
+        height: 0.8em;
+        margin-right: 0.3em;
       }
 
       .titleBar__typeContainer {
@@ -56,6 +91,7 @@ const TitleBar = ({ type, children, onLabelChange, label, onRemoveClick }) => (
 TitleBar.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
+  connections: PropTypes.arrayOf(connectionProp),
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   onLabelChange: PropTypes.func,
   onRemoveClick: PropTypes.func,
@@ -64,6 +100,7 @@ TitleBar.propTypes = {
 TitleBar.defaultProps = {
   label: '',
   type: '',
+  connections: [],
   children: [],
   onLabelChange: noop,
   onRemoveClick: noop,

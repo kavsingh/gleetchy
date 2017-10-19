@@ -1,4 +1,5 @@
-import { curry, propEq, anyPass, sortBy, prop } from 'ramda'
+import { curry, propEq, anyPass, sortBy, prop, without } from 'ramda'
+import { MAIN_OUT_ID } from '../constants/audio'
 import { FX_DELAY, FX_REVERB, INS_LOOP } from '../constants/nodeTypes'
 
 const typeEquals = propEq('type')
@@ -18,4 +19,8 @@ export const decodeAudioDataP = curry(
 export const isSameConnection = curry(
   (connection1, connection2) =>
     connection1.from === connection2.from && connection1.to === connection2.to,
+)
+
+export const getConnectionsFor = curry((id, connections) =>
+  connections.filter(({ from, to }) => from === id || to === id),
 )

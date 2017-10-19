@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { clamp, always } from 'ramda'
+import { connection as connectionProp } from '../../propTypes'
 import { noop } from '../../util/function'
 import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
@@ -87,6 +88,7 @@ class Loop extends Component {
       receiveAudioFile,
       onLabelChange,
       remove,
+      connections,
     } = this.props
 
     return (
@@ -103,6 +105,7 @@ class Loop extends Component {
                   label={label}
                   onLabelChange={onLabelChange}
                   onRemoveClick={remove}
+                  connections={connections}
                 >
                   {() => renderTitle(fileName, audioBuffer, selectAudioFile)}
                 </TitleBar>
@@ -171,6 +174,7 @@ Loop.propTypes = {
   label: PropTypes.string,
   audioBuffer: PropTypes.instanceOf(AudioBuffer),
   fileName: PropTypes.string,
+  connections: PropTypes.arrayOf(connectionProp),
   selectAudioFile: PropTypes.func,
   receiveAudioFile: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
@@ -184,6 +188,7 @@ Loop.defaultProps = {
   loopEnd: 1,
   label: '',
   fileName: '',
+  connections: [],
   audioBuffer: undefined,
   selectAudioFile: noop,
   receiveAudioFile: noop,

@@ -1,9 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { __ } from 'ramda'
 import { INS_LOOP } from '../../constants/nodeTypes'
-import { noop } from '../../util/function'
-import { instrumentsSelector } from '../../state/gleetchy/selectors'
+import { getConnectionsFor } from '../../util/audio'
+import { noop, stubArray } from '../../util/function'
+import {
+  instrumentsSelector,
+  connectionsSelector,
+} from '../../state/gleetchy/selectors'
 import {
   nodeUpdateLabel,
   nodeUpdateProps,
@@ -26,6 +31,7 @@ const Instruments = ({
   updateInstrumentLabel,
   addLoop,
   removeInstrument,
+  getConnections,
 }) => (
   <div className="instruments">
     <ErrorBoundary>
@@ -40,6 +46,7 @@ const Instruments = ({
                 receiveAudioFile={file => loopReceiveFile(id, file)}
                 remove={() => removeInstrument(id)}
                 onLabelChange={val => updateInstrumentLabel(id, val)}
+                connections={getConnections(id)}
                 onLoopRegionChange={(start, end) =>
                   updateInstrument(id, {
                     loopStart: start,
@@ -104,6 +111,7 @@ const Instruments = ({
 
 Instruments.propTypes = {
   instruments: PropTypes.arrayOf(PropTypes.shape({})),
+  getConnections: PropTypes.func,
   loopSelectFile: PropTypes.func,
   loopReceiveFile: PropTypes.func,
   updateInstrument: PropTypes.func,
@@ -114,6 +122,7 @@ Instruments.propTypes = {
 
 Instruments.defaultProps = {
   instruments: [],
+  getConnections: stubArray,
   loopSelectFile: noop,
   loopReceiveFile: noop,
   updateInstrument: noop,
@@ -125,6 +134,7 @@ Instruments.defaultProps = {
 export default connect(
   state => ({
     instruments: instrumentsSelector(state),
+    getConnections: getConnectionsFor(__, connectionsSelector(state)),
   }),
   dispatch => ({
     loopSelectFile: id => dispatch(loopSelectAudioFile(id)),

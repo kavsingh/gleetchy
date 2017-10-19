@@ -1,5 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import { connection as connectionProp } from '../../propTypes'
 import { DELAY_UPPER_BOUND } from '../../constants/audio'
 import { noop } from '../../util/function'
 import Knob from '../Knob'
@@ -14,11 +15,13 @@ const Delay = ({
   isActive,
   onLabelChange,
   remove,
+  connections,
 }) => (
   <div className={`delay${!isActive ? ' delay_inactive' : ''}`}>
     <TitleBar
       type="Delay"
       label={label}
+      connections={connections}
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
@@ -69,6 +72,7 @@ const Delay = ({
 
 Delay.propTypes = {
   label: PropTypes.string,
+  connections: PropTypes.arrayOf(connectionProp),
   wetDryRatio: PropTypes.number,
   delayTime: PropTypes.number,
   isActive: PropTypes.bool,
@@ -80,6 +84,7 @@ Delay.propTypes = {
 
 Delay.defaultProps = {
   label: 'Delay',
+  connections: [],
   wetDryRatio: 0.5,
   delayTime: 1,
   isActive: true,

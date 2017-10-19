@@ -1,9 +1,15 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { __ } from 'ramda'
 import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
-import { noop } from '../../util/function'
-import { fxSelector, activeFXSelector } from '../../state/gleetchy/selectors'
+import { noop, stubArray } from '../../util/function'
+import { getConnectionsFor } from '../../util/audio'
+import {
+  fxSelector,
+  activeFXSelector,
+  connectionsSelector,
+} from '../../state/gleetchy/selectors'
 import {
   nodeUpdateProps,
   nodeUpdateLabel,
@@ -22,6 +28,7 @@ const FX = ({
   addReverb,
   addDelay,
   removeFx,
+  getConnections,
 }) => (
   <div className="fx">
     {fx.map(({ id, type, props, label }) => {
@@ -30,6 +37,7 @@ const FX = ({
           <div className="fx__fxContainer" key={id}>
             <Delay
               label={label}
+              connections={getConnections(id)}
               isActive={activeFx.includes(id)}
               wetDryRatio={props.wetDryRatio}
               delayTime={props.delayTime}
@@ -45,6 +53,7 @@ const FX = ({
           <div className="fx__fxContainer" key={id}>
             <Reverb
               label={label}
+              connections={getConnections(id)}
               isActive={activeFx.includes(id)}
               wetDryRatio={props.wetDryRatio}
               onWetDryRatioChange={wetDryRatio => updateFx(id, { wetDryRatio })}
@@ -105,6 +114,7 @@ const FX = ({
 FX.propTypes = {
   fx: PropTypes.arrayOf(PropTypes.shape({})),
   activeFx: PropTypes.arrayOf(PropTypes.string),
+  getConnections: PropTypes.func,
   updateFx: PropTypes.func,
   updateFxLabel: PropTypes.func,
   removeFx: PropTypes.func,
@@ -115,6 +125,7 @@ FX.propTypes = {
 FX.defaultProps = {
   fx: [],
   activeFx: [],
+  getConnections: stubArray,
   updateFx: noop,
   updateFxLabel: noop,
   removeFx: noop,
@@ -126,6 +137,7 @@ export default connect(
   state => ({
     fx: fxSelector(state),
     activeFx: activeFXSelector(state),
+    getConnections: getConnectionsFor(__, connectionsSelector(state)),
   }),
   dispatch => ({
     updateFx: (id, props) => dispatch(nodeUpdateProps(id, props)),
