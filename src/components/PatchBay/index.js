@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { F } from 'ramda'
+import { always } from 'ramda'
 import color from 'color'
 import { COLOR_EMPHASIS } from '../../constants/style'
 import { noop } from '../../util/function'
@@ -149,7 +149,7 @@ PatchBay.propTypes = {
 PatchBay.defaultProps = {
   fromNodes: [],
   toNodes: [],
-  getConnection: F,
+  getConnection: always(undefined),
   onNodeClick: noop,
 }
 
