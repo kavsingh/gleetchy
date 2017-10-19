@@ -43,8 +43,6 @@ const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
 
             const activeConnection = getConnection(fromNode, toNode)
             const connection = activeConnection
-            // ? { ...activeConnection, color: '#000' }
-            // : activeConnection
 
             return (
               <td key={fromNode.id}>
@@ -59,11 +57,9 @@ const PatchBay = ({ fromNodes, toNodes, getConnection, onNodeClick }) => (
                         }
                       : {}
                   }
-                  className={`patchBay__node ${connection
-                    ? ' patchBay__node_active'
-                    : ''} ${i === fromNodes.length - 1
-                    ? ' patchBay__rowItem_last'
-                    : ''}`}
+                  className={`patchBay__node patchbay__node_${connection
+                    ? 'active'
+                    : 'inactive'}`}
                   onClick={() => onNodeClick(fromNode, toNode)}
                   role="button"
                   tabIndex={0}
