@@ -9,12 +9,9 @@ const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const PWAManifest = require('webpack-pwa-manifest')
 const { COLOR_PAGE } = require('./src/constants/style')
 
+const fromRoot = path.resolve.bind(path, __dirname)
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === 'true'
-const fromRoot = path.resolve.bind(path, __dirname)
-// Setting public path to '/' means everything will attempt lookup
-// from root of hosting environment, so we can't just drop dist builds into a
-// subfolder of some other thing.
 const publicPath = ''
 
 module.exports = {
@@ -48,7 +45,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin('NODE_ENV'),
+    new webpack.EnvironmentPlugin(['NODE_ENV', 'PUBLIC_PATH']),
     new HtmlWebpackPlugin({
       themeColor: COLOR_PAGE,
       title: 'Gleetchy',
@@ -61,7 +58,7 @@ module.exports = {
     new PWAManifest({
       name: 'Gleetchy',
       short_name: 'Gleetchy',
-      start_url: '/',
+      start_url: publicPath,
       display: 'fullscreen',
       theme_color: COLOR_PAGE,
       background_color: COLOR_PAGE,

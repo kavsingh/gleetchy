@@ -7,9 +7,9 @@
 import { noop } from './function'
 import { hasWindowWith } from './env'
 
-const offlineInstall = serviceWorkerUrl => {
+const offlineInstall = (serviceWorkerUrl, scope) => {
   navigator.serviceWorker
-    .register(serviceWorkerUrl, { scope: '/' })
+    .register(serviceWorkerUrl, { scope })
     .then(reg => {
       reg.onupdatefound = function regOnUpdateFound() {
         const installingWorker = reg.installing
