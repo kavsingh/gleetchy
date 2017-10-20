@@ -1,9 +1,13 @@
+// Consume from es6 imports in src
+require('babel-register')({ plugins: ['transform-es2015-modules-commonjs'] })
+
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const PWAManifest = require('webpack-pwa-manifest')
+const { COLOR_PAGE } = require('./src/constants/style')
 
 const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === 'true'
@@ -12,8 +16,6 @@ const fromRoot = path.resolve.bind(path, __dirname)
 // from root of hosting environment, so we can't just drop dist builds into a
 // subfolder of some other thing.
 const publicPath = ''
-
-const themeColor = '#fff'
 
 module.exports = {
   entry: {
@@ -48,7 +50,7 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin('NODE_ENV'),
     new HtmlWebpackPlugin({
-      themeColor,
+      themeColor: COLOR_PAGE,
       title: 'Gleetchy',
       template: fromRoot('src/index.html'),
       inject: 'body',
@@ -61,8 +63,8 @@ module.exports = {
       short_name: 'Gleetchy',
       start_url: '/',
       display: 'fullscreen',
-      theme_color: themeColor,
-      background_color: themeColor,
+      theme_color: COLOR_PAGE,
+      background_color: COLOR_PAGE,
     }),
     isProduction &&
       new SWPrecachePlugin({
