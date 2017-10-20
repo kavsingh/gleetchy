@@ -40,7 +40,7 @@ const PatchBay = ({
             const blockConnect = !connection && !canConnect(fromNode, toNode)
 
             const title = blockConnect
-              ? 'This will cause a circular connection, big feedback, ear bleeding, hurricanes, much sadness'
+              ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
               : `From ${fromNode.label} to ${toNode.label}`
 
             let modClassName = 'patchBay__node_inactive'
