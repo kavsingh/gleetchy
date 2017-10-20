@@ -50,8 +50,10 @@ const defaultState = {
   nodes: [
     [INS_LOOP, 0],
     [INS_LOOP, 1],
-    [FX_REVERB, 0],
     [FX_DELAY, 0],
+    [FX_DELAY, 1],
+    [FX_REVERB, 0],
+    [FX_REVERB, 1],
   ].map(([type, id], i) => ({
     type,
     ...defaultLabels(id, type),

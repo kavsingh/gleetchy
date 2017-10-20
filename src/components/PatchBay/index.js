@@ -28,22 +28,24 @@ const PatchBay = ({
       </tr>
       {toNodes.map(toNode => (
         <tr className="patchBay__row" key={toNode.id}>
-          <td className="patchBay__label" title={`From ... to ${toNode.label}`}>
+          <td
+            className="patchBay__label"
+            title={`From ... to ${toNode.label}`}
+            key="rowLabel"
+          >
             {toNode.label}
           </td>
           {fromNodes.map(fromNode => {
             const connection = getConnection(fromNode, toNode)
+            const blockConnect = !connection && !canConnect(fromNode, toNode)
 
-            if (!connection && !canConnect(fromNode, toNode)) {
-              return (
-                <td key={fromNode.id}>
-                  <div
-                    className="patchBay__node patchBay__node_dummy"
-                    title="This will cause a circular connection, big feedback, ear bleeding, hurricanes, much sadness"
-                  />
-                </td>
-              )
-            }
+            const title = blockConnect
+              ? 'This will cause a circular connection, big feedback, ear bleeding, hurricanes, much sadness'
+              : `From ${fromNode.label} to ${toNode.label}`
+
+            let modClassName = 'patchBay__node_inactive'
+            if (blockConnect) modClassName = 'patchBay__node_blocked'
+            else if (connection) modClassName = 'patchBay__node_active'
 
             return (
               <td key={fromNode.id}>
@@ -58,16 +60,17 @@ const PatchBay = ({
                         }
                       : {}
                   }
-                  className={`patchBay__node patchbay__node_${connection
-                    ? 'active'
-                    : 'inactive'}`}
-                  onClick={() => onNodeClick(fromNode, toNode)}
+                  className={`patchBay__node ${modClassName}`}
+                  onClick={
+                    blockConnect ? noop : () => onNodeClick(fromNode, toNode)
+                  }
                   role="button"
                   tabIndex={0}
                   onKeyUp={e => {
+                    if (blockConnect) return
                     if (e.key === 'Enter') onNodeClick(fromNode, toNode)
                   }}
-                  title={`From ${fromNode.label} to ${toNode.label}`}
+                  title={title}
                 />
               </td>
             )
@@ -112,6 +115,7 @@ const PatchBay = ({
       }
 
       .patchBay__node {
+        transition: all 0.2s ease-out;
         width: 0.8em;
         height: 0.8em;
         border: 1px solid ${COLOR_KEYLINE};
@@ -124,7 +128,7 @@ const PatchBay = ({
         background-color: ${COLOR_EMPHASIS};
       }
 
-      .patchBay__node_dummy {
+      .patchBay__node_blocked {
         background-color: ${COLOR_KEYLINE};
         cursor: default;
         transform: rotate(45deg) scale(0.5);
