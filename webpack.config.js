@@ -42,7 +42,7 @@ module.exports = {
         use: [{ loader: 'babel-loader' }],
       },
       {
-        test: /\.(wav|mp3|ogg)$/,
+        test: /\.(wav|mp3|ogg|png)$/,
         use: [{ loader: 'file-loader' }],
       },
     ],
@@ -65,6 +65,16 @@ module.exports = {
       display: 'fullscreen',
       theme_color: COLOR_PAGE,
       background_color: COLOR_PAGE,
+      icons: [
+        ...[48, 72, 96, 144, 168, 192, 512].map(size => ({
+          src: fromRoot(`src/assets/icons/${size}x${size}.png`),
+          sizes: [size],
+        })),
+        {
+          src: fromRoot(`src/assets/icons/144x144.png`),
+          sizes: [128],
+        },
+      ],
     }),
     isProduction &&
       new SWPrecachePlugin({

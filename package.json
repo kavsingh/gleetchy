@@ -38,8 +38,7 @@
     "eslint": "^4.9.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-mongrel-react":
-      "kavsingh/eslint-config-mongrel-react.git#5.0.0",
+    "eslint-config-mongrel-react": "kavsingh/eslint-config-mongrel-react.git#5.0.0",
     "eslint-config-prettier": "^2.6.0",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-babel": "^4.1.2",
@@ -64,6 +63,7 @@
     "ramda": "^0.25.0",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
+    "react-favicon": "^0.0.9",
     "react-icons": "^2.2.7",
     "react-input-autosize": "^2.0.1",
     "react-redux": "^5.0.6",
