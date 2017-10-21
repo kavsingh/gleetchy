@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { tryCatch, cond, equals, pick, pipe, prop, always } from 'ramda'
+import { getAudioContext } from '../../apis/audio'
 import { connection as connectionProp } from '../../propTypes'
 import { noop } from '../../util/function'
 import { warn } from '../../util/dev'
@@ -55,10 +56,7 @@ class GleetchyEngine extends Component {
   }
 
   componentWillMount() {
-    const AudioContext = window.AudioContext || window.webkitAudioContext
-
-    this.audioContext = new AudioContext()
-
+    this.audioContext = getAudioContext()
     this.updateAudioNodes()
     this.updateAudioGraph()
   }
