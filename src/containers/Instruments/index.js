@@ -2,22 +2,23 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { __ } from 'ramda'
-import { INS_LOOP } from '../../constants/nodeTypes'
 import { getConnectionsFor } from '../../util/audio'
 import { noop, stubArray } from '../../util/function'
 import {
-  instrumentsSelector,
+  loopsSelector,
   activeInstrumentsSelector,
-  connectionsSelector,
-} from '../../state/gleetchy/selectors'
+} from '../../state/instruments/selectors'
+import { connectionsSelector } from '../../state/connections/selectors'
 import {
-  nodeUpdateLabel,
-  nodeUpdateProps,
-  loopReceiveAudioFile,
-  loopSelectAudioFile,
-  loopAdd,
-  nodeRemove,
-} from '../../state/gleetchy/actions'
+  selectAudioFileAction,
+  receiveAudioFileAction,
+} from '../../state/audioFiles/actions'
+import {
+  addLoopAction,
+  removeInstrumentAction,
+  updateInstrumentLabelAction,
+  updateInstrumentPropsAction,
+} from '../../state/instruments/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import AnimIn from '../../components/AnimIn'
 import Loop from '../../components/Loop'
@@ -25,7 +26,7 @@ import LoopEqControls from '../../components/Loop/LoopEqControls'
 import LoopPlaybackControls from '../../components/Loop/LoopPlaybackControls'
 
 const Instruments = ({
-  instruments,
+  loops,
   activeInstruments,
   loopSelectFile,
   loopReceiveFile,
@@ -37,43 +38,41 @@ const Instruments = ({
 }) => (
   <div className="instruments">
     <ErrorBoundary>
-      {instruments.map(({ id, label, type, props }) => (
+      {loops.map(({ id, label, props }) => (
         <div className="instruments__instrumentContainer" key={id}>
           <AnimIn>
-            {type === INS_LOOP ? (
-              <Loop
-                {...props}
-                label={label}
-                isActive={activeInstruments.includes(id)}
-                selectAudioFile={() => loopSelectFile(id)}
-                receiveAudioFile={file => loopReceiveFile(id, file)}
-                remove={() => removeInstrument(id)}
-                onLabelChange={val => updateInstrumentLabel(id, val)}
-                connections={getConnections(id)}
-                onLoopRegionChange={(start, end) =>
-                  updateInstrument(id, {
-                    loopStart: start,
-                    loopEnd: end,
-                  })}
-                renderControls={() => [
-                  <LoopPlaybackControls
-                    key="playback"
-                    gain={props.gain}
-                    playbackRate={props.playbackRate}
-                    onGainChange={val => updateInstrument(id, { gain: val })}
-                    onPlaybackRateChange={val =>
-                      updateInstrument(id, { playbackRate: val })}
-                  />,
-                  <LoopEqControls
-                    key="eq"
-                    eqLow={props.eqLow}
-                    eqMid={props.eqMid}
-                    eqHigh={props.eqHigh}
-                    onEqChange={eqProps => updateInstrument(id, eqProps)}
-                  />,
-                ]}
-              />
-            ) : null}
+            <Loop
+              {...props}
+              label={label}
+              isActive={activeInstruments.includes(id)}
+              selectAudioFile={() => loopSelectFile(id)}
+              receiveAudioFile={file => loopReceiveFile(id, file)}
+              remove={() => removeInstrument(id)}
+              onLabelChange={val => updateInstrumentLabel(id, val)}
+              connections={getConnections(id)}
+              onLoopRegionChange={(start, end) =>
+                updateInstrument(id, {
+                  loopStart: start,
+                  loopEnd: end,
+                })}
+              renderControls={() => [
+                <LoopPlaybackControls
+                  key="playback"
+                  gain={props.gain}
+                  playbackRate={props.playbackRate}
+                  onGainChange={val => updateInstrument(id, { gain: val })}
+                  onPlaybackRateChange={val =>
+                    updateInstrument(id, { playbackRate: val })}
+                />,
+                <LoopEqControls
+                  key="eq"
+                  eqLow={props.eqLow}
+                  eqMid={props.eqMid}
+                  eqHigh={props.eqHigh}
+                  onEqChange={eqProps => updateInstrument(id, eqProps)}
+                />,
+              ]}
+            />
           </AnimIn>
         </div>
       ))}
@@ -113,7 +112,7 @@ const Instruments = ({
 )
 
 Instruments.propTypes = {
-  instruments: PropTypes.arrayOf(PropTypes.shape({})),
+  loops: PropTypes.arrayOf(PropTypes.shape({})),
   activeInstruments: PropTypes.arrayOf(PropTypes.string),
   getConnections: PropTypes.func,
   loopSelectFile: PropTypes.func,
@@ -125,7 +124,7 @@ Instruments.propTypes = {
 }
 
 Instruments.defaultProps = {
-  instruments: [],
+  loops: [],
   activeInstruments: [],
   getConnections: stubArray,
   loopSelectFile: noop,
@@ -138,16 +137,18 @@ Instruments.defaultProps = {
 
 export default connect(
   state => ({
-    instruments: instrumentsSelector(state),
+    loops: loopsSelector(state),
     activeInstruments: activeInstrumentsSelector(state),
     getConnections: getConnectionsFor(__, connectionsSelector(state)),
   }),
   dispatch => ({
-    loopSelectFile: id => dispatch(loopSelectAudioFile(id)),
-    loopReceiveFile: (id, file) => dispatch(loopReceiveAudioFile(id, file)),
-    updateInstrument: (id, props) => dispatch(nodeUpdateProps(id, props)),
-    updateInstrumentLabel: (id, label) => dispatch(nodeUpdateLabel(id, label)),
-    addLoop: () => dispatch(loopAdd()),
-    removeInstrument: id => dispatch(nodeRemove(id)),
+    loopSelectFile: id => dispatch(selectAudioFileAction(id)),
+    loopReceiveFile: (id, file) => dispatch(receiveAudioFileAction(id, file)),
+    updateInstrument: (id, props) =>
+      dispatch(updateInstrumentPropsAction(id, props)),
+    updateInstrumentLabel: (id, label) =>
+      dispatch(updateInstrumentLabelAction(id, label)),
+    addLoop: () => dispatch(addLoopAction()),
+    removeInstrument: id => dispatch(removeInstrumentAction(id)),
   }),
 )(Instruments)

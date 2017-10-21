@@ -27,9 +27,8 @@ const unsetUnserializable = struct => {
 }
 
 export const serialize = pipe(
-  prop('gleetchy'),
-  pick(['nodes', 'connections']),
-  state => JSON.stringify({ gleetchy: unsetUnserializable(state) }),
+  pick(['audioContexts', 'instruments', 'fx', 'connections', 'audioFiles']),
+  state => JSON.stringify(unsetUnserializable(state)),
 )
 
 export const deserialize = stateString => JSON.parse(stateString)

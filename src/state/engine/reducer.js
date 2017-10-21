@@ -21,10 +21,7 @@ const shouldAddEngineEvent = contains(__, [
 
 const defaultState = []
 
-const engineEventsReducer = (
-  state = defaultState,
-  { type, payload = {} } = {},
-) => {
+const engineReducer = (state = defaultState, { type, payload = {} } = {}) => {
   switch (type) {
     case ENGINE_EVENTS_ADD:
       return payload.events.length ? state.concat(payload.events) : state
@@ -36,4 +33,4 @@ const engineEventsReducer = (
   }
 }
 
-export default engineEventsReducer
+export default engineReducer

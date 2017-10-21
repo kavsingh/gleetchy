@@ -8,24 +8,31 @@ import { warn } from '../../util/dev'
 import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_DELAY, FX_REVERB, INS_LOOP } from '../../constants/nodeTypes'
+import { AUDIO_FILE_LOAD_COMPLETE } from '../../state/audioFiles/actionTypes'
+import { ENGINE_DECODE_ARRAY_BUFFER_COMPLETE } from '../../state/engine/actionTypes'
 import {
-  PLAYBACK_START,
-  PLAYBACK_STOP,
-  NODE_UPDATE_PROPS,
-  NODE_ADD,
-  NODE_REMOVE,
-  LOOP_LOAD_FILE_COMPLETE,
-  LOOP_LOAD_FILE_DECODE_COMPLETE,
-  GRAPH_UPDATE,
-  STATE_REPLACE,
-} from '../../state/gleetchy/actionTypes'
+  GLOBAL_PLAYBACK_START,
+  GLOBAL_PLAYBACK_STOP,
+} from '../../state/globalPlayback/actionTypes'
+import {
+  INSTRUMENT_ADD,
+  INSTRUMENT_REMOVE,
+  INSTRUMENT_UPDATE_PROPS,
+} from '../../state/instruments/actionTypes'
+import { FX_ADD, FX_REMOVE, FX_UPDATE_PROPS } from '../../state/fx/actionTypes'
+import {
+  CONNECTION_ADD,
+  CONNECTION_REMOVE,
+} from '../../state/connections/actionTypes'
 import { instrumentsSelector } from '../../state/instruments/selectors'
 import { fxSelector } from '../../state/fx/selectors'
 import { connectionsSelector } from '../../state/connections/selectors'
-import { engineEventsSelector } from '../../state/engineEvents/selectors'
+import { engineEventsSelector } from '../../state/engine/selectors'
 import { isPlayingSelector } from '../../state/globalPlayback/selectors'
-import { loopLoadFileDecode } from '../../state/gleetchy/actions'
-import { clearEngineEventsAction } from '../../state/engineEvents/actions'
+import {
+  clearEngineEventsAction,
+  decodeAudioDataAction,
+} from '../../state/engine/actions'
 import { createLoopNode } from '../../audioNodes/loopNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 import { createReverbNode } from '../../audioNodes/reverbNode'
@@ -137,34 +144,36 @@ class GleetchyEngine extends Component {
     this.updateAudioGraph()
   }
 
+  /* eslint-disable complexity */
   processAudioEvent({ type, payload = {} }) {
     switch (type) {
-      case PLAYBACK_START:
+      case GLOBAL_PLAYBACK_START:
         this.forEachInstrument(node => node.play())
         break
-      case PLAYBACK_STOP:
+      case GLOBAL_PLAYBACK_STOP:
         this.forEachInstrument(node => node.stop())
         break
-      case NODE_UPDATE_PROPS:
+      case FX_UPDATE_PROPS:
+      case INSTRUMENT_UPDATE_PROPS:
         this.updateNode(payload)
         break
-      case LOOP_LOAD_FILE_COMPLETE:
-        this.props.decodeLoopFile(this.audioContext, payload.id, payload.file)
+      case AUDIO_FILE_LOAD_COMPLETE:
+        this.props.decodeAudioFile(this.audioContext, payload.id, payload.file)
         break
-      case LOOP_LOAD_FILE_DECODE_COMPLETE:
+      case ENGINE_DECODE_ARRAY_BUFFER_COMPLETE:
         this.updateNode(payload)
         break
-      case GRAPH_UPDATE:
+      case CONNECTION_ADD:
+      case CONNECTION_REMOVE:
         this.updateAudioGraph()
         break
-      case NODE_ADD:
+      case INSTRUMENT_ADD:
+      case FX_ADD:
         this.updateAudioNodes()
         this.updateAudioGraph()
         break
-      case NODE_REMOVE:
-        this.rebuildAll()
-        break
-      case STATE_REPLACE:
+      case INSTRUMENT_REMOVE:
+      case FX_REMOVE:
         this.rebuildAll()
         break
       default:
@@ -184,7 +193,7 @@ GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
   connections: PropTypes.arrayOf(connectionProp),
-  decodeLoopFile: PropTypes.func,
+  decodeAudioFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
 
@@ -193,7 +202,7 @@ GleetchyEngine.defaultProps = {
   engineEvents: [],
   nodes: [],
   connections: [],
-  decodeLoopFile: noop,
+  decodeAudioFile: noop,
   clearEngineEvents: noop,
 }
 
@@ -206,7 +215,7 @@ export default connect(
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(clearEngineEventsAction()),
-    decodeLoopFile: (audioContext, id, file) =>
-      dispatch(loopLoadFileDecode(audioContext, id, file)),
+    decodeAudioFile: (audioContext, id, { buffer }) =>
+      dispatch(decodeAudioDataAction(audioContext, id, buffer)),
   }),
 )(GleetchyEngine)
