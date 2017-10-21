@@ -118,7 +118,7 @@ export const connectionRemove = (fromId, toId) => ({
 })
 
 export const connectionToggle = (fromId, toId) => (dispatch, getState) => {
-  const connections = connectionsSelector(getState())
+  const { connections } = getState().gleetchy
   const current = connections.find(isSameConnection({ from: fromId, to: toId }))
 
   if (current) dispatch(connectionRemove(fromId, toId))

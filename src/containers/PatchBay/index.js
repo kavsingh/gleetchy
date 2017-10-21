@@ -14,7 +14,7 @@ const canConnectNodes = connections => ({ id: from }, { id: to }) =>
 const mapStateToProps = state => ({
   fromNodes: fromNodesSelector(state),
   toNodes: toNodesSelector(state),
-  getConnection: ({ id: from }, { id: to }) =>
+  getConnection: (from, to) =>
     connectionsSelector(state).find(isSameConnection({ from, to })),
   canConnect: canConnectNodes(connectionsSelector(state)),
 })

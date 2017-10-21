@@ -3,7 +3,7 @@ const { promisify } = require('util')
 const writeFile = promisify(require('fs').writeFile)
 const { COMPONENTS_ROOT } = require('./constants')
 const spawnAsync = require('./spawnAsync')
-const componentTemplate = require('./componentTemplate')
+const componentTemplate = require('./templates/component')
 const { upperFirst } = require('./util')
 
 const generateComponent = async name => {

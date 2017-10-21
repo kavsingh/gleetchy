@@ -45,7 +45,7 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['NODE_ENV', 'PUBLIC_PATH']),
+    new webpack.EnvironmentPlugin(['NODE_ENV']),
     new HtmlWebpackPlugin({
       themeColor: COLOR_PAGE,
       title: 'Gleetchy',

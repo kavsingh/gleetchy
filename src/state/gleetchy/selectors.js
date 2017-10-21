@@ -4,12 +4,14 @@ import { MAIN_OUT_ID } from '../../constants/audio'
 import {
   isFx,
   isInstrument,
+  isMainOut,
   sortByType,
   hasDownstreamConnectionTo,
 } from '../../util/audio'
 
 const isConnectedToMain = hasDownstreamConnectionTo(MAIN_OUT_ID)
-const patchNodeProps = map(pick(['id', 'label', 'type']))
+const pickNodeProps = pick(['id', 'label', 'type', 'color'])
+const patchNodeProps = map(pickNodeProps)
 
 const nodeStateSelector = state => state.gleetchy.nodes
 const isPlayingStateSelector = state => state.gleetchy.isPlaying
@@ -28,6 +30,8 @@ export const instrumentsSelector = createSelector(
   filter(isInstrument),
 )
 
+export const mainOutSelector = createSelector(nodesSelector, filter(isMainOut))
+
 export const isPlayingSelector = createSelector(
   isPlayingStateSelector,
   identity,
@@ -40,7 +44,13 @@ export const engineEventsSelector = createSelector(
 
 export const connectionsSelector = createSelector(
   connectionsStateSelector,
-  identity,
+  nodesSelector,
+  (connections, nodes) =>
+    connections.map(connection => ({
+      ...connection,
+      from: pickNodeProps(nodes.find(({ id }) => id === connection.from)),
+      to: pickNodeProps(nodes.find(({ id }) => id === connection.to)),
+    })),
 )
 
 export const activeFXSelector = createSelector(
@@ -76,10 +86,8 @@ export const fromNodesSelector = createSelector(
   (instruments, fx) => patchNodeProps([...sortByType(instruments), ...fx]),
 )
 
-export const toNodesSelector = createSelector(fxSelector, fx =>
-  patchNodeProps(sortByType(fx)).concat({
-    id: MAIN_OUT_ID,
-    label: 'Main',
-    type: 'Main out',
-  }),
+export const toNodesSelector = createSelector(
+  fxSelector,
+  mainOutSelector,
+  (fx, mains) => patchNodeProps(sortByType(fx)).concat(mains),
 )

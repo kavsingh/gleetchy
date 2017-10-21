@@ -2,6 +2,7 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { tryCatch, cond, equals, pick, pipe, prop, always } from 'ramda'
+import { connection as connectionProp } from '../../propTypes'
 import { noop } from '../../util/function'
 import { warn } from '../../util/dev'
 import { isInstrument } from '../../util/audio'
@@ -114,7 +115,7 @@ class GleetchyEngine extends Component {
 
     if (!connections.length) return
 
-    connections.forEach(({ from: fromId, to: toId }) => {
+    connections.forEach(({ from: { id: fromId }, to: { id: toId } }) => {
       const from = this.audioNodes[fromId]
       const to = this.audioNodes[toId]
 
@@ -185,9 +186,7 @@ GleetchyEngine.propTypes = {
   isPlaying: PropTypes.bool,
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
-  connections: PropTypes.arrayOf(
-    PropTypes.shape({ from: PropTypes.string, to: PropTypes.string }),
-  ),
+  connections: PropTypes.arrayOf(connectionProp),
   decodeLoopFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }

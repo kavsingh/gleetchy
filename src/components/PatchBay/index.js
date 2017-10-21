@@ -37,6 +37,9 @@ const PatchBay = ({
           </td>
           {fromNodes.map(fromNode => {
             const connection = getConnection(fromNode, toNode)
+
+            console.log(connection)
+
             const blockConnect = !connection && !canConnect(fromNode, toNode)
 
             const title = blockConnect

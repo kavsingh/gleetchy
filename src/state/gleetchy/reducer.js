@@ -3,7 +3,12 @@ import { warn } from '../../util/dev'
 import { isInstrument, isSameConnection } from '../../util/audio'
 import COLORS from '../../constants/color'
 import { MAIN_OUT_ID } from '../../constants/audio'
-import { FX_REVERB, FX_DELAY, INS_LOOP } from '../../constants/nodeTypes'
+import {
+  AUDIO_CTX,
+  FX_REVERB,
+  FX_DELAY,
+  INS_LOOP,
+} from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
 import {
   ENGINE_EVENTS_CLEAR,
@@ -54,12 +59,20 @@ const defaultState = {
     [FX_DELAY, 1],
     [FX_REVERB, 0],
     [FX_REVERB, 1],
-  ].map(([type, id], i) => ({
-    type,
-    ...defaultLabels(id, type),
-    color: palette[i % palette.length],
-    props: { ...nodeProps[type] },
-  })),
+  ]
+    .map(([type, id], i) => ({
+      type,
+      ...defaultLabels(id, type),
+      color: palette[i + 1 % palette.length],
+      props: { ...nodeProps[type] },
+    }))
+    .concat({
+      id: MAIN_OUT_ID,
+      type: AUDIO_CTX,
+      label: 'Main',
+      color: palette[0],
+      props: {},
+    }),
 }
 
 const updateNodeLabel = (state, { id, label = '' }) => {
