@@ -24,7 +24,6 @@ import {
   CONNECTION_REMOVE,
   STATE_REPLACE,
 } from './actionTypes'
-import { connectionsSelector } from './selectors'
 import { serialize, deserialize } from '../serialization'
 
 export const playbackStart = () => ({

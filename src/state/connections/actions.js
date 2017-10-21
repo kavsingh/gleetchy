@@ -1,6 +1,20 @@
-import { CONNECTIONS_ACTION } from './actions'
+import {
+  CONNECTION_ADD,
+  CONNECTION_REMOVE,
+  CONNECTION_REMOVE_ALL_FOR_ID,
+} from './actionTypes'
 
-export const doConnectionsAction = val => ({
-  type: CONNECTIONS_ACTION,
-  payload: { val },
+export const addConnectionAction = (fromId, toId) => ({
+  type: CONNECTION_ADD,
+  payload: { fromId, toId },
+})
+
+export const removeConnectionAction = (fromId, toId) => ({
+  type: CONNECTION_REMOVE,
+  payload: { fromId, toId },
+})
+
+export const removeAllConnectionsForIdAction = id => ({
+  type: CONNECTION_REMOVE_ALL_FOR_ID,
+  payload: { id },
 })

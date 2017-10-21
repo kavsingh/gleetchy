@@ -2,12 +2,13 @@ const { jsContent } = require('../util')
 
 module.exports = name =>
   jsContent(`
+    import { identity } from 'ramda'
     import { createSelector } from 'reselect'
 
-    const ${name}Selector = state => state.${name}
+    const ${name}StateSelector = state => state.${name}
 
-    export const keySelector = createSelector(
-      ${name}Selector,
-      ${name} => ${name}.key,
+    export const ${name}Selector = createSelector(
+      ${name}StateSelector,
+      identity,
     )
   `)

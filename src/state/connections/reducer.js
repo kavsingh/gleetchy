@@ -1,16 +1,56 @@
-import { CONNECTIONS_ACTION } from './actions'
+import { allPass, propEq, without } from 'ramda'
+import COLORS from '../../constants/color'
+import { instruments, audioContexts } from '../defaultNodes'
+import {
+  CONNECTION_ADD,
+  CONNECTION_REMOVE,
+  CONNECTION_REMOVE_ALL_FOR_ID,
+} from './actionTypes'
 
-const defaultState = { key: 'value' }
+const defaultState = [
+  { from: instruments[0].id, to: audioContexts[0].id, color: COLORS[0] },
+  { from: instruments[1].id, to: audioContexts[0].id, color: COLORS[1] },
+]
 
-const doSomething = (state /* , payload */) => ({ ...state })
+const connectionIs = ({ fromId, toId }) =>
+  allPass([propEq('from', fromId), propEq('to', toId)])
+
+const addConnection = (state, { fromId, toId }) => {
+  const existing = state.find(connectionIs({ fromId, toId }))
+
+  if (existing) return state
+
+  return [
+    ...state,
+    { from: fromId, to: toId, color: COLORS[state.length % COLORS.length] },
+  ]
+}
+
+const removeConnection = (state, { fromId, toId }) => {
+  const existing = state.find(connectionIs({ fromId, toId }))
+
+  return existing ? without([existing], state) : state
+}
+
+const removeAllConnectionsForId = (state, { id }) => {
+  const toRemove = state.filter(({ from, to }) => from === id || to === id)
+
+  if (!toRemove.length) return state
+
+  return without(toRemove, state)
+}
 
 const connectionsReducer = (
   state = defaultState,
   { type, payload = {} } = {},
 ) => {
   switch (type) {
-    case CONNECTIONS_ACTION:
-      return doSomething(state, payload)
+    case CONNECTION_ADD:
+      return addConnection(state, payload)
+    case CONNECTION_REMOVE:
+      return removeConnection(state, payload)
+    case CONNECTION_REMOVE_ALL_FOR_ID:
+      return removeAllConnectionsForId(state, payload)
     default:
       return state
   }

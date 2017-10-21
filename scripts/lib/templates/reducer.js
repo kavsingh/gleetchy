@@ -2,7 +2,7 @@ const { jsContent } = require('../util')
 
 module.exports = name =>
   jsContent(`
-    import { ${name.toUpperCase()}_ACTION } from './actions'
+    import { ${name.toUpperCase()}_ACTION } from './actionTypes'
 
     const defaultState = { key: 'value' }
 

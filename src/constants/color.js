@@ -32,4 +32,4 @@ export default [
   '#42668e',
   '#12739e',
   '#96d0e2',
-]
+].sort(() => Math.floor(Math.random() * 3) - 1)

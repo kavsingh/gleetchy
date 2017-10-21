@@ -5,8 +5,8 @@ import Favicon from 'react-favicon'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 import { COLOR_BODY, COLOR_KEYLINE } from '../../constants/style'
 import { noop } from '../../util/function'
-import { playbackToggle } from '../../state/gleetchy/actions'
-import { isPlayingSelector } from '../../state/gleetchy/selectors'
+import { toggleGlobalPaybackAction } from '../../state/globalPlayback/actions'
+import { isPlayingSelector } from '../../state/globalPlayback/selectors'
 import favicon from '../../assets/icons/48x48.png'
 import PlayPauseButton from '../../components/PlayPauseButton'
 import Instruments from '../Instruments'
@@ -105,6 +105,6 @@ export default connect(
     isPlaying: isPlayingSelector(state),
   }),
   dispatch => ({
-    togglePlayback: () => dispatch(playbackToggle()),
+    togglePlayback: () => dispatch(toggleGlobalPaybackAction()),
   }),
 )(GleetchyUI)

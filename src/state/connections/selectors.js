@@ -1,8 +1,9 @@
+import { identity } from 'ramda'
 import { createSelector } from 'reselect'
 
-const connectionsSelector = state => state.connections
+const connectionsStateSelector = state => state.connections
 
-export const keySelector = createSelector(
-  connectionsSelector,
-  connections => connections.key,
+export const connectionsSelector = createSelector(
+  connectionsStateSelector,
+  identity,
 )

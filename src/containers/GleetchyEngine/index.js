@@ -19,16 +19,13 @@ import {
   GRAPH_UPDATE,
   STATE_REPLACE,
 } from '../../state/gleetchy/actionTypes'
-import {
-  nodesSelector,
-  engineEventsSelector,
-  connectionsSelector,
-  isPlayingSelector,
-} from '../../state/gleetchy/selectors'
-import {
-  loopLoadFileDecode,
-  engineEventsClear,
-} from '../../state/gleetchy/actions'
+import { instrumentsSelector } from '../../state/instruments/selectors'
+import { fxSelector } from '../../state/fx/selectors'
+import { connectionsSelector } from '../../state/connections/selectors'
+import { engineEventsSelector } from '../../state/engineEvents/selectors'
+import { isPlayingSelector } from '../../state/globalPlayback/selectors'
+import { loopLoadFileDecode } from '../../state/gleetchy/actions'
+import { clearEngineEventsAction } from '../../state/engineEvents/actions'
 import { createLoopNode } from '../../audioNodes/loopNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 import { createReverbNode } from '../../audioNodes/reverbNode'
@@ -204,11 +201,11 @@ export default connect(
   state => ({
     isPlaying: isPlayingSelector(state),
     engineEvents: engineEventsSelector(state),
-    nodes: nodesSelector(state),
+    nodes: [...instrumentsSelector(state), ...fxSelector(state)],
     connections: connectionsSelector(state),
   }),
   dispatch => ({
-    clearEngineEvents: () => dispatch(engineEventsClear()),
+    clearEngineEvents: () => dispatch(clearEngineEventsAction()),
     decodeLoopFile: (audioContext, id, file) =>
       dispatch(loopLoadFileDecode(audioContext, id, file)),
   }),
