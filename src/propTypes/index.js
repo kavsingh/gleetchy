@@ -13,6 +13,12 @@ export const audioNodeLight = PropTypes.shape({
 })
 
 export const connection = PropTypes.shape({
+  from: PropTypes.string,
+  to: PropTypes.string,
+  color: PropTypes.string,
+})
+
+export const connectionExpanded = PropTypes.shape({
   from: audioNodeLight,
   to: audioNodeLight,
   color: PropTypes.string,

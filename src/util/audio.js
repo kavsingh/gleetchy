@@ -1,4 +1,4 @@
-import { curry, propEq, pathEq, anyPass, sortBy, prop } from 'ramda'
+import { curry, propEq, anyPass, sortBy, prop } from 'ramda'
 import {
   AUDIO_CTX,
   FX_DELAY,
@@ -14,17 +14,9 @@ export const isMainOut = anyPass([typeEquals(AUDIO_CTX)])
 
 export const sortByType = sortBy(prop('type'))
 
-export const decodeAudioDataP = curry(
-  (audioContext, buffer) =>
-    new Promise((resolve, reject) =>
-      audioContext.decodeAudioData(buffer, resolve, reject),
-    ),
-)
-
 export const isSameConnection = curry(
   (connection1, connection2) =>
-    connection1.from.id === connection2.from.id &&
-    connection1.to.id === connection2.to.id,
+    connection1.from === connection2.from && connection1.to === connection2.to,
 )
 
 export const getConnectionsFor = curry((id, connections) =>
@@ -35,12 +27,10 @@ export const hasDownstreamConnectionTo = curry((toId, connections, fromId) => {
   if (!connections.length) return false
 
   const checkDownstreamConnection = innerFromId => {
-    const connectionsFromId = connections.filter(
-      pathEq(['from', 'id'], innerFromId),
-    )
+    const connectionsFromId = connections.filter(propEq('from', innerFromId))
 
     if (!connectionsFromId.length) return false
-    if (connectionsFromId.some(pathEq(['to', 'id'], toId))) return true
+    if (connectionsFromId.some(propEq('to', toId))) return true
 
     return connectionsFromId.reduce(
       (accum, connection) =>

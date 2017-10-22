@@ -1,12 +1,10 @@
 import { omit, without } from 'ramda'
 import {
-  ENGINE_DECODE_ARRAY_BUFFER_COMPLETE,
-  ENGINE_DECODE_ARRAY_BUFFER_ERROR,
-} from '../engine/actionTypes'
-import {
   AUDIO_FILE_LOAD_START,
   AUDIO_FILE_LOAD_COMPLETE,
   AUDIO_FILE_LOAD_ERROR,
+  AUDIO_FILE_DECODE_COMPLETE,
+  AUDIO_FILE_DECODE_ERROR,
 } from './actionTypes'
 
 const defaultState = {
@@ -41,14 +39,14 @@ const audioBuffersReducer = (
         },
       }
     case AUDIO_FILE_LOAD_ERROR:
-    case ENGINE_DECODE_ARRAY_BUFFER_ERROR:
+    case AUDIO_FILE_DECODE_ERROR:
       return {
         ...state,
         errors: { ...state.errors, [payload.id]: payload.error },
         loadingIds: without([payload.id], state.loadingIds),
         decodingIds: without([payload.id], state.decodingIds),
       }
-    case ENGINE_DECODE_ARRAY_BUFFER_COMPLETE:
+    case AUDIO_FILE_DECODE_COMPLETE:
       return {
         ...state,
         errors: omit([payload.id], state.errors),

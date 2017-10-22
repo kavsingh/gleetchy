@@ -16,13 +16,12 @@ export const getAudioContext = () => {
   return audioContext
 }
 
-export const getAudioContextAsync = () =>
-  Promise.resolve().then(getAudioContext)
-
-export const decodeAudioData = buffer =>
-  getAudioContextAsync().then(
-    context =>
-      new Promise((resolve, reject) =>
-        context.decodeAudioData(buffer, resolve, reject),
-      ),
+const decodeAudioDataP = (context, buffer) =>
+  new Promise((resolve, reject) =>
+    context.decodeAudioData(buffer, resolve, reject),
   )
+
+export const decodeAudioData = (buffer, context) =>
+  Promise.resolve()
+    .then(() => context || getAudioContext())
+    .then(ctx => decodeAudioDataP(ctx, buffer))

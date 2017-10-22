@@ -5,18 +5,15 @@ import { __ } from 'ramda'
 import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
 import { noop, stubArray } from '../../util/function'
 import { getConnectionsFor } from '../../util/audio'
+import { fxSelector, activeFxSelector } from '../../state/fx/selectors'
+import { connectionsSelector } from '../../state/connections/selectors'
 import {
-  fxSelector,
-  activeFXSelector,
-  connectionsSelector,
-} from '../../state/gleetchy/selectors'
-import {
-  nodeUpdateProps,
-  nodeUpdateLabel,
-  reverbAdd,
-  delayAdd,
-  nodeRemove,
-} from '../../state/gleetchy/actions'
+  updateFxPropsAction,
+  updateFxLabelAction,
+  addReverbAction,
+  addDelayAction,
+  removeFxAction,
+} from '../../state/fx/actions'
 import AnimIn from '../../components/AnimIn'
 import Delay from '../../components/Delay'
 import Reverb from '../../components/Reverb'
@@ -143,14 +140,14 @@ FX.defaultProps = {
 export default connect(
   state => ({
     fx: fxSelector(state),
-    activeFx: activeFXSelector(state),
+    activeFx: activeFxSelector(state),
     getConnections: getConnectionsFor(__, connectionsSelector(state)),
   }),
   dispatch => ({
-    updateFx: (id, props) => dispatch(nodeUpdateProps(id, props)),
-    updateFxLabel: (id, label) => dispatch(nodeUpdateLabel(id, label)),
-    addReverb: () => dispatch(reverbAdd()),
-    addDelay: () => dispatch(delayAdd()),
-    removeFx: id => dispatch(nodeRemove(id)),
+    updateFx: (id, props) => dispatch(updateFxPropsAction(id, props)),
+    updateFxLabel: (id, label) => dispatch(updateFxLabelAction(id, label)),
+    addReverb: () => dispatch(addReverbAction()),
+    addDelay: () => dispatch(addDelayAction()),
+    removeFx: id => dispatch(removeFxAction(id)),
   }),
 )(FX)

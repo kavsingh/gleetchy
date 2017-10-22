@@ -1,8 +1,6 @@
-import {
-  CONNECTION_ADD,
-  CONNECTION_REMOVE,
-  CONNECTION_REMOVE_ALL_FOR_ID,
-} from './actionTypes'
+import { isSameConnection } from '../../util/audio'
+import { CONNECTION_ADD, CONNECTION_REMOVE } from './actionTypes'
+import { connectionsSelector } from './selectors'
 
 export const addConnectionAction = (fromId, toId) => ({
   type: CONNECTION_ADD,
@@ -14,7 +12,15 @@ export const removeConnectionAction = (fromId, toId) => ({
   payload: { fromId, toId },
 })
 
-export const removeAllConnectionsForIdAction = id => ({
-  type: CONNECTION_REMOVE_ALL_FOR_ID,
-  payload: { id },
-})
+export const toggleConnectionAction = (fromId, toId) => (
+  dispatch,
+  getState,
+) => {
+  const connections = connectionsSelector(getState())
+  const existing = connections.find(
+    isSameConnection({ from: fromId, to: toId }),
+  )
+
+  if (existing) dispatch(removeConnectionAction(fromId, toId))
+  else dispatch(addConnectionAction(fromId, toId))
+}

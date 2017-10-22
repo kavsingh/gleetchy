@@ -1,7 +1,7 @@
 import { curry, pick } from 'ramda'
 import { FX_REVERB } from '../constants/nodeTypes'
 import nodeProps from '../constants/nodeProps'
-import { decodeAudioDataP } from '../util/audio'
+import { decodeAudioData } from '../apis/audio'
 import reverbImpulse from '../assets/media/impulse_reverb.wav'
 import { createConnect, createDisconnect } from './connection'
 
@@ -14,7 +14,7 @@ const loadImpulse = async (audioContext, url) => {
   const response = await fetch(url)
   const arrayBuffer = await response.arrayBuffer()
 
-  return decodeAudioDataP(audioContext, arrayBuffer)
+  return decodeAudioData(arrayBuffer, audioContext)
 }
 
 const defaultProps = { ...nodeProps[FX_REVERB] }

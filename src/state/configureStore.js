@@ -6,7 +6,8 @@ import audioContexts from './audioContexts/reducer'
 import instruments from './instruments/reducer'
 import fx from './fx/reducer'
 import connections from './connections/reducer'
-import engineEvents from './engineEvents/reducer'
+import audioFiles from './audioFiles/reducer'
+import engine from './engine/reducer'
 
 const middlewares = [thunk]
 const composeEnhancers = composeWithDevTools({})
@@ -19,7 +20,8 @@ export const configureStore = (initialState = {}) =>
       instruments,
       fx,
       connections,
-      engineEvents,
+      audioFiles,
+      engine,
     }),
     initialState,
     composeEnhancers(applyMiddleware(...middlewares)),

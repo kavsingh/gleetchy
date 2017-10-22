@@ -1,3 +1,4 @@
+import { FX_DELAY, FX_REVERB } from '../../constants/nodeTypes'
 import {
   FX_ADD,
   FX_REMOVE,
@@ -9,6 +10,10 @@ export const addFxAction = type => ({
   type: FX_ADD,
   payload: { type },
 })
+
+export const addDelayAction = () => addFxAction(FX_DELAY)
+
+export const addReverbAction = () => addFxAction(FX_REVERB)
 
 export const removeFxAction = id => ({
   type: FX_REMOVE,

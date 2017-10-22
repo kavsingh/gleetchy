@@ -1,19 +1,19 @@
-import { without, propEq } from 'ramda'
+import { propEq } from 'ramda'
 import COLORS from '../../constants/color'
-import {
-  FX_DELAY,
-  FX_REVERB,
-  FX_UPDATE_PROPS,
-  FX_UPDATE_LABEL,
-} from '../../constants/nodeTypes'
 import nodeProps from '../../constants/nodeProps'
+import { FX_DELAY, FX_REVERB } from '../../constants/nodeTypes'
 import {
   removeNodeFromState,
   updateNodePropsInState,
   updateNodeLabelInState,
 } from '../nodeReducerUtil'
 import { fx } from '../defaultNodes'
-import { FX_ADD, FX_REMOVE } from './actions'
+import {
+  FX_ADD,
+  FX_REMOVE,
+  FX_UPDATE_PROPS,
+  FX_UPDATE_LABEL,
+} from './actionTypes'
 
 const defaultState = [...fx]
 

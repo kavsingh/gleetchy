@@ -1,5 +1,5 @@
 import { contains, __ } from 'ramda'
-import { ENGINE_EVENTS_ADD, ENGINE_EVENTS_CLEAR } from './actionTypes'
+import { ENGINE_CLEAR_EVENTS } from './actionTypes'
 import * as instrumentActionTypes from '../instruments/actionTypes'
 import * as fxActionTypes from '../fx/actionTypes'
 import * as connectionActionTypes from '../connections/actionTypes'
@@ -14,21 +14,20 @@ const shouldAddEngineEvent = contains(__, [
   fxActionTypes.FX_UPDATE_PROPS,
   connectionActionTypes.CONNECTION_ADD,
   connectionActionTypes.CONNECTION_REMOVE,
-  connectionActionTypes.CONNECTION_REMOVE_ALL_FOR_ID,
   globalPlaybackActionTypes.GLOBAL_PLAYBACK_START,
   globalPlaybackActionTypes.GLOBAL_PLAYBACK_STOP,
 ])
 
-const defaultState = []
+const defaultState = { events: [] }
 
 const engineReducer = (state = defaultState, { type, payload = {} } = {}) => {
   switch (type) {
-    case ENGINE_EVENTS_ADD:
-      return payload.events.length ? state.concat(payload.events) : state
-    case ENGINE_EVENTS_CLEAR:
-      return state.length ? [] : state
+    case ENGINE_CLEAR_EVENTS:
+      return state.events.length ? { ...state, events: [] } : state
     default:
-      if (shouldAddEngineEvent(type)) return state.concat({ type, payload })
+      if (shouldAddEngineEvent(type)) {
+        return { ...state, events: state.events.concat({ type, payload }) }
+      }
       return state
   }
 }

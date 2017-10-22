@@ -37,11 +37,7 @@ const PatchBay = ({
           </td>
           {fromNodes.map(fromNode => {
             const connection = getConnection(fromNode, toNode)
-
-            console.log(connection)
-
             const blockConnect = !connection && !canConnect(fromNode, toNode)
-
             const title = blockConnect
               ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
               : `From ${fromNode.label} to ${toNode.label}`
@@ -65,13 +61,15 @@ const PatchBay = ({
                   }
                   className={`patchBay__node ${modClassName}`}
                   onClick={
-                    blockConnect ? noop : () => onNodeClick(fromNode, toNode)
+                    blockConnect
+                      ? noop
+                      : () => onNodeClick(fromNode.id, toNode.id)
                   }
                   role="button"
                   tabIndex={0}
                   onKeyUp={e => {
                     if (blockConnect) return
-                    if (e.key === 'Enter') onNodeClick(fromNode, toNode)
+                    if (e.key === 'Enter') onNodeClick(fromNode.id, toNode.id)
                   }}
                   title={title}
                 />

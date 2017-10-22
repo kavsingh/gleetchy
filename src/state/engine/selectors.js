@@ -1,9 +1,9 @@
-import { identity } from 'ramda'
+import { prop } from 'ramda'
 import { createSelector } from 'reselect'
 
-const engineEventsStateSelector = state => state.engineEvents
+const engineStateSelector = state => state.engine
 
 export const engineEventsSelector = createSelector(
-  engineEventsStateSelector,
-  identity,
+  engineStateSelector,
+  prop('events'),
 )

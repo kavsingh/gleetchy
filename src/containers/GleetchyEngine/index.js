@@ -9,8 +9,6 @@ import { warn } from '../../util/dev'
 import { isInstrument } from '../../util/audio'
 import { MAIN_OUT_ID } from '../../constants/audio'
 import { FX_DELAY, FX_REVERB, INS_LOOP } from '../../constants/nodeTypes'
-import { AUDIO_FILE_LOAD_COMPLETE } from '../../state/audioFiles/actionTypes'
-import { ENGINE_DECODE_ARRAY_BUFFER_COMPLETE } from '../../state/engine/actionTypes'
 import {
   GLOBAL_PLAYBACK_START,
   GLOBAL_PLAYBACK_STOP,
@@ -155,12 +153,6 @@ class GleetchyEngine extends Component {
       case INSTRUMENT_UPDATE_PROPS:
         this.updateNode(payload)
         break
-      case AUDIO_FILE_LOAD_COMPLETE:
-        this.props.decodeAudioFile(this.audioContext, payload.id, payload.file)
-        break
-      case ENGINE_DECODE_ARRAY_BUFFER_COMPLETE:
-        this.updateNode(payload)
-        break
       case CONNECTION_ADD:
       case CONNECTION_REMOVE:
         this.updateAudioGraph()
@@ -191,7 +183,6 @@ GleetchyEngine.propTypes = {
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
   connections: PropTypes.arrayOf(connectionProp),
-  decodeAudioFile: PropTypes.func,
   clearEngineEvents: PropTypes.func,
 }
 
@@ -200,7 +191,6 @@ GleetchyEngine.defaultProps = {
   engineEvents: [],
   nodes: [],
   connections: [],
-  decodeAudioFile: noop,
   clearEngineEvents: noop,
 }
 
@@ -213,7 +203,5 @@ export default connect(
   }),
   dispatch => ({
     clearEngineEvents: () => dispatch(clearEngineEventsAction()),
-    decodeAudioFile: (audioContext, id, { buffer }) =>
-      dispatch(decodeAudioDataAction(audioContext, id, buffer)),
   }),
 )(GleetchyEngine)

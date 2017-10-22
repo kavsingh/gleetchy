@@ -1,11 +1,9 @@
 import { allPass, propEq, without } from 'ramda'
 import COLORS from '../../constants/color'
 import { instruments, audioContexts } from '../defaultNodes'
-import {
-  CONNECTION_ADD,
-  CONNECTION_REMOVE,
-  CONNECTION_REMOVE_ALL_FOR_ID,
-} from './actionTypes'
+import { INSTRUMENT_REMOVE } from '../instruments/actionTypes'
+import { FX_REMOVE } from '../fx/actionTypes'
+import { CONNECTION_ADD, CONNECTION_REMOVE } from './actionTypes'
 
 const defaultState = [
   { from: instruments[0].id, to: audioContexts[0].id, color: COLORS[0] },
@@ -49,7 +47,8 @@ const connectionsReducer = (
       return addConnection(state, payload)
     case CONNECTION_REMOVE:
       return removeConnection(state, payload)
-    case CONNECTION_REMOVE_ALL_FOR_ID:
+    case INSTRUMENT_REMOVE:
+    case FX_REMOVE:
       return removeAllConnectionsForId(state, payload)
     default:
       return state
