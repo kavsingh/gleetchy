@@ -19,13 +19,16 @@ const defaultState = [...instruments]
 const addInstrument = (state, { type }) => {
   switch (type) {
     case INS_LOOP:
-      return {
+      return [
         ...state,
-        id: `loop${state.length}`,
-        label: `L${state.length}`,
-        color: COLORS[state.length % COLORS.length],
-        props: { ...nodeProps[INS_LOOP] },
-      }
+        {
+          type: INS_LOOP,
+          id: `loop${state.length}`,
+          label: `L${state.length}`,
+          color: COLORS[state.length % COLORS.length],
+          props: { ...nodeProps[INS_LOOP] },
+        },
+      ]
     default:
       return state
   }

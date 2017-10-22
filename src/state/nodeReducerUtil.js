@@ -11,13 +11,13 @@ export const removeNodeFromState = (state, { id }) => {
 export const updateNodePropsInState = (state, { id, props }) => {
   const existingIdx = state.findIndex(idEquals(id))
 
-  if (!existingIdx) return state
+  if (existingIdx === -1) return state
 
   const newState = [...state]
 
   newState[existingIdx] = {
     ...newState[existingIdx],
-    props: { ...newState[existingIdx].props, props },
+    props: { ...newState[existingIdx].props, ...props },
   }
 
   return newState
@@ -26,7 +26,7 @@ export const updateNodePropsInState = (state, { id, props }) => {
 export const updateNodeLabelInState = (state, { id, label }) => {
   const existingIdx = state.findIndex(idEquals(id))
 
-  if (!existingIdx) return state
+  if (existingIdx === -1) return state
 
   const newState = [...state]
 
