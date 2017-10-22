@@ -20,7 +20,7 @@ export const isSameConnection = curry(
 )
 
 export const getConnectionsFor = curry((id, connections) =>
-  connections.filter(({ from, to }) => from.id === id || to.id === id),
+  connections.filter(({ from, to }) => from === id || to === id),
 )
 
 export const hasDownstreamConnectionTo = curry((toId, connections, fromId) => {
