@@ -1,4 +1,4 @@
-import { identity, path } from 'ramda'
+import { identity, path, propEq } from 'ramda'
 import { createSelector } from 'reselect'
 import { mainOutSelector } from '../audioContexts/selectors'
 import { connectionsSelector } from '../connections/selectors'
@@ -15,15 +15,11 @@ export const activeFxSelector = createSelector(
   (fx, connections, mainOut) => {
     const connectedToMain = hasDownstreamConnectionTo(
       path(['id'], mainOut),
-      connectionsSelector,
+      connections,
     )
 
     return fx
       .map(path(['id']))
-      .filter(
-        id =>
-          connections.some(connection => connection.to === id) &&
-          connectedToMain(id),
-      )
+      .filter(id => connections.some(propEq('to', id)) && connectedToMain(id))
   },
 )

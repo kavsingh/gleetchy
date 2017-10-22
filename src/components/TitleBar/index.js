@@ -19,7 +19,7 @@ const TitleBar = ({
           <div
             className="titleBar__connection"
             style={{ backgroundColor: color }}
-            key={`${from.id}${to.id}`}
+            key={`${from}${to}`}
           />
         ))}
       </div>

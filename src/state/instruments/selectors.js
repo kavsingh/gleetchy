@@ -1,7 +1,7 @@
 import { identity, propEq, path } from 'ramda'
 import { createSelector } from 'reselect'
 import { audioFilesSelector } from '../audioFiles/selectors'
-import { audioContextsSelector } from '../audioContexts/selectors'
+import { mainOutSelector } from '../audioContexts/selectors'
 import { connectionsSelector } from '../connections/selectors'
 import { hasDownstreamConnectionTo } from '../../util/audio'
 import { INS_LOOP } from '../../constants/nodeTypes'
@@ -26,7 +26,7 @@ export const loopsSelector = createSelector(
 export const activeInstrumentsSelector = createSelector(
   instrumentsSelector,
   connectionsSelector,
-  audioContextsSelector,
+  mainOutSelector,
   (instruments, connections, mainOut) => {
     const connectedToMain = hasDownstreamConnectionTo(
       path(['id'], mainOut),

@@ -33,8 +33,7 @@ export const hasDownstreamConnectionTo = curry((toId, connections, fromId) => {
     if (connectionsFromId.some(propEq('to', toId))) return true
 
     return connectionsFromId.reduce(
-      (accum, connection) =>
-        accum || checkDownstreamConnection(connection.to.id),
+      (accum, connection) => accum || checkDownstreamConnection(connection.to),
       false,
     )
   }
