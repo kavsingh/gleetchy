@@ -46,6 +46,10 @@ const PatchBay = ({
             if (blockConnect) modClassName = 'patchBay__node_blocked'
             else if (connection) modClassName = 'patchBay__node_active'
 
+            const handleClick = blockConnect
+              ? noop
+              : () => onNodeClick(fromNode, toNode)
+
             return (
               <td key={fromNode.id}>
                 <div
@@ -60,16 +64,11 @@ const PatchBay = ({
                       : {}
                   }
                   className={`patchBay__node ${modClassName}`}
-                  onClick={
-                    blockConnect
-                      ? noop
-                      : () => onNodeClick(fromNode.id, toNode.id)
-                  }
+                  onClick={handleClick}
                   role="button"
                   tabIndex={0}
                   onKeyUp={e => {
-                    if (blockConnect) return
-                    if (e.key === 'Enter') onNodeClick(fromNode.id, toNode.id)
+                    if (e.key === 'Enter') handleClick()
                   }}
                   title={title}
                 />

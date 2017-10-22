@@ -23,21 +23,20 @@ const toNodesSelector = createSelector(
   (fx, mainOut) => [...fx, mainOut].map(patchNodeProps),
 )
 
-const canConnectNodes = connections => (fromId, toId) =>
-  fromId !== toId && !hasDownstreamConnectionTo(fromId, connections, toId)
+const canConnectNodes = connections => ({ id: from }, { id: to }) =>
+  from !== to && !hasDownstreamConnectionTo(from, connections, to)
 
 const mapStateToProps = state => ({
   fromNodes: fromNodesSelector(state),
   toNodes: toNodesSelector(state),
-  getConnection: (fromId, toId) =>
-    connectionsSelector(state).find(
-      isSameConnection({ from: fromId, to: toId }),
-    ),
+  getConnection: ({ id: from }, { id: to }) =>
+    connectionsSelector(state).find(isSameConnection({ from, to })),
   canConnect: canConnectNodes(connectionsSelector(state)),
 })
 
 const mapDispatchToProps = dispatch => ({
-  onNodeClick: (from, to) => dispatch(toggleConnectionAction(from.id, to.id)),
+  onNodeClick: ({ id: from }, { id: to }) =>
+    dispatch(toggleConnectionAction(from, to)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatchBay)
