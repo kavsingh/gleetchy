@@ -2,10 +2,11 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { __ } from 'ramda'
+import { INS_LOOP } from '../../constants/nodeTypes'
 import { getConnectionsFor } from '../../util/audio'
 import { noop, stubArray } from '../../util/function'
 import {
-  loopsSelector,
+  instrumentsSelector,
   activeInstrumentsSelector,
 } from '../../state/instruments/selectors'
 import { connectionsSelector } from '../../state/connections/selectors'
@@ -26,7 +27,7 @@ import LoopEqControls from '../../components/Loop/LoopEqControls'
 import LoopPlaybackControls from '../../components/Loop/LoopPlaybackControls'
 
 const Instruments = ({
-  loops,
+  instruments,
   activeInstruments,
   loopSelectFile,
   loopReceiveFile,
@@ -38,44 +39,53 @@ const Instruments = ({
 }) => (
   <div className="instruments">
     <ErrorBoundary>
-      {loops.map(({ id, label, props }) => (
-        <div className="instruments__instrumentContainer" key={id}>
-          <AnimIn>
-            <Loop
-              {...props}
-              label={label}
-              isActive={activeInstruments.includes(id)}
-              selectAudioFile={() => loopSelectFile(id)}
-              receiveAudioFile={file => loopReceiveFile(id, file)}
-              remove={() => removeInstrument(id)}
-              onLabelChange={val => updateInstrumentLabel(id, val)}
-              connections={getConnections(id)}
-              onLoopRegionChange={(start, end) =>
-                updateInstrument(id, {
-                  loopStart: start,
-                  loopEnd: end,
-                })}
-              renderControls={() => [
-                <LoopPlaybackControls
-                  key="playback"
-                  gain={props.gain}
-                  playbackRate={props.playbackRate}
-                  onGainChange={val => updateInstrument(id, { gain: val })}
-                  onPlaybackRateChange={val =>
-                    updateInstrument(id, { playbackRate: val })}
-                />,
-                <LoopEqControls
-                  key="eq"
-                  eqLow={props.eqLow}
-                  eqMid={props.eqMid}
-                  eqHigh={props.eqHigh}
-                  onEqChange={eqProps => updateInstrument(id, eqProps)}
-                />,
-              ]}
-            />
-          </AnimIn>
-        </div>
-      ))}
+      {instruments.map(({ id, type, label, props }) => {
+        switch (type) {
+          case INS_LOOP:
+            return (
+              <div className="instruments__instrumentContainer" key={id}>
+                <AnimIn>
+                  <Loop
+                    {...props}
+                    label={label}
+                    isActive={activeInstruments.includes(id)}
+                    selectAudioFile={() => loopSelectFile(id)}
+                    receiveAudioFile={file => loopReceiveFile(id, file)}
+                    remove={() => removeInstrument(id)}
+                    onLabelChange={val => updateInstrumentLabel(id, val)}
+                    connections={getConnections(id)}
+                    onLoopRegionChange={(start, end) =>
+                      updateInstrument(id, {
+                        loopStart: start,
+                        loopEnd: end,
+                      })}
+                    renderControls={() => [
+                      <LoopPlaybackControls
+                        key="playback"
+                        gain={props.gain}
+                        playbackRate={props.playbackRate}
+                        onGainChange={val =>
+                          updateInstrument(id, { gain: val })}
+                        onPlaybackRateChange={val =>
+                          updateInstrument(id, { playbackRate: val })}
+                      />,
+                      <LoopEqControls
+                        key="eq"
+                        eqLow={props.eqLow}
+                        eqMid={props.eqMid}
+                        eqHigh={props.eqHigh}
+                        onEqChange={eqProps => updateInstrument(id, eqProps)}
+                      />,
+                    ]}
+                  />
+                </AnimIn>
+              </div>
+            )
+
+          default:
+            return null
+        }
+      })}
     </ErrorBoundary>
     <div
       className="instruments__addButton"
@@ -112,7 +122,7 @@ const Instruments = ({
 )
 
 Instruments.propTypes = {
-  loops: PropTypes.arrayOf(PropTypes.shape({})),
+  instruments: PropTypes.arrayOf(PropTypes.shape({})),
   activeInstruments: PropTypes.arrayOf(PropTypes.string),
   getConnections: PropTypes.func,
   loopSelectFile: PropTypes.func,
@@ -124,7 +134,7 @@ Instruments.propTypes = {
 }
 
 Instruments.defaultProps = {
-  loops: [],
+  instruments: [],
   activeInstruments: [],
   getConnections: stubArray,
   loopSelectFile: noop,
@@ -137,7 +147,7 @@ Instruments.defaultProps = {
 
 export default connect(
   state => ({
-    loops: loopsSelector(state),
+    instruments: instrumentsSelector(state),
     activeInstruments: activeInstrumentsSelector(state),
     getConnections: getConnectionsFor(__, connectionsSelector(state)),
   }),

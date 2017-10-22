@@ -23,15 +23,13 @@ import {
   CONNECTION_ADD,
   CONNECTION_REMOVE,
 } from '../../state/connections/actionTypes'
+import { AUDIO_FILE_DECODE_COMPLETE } from '../../state/audioFiles/actionTypes'
 import { instrumentsSelector } from '../../state/instruments/selectors'
 import { fxSelector } from '../../state/fx/selectors'
 import { connectionsSelector } from '../../state/connections/selectors'
 import { engineEventsSelector } from '../../state/engine/selectors'
 import { isPlayingSelector } from '../../state/globalPlayback/selectors'
-import {
-  clearEngineEventsAction,
-  decodeAudioDataAction,
-} from '../../state/engine/actions'
+import { clearEngineEventsAction } from '../../state/engine/actions'
 import { createLoopNode } from '../../audioNodes/loopNode'
 import { createDelayNode } from '../../audioNodes/delayNode'
 import { createReverbNode } from '../../audioNodes/reverbNode'
@@ -115,11 +113,11 @@ class GleetchyEngine extends Component {
 
     if (!connections.length) return
 
-    connections.forEach(({ from: { id: fromId }, to: { id: toId } }) => {
-      const from = this.audioNodes[fromId]
-      const to = this.audioNodes[toId]
+    connections.forEach(({ from, to }) => {
+      const fromNode = this.audioNodes[from]
+      const toNode = this.audioNodes[to]
 
-      if (from && to) from.connect(to)
+      if (fromNode && toNode) fromNode.connect(toNode)
     })
   }
 
@@ -152,6 +150,9 @@ class GleetchyEngine extends Component {
       case FX_UPDATE_PROPS:
       case INSTRUMENT_UPDATE_PROPS:
         this.updateNode(payload)
+        break
+      case AUDIO_FILE_DECODE_COMPLETE:
+        this.updateNode({ id: payload.id, props: payload.file })
         break
       case CONNECTION_ADD:
       case CONNECTION_REMOVE:

@@ -7,6 +7,7 @@ import {
   updateNodeLabelInState,
 } from '../nodeReducerUtil'
 import { instruments } from '../defaultNodes'
+import { AUDIO_FILE_DECODE_COMPLETE } from '../audioFiles/actionTypes'
 import {
   INSTRUMENT_ADD,
   INSTRUMENT_REMOVE,
@@ -45,6 +46,11 @@ const instrumentsReducer = (
       return removeNodeFromState(state, payload)
     case INSTRUMENT_UPDATE_PROPS:
       return updateNodePropsInState(state, payload)
+    case AUDIO_FILE_DECODE_COMPLETE:
+      return updateNodePropsInState(state, {
+        id: payload.id,
+        props: payload.file,
+      })
     case INSTRUMENT_UPDATE_LABEL:
       return updateNodeLabelInState(state, payload)
     default:
