@@ -1,13 +1,15 @@
-import { hasWindow } from '../util/env'
+import { getWindow } from '../util/env'
 
 let audioContext
 
 export const getAudioContext = () => {
   if (audioContext) return audioContext
 
-  if (!hasWindow) throw new Error('No audio context available')
+  const WINDOW = getWindow()
 
-  const AudioContext = window.AudioContext || window.webkitAudioContext
+  if (!WINDOW) throw new Error('No audio context available')
+
+  const AudioContext = WINDOW.AudioContext || WINDOW.webkitAudioContext
 
   if (!AudioContext) throw new Error('No audio context available')
 

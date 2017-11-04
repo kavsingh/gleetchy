@@ -105,7 +105,8 @@ const LoopSample = ({
 
 LoopSample.propTypes = {
   fromSaved: PropTypes.bool,
-  audioBuffer: PropTypes.instanceOf(AudioBuffer),
+  // eslint-disable-next-line react/no-typos
+  audioBuffer: PropTypes.audioBuffer,
   loopStart: PropTypes.number,
   loopEnd: PropTypes.number,
   onLoopStartDrag: PropTypes.func,

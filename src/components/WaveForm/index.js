@@ -141,7 +141,8 @@ class WaveForm extends Component {
 WaveForm.propTypes = {
   color: PropTypes.string,
   timeRegions: PropTypes.number,
-  buffer: PropTypes.instanceOf(AudioBuffer),
+  // eslint-disable-next-line react/no-typos
+  buffer: PropTypes.audioBuffer,
 }
 
 WaveForm.defaultProps = {
