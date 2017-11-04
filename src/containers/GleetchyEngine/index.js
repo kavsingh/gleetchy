@@ -1,9 +1,8 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
-import PropTypes from 'prop-types'
 import { tryCatch, cond, equals, pick, pipe, prop, always } from 'ramda'
+import PropTypes from '../../PropTypes'
 import { getAudioContext } from '../../apis/audio'
-import { connection as connectionProp } from '../../propTypes'
 import { noop } from '../../util/function'
 import { warn } from '../../util/dev'
 import { isInstrument } from '../../util/audio'
@@ -183,7 +182,7 @@ GleetchyEngine.propTypes = {
   isPlaying: PropTypes.bool,
   engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
-  connections: PropTypes.arrayOf(connectionProp),
+  connections: PropTypes.arrayOf(PropTypes.connection),
   clearEngineEvents: PropTypes.func,
 }
 

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { clamp, always } from 'ramda'
-import { connection as connectionProp } from '../../propTypes'
+import PropTypes from '../../PropTypes'
 import { noop } from '../../util/function'
 import TitleBar from '../TitleBar'
 import FileDropRegion from '../FileDropRegion'
@@ -178,9 +177,11 @@ Loop.propTypes = {
   loopStart: PropTypes.number,
   loopEnd: PropTypes.number,
   label: PropTypes.string,
-  audioBuffer: PropTypes.instanceOf(AudioBuffer),
+  // eslint-disable-next-line react/no-typos
+  audioBuffer: PropTypes.audioBuffer,
   fileName: PropTypes.string,
-  connections: PropTypes.arrayOf(connectionProp),
+  connections: PropTypes.arrayOf(PropTypes.connection),
+  isActive: PropTypes.bool,
   selectAudioFile: PropTypes.func,
   receiveAudioFile: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
@@ -195,6 +196,7 @@ Loop.defaultProps = {
   label: '',
   fileName: '',
   connections: [],
+  isActive: true,
   audioBuffer: undefined,
   selectAudioFile: noop,
   receiveAudioFile: noop,

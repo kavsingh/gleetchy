@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import color from 'color'
+import PropTypes from '../../PropTypes'
 import { COLOR_PAGE } from '../../constants/style'
 import { noop } from '../../util/function'
 import SinglePointerDrag from '../SinglePointerDrag'

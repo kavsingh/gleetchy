@@ -1,11 +1,16 @@
 import { pipe, path, filter, __ } from 'ramda'
 
-export const hasWindow = () => typeof window !== 'undefined'
+export const getWindow = () =>
+  typeof window !== 'undefined' ? window : undefined
+
+export const hasWindow = () => !!getWindow()
 
 export const hasWindowWith = (propPaths = []) => {
-  if (!hasWindow) return false
+  const win = getWindow()
 
-  const windowHas = pipe(path(__, window), o => typeof o !== 'undefined')
+  if (!win) return false
+
+  const windowHas = pipe(path(__, win), o => typeof o !== 'undefined')
 
   return propPaths.reduce(
     (accum, propPath) => accum && windowHas(propPath),

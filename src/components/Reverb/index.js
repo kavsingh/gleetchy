@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connection as connectionProp } from '../../propTypes'
+import PropTypes from '../../PropTypes'
 import { noop } from '../../util/function'
 import Knob from '../Knob'
 import TitleBar from '../TitleBar'
@@ -61,7 +60,7 @@ Reverb.propTypes = {
   label: PropTypes.string,
   wetDryRatio: PropTypes.number,
   isActive: PropTypes.bool,
-  connections: PropTypes.arrayOf(connectionProp),
+  connections: PropTypes.arrayOf(PropTypes.connection),
   onWetDryRatioChange: PropTypes.func,
   onLabelChange: PropTypes.func,
   remove: PropTypes.func,

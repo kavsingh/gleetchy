@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { onlyUpdateForKeys } from 'recompose'
 import color from 'color'
+import PropTypes from '../../PropTypes'
 import { COLOR_PAGE } from '../../constants/style'
 import { noop } from '../../util/function'
 import WaveForm from '../WaveForm'

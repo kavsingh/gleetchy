@@ -1,4 +1,4 @@
-import { anyPass, curry, pick, pipe, prop } from 'ramda'
+import { anyPass, curry, pick, pipe } from 'ramda'
 
 const isInstanceOf = curry((ctor, instance) => instance instanceof ctor)
 

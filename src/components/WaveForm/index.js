@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import PropTypes from 'prop-types'
 import { map } from 'ramda'
 import colorFn from 'color'
+import PropTypes from '../../PropTypes'
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '../../constants/style'
 import { hasWindowWith } from '../../util/env'
 

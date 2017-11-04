@@ -1,25 +1,35 @@
 import PropTypes from 'prop-types'
+import { getWindow } from '../util/env'
 
-export const nodeOrFunction = PropTypes.oneOfType([
-  PropTypes.node,
-  PropTypes.func,
-])
+const WINDOW = getWindow()
 
-export const audioNodeLight = PropTypes.shape({
+const audioNodeLight = PropTypes.shape({
   id: PropTypes.string,
   type: PropTypes.string,
   label: PropTypes.string,
   color: PropTypes.string,
 })
 
-export const connection = PropTypes.shape({
-  from: PropTypes.string,
-  to: PropTypes.string,
-  color: PropTypes.string,
-})
+export default {
+  ...PropTypes,
 
-export const connectionExpanded = PropTypes.shape({
-  from: audioNodeLight,
-  to: audioNodeLight,
-  color: PropTypes.string,
-})
+  audioNodeLight,
+
+  audioBuffer: WINDOW
+    ? PropTypes.instanceOf(WINDOW.AudioBuffer)
+    : PropTypes.any,
+
+  nodeOrFunction: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+
+  connection: PropTypes.shape({
+    from: PropTypes.string,
+    to: PropTypes.string,
+    color: PropTypes.string,
+  }),
+
+  connectionExpanded: PropTypes.shape({
+    from: audioNodeLight,
+    to: audioNodeLight,
+    color: PropTypes.string,
+  }),
+}

@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { always, T } from 'ramda'
 import color from 'color'
+import PropTypes from '../../PropTypes'
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '../../constants/style'
 import { noop } from '../../util/function'
 

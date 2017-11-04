@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
 import AutosizeInput from 'react-input-autosize'
+import PropTypes from '../../PropTypes'
 import { noop } from '../../util/function'
 import { cancelEvent } from '../../util/event'
 

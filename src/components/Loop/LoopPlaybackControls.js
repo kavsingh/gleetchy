@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from '../../PropTypes'
 import { noop } from '../../util/function'
 import Knob from '../Knob'
 

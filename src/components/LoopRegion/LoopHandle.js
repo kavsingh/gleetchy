@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+import PropTypes from '../../PropTypes'
 import { COLOR_EMPHASIS } from '../../constants/style'
 
 const LoopHandle = ({ align = 'left' }) => (

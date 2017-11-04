@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connection as connectionProp } from '../../propTypes'
+import PropTypes from '../../PropTypes'
 import { noop } from '../../util/function'
 import TextInput from '../TextInput'
 
@@ -91,7 +90,7 @@ const TitleBar = ({
 TitleBar.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string,
-  connections: PropTypes.arrayOf(connectionProp),
+  connections: PropTypes.arrayOf(PropTypes.connection),
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   onLabelChange: PropTypes.func,
   onRemoveClick: PropTypes.func,

@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { __ } from 'ramda'
+import PropTypes from '../../PropTypes'
 import { FX_REVERB, FX_DELAY } from '../../constants/nodeTypes'
 import { noop, stubArray } from '../../util/function'
 import { getConnectionsFor } from '../../util/audio'

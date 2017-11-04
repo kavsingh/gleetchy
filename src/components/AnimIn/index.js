@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
-import PropTypes from 'prop-types'
 import { tween } from 'popmotion'
+import PropTypes from '../../PropTypes'
 
 class AnimIn extends PureComponent {
   constructor(...args) {

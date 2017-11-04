@@ -1,6 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { connection as connectionProp } from '../../propTypes'
+import PropTypes from '../../PropTypes'
 import { DELAY_UPPER_BOUND } from '../../constants/audio'
 import { noop } from '../../util/function'
 import Knob from '../Knob'
@@ -72,7 +71,7 @@ const Delay = ({
 
 Delay.propTypes = {
   label: PropTypes.string,
-  connections: PropTypes.arrayOf(connectionProp),
+  connections: PropTypes.arrayOf(PropTypes.connection),
   wetDryRatio: PropTypes.number,
   delayTime: PropTypes.number,
   isActive: PropTypes.bool,
