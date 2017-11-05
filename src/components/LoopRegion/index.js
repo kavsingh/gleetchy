@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import color from 'color'
-import PropTypes from '../../PropTypes'
-import { COLOR_PAGE } from '../../constants/style'
-import { noop } from '../../util/function'
-import SinglePointerDrag from '../SinglePointerDrag'
+import PropTypes from '~/PropTypes'
+import { COLOR_PAGE } from '~/constants/style'
+import { noop } from '~/util/function'
+import SinglePointerDrag from '~/components/SinglePointerDrag'
 import LoopHandle from './LoopHandle'
 
 class LoopRegion extends Component {

@@ -1,5 +1,5 @@
-import { audioContexts } from '../defaultNodes'
-import { updateNodeLabelInState } from '../nodeReducerUtil'
+import { audioContexts } from '~/state/defaultNodes'
+import { updateNodeLabelInState } from '~/state/nodeReducerUtil'
 import { AUDIO_CONTEXT_UPDATE_LABEL } from './actionTypes'
 
 const defaultState = [...audioContexts]

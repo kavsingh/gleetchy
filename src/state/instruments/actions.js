@@ -1,4 +1,4 @@
-import { INS_LOOP } from '../../constants/nodeTypes'
+import { nodeType as loopNodeType } from '~/nodes/instruments/loop'
 import {
   INSTRUMENT_ADD,
   INSTRUMENT_REMOVE,
@@ -11,7 +11,7 @@ export const addInstrumentAction = type => ({
   payload: { type },
 })
 
-export const addLoopAction = () => addInstrumentAction(INS_LOOP)
+export const addLoopAction = () => addInstrumentAction(loopNodeType)
 
 export const removeInstrumentAction = id => ({
   type: INSTRUMENT_REMOVE,

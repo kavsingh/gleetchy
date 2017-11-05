@@ -1,16 +1,20 @@
-import { curry, propEq, anyPass, sortBy, prop } from 'ramda'
 import {
-  AUDIO_CTX,
-  FX_DELAY,
-  FX_REVERB,
-  INS_LOOP,
-} from '../constants/nodeTypes'
+  curry,
+  propEq,
+  sortBy,
+  prop,
+  startsWith,
+  propSatisfies,
+  equals,
+  tryCatch,
+  F,
+} from 'ramda'
 
-const typeEquals = propEq('type')
+const typeSatisfies = pred => tryCatch(propSatisfies(pred, 'type'), F)
 
-export const isFx = anyPass([typeEquals(FX_REVERB), typeEquals(FX_DELAY)])
-export const isInstrument = anyPass([typeEquals(INS_LOOP)])
-export const isMainOut = anyPass([typeEquals(AUDIO_CTX)])
+export const isEffect = typeSatisfies(startsWith('AUDIO_EFFECT_'))
+export const isInstrument = typeSatisfies(startsWith('INSTRUMENT_'))
+export const isMainOut = typeSatisfies(equals('AUDIO_CONTEXT'))
 
 export const sortByType = sortBy(prop('type'))
 

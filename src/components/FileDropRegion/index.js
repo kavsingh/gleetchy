@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import PropTypes from '../../PropTypes'
 import { T, always } from 'ramda'
-import { cancelEvent } from '../../util/event'
-import { noop } from '../../util/function'
+import PropTypes from '~/PropTypes'
+import { cancelEvent } from '~/util/event'
+import { noop } from '~/util/function'
 
 class FileDropRegion extends Component {
   constructor(...args) {

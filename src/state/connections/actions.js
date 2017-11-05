@@ -1,4 +1,4 @@
-import { isSameConnection } from '../../util/audio'
+import { isSameConnection } from '~/util/audio'
 import { CONNECTION_ADD, CONNECTION_REMOVE } from './actionTypes'
 import { connectionsSelector } from './selectors'
 

@@ -2,8 +2,8 @@ import { head, omit } from 'ramda'
 import {
   readFileToArrayBuffer,
   loadAudioFilesToArrayBuffers,
-} from '../../apis/file'
-import { decodeAudioData } from '../../apis/audio'
+} from '~/apis/file'
+import { decodeAudioData } from '~/apis/audio'
 import {
   AUDIO_FILE_LOAD_START,
   AUDIO_FILE_LOAD_COMPLETE,

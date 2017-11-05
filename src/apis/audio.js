@@ -1,4 +1,4 @@
-import { getWindow } from '../util/env'
+import { getWindow } from '~/util/env'
 
 let audioContext
 

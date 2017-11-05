@@ -1,4 +1,4 @@
-import { hasWindow } from '../util/env'
+import { hasWindow } from '~/util/env'
 
 let fileInput
 

@@ -1,8 +1,8 @@
 import { identity, path } from 'ramda'
 import { createSelector } from 'reselect'
-import { mainOutSelector } from '../audioContexts/selectors'
-import { connectionsSelector } from '../connections/selectors'
-import { hasDownstreamConnectionTo } from '../../util/audio'
+import { hasDownstreamConnectionTo } from '~/util/audio'
+import { mainOutSelector } from '~/state/audioContexts/selectors'
+import { connectionsSelector } from '~/state/connections/selectors'
 
 const instrumentsStateSelector = state => state.instruments
 

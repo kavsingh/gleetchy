@@ -1,16 +1,12 @@
-import COLORS from '../constants/color'
-import { MAIN_OUT_ID } from '../constants/audio'
-import {
-  AUDIO_CTX,
-  INS_LOOP,
-  FX_DELAY,
-  FX_REVERB,
-} from '../constants/nodeTypes'
-import nodeProps from '../constants/nodeProps'
+import COLORS from '~/constants/color'
+import { MAIN_OUT_ID } from '~/constants/audio'
+import * as loop from '~/nodes/instruments/loop'
+import * as delay from '~/nodes/audioEffects/delay'
+import * as reverb from '~/nodes/audioEffects/reverb'
 
 export const audioContexts = [
   {
-    type: AUDIO_CTX,
+    type: 'AUDIO_CONTEXT',
     id: MAIN_OUT_ID,
     label: 'Main',
     color: COLORS[0],
@@ -20,48 +16,48 @@ export const audioContexts = [
 
 export const instruments = [
   {
-    type: INS_LOOP,
+    type: loop.nodeType,
     id: 'loop0',
     label: 'L0',
     color: COLORS[1],
-    props: { ...nodeProps[INS_LOOP] },
+    props: { ...loop.nodeProps },
   },
   {
-    type: INS_LOOP,
+    type: loop.nodeType,
     id: 'loop1',
     label: 'L1',
     color: COLORS[2],
-    props: { ...nodeProps[INS_LOOP] },
+    props: { ...loop.nodeProps },
   },
 ]
 
-export const fx = [
+export const audioEffects = [
   {
-    type: FX_DELAY,
+    type: delay.nodeType,
     id: 'delay0',
     label: 'D0',
     color: COLORS[3],
-    props: { ...nodeProps[FX_DELAY] },
+    props: { ...delay.nodeProps },
   },
   {
-    type: FX_DELAY,
+    type: delay.nodeType,
     id: 'delay1',
     label: 'D1',
     color: COLORS[4],
-    props: { ...nodeProps[FX_DELAY] },
+    props: { ...delay.nodeProps },
   },
   {
-    type: FX_REVERB,
+    type: reverb.nodeType,
     id: 'reverb0',
     label: 'R0',
     color: COLORS[5],
-    props: { ...nodeProps[FX_REVERB] },
+    props: { ...reverb.nodeProps },
   },
   {
-    type: FX_REVERB,
+    type: reverb.nodeType,
     id: 'reverb1',
     label: 'R1',
     color: COLORS[6],
-    props: { ...nodeProps[FX_REVERB] },
+    props: { ...reverb.nodeProps },
   },
 ]

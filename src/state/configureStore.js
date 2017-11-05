@@ -4,7 +4,7 @@ import thunk from 'redux-thunk'
 import globalPlayback from './globalPlayback/reducer'
 import audioContexts from './audioContexts/reducer'
 import instruments from './instruments/reducer'
-import fx from './fx/reducer'
+import audioEffects from './audioEffects/reducer'
 import connections from './connections/reducer'
 import audioFiles from './audioFiles/reducer'
 import audioEngine from './audioEngine/reducer'
@@ -18,7 +18,7 @@ export const configureStore = (initialState = {}) =>
       globalPlayback,
       audioContexts,
       instruments,
-      fx,
+      audioEffects,
       connections,
       audioFiles,
       audioEngine,

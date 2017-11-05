@@ -1,14 +1,14 @@
 import React from 'react'
 import Favicon from 'react-favicon'
 import GithubIcon from 'react-icons/lib/go/mark-github'
-import PropTypes from '../../PropTypes'
-import { COLOR_BODY, COLOR_KEYLINE } from '../../constants/style'
-import { noop } from '../../util/function'
-import favicon from '../../assets/icons/48x48.png'
-import PlayPauseButton from '../../components/PlayPauseButton'
-import InstrumentsRack from '../InstrumentsRack'
-import FxRack from '../FxRack'
-import PatchBay from '../PatchBay'
+import PropTypes from '~/PropTypes'
+import { COLOR_BODY, COLOR_KEYLINE } from '~/constants/style'
+import { noop } from '~/util/function'
+import PlayPauseButton from '~/components/PlayPauseButton'
+import InstrumentsRack from '~/containers/InstrumentsRack'
+import AudioEffectsRack from '~/containers/AudioEffectsRack'
+import PatchBay from '~/containers/PatchBay'
+import favicon from '~/assets/icons/48x48.png'
 
 const UI = ({ isPlaying, togglePlayback }) => (
   <div className="ui">
@@ -30,8 +30,8 @@ const UI = ({ isPlaying, togglePlayback }) => (
       <InstrumentsRack />
     </div>
     <div className="ui__connectContainer">
-      <div className="ui__fxRackContainer">
-        <FxRack />
+      <div className="ui__audioEffectsRackContainer">
+        <AudioEffectsRack />
       </div>
       <div className="ui__patchBayContainer">
         <PatchBay />
@@ -57,7 +57,7 @@ const UI = ({ isPlaying, togglePlayback }) => (
         padding: 2em 0;
       }
 
-      .ui__fxRackContainer {
+      .ui__audioEffectsRackContainer {
         flex-grow: 1;
         flex-shrink: 1;
       }

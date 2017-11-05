@@ -1,8 +1,8 @@
 import { allPass, propEq, without } from 'ramda'
-import COLORS from '../../constants/color'
-import { instruments, audioContexts } from '../defaultNodes'
-import { INSTRUMENT_REMOVE } from '../instruments/actionTypes'
-import { FX_REMOVE } from '../fx/actionTypes'
+import COLORS from '~/constants/color'
+import { instruments, audioContexts } from '~/state/defaultNodes'
+import { INSTRUMENT_REMOVE } from '~/state/instruments/actionTypes'
+import { AUDIO_EFFECT_REMOVE } from '~/state/audioEffects/actionTypes'
 import { CONNECTION_ADD, CONNECTION_REMOVE } from './actionTypes'
 
 const defaultState = [
@@ -48,7 +48,7 @@ const connectionsReducer = (
     case CONNECTION_REMOVE:
       return removeConnection(state, payload)
     case INSTRUMENT_REMOVE:
-    case FX_REMOVE:
+    case AUDIO_EFFECT_REMOVE:
       return removeAllConnectionsForId(state, payload)
     default:
       return state

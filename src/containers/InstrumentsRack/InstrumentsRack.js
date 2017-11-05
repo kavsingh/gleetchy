@@ -1,10 +1,9 @@
 import React from 'react'
-import PropTypes from '../../PropTypes'
-import { INS_LOOP } from '../../constants/nodeTypes'
-import { noop, stubArray } from '../../util/function'
-import ErrorBoundary from '../../components/ErrorBoundary'
-import AnimIn from '../../components/AnimIn'
-import Loop from '../../instruments/loop/UI'
+import PropTypes from '~/PropTypes'
+import { noop, stubArray } from '~/util/function'
+import ErrorBoundary from '~/components/ErrorBoundary'
+import AnimIn from '~/components/AnimIn'
+import { UI as Loop, nodeType as loopType } from '~/nodes/instruments/loop'
 
 const InstrumentsRack = ({
   instruments,
@@ -17,13 +16,13 @@ const InstrumentsRack = ({
   removeInstrument,
   getConnections,
 }) => (
-  <div className="instruments">
+  <div className="instrumentsRack">
     <ErrorBoundary>
       {instruments.map(({ id, type, label, props }) => {
         switch (type) {
-          case INS_LOOP:
+          case loopType:
             return (
-              <div className="instruments__instrumentContainer" key={id}>
+              <div className="instrumentsRack__instrumentContainer" key={id}>
                 <AnimIn>
                   <Loop
                     {...props}
@@ -54,7 +53,7 @@ const InstrumentsRack = ({
       })}
     </ErrorBoundary>
     <div
-      className="instruments__addButton"
+      className="instrumentsRack__addButton"
       onClick={addLoop}
       role="button"
       tabIndex={0}
@@ -65,17 +64,17 @@ const InstrumentsRack = ({
       [ Add loop ]
     </div>
     <style jsx>{`
-      .instruments {
+      .instrumentsRack {
         width: 100%;
         display: flex;
         flex-direction: column;
       }
 
-      .instruments__instrumentContainer:not(:first-child) {
+      .instrumentsRack__instrumentContainer:not(:first-child) {
         margin-top: 2em;
       }
 
-      .instruments__addButton {
+      .instrumentsRack__addButton {
         cursor: pointer;
         margin: 2em 0 0;
         padding: 1em 0;

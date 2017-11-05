@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
-import { toggleGlobalPaybackAction } from '../../state/globalPlayback/actions'
-import { isPlayingSelector } from '../../state/globalPlayback/selectors'
+import { toggleGlobalPaybackAction } from '~/state/globalPlayback/actions'
+import { isPlayingSelector } from '~/state/globalPlayback/selectors'
 import UI from './UI'
 
 export default connect(

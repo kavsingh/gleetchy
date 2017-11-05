@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from '../../PropTypes'
+import PropTypes from '~/PropTypes'
 
 const Panel = ({ children, style }) => (
   <div className="panel" style={{ ...style }}>

@@ -93,6 +93,7 @@ module.exports = {
   ].filter(Boolean),
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
+    alias: { '~': path.resolve(__dirname, 'src') },
     extensions: ['.js'],
   },
 }

@@ -1,6 +1,6 @@
 import React from 'react'
-import PropTypes from '../../PropTypes'
-import { noop } from '../../util/function'
+import PropTypes from '~/PropTypes'
+import { noop } from '~/util/function'
 
 const PlayPauseButton = ({ isPlaying, onClick }) => (
   <div

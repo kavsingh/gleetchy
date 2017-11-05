@@ -1,6 +1,6 @@
 import React from 'react'
-import PropTypes from '../../PropTypes'
-import { COLOR_EMPHASIS } from '../../constants/style'
+import PropTypes from '~/PropTypes'
+import { COLOR_EMPHASIS } from '~/constants/style'
 
 const LoopHandle = ({ align = 'left' }) => (
   <div className={`loopHandle loopHandle_${align}`}>

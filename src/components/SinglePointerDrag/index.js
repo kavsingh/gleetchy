@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { pipe, tap, always } from 'ramda'
-import PropTypes from '../../PropTypes'
-import { cancelEvent } from '../../util/event'
-import { filterSupportedEvents } from '../../util/env'
-import { noop } from '../../util/function'
+import PropTypes from '~/PropTypes'
+import { cancelEvent } from '~/util/event'
+import { filterSupportedEvents } from '~/util/env'
+import { noop } from '~/util/function'
 
 const normalizeEvent = event => {
   const { currentTarget, touches, timeStamp } = event

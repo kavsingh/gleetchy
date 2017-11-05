@@ -1,21 +1,21 @@
 import { connect } from 'react-redux'
 import { __ } from 'ramda'
-import { getConnectionsFor } from '../../util/audio'
+import { getConnectionsFor } from '~/util/audio'
 import {
   instrumentsSelector,
   activeInstrumentsSelector,
-} from '../../state/instruments/selectors'
-import { connectionsSelector } from '../../state/connections/selectors'
+} from '~/state/instruments/selectors'
+import { connectionsSelector } from '~/state/connections/selectors'
 import {
   selectAudioFileAction,
   receiveAudioFileAction,
-} from '../../state/audioFiles/actions'
+} from '~/state/audioFiles/actions'
 import {
   addLoopAction,
   removeInstrumentAction,
   updateInstrumentLabelAction,
   updateInstrumentPropsAction,
-} from '../../state/instruments/actions'
+} from '~/state/instruments/actions'
 import InstrumentsRack from './InstrumentsRack'
 
 export default connect(

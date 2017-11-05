@@ -1,11 +1,11 @@
 import React from 'react'
 import { onlyUpdateForKeys } from 'recompose'
 import color from 'color'
-import PropTypes from '../../PropTypes'
-import { COLOR_PAGE } from '../../constants/style'
-import { noop } from '../../util/function'
-import WaveForm from '../../components/WaveForm'
-import LoopRegion from '../../components/LoopRegion'
+import PropTypes from '~/PropTypes'
+import { COLOR_PAGE } from '~/constants/style'
+import { noop } from '~/util/function'
+import WaveForm from '~/components/WaveForm'
+import LoopRegion from '~/components/LoopRegion'
 
 const Sample = ({
   fromSaved,

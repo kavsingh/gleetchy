@@ -14,6 +14,7 @@ module.exports = {
     // ['lodash', { id: ['ramda'] }],
     'styled-jsx/babel',
     'transform-object-rest-spread',
+    'webpack-alias',
   ],
   env: {
     test: {

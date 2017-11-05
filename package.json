@@ -58,6 +58,7 @@
     "webpack-pwa-manifest": "^3.3.2"
   },
   "dependencies": {
+    "babel-plugin-webpack-alias": "^2.1.2",
     "color": "^2.0.0",
     "popmotion": "^7.8.2",
     "prop-types": "^15.6.0",

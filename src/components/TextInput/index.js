@@ -1,8 +1,8 @@
 import React, { PureComponent } from 'react'
 import AutosizeInput from 'react-input-autosize'
-import PropTypes from '../../PropTypes'
-import { noop } from '../../util/function'
-import { cancelEvent } from '../../util/event'
+import PropTypes from '~/PropTypes'
+import { noop } from '~/util/function'
+import { cancelEvent } from '~/util/event'
 
 class TextInput extends PureComponent {
   constructor(...args) {

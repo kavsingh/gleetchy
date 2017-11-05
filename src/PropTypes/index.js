@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { getWindow } from '../util/env'
+import { getWindow } from '~/util/env'
 
 const WINDOW = getWindow()
 
@@ -14,6 +14,8 @@ export default {
   ...PropTypes,
 
   audioNodeLight,
+
+  error: PropTypes.instanceOf(Error),
 
   audioBuffer: WINDOW
     ? PropTypes.instanceOf(WINDOW.AudioBuffer)

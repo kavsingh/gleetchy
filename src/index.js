@@ -4,8 +4,9 @@ import { Provider } from 'react-redux'
 import { COLOR_PAGE } from './constants/style'
 import { configureStore } from './state/configureStore'
 import AudioEngine from './containers/AudioEngine'
-import UI from './containers/UI'
-import offlineInstall from './util/offlineInstall'
+import UI from '~/containers/UI'
+import ErrorBoundary from '~/components/ErrorBoundary'
+import offlineInstall from '~/util/offlineInstall'
 
 offlineInstall('gleetchy-sw.js', '')
 
@@ -16,8 +17,12 @@ const store = configureStore()
 
 const App = () => (
   <div>
-    <AudioEngine />
-    <UI />
+    <ErrorBoundary>
+      <AudioEngine />
+    </ErrorBoundary>
+    <ErrorBoundary>
+      <UI />
+    </ErrorBoundary>
     <style jsx global>{`
       html {
         box-sizing: border-box;

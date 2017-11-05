@@ -1,9 +1,9 @@
 import React from 'react'
 import { always, T } from 'ramda'
 import color from 'color'
-import PropTypes from '../../PropTypes'
-import { COLOR_EMPHASIS, COLOR_KEYLINE } from '../../constants/style'
-import { noop } from '../../util/function'
+import PropTypes from '~/PropTypes'
+import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
+import { noop } from '~/util/function'
 
 const PatchBay = ({
   fromNodes,

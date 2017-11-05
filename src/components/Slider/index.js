@@ -1,9 +1,9 @@
 import React, { PureComponent } from 'react'
 import { clamp, identity } from 'ramda'
-import PropTypes from '../../PropTypes'
-import { COLOR_KEYLINE, COLOR_EMPHASIS } from '../../constants/style'
-import { noop } from '../../util/function'
-import SinglePointerDrag from '../SinglePointerDrag'
+import PropTypes from '~/PropTypes'
+import { COLOR_KEYLINE, COLOR_EMPHASIS } from '~/constants/style'
+import { noop } from '~/util/function'
+import SinglePointerDrag from '~/components/SinglePointerDrag'
 
 class Slider extends PureComponent {
   constructor(...args) {

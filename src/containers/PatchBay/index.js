@@ -1,26 +1,27 @@
 import { pick } from 'ramda'
 import { connect } from 'react-redux'
 import { createSelector } from 'reselect'
-import { isSameConnection, hasDownstreamConnectionTo } from '../../util/audio'
-import { mainOutSelector } from '../../state/audioContexts/selectors'
-import { instrumentsSelector } from '../../state/instruments/selectors'
-import { fxSelector } from '../../state/fx/selectors'
-import { connectionsSelector } from '../../state/connections/selectors'
-import { toggleConnectionAction } from '../../state/connections/actions'
+import { isSameConnection, hasDownstreamConnectionTo } from '~/util/audio'
+import { mainOutSelector } from '~/state/audioContexts/selectors'
+import { instrumentsSelector } from '~/state/instruments/selectors'
+import { audioEffectsSelector } from '~/state/audioEffects/selectors'
+import { connectionsSelector } from '~/state/connections/selectors'
+import { toggleConnectionAction } from '~/state/connections/actions'
 import PatchBay from './PatchBay'
 
-const patchNodeProps = pick(['label', 'color', 'id'])
+const pickNodeProps = pick(['label', 'color', 'id'])
 
 const fromNodesSelector = createSelector(
   instrumentsSelector,
-  fxSelector,
-  (instruments, fx) => [...instruments, ...fx].map(patchNodeProps),
+  audioEffectsSelector,
+  (instruments, audioEffects) =>
+    [...instruments, ...audioEffects].map(pickNodeProps),
 )
 
 const toNodesSelector = createSelector(
-  fxSelector,
+  audioEffectsSelector,
   mainOutSelector,
-  (fx, mainOut) => [...fx, mainOut].map(patchNodeProps),
+  (audioEffects, mainOut) => [...audioEffects, mainOut].map(pickNodeProps),
 )
 
 const canConnectNodes = connections => ({ id: from }, { id: to }) =>

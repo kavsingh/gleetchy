@@ -1,7 +1,7 @@
 import React from 'react'
-import PropTypes from '../../PropTypes'
-import { noop } from '../../util/function'
-import TextInput from '../TextInput'
+import PropTypes from '~/PropTypes'
+import { noop } from '~/util/function'
+import TextInput from '~/components/TextInput'
 
 const TitleBar = ({
   type,
@@ -88,8 +88,8 @@ const TitleBar = ({
 )
 
 TitleBar.propTypes = {
-  type: PropTypes.string,
   label: PropTypes.string,
+  type: PropTypes.string,
   connections: PropTypes.arrayOf(PropTypes.connection),
   children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
   onLabelChange: PropTypes.func,

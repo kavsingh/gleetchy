@@ -27,7 +27,13 @@ const unsetUnserializable = struct => {
 }
 
 export const serialize = pipe(
-  pick(['audioContexts', 'instruments', 'fx', 'connections', 'audioFiles']),
+  pick([
+    'audioContexts',
+    'instruments',
+    'audioEffects',
+    'connections',
+    'audioFiles',
+  ]),
   state => JSON.stringify(unsetUnserializable(state)),
 )
 

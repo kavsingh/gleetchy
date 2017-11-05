@@ -1,13 +1,15 @@
-import COLORS from '../../constants/color'
-import { INS_LOOP } from '../../constants/nodeTypes'
-import nodeProps from '../../constants/nodeProps'
+import COLORS from '~/constants/color'
+import {
+  nodeType as loopNodeType,
+  nodeProps as loopNodeProps,
+} from '~/nodes/instruments/loop'
 import {
   removeNodeFromState,
   updateNodePropsInState,
   updateNodeLabelInState,
-} from '../nodeReducerUtil'
-import { instruments } from '../defaultNodes'
-import { AUDIO_FILE_DECODE_COMPLETE } from '../audioFiles/actionTypes'
+} from '~/state/nodeReducerUtil'
+import { instruments } from '~/state/defaultNodes'
+import { AUDIO_FILE_DECODE_COMPLETE } from '~/state/audioFiles/actionTypes'
 import {
   INSTRUMENT_ADD,
   INSTRUMENT_REMOVE,
@@ -19,15 +21,15 @@ const defaultState = [...instruments]
 
 const addInstrument = (state, { type }) => {
   switch (type) {
-    case INS_LOOP:
+    case loopNodeType:
       return [
         ...state,
         {
-          type: INS_LOOP,
+          type: loopNodeType,
           id: `loop${state.length}`,
           label: `L${state.length}`,
           color: COLORS[state.length % COLORS.length],
-          props: { ...nodeProps[INS_LOOP] },
+          props: { ...loopNodeProps },
         },
       ]
     default:

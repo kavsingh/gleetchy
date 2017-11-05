@@ -1,7 +1,7 @@
 import React from 'react'
 import { map, clamp } from 'ramda'
-import PropTypes from '../../PropTypes'
-import { polarToCartesian } from '../../util/math'
+import PropTypes from '~/PropTypes'
+import { polarToCartesian } from '~/util/math'
 
 const describeSVGArc = (origin, radius, startAngle, endAngle) => {
   const [sa, ea] = map(clamp(0, 359.9), [startAngle, endAngle])
