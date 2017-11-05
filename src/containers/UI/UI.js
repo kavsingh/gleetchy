@@ -1,4 +1,5 @@
 import React from 'react'
+import { pure } from 'recompose'
 import Favicon from 'react-favicon'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 import PropTypes from '~/PropTypes'
@@ -97,4 +98,4 @@ UI.defaultProps = {
   togglePlayback: noop,
 }
 
-export default UI
+export default pure(UI)
