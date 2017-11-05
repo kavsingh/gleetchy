@@ -3,8 +3,8 @@ import { render } from 'react-dom'
 import { Provider } from 'react-redux'
 import { COLOR_PAGE } from './constants/style'
 import { configureStore } from './state/configureStore'
-import GleetchyEngine from './containers/GleetchyEngine'
-import GleetchyUI from './containers/GleetchyUI'
+import AudioEngine from './containers/AudioEngine'
+import UI from './containers/UI'
 import offlineInstall from './util/offlineInstall'
 
 offlineInstall('gleetchy-sw.js', '')
@@ -16,8 +16,8 @@ const store = configureStore()
 
 const App = () => (
   <div>
-    <GleetchyEngine />
-    <GleetchyUI />
+    <AudioEngine />
+    <UI />
     <style jsx global>{`
       html {
         box-sizing: border-box;

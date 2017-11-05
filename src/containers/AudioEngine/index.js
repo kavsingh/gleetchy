@@ -26,9 +26,9 @@ import { AUDIO_FILE_DECODE_COMPLETE } from '../../state/audioFiles/actionTypes'
 import { instrumentsSelector } from '../../state/instruments/selectors'
 import { fxSelector } from '../../state/fx/selectors'
 import { connectionsSelector } from '../../state/connections/selectors'
-import { engineEventsSelector } from '../../state/engine/selectors'
 import { isPlayingSelector } from '../../state/globalPlayback/selectors'
-import { clearEngineEventsAction } from '../../state/engine/actions'
+import { audioEngineEventsSelector } from '../../state/audioEngine/selectors'
+import { clearAudioEngineEventsAction } from '../../state/audioEngine/actions'
 import createLoopNode from '../../instruments/loop/audioNode'
 import createDelayNode from '../../fx/delay/audioNode'
 import createReverbNode from '../../fx/reverb/audioNode'
@@ -44,10 +44,10 @@ const getNodeCreator = pipe(
   ]),
 )
 
-class GleetchyEngine extends Component {
+class Audio extends Component {
   constructor(...args) {
     super(...args)
-    this.processAudioEvent = this.processAudioEvent.bind(this)
+    this.processAudioEngineEvent = this.processAudioEngineEvent.bind(this)
   }
 
   componentWillMount() {
@@ -58,18 +58,18 @@ class GleetchyEngine extends Component {
 
   shouldComponentUpdate(props) {
     return (
-      props.engineEvents.length &&
-      this.props.engineEvents !== props.engineEvents
+      props.audioEngineEvents.length &&
+      this.props.audioEngineEvents !== props.audioEngineEvents
     )
   }
 
   componentDidUpdate() {
-    this.props.engineEvents.forEach(this.processAudioEvent)
-    this.props.clearEngineEvents()
+    this.props.audioEngineEvents.forEach(this.processAudioEngineEvent)
+    this.props.clearAudioEngineEvents()
   }
 
   componentWillUnmount() {
-    this.props.clearEngineEvents()
+    this.props.clearAudioEngineEvents()
     this.audioContext.close()
   }
 
@@ -138,7 +138,7 @@ class GleetchyEngine extends Component {
   }
 
   /* eslint-disable complexity */
-  processAudioEvent({ type, payload = {} }) {
+  processAudioEngineEvent({ type, payload = {} }) {
     switch (type) {
       case GLOBAL_PLAYBACK_START:
         this.forEachInstrument(node => node.play())
@@ -178,30 +178,30 @@ class GleetchyEngine extends Component {
   /* eslint-enable class-methods-use-this */
 }
 
-GleetchyEngine.propTypes = {
+Audio.propTypes = {
   isPlaying: PropTypes.bool,
-  engineEvents: PropTypes.arrayOf(PropTypes.shape({})),
+  audioEngineEvents: PropTypes.arrayOf(PropTypes.shape({})),
   nodes: PropTypes.arrayOf(PropTypes.shape({})),
   connections: PropTypes.arrayOf(PropTypes.connection),
-  clearEngineEvents: PropTypes.func,
+  clearAudioEngineEvents: PropTypes.func,
 }
 
-GleetchyEngine.defaultProps = {
+Audio.defaultProps = {
   isPlaying: false,
-  engineEvents: [],
+  audioEngineEvents: [],
   nodes: [],
   connections: [],
-  clearEngineEvents: noop,
+  clearAudioEngineEvents: noop,
 }
 
 export default connect(
   state => ({
     isPlaying: isPlayingSelector(state),
-    engineEvents: engineEventsSelector(state),
+    audioEngineEvents: audioEngineEventsSelector(state),
     nodes: [...instrumentsSelector(state), ...fxSelector(state)],
     connections: connectionsSelector(state),
   }),
   dispatch => ({
-    clearEngineEvents: () => dispatch(clearEngineEventsAction()),
+    clearAudioEngineEvents: () => dispatch(clearAudioEngineEventsAction()),
   }),
-)(GleetchyEngine)
+)(Audio)

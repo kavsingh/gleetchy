@@ -1,4 +1,4 @@
-import { ENGINE_CLEAR_EVENTS } from './actionTypes'
+import { AUDIO_ENGINE_CLEAR_EVENTS } from './actionTypes'
 import {
   INSTRUMENT_ADD,
   INSTRUMENT_REMOVE,
@@ -15,7 +15,10 @@ import { AUDIO_FILE_DECODE_COMPLETE } from '../audioFiles/actionTypes'
 const defaultState = { events: [] }
 
 /* eslint-disable complexity */
-const engineReducer = (state = defaultState, { type, payload = {} } = {}) => {
+const audioEngineReducer = (
+  state = defaultState,
+  { type, payload = {} } = {},
+) => {
   switch (type) {
     case INSTRUMENT_ADD:
     case INSTRUMENT_REMOVE:
@@ -29,11 +32,11 @@ const engineReducer = (state = defaultState, { type, payload = {} } = {}) => {
     case GLOBAL_PLAYBACK_STOP:
     case AUDIO_FILE_DECODE_COMPLETE:
       return { ...state, events: state.events.concat({ type, payload }) }
-    case ENGINE_CLEAR_EVENTS:
+    case AUDIO_ENGINE_CLEAR_EVENTS:
       return state.events.length ? { ...state, events: [] } : state
     default:
       return state
   }
 }
 
-export default engineReducer
+export default audioEngineReducer
