@@ -137,13 +137,13 @@ class Loop extends Component {
                     playbackRate={playbackRate}
                     onGainChange={onGainChange}
                     onPlaybackRateChange={onPlaybackRateChange}
-                  />,
+                  />
                   <Eq3
                     lowGain={lowGain}
                     midGain={midGain}
                     highGain={highGain}
                     onChange={onEqChange}
-                  />,
+                  />
                 </div>
               </div>
             </div>
