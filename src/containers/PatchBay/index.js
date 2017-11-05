@@ -7,7 +7,7 @@ import { instrumentsSelector } from '../../state/instruments/selectors'
 import { fxSelector } from '../../state/fx/selectors'
 import { connectionsSelector } from '../../state/connections/selectors'
 import { toggleConnectionAction } from '../../state/connections/actions'
-import PatchBay from '../../components/PatchBay'
+import PatchBay from './PatchBay'
 
 const patchNodeProps = pick(['label', 'color', 'id'])
 

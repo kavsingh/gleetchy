@@ -1,14 +1,16 @@
 import { curry, pick } from 'ramda'
-import { INS_LOOP } from '../constants/nodeTypes'
-import nodeProps from '../constants/nodeProps'
-import { createEq3Node, pickProps as pickEq3Props } from './eq3Node'
-import { createConnect, createDisconnect } from './connection'
+import { INS_LOOP } from '../../constants/nodeTypes'
+import nodeProps from '../../constants/nodeProps'
+import createEq3Node, {
+  pickProps as pickEq3Props,
+} from '../../fx/eq3/audioNode'
+import { createConnect, createDisconnect } from '../../util/connection'
 
 const defaultProps = { ...nodeProps[INS_LOOP] }
 
 export const pickProps = pick(Object.keys(defaultProps))
 
-export const createLoopNode = curry((audioContext, initProps) => {
+const createLoopNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }
   const eq3Node = createEq3Node(audioContext, pickEq3Props(initProps))
   const gainNode = audioContext.createGain()
@@ -98,3 +100,5 @@ export const createLoopNode = curry((audioContext, initProps) => {
     disconnect: createDisconnect(getOutNode),
   }
 })
+
+export default createLoopNode

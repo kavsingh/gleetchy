@@ -1,6 +1,6 @@
 import { always, curry, pick } from 'ramda'
-import { FX_EQ } from '../constants/nodeTypes'
-import { createConnect, createDisconnect } from './connection'
+import { FX_EQ } from '../../constants/nodeTypes'
+import { createConnect, createDisconnect } from '../../util/connection'
 
 const defaultProps = {
   eqMid: 0,
@@ -10,7 +10,7 @@ const defaultProps = {
 
 export const pickProps = pick(Object.keys(defaultProps))
 
-export const createEq3Node = curry((audioContext, initProps) => {
+const createEq3Node = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }
   const eqLowNode = audioContext.createBiquadFilter()
   const eqMidNode = audioContext.createBiquadFilter()
@@ -53,3 +53,5 @@ export const createEq3Node = curry((audioContext, initProps) => {
     disconnect: createDisconnect(getOutNode),
   }
 })
+
+export default createEq3Node

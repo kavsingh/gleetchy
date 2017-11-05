@@ -29,9 +29,9 @@ import { connectionsSelector } from '../../state/connections/selectors'
 import { engineEventsSelector } from '../../state/engine/selectors'
 import { isPlayingSelector } from '../../state/globalPlayback/selectors'
 import { clearEngineEventsAction } from '../../state/engine/actions'
-import { createLoopNode } from '../../audioNodes/loopNode'
-import { createDelayNode } from '../../audioNodes/delayNode'
-import { createReverbNode } from '../../audioNodes/reverbNode'
+import createLoopNode from '../../instruments/loop/audioNode'
+import createDelayNode from '../../fx/delay/audioNode'
+import createReverbNode from '../../fx/reverb/audioNode'
 
 const setNodeProps = tryCatch(({ node, props }) => node.set(props), warn)
 

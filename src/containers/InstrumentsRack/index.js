@@ -22,11 +22,9 @@ import {
 } from '../../state/instruments/actions'
 import ErrorBoundary from '../../components/ErrorBoundary'
 import AnimIn from '../../components/AnimIn'
-import Loop from '../../components/Loop'
-import LoopEqControls from '../../components/Loop/LoopEqControls'
-import LoopPlaybackControls from '../../components/Loop/LoopPlaybackControls'
+import Loop from '../../instruments/loop/UI'
 
-const Instruments = ({
+const InstrumentsRack = ({
   instruments,
   activeInstruments,
   loopSelectFile,
@@ -54,29 +52,15 @@ const Instruments = ({
                     remove={() => removeInstrument(id)}
                     onLabelChange={val => updateInstrumentLabel(id, val)}
                     connections={getConnections(id)}
+                    onGainChange={val => updateInstrument(id, { gain: val })}
+                    onPlaybackRateChange={val =>
+                      updateInstrument(id, { playbackRate: val })}
                     onLoopRegionChange={(start, end) =>
                       updateInstrument(id, {
                         loopStart: start,
                         loopEnd: end,
                       })}
-                    renderControls={() => [
-                      <LoopPlaybackControls
-                        key="playback"
-                        gain={props.gain}
-                        playbackRate={props.playbackRate}
-                        onGainChange={val =>
-                          updateInstrument(id, { gain: val })}
-                        onPlaybackRateChange={val =>
-                          updateInstrument(id, { playbackRate: val })}
-                      />,
-                      <LoopEqControls
-                        key="eq"
-                        eqLow={props.eqLow}
-                        eqMid={props.eqMid}
-                        eqHigh={props.eqHigh}
-                        onEqChange={eqProps => updateInstrument(id, eqProps)}
-                      />,
-                    ]}
+                    onEqChange={eqProps => updateInstrument(id, eqProps)}
                   />
                 </AnimIn>
               </div>
@@ -121,7 +105,7 @@ const Instruments = ({
   </div>
 )
 
-Instruments.propTypes = {
+InstrumentsRack.propTypes = {
   instruments: PropTypes.arrayOf(PropTypes.shape({})),
   activeInstruments: PropTypes.arrayOf(PropTypes.string),
   getConnections: PropTypes.func,
@@ -133,7 +117,7 @@ Instruments.propTypes = {
   removeInstrument: PropTypes.func,
 }
 
-Instruments.defaultProps = {
+InstrumentsRack.defaultProps = {
   instruments: [],
   activeInstruments: [],
   getConnections: stubArray,
@@ -161,4 +145,4 @@ export default connect(
     addLoop: () => dispatch(addLoopAction()),
     removeInstrument: id => dispatch(removeInstrumentAction(id)),
   }),
-)(Instruments)
+)(InstrumentsRack)

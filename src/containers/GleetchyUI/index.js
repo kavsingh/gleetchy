@@ -9,8 +9,8 @@ import { toggleGlobalPaybackAction } from '../../state/globalPlayback/actions'
 import { isPlayingSelector } from '../../state/globalPlayback/selectors'
 import favicon from '../../assets/icons/48x48.png'
 import PlayPauseButton from '../../components/PlayPauseButton'
-import Instruments from '../Instruments'
-import FX from '../FX'
+import InstrumentsRack from '../InstrumentsRack'
+import FxRack from '../FxRack'
 import PatchBay from '../PatchBay'
 
 const GleetchyUI = ({ isPlaying, togglePlayback }) => (
@@ -29,12 +29,12 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
         </a>
       </div>
     </div>
-    <div className="gleetchy__instrumentsContainer">
-      <Instruments />
+    <div className="gleetchy__instrumentsRackContainer">
+      <InstrumentsRack />
     </div>
     <div className="gleetchy__connectContainer">
-      <div className="gleetchy__fxContainer">
-        <FX />
+      <div className="gleetchy__fxRackContainer">
+        <FxRack />
       </div>
       <div className="gleetchy__patchBayContainer">
         <PatchBay />
@@ -49,7 +49,7 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
       }
 
       .gleetchy__mastheadContainer,
-      .gleetchy__instrumentsContainer {
+      .gleetchy__instrumentsRackContainer {
         padding: 1em 0;
         border-bottom: 1px solid ${COLOR_KEYLINE};
       }
@@ -60,7 +60,7 @@ const GleetchyUI = ({ isPlaying, togglePlayback }) => (
         padding: 2em 0;
       }
 
-      .gleetchy__fxContainer {
+      .gleetchy__fxRackContainer {
         flex-grow: 1;
         flex-shrink: 1;
       }

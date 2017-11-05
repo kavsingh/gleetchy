@@ -1,46 +1,54 @@
 import { curry, pick } from 'ramda'
-import { DELAY_UPPER_BOUND } from '../constants/audio'
-import { FX_DELAY } from '../constants/nodeTypes'
-import nodeProps from '../constants/nodeProps'
-import { createConnect, createDisconnect } from './connection'
+import { FX_REVERB } from '../../constants/nodeTypes'
+import nodeProps from '../../constants/nodeProps'
+import { decodeAudioData } from '../../apis/audio'
+import reverbImpulse from '../../assets/media/impulse_reverb.wav'
+import { createConnect, createDisconnect } from '../../util/connection'
 
 const updateWetDry = (wetDryRatio, wetGainNode, dryGainNode) => {
   Object.assign(wetGainNode.gain, { value: wetDryRatio })
   Object.assign(dryGainNode.gain, { value: 1 - wetDryRatio })
 }
 
-const defaultProps = { ...nodeProps[FX_DELAY] }
+const loadImpulse = async (audioContext, url) => {
+  const response = await fetch(url)
+  const arrayBuffer = await response.arrayBuffer()
+
+  return decodeAudioData(arrayBuffer, audioContext)
+}
+
+const defaultProps = { ...nodeProps[FX_REVERB] }
 
 export const pickProps = pick(Object.keys(defaultProps))
 
-export const createDelayNode = curry((audioContext, initProps) => {
+const createReverbNode = curry((audioContext, initProps) => {
   const props = { ...defaultProps, ...pickProps(initProps || {}) }
-  const delayNode = audioContext.createDelay(DELAY_UPPER_BOUND)
+  const reverbNode = audioContext.createConvolver()
   const inNode = audioContext.createGain()
   const outNode = audioContext.createGain()
   const wetGainNode = audioContext.createGain()
   const dryGainNode = audioContext.createGain()
 
   inNode.connect(dryGainNode)
-  inNode.connect(delayNode)
-  delayNode.connect(wetGainNode)
+  inNode.connect(reverbNode)
+  reverbNode.connect(wetGainNode)
   wetGainNode.connect(outNode)
   dryGainNode.connect(outNode)
 
   updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
 
-  delayNode.delayTime.value = props.delayTime
-
   const getInNode = () => inNode
   const getOutNode = () => outNode
 
+  loadImpulse(audioContext, reverbImpulse).then(buffer => {
+    reverbNode.buffer = buffer
+  })
+
   return {
-    type: FX_DELAY,
+    type: FX_REVERB,
 
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
-
-      delayNode.delayTime.value = props.delayTime
       updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
     },
 
@@ -50,3 +58,5 @@ export const createDelayNode = curry((audioContext, initProps) => {
     disconnect: createDisconnect(getOutNode),
   }
 })
+
+export default createReverbNode

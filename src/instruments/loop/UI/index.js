@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import { clamp, always } from 'ramda'
-import PropTypes from '../../PropTypes'
-import { noop } from '../../util/function'
-import TitleBar from '../TitleBar'
-import FileDropRegion from '../FileDropRegion'
-import LoopSample from './LoopSample'
+import PropTypes from '../../../PropTypes'
+import { noop } from '../../../util/function'
+import Eq3 from '../../../fx/eq3/UI'
+import TitleBar from '../../../components/TitleBar'
+import FileDropRegion from '../../../components/FileDropRegion'
+import Sample from '../../../components/Sample'
+import PlaybackControls from './PlaybackControls'
 
 const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
   <span className="loop__titleSpan">
@@ -86,6 +88,14 @@ class Loop extends Component {
       selectAudioFile,
       receiveAudioFile,
       onLabelChange,
+      eqHigh,
+      eqMid,
+      eqLow,
+      playbackRate,
+      gain,
+      onGainChange,
+      onPlaybackRateChange,
+      onEqChange,
       remove,
       connections,
       isActive,
@@ -111,7 +121,7 @@ class Loop extends Component {
                 </TitleBar>
               </div>
               <div className="loop__main">
-                <LoopSample
+                <Sample
                   fromSaved={!!(fileName && !audioBuffer)}
                   audioBuffer={audioBuffer}
                   loopStart={loopStart}
@@ -122,7 +132,18 @@ class Loop extends Component {
                   selectAudioFile={selectAudioFile}
                 />
                 <div className="loop__controlsContainer">
-                  {this.props.renderControls()}
+                  <PlaybackControls
+                    gain={gain}
+                    playbackRate={playbackRate}
+                    onGainChange={onGainChange}
+                    onPlaybackRateChange={onPlaybackRateChange}
+                  />,
+                  <Eq3
+                    eqLow={eqLow}
+                    eqMid={eqMid}
+                    eqHigh={eqHigh}
+                    onChange={onEqChange}
+                  />,
                 </div>
               </div>
             </div>
@@ -182,6 +203,14 @@ Loop.propTypes = {
   fileName: PropTypes.string,
   connections: PropTypes.arrayOf(PropTypes.connection),
   isActive: PropTypes.bool,
+  eqHigh: PropTypes.number,
+  eqMid: PropTypes.number,
+  eqLow: PropTypes.number,
+  playbackRate: PropTypes.number,
+  gain: PropTypes.number,
+  onGainChange: PropTypes.func,
+  onPlaybackRateChange: PropTypes.func,
+  onEqChange: PropTypes.func,
   selectAudioFile: PropTypes.func,
   receiveAudioFile: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
@@ -194,10 +223,18 @@ Loop.defaultProps = {
   loopStart: 0,
   loopEnd: 1,
   label: '',
+  audioBuffer: undefined,
   fileName: '',
   connections: [],
   isActive: true,
-  audioBuffer: undefined,
+  eqHigh: 0,
+  eqMid: 0,
+  eqLow: 0,
+  playbackRate: 1,
+  gain: 0.5,
+  onGainChange: noop,
+  onPlaybackRateChange: noop,
+  onEqChange: noop,
   selectAudioFile: noop,
   receiveAudioFile: noop,
   onLoopRegionChange: noop,

@@ -1,41 +1,28 @@
 import React from 'react'
 import PropTypes from '../../PropTypes'
-import { DELAY_UPPER_BOUND } from '../../constants/audio'
 import { noop } from '../../util/function'
-import Knob from '../Knob'
-import TitleBar from '../TitleBar'
+import Knob from '../../components/Knob'
+import TitleBar from '../../components/TitleBar'
 
-const Delay = ({
+const Reverb = ({
   label,
   wetDryRatio,
-  delayTime,
   onWetDryRatioChange,
-  onDelayTimeChange,
   isActive,
   onLabelChange,
   remove,
   connections,
 }) => (
-  <div className={`delay${!isActive ? ' delay_inactive' : ''}`}>
+  <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
     <TitleBar
-      type="Delay"
+      type="Reverb"
       label={label}
       connections={connections}
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
-    <div className="delay__controls">
-      <div className="delay__knobContainer">
-        <Knob
-          radius="2.4em"
-          value={delayTime / DELAY_UPPER_BOUND}
-          onChange={val => onDelayTimeChange(val * DELAY_UPPER_BOUND)}
-          renderLabel={() => 'T'}
-          renderTitle={() => 'Delay time'}
-          renderValue={() => delayTime.toFixed(2)}
-        />
-      </div>
-      <div className="delay__knobContainer">
+    <div className="reverb__controls">
+      <div className="reverb__knobContainer">
         <Knob
           radius="2.4em"
           value={wetDryRatio}
@@ -47,50 +34,46 @@ const Delay = ({
       </div>
     </div>
     <style jsx>{`
-      .delay {
+      .reverb {
         width: 100%;
         opacity: 1;
         transition: opacity 0.2s ease-out;
       }
 
-      .delay_inactive {
+      .reverb_inactive {
         opacity: 0.4;
       }
 
-      .delay__controls {
+      .reverb__controls {
         width: 100%;
         display: flex;
       }
 
-      .delay__knobContainer {
+      .reverb__knobContainer {
         flex: 0 0 3em;
       }
     `}</style>
   </div>
 )
 
-Delay.propTypes = {
+Reverb.propTypes = {
   label: PropTypes.string,
-  connections: PropTypes.arrayOf(PropTypes.connection),
   wetDryRatio: PropTypes.number,
-  delayTime: PropTypes.number,
   isActive: PropTypes.bool,
-  onDelayTimeChange: PropTypes.func,
+  connections: PropTypes.arrayOf(PropTypes.connection),
   onWetDryRatioChange: PropTypes.func,
   onLabelChange: PropTypes.func,
   remove: PropTypes.func,
 }
 
-Delay.defaultProps = {
-  label: 'Delay',
-  connections: [],
+Reverb.defaultProps = {
+  label: 'Reverb',
   wetDryRatio: 0.5,
-  delayTime: 1,
   isActive: true,
-  onDelayTimeChange: noop,
+  connections: [],
   onWetDryRatioChange: noop,
   onLabelChange: noop,
   remove: noop,
 }
 
-export default Delay
+export default Reverb

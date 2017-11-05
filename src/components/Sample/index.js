@@ -4,10 +4,10 @@ import color from 'color'
 import PropTypes from '../../PropTypes'
 import { COLOR_PAGE } from '../../constants/style'
 import { noop } from '../../util/function'
-import WaveForm from '../WaveForm'
-import LoopRegion from '../LoopRegion'
+import WaveForm from '../../components/WaveForm'
+import LoopRegion from '../../components/LoopRegion'
 
-const LoopSample = ({
+const Sample = ({
   fromSaved,
   audioBuffer,
   loopStart,
@@ -17,12 +17,12 @@ const LoopSample = ({
   onLoopRegionDrag,
   selectAudioFile,
 }) => (
-  <div className="loop__sample">
-    <div className="loop__waveFormContainer">
+  <div className="sample">
+    <div className="sample__waveFormContainer">
       <WaveForm buffer={audioBuffer} />
     </div>
     {audioBuffer ? (
-      <div className="loop__loopRegionContainer">
+      <div className="sample__loopRegionContainer">
         <LoopRegion
           loopStart={loopStart}
           loopEnd={loopEnd}
@@ -36,7 +36,7 @@ const LoopSample = ({
         role="button"
         tabIndex={0}
         onClick={selectAudioFile}
-        className="loop__initLoadButon"
+        className="sample__initLoadButon"
         onKeyDown={({ key }) => {
           if (key === 'Enter') selectAudioFile()
         }}
@@ -54,14 +54,14 @@ const LoopSample = ({
       </div>
     )}
     <style jsx>{`
-      .loop__sample {
+      .sample {
         position: relative;
         width: 100%;
         height: 100%;
       }
 
-      .loop__waveFormContainer,
-      .loop__loopRegionContainer {
+      .sample__waveFormContainer,
+      .sample__loopRegionContainer {
         position: absolute;
         top: 0;
         left: 0;
@@ -69,15 +69,15 @@ const LoopSample = ({
         height: 100%;
       }
 
-      .loop__waveFormContainer {
+      .sample__waveFormContainer {
         z-index: 1;
       }
 
-      .loop__loopRegionContainer {
+      .sample__loopRegionContainer {
         z-index: 2;
       }
 
-      .loop__initLoadButon {
+      .sample__initLoadButon {
         width: 100%;
         height: 100%;
         position: absolute;
@@ -95,7 +95,7 @@ const LoopSample = ({
         padding: 3em;
       }
 
-      .loop__initLoadButon span {
+      .sample__initLoadButon span {
         display: block;
         text-align: center;
       }
@@ -103,7 +103,7 @@ const LoopSample = ({
   </div>
 )
 
-LoopSample.propTypes = {
+Sample.propTypes = {
   fromSaved: PropTypes.bool,
   // eslint-disable-next-line react/no-typos
   audioBuffer: PropTypes.audioBuffer,
@@ -115,7 +115,7 @@ LoopSample.propTypes = {
   selectAudioFile: PropTypes.func,
 }
 
-LoopSample.defaultProps = {
+Sample.defaultProps = {
   fromSaved: false,
   audioBuffer: undefined,
   loopStart: 0,
@@ -131,4 +131,4 @@ export default onlyUpdateForKeys([
   'audioBuffer',
   'loopStart',
   'loopEnd',
-])(LoopSample)
+])(Sample)

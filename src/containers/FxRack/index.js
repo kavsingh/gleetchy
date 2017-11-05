@@ -15,8 +15,8 @@ import {
   removeFxAction,
 } from '../../state/fx/actions'
 import AnimIn from '../../components/AnimIn'
-import Delay from '../../components/Delay'
-import Reverb from '../../components/Reverb'
+import Delay from '../../fx/Delay/UI'
+import Reverb from '../../fx/Reverb/UI'
 
 const FX = ({
   fx,
