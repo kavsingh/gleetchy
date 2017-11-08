@@ -35,12 +35,14 @@ const InstrumentsRack = ({
                     connections={getConnections(id)}
                     onGainChange={val => updateInstrument(id, { gain: val })}
                     onPlaybackRateChange={val =>
-                      updateInstrument(id, { playbackRate: val })}
+                      updateInstrument(id, { playbackRate: val })
+                    }
                     onLoopRegionChange={(start, end) =>
                       updateInstrument(id, {
                         loopStart: start,
                         loopEnd: end,
-                      })}
+                      })
+                    }
                     onEqChange={eqProps => updateInstrument(id, eqProps)}
                   />
                 </AnimIn>

@@ -32,9 +32,11 @@ const AudioEffectsRack = ({
                   wetDryRatio={props.wetDryRatio}
                   delayTime={props.delayTime}
                   onDelayTimeChange={delayTime =>
-                    updateAudioEffect(id, { delayTime })}
+                    updateAudioEffect(id, { delayTime })
+                  }
                   onWetDryRatioChange={wetDryRatio =>
-                    updateAudioEffect(id, { wetDryRatio })}
+                    updateAudioEffect(id, { wetDryRatio })
+                  }
                   onLabelChange={val => updateAudioEffectLabel(id, val)}
                   remove={() => removeAudioEffect(id)}
                 />
@@ -51,7 +53,8 @@ const AudioEffectsRack = ({
                   isActive={activeAudioEffects.includes(id)}
                   wetDryRatio={props.wetDryRatio}
                   onWetDryRatioChange={wetDryRatio =>
-                    updateAudioEffect(id, { wetDryRatio })}
+                    updateAudioEffect(id, { wetDryRatio })
+                  }
                   onLabelChange={val => updateAudioEffectLabel(id, val)}
                   remove={() => removeAudioEffect(id)}
                 />
