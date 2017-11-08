@@ -12,10 +12,9 @@ const presetEnv = [
 module.exports = {
   presets: [presetEnv, 'react'],
   plugins: [
-    // ['lodash', { id: ['ramda'] }],
     'styled-jsx/babel',
     'transform-object-rest-spread',
     'webpack-alias',
-    env === 'test' && 'transform-es2015-modules-commonjs',
+    // env !== 'test' && ['lodash', { id: ['ramda'] }],
   ].filter(Boolean),
 }

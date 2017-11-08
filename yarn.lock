@@ -834,7 +834,7 @@ babel-plugin-transform-es2015-modules-amd@7.0.0-beta.3:
     babel-helper-module-transforms "7.0.0-beta.3"
     babel-template "7.0.0-beta.3"
 
-babel-plugin-transform-es2015-modules-commonjs@7.0.0-beta.3, babel-plugin-transform-es2015-modules-commonjs@^7.0.0-beta.3:
+babel-plugin-transform-es2015-modules-commonjs@7.0.0-beta.3:
   version "7.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-es2015-modules-commonjs/-/babel-plugin-transform-es2015-modules-commonjs-7.0.0-beta.3.tgz#d53ae18f16e0b6a50ab65cdafbe3fa51a22f39b5"
   dependencies:
@@ -931,7 +931,7 @@ babel-plugin-transform-new-target@7.0.0-beta.3:
   version "7.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-new-target/-/babel-plugin-transform-new-target-7.0.0-beta.3.tgz#de2855f8422a9d07a85cc8d65a0bfc7f9c9c37b3"
 
-babel-plugin-transform-object-rest-spread@7.0.0-beta.3, babel-plugin-transform-object-rest-spread@^7.0.0-beta.3:
+babel-plugin-transform-object-rest-spread@7.0.0-beta.3:
   version "7.0.0-beta.3"
   resolved "https://registry.yarnpkg.com/babel-plugin-transform-object-rest-spread/-/babel-plugin-transform-object-rest-spread-7.0.0-beta.3.tgz#5c409f3cd70819dbb3382d2056971c5ebe01393a"
   dependencies:
