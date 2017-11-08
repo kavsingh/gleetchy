@@ -18,12 +18,7 @@ export const getAudioContext = () => {
   return audioContext
 }
 
-const decodeAudioDataP = (context, buffer) =>
-  new Promise((resolve, reject) =>
-    context.decodeAudioData(buffer, resolve, reject),
-  )
-
 export const decodeAudioData = (buffer, context) =>
-  Promise.resolve()
-    .then(() => context || getAudioContext())
-    .then(ctx => decodeAudioDataP(ctx, buffer))
+  new Promise((resolve, reject) =>
+    (context || getAudioContext()).decodeAudioData(buffer, resolve, reject),
+  )
