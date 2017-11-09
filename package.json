@@ -17,8 +17,10 @@
     "lint": "eslint .",
     "test": "NODE_ENV=test jest --coverage --verbose",
     "test:watch": "NODE_ENV=test jest --watch",
-    "component": "node ./scripts/bin/component.js",
-    "state": "node ./scripts/bin/state.js"
+    "generate:instrument": "node ./scripts/bin/generateNode.js instrument",
+    "generate:audioEffect": "node ./scripts/bin/generateNode.js audioEffect",
+    "generate:component": "node ./scripts/bin/generateComponent.js",
+    "generate:state": "node ./scripts/bin/generateState.js"
   },
   "devDependencies": {
     "babel-core": "^7.0.0-beta.3",

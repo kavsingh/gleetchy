@@ -1,11 +1,11 @@
-const { lowerFirst, jsContent } = require('../util')
+const { upperFirst, lowerFirst, jsContent } = require('../util')
 
 module.exports = componentName =>
   jsContent(`
     import React from 'react'
     import PropTypes from 'prop-types'
 
-    const ${componentName} = ({ style }) => (
+    const ${upperFirst(componentName)} = ({ style }) => (
       <div className="${lowerFirst(componentName)}" style={style}>
         ${componentName}
         <style jsx>{\`
@@ -20,13 +20,13 @@ module.exports = componentName =>
       </div>
     )
 
-    ${componentName}.propTypes = {
+    ${upperFirst(componentName)}.propTypes = {
       style: PropTypes.shape({}),
     }
 
-    ${componentName}.defaultProps = {
+    ${upperFirst(componentName)}.defaultProps = {
       style: {},
     }
 
-    export default ${componentName}
+    export default ${upperFirst(componentName)}
   `)
