@@ -1,20 +1,20 @@
-const { last, pipe, map, join, toUpper } = require('ramda')
+const { curry, last, pipe, map, join, toUpper, identity } = require('ramda')
 const { stripIndent } = require('common-tags/lib')
 
 const isUpper = c => c === c.toUpperCase()
 
-const splitCamel = str =>
-  str
-    .split('')
+const splitOnPredicate = curry((pred, str) =>
+  (Array.isArray(str) ? str : str.split(''))
     .reduce((acc, c) => {
-      if (isUpper(c) || !last(acc)) acc.push([c])
+      if (pred(c) || !last(acc)) acc.push([c])
       else last(acc).push(c)
 
       return acc
     }, [])
-    .map(a => a.join(''))
+    .map(Array.isArray(str) ? identity : join('')),
+)
 
-const toConstantName = pipe(splitCamel, map(toUpper), join('_'))
+const toConstantName = pipe(splitOnPredicate(isUpper), map(toUpper), join('_'))
 
 const upperFirst = s => `${s[0].toUpperCase()}${s.slice(1)}`
 
@@ -25,7 +25,8 @@ const jsContent = str => [stripIndent`${str}`, '\n'].join('')
 module.exports = {
   upperFirst,
   lowerFirst,
-  splitCamel,
+  isUpper,
+  splitOnPredicate,
   toConstantName,
   jsContent,
 }
