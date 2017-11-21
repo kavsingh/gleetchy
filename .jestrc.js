@@ -1,5 +1,6 @@
 module.exports = {
   testRegex: '\\.test\\.js$',
+  setupFiles: ['<rootDir>/jestSetup.js'],
   coverageDirectory: '<rootDir>/coverage/',
   collectCoverageFrom: ['src/**/*.js'],
   coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],

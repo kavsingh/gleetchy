@@ -1,11 +1,15 @@
 // Consume from es6 imports in src
-require('babel-register')({ plugins: ['transform-es2015-modules-commonjs'] })
+require('@babel/register')({
+  plugins: ['@babel/plugin-transform-modules-commonjs'],
+})
 
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const BabelMinifyPlugin = require('babel-minify-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+const VisualizerPlugin = require('webpack-visualizer-plugin')
 const PWAManifest = require('webpack-pwa-manifest')
 const { COLOR_PAGE } = require('./src/constants/style')
 
@@ -90,6 +94,9 @@ module.exports = {
           },
         ],
       }),
+    process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
+    process.env.BUNDLE_VISUALIZE === 'true' &&
+      new VisualizerPlugin({ filename: '../stats.html' }),
   ].filter(Boolean),
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
