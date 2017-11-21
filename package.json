@@ -5,7 +5,7 @@
   "author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
   "license": "ISC",
   "repository": {
-    "url": "git@github.com:kavsingh/gleetchy.git",
+    "url": "https://github.com/kavsingh/gleetchy.git",
     "type": "git"
   },
   "main": "index.js",
