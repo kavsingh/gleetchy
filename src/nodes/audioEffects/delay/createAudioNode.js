@@ -1,6 +1,6 @@
-import { curry, pick } from 'ramda'
+import { always, curry, pick } from 'ramda'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
-import { createConnect, createDisconnect } from '~/util/connection'
+import { connectable } from '~/util/connection'
 import nodeType from './nodeType'
 import nodeProps from './nodeProps'
 
@@ -29,10 +29,10 @@ export default curry((audioContext, initProps) => {
 
   delayNode.delayTime.value = props.delayTime
 
-  const getInNode = () => inNode
-  const getOutNode = () => outNode
-
-  return {
+  return connectable({
+    getInNode: always(inNode),
+    getOutNode: always(outNode),
+  })({
     type: nodeType,
 
     set(newProps = {}) {
@@ -41,10 +41,5 @@ export default curry((audioContext, initProps) => {
       delayNode.delayTime.value = props.delayTime
       updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
     },
-
-    getInNode,
-    getOutNode,
-    connect: createConnect(getOutNode),
-    disconnect: createDisconnect(getOutNode),
-  }
+  })
 })

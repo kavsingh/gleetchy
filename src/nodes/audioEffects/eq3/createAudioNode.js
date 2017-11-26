@@ -1,5 +1,5 @@
 import { always, curry, pick } from 'ramda'
-import { createConnect, createDisconnect } from '~/util/connection'
+import { connectable } from '~/util/connection'
 import nodeType from './nodeType'
 import nodeProps from './nodeProps'
 
@@ -10,8 +10,6 @@ export default curry((audioContext, initProps) => {
   const lowNode = audioContext.createBiquadFilter()
   const midNode = audioContext.createBiquadFilter()
   const highNode = audioContext.createBiquadFilter()
-  const getInNode = always(highNode)
-  const getOutNode = always(lowNode)
 
   const transferProps = () => {
     lowNode.gain.value = props.lowGain * 40
@@ -34,17 +32,15 @@ export default curry((audioContext, initProps) => {
 
   transferProps()
 
-  return {
+  return connectable({
+    getInNode: always(highNode),
+    getOutNode: always(lowNode),
+  })({
     type: nodeType,
 
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
       transferProps()
     },
-
-    getInNode,
-    getOutNode,
-    connect: createConnect(getOutNode),
-    disconnect: createDisconnect(getOutNode),
-  }
+  })
 })

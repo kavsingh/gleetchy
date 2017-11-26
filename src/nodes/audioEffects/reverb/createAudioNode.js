@@ -1,6 +1,6 @@
-import { curry, pick } from 'ramda'
+import { always, curry, pick } from 'ramda'
+import { connectable } from '~/util/connection'
 import { decodeAudioData } from '~/apis/audio'
-import { createConnect, createDisconnect } from '~/util/connection'
 import reverbImpulse from '~/assets/media/impulse_reverb.wav'
 import nodeProps from './nodeProps'
 import nodeType from './nodeType'
@@ -35,24 +35,19 @@ export default curry((audioContext, initProps) => {
 
   updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
 
-  const getInNode = () => inNode
-  const getOutNode = () => outNode
-
   loadImpulse(audioContext, reverbImpulse).then(buffer => {
     reverbNode.buffer = buffer
   })
 
-  return {
+  return connectable({
+    getInNode: always(inNode),
+    getOutNode: always(outNode),
+  })({
     type: nodeType,
 
     set(newProps = {}) {
       Object.assign(props, pickProps(newProps))
       updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
     },
-
-    getInNode,
-    getOutNode,
-    connect: createConnect(getOutNode),
-    disconnect: createDisconnect(getOutNode),
-  }
+  })
 })

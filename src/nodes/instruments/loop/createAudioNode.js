@@ -1,5 +1,5 @@
-import { curry, pick } from 'ramda'
-import { createConnect, createDisconnect } from '~/util/connection'
+import { always, curry, pick } from 'ramda'
+import { connectable } from '~/util/connection'
 import createEq3Node, {
   pickProps as pickEq3Props,
 } from '~/nodes/audioEffects/eq3/createAudioNode'
@@ -12,8 +12,7 @@ export default curry((audioContext, initProps) => {
   const props = { ...nodeProps, ...pickProps(initProps || {}) }
   const eq3Node = createEq3Node(audioContext, pickEq3Props(initProps))
   const gainNode = audioContext.createGain()
-  const getInNode = () => gainNode
-  const getOutNode = () => gainNode
+  const getGainNode = always(gainNode)
 
   let isPlaying = false
   let bufferSourceNode = null
@@ -53,7 +52,7 @@ export default curry((audioContext, initProps) => {
     if (isPlaying) bufferSourceNode.start(0, loopStart * audioBuffer.duration)
   }
 
-  return {
+  return connectable({ getInNode: getGainNode, getOutNode: getGainNode })({
     type: nodeType,
 
     play() {
@@ -91,10 +90,5 @@ export default curry((audioContext, initProps) => {
         removeBufferSourceNode()
       }
     },
-
-    getInNode,
-    getOutNode,
-    connect: createConnect(getOutNode),
-    disconnect: createDisconnect(getOutNode),
-  }
+  })
 })
