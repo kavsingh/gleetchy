@@ -25,16 +25,16 @@
     "visualize": "BUNDLE_VISUALIZE=true yarn build && open stats.html"
   },
   "devDependencies": {
-    "@babel/core": "^7.0.0-beta.32",
-    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.32",
-    "@babel/plugin-syntax-object-rest-spread": "^7.0.0-beta.32",
-    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.32",
-    "@babel/polyfill": "^7.0.0-beta.32",
-    "@babel/preset-env": "^7.0.0-beta.32",
-    "@babel/preset-react": "^7.0.0-beta.32",
-    "@babel/register": "^7.0.0-beta.32",
-    "@babel/runtime": "^7.0.0-beta.32",
-    "babel-eslint": "^8.0.2",
+    "@babel/core": "^7.0.0-beta.34",
+    "@babel/plugin-proposal-object-rest-spread": "7.0.0-beta.34",
+    "@babel/plugin-syntax-object-rest-spread": "^7.0.0-beta.34",
+    "@babel/plugin-transform-modules-commonjs": "^7.0.0-beta.34",
+    "@babel/polyfill": "^7.0.0-beta.34",
+    "@babel/preset-env": "^7.0.0-beta.34",
+    "@babel/preset-react": "^7.0.0-beta.34",
+    "@babel/register": "^7.0.0-beta.34",
+    "@babel/runtime": "^7.0.0-beta.34",
+    "babel-eslint": "^8.0.3",
     "babel-jest": "^21.3.0-beta.8",
     "babel-loader": "^8.0.0-beta.0",
     "babel-minify-webpack-plugin": "^0.2.0",
@@ -42,7 +42,7 @@
     "babel-plugin-webpack-alias": "^2.1.2",
     "chalk": "^2.3.0",
     "common-tags": "^1.5.1",
-    "eslint": "^4.12.0",
+    "eslint": "^4.12.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-mongrel-react":
@@ -60,7 +60,7 @@
     "prettier": "^1.8.2",
     "rimraf": "^2.6.2",
     "sw-precache-webpack-plugin": "^0.11.4",
-    "webpack": "^3.8.1",
+    "webpack": "^3.9.1",
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.5",
     "webpack-pwa-manifest": "^3.3.2",
@@ -71,8 +71,8 @@
     "popmotion": "^7.8.2",
     "prop-types": "^15.6.0",
     "ramda": "^0.25.0",
-    "react": "^16.1.1",
-    "react-dom": "^16.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-favicon": "^0.0.11",
     "react-icons": "^2.2.7",
     "react-input-autosize": "^2.1.2",
@@ -82,6 +82,6 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "reselect": "^3.0.1",
-    "styled-jsx": "^2.2.0"
+    "styled-jsx": "^2.2.1"
   }
 }
