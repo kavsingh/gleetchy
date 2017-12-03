@@ -12,10 +12,7 @@ export const hasWindowWith = (propPaths = []) => {
 
   const windowHas = pipe(path(__, win), o => typeof o !== 'undefined')
 
-  return propPaths.reduce(
-    (accum, propPath) => accum && windowHas(propPath),
-    true,
-  )
+  return propPaths.every(windowHas)
 }
 
 export const isSupportedEvent = eventName => {
