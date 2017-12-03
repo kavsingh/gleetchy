@@ -7,6 +7,7 @@ module.exports = {
       {
         modules: env === 'test' ? 'commonjs' : false,
         useBuiltIns: env === 'test' ? false : 'usage',
+        shippedProposals: true,
         loose: true,
       },
     ],
@@ -17,6 +18,14 @@ module.exports = {
     '@babel/plugin-syntax-object-rest-spread',
     '@babel/plugin-proposal-object-rest-spread',
     'webpack-alias',
-    env !== 'test' && ['lodash', { id: ['ramda'] }],
+    env !== 'test' && [
+      'transform-imports',
+      {
+        ramda: {
+          preventFullImport: true,
+          transform: name => `ramda/es/${name}`,
+        },
+      },
+    ],
   ].filter(Boolean),
 }

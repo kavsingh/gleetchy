@@ -51,8 +51,8 @@ module.exports = {
   plugins: [
     new webpack.EnvironmentPlugin(['NODE_ENV']),
     new HtmlWebpackPlugin({
-      themeColor: COLOR_PAGE,
       title: 'Gleetchy',
+      themeColor: COLOR_PAGE,
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),

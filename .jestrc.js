@@ -1,6 +1,7 @@
 module.exports = {
+  transform: { '\\.js$': 'babel-jest' },
   testRegex: '\\.test\\.js$',
-  setupFiles: ['<rootDir>/jestSetup.js'],
+  setupFiles: ['<rootDir>/__testSetup__/babelRegister.js'],
   coverageDirectory: '<rootDir>/coverage/',
   collectCoverageFrom: ['src/**/*.js'],
   coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
