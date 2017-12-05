@@ -11,9 +11,7 @@ const describeSVGArc = (origin, radius, startAngle, endAngle) => {
   const { x: endX, y: endY } = toPoint(sa - 90)
   const arcSweep = endAngle - startAngle <= 180 ? 0 : 1
 
-  return `M ${startX} ${startY} A ${radius} ${radius} 0 ${arcSweep} 0 ${endX} ${
-    endY
-  }`
+  return `M ${startX} ${startY} A ${radius} ${radius} 0 ${arcSweep} 0 ${endX} ${endY}`
 }
 
 const SVGArc = ({ startAngle, endAngle, radius, strokeWidth }) => (
