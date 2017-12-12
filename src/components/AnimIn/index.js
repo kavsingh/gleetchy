@@ -16,7 +16,7 @@ class AnimIn extends PureComponent {
     const { visibility } = this.state
 
     return (
-      <Animated.div className="AnimIn" style={{ opacity: visibility }}>
+      <Animated.div className="animIn" style={{ opacity: visibility }}>
         {this.props.children}
         <style jsx>{`
           .AnimIn {
