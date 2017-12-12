@@ -43,7 +43,7 @@
     "babel-plugin-webpack-alias": "^2.1.2",
     "chalk": "^2.3.0",
     "common-tags": "^1.5.1",
-    "eslint": "^4.12.1",
+    "eslint": "^4.13.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-mongrel-react": "kavsingh/eslint-config-mongrel-react.git#5.0.0",
@@ -57,7 +57,7 @@
     "file-loader": "^1.1.5",
     "html-webpack-plugin": "^2.30.1",
     "jest": "^21.3.0-beta.11",
-    "prettier": "^1.9.1",
+    "prettier": "^1.9.2",
     "rimraf": "^2.6.2",
     "sw-precache-webpack-plugin": "^0.11.4",
     "webpack": "^3.10.0",
@@ -67,8 +67,8 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "dependencies": {
+    "animated": "^0.2.1",
     "color": "^2.0.1",
-    "popmotion": "^7.8.2",
     "prop-types": "^15.6.0",
     "ramda": "^0.25.0",
     "react": "^16.2.0",

@@ -1,39 +1,22 @@
 import React, { PureComponent } from 'react'
-import { tween } from 'popmotion'
+import Animated from 'animated'
 import PropTypes from '~/PropTypes'
 
 class AnimIn extends PureComponent {
   constructor(...args) {
     super(...args)
-    this.state = { visibility: 0 }
+    this.state = { visibility: new Animated.Value(0) }
   }
 
   componentDidMount() {
-    this.visibilityTween = tween({
-      from: this.state.visibility,
-      to: 1,
-      duration: this.props.duration,
-      onUpdate: visibility => this.setState(() => ({ visibility })),
-    })
-
-    this.visibilityTween.start()
-  }
-
-  componentWillUnmount() {
-    if (this.visibilityTween) this.visibilityTween.stop()
+    Animated.spring(this.state.visibility, { toValue: 1 }).start()
   }
 
   render() {
     const { visibility } = this.state
 
     return (
-      <div
-        className="AnimIn"
-        style={{
-          opacity: visibility,
-          pointerEvents: visibility >= 1 ? 'all' : 'none',
-        }}
-      >
+      <Animated.div className="AnimIn" style={{ opacity: visibility }}>
         {this.props.children}
         <style jsx>{`
           .AnimIn {
@@ -41,18 +24,16 @@ class AnimIn extends PureComponent {
             height: 100%;
           }
         `}</style>
-      </div>
+      </Animated.div>
     )
   }
 }
 
 AnimIn.propTypes = {
-  duration: PropTypes.number,
   children: PropTypes.node,
 }
 
 AnimIn.defaultProps = {
-  duration: 600,
   children: [],
 }
 

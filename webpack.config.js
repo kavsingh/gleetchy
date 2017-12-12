@@ -100,7 +100,13 @@ module.exports = {
   ].filter(Boolean),
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
-    alias: { '~': path.resolve(__dirname, 'src') },
+    alias: {
+      '~': path.resolve(__dirname, 'src'),
+      animated: path.resolve(
+        __dirname,
+        'node_modules/animated/lib/targets/react-dom',
+      ),
+    },
     extensions: ['.js'],
   },
 }
