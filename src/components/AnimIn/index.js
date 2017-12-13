@@ -16,7 +16,20 @@ class AnimIn extends PureComponent {
     const { visibility } = this.state
 
     return (
-      <Animated.div className="animIn" style={{ opacity: visibility }}>
+      <Animated.div
+        className="animIn"
+        style={{
+          opacity: visibility,
+          transform: [
+            {
+              scale: visibility.interpolate({
+                inputRange: [0, 1],
+                outputRange: [0.9, 1],
+              }),
+            },
+          ],
+        }}
+      >
         {this.props.children}
         <style jsx>{`
           .AnimIn {
