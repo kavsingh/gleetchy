@@ -55,7 +55,7 @@ class AudioEngine extends Component {
     this.processAudioEngineEvent = this.processAudioEngineEvent.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.audioContext = getAudioContext()
     this.updateAudioNodes()
     this.updateAudioGraph()

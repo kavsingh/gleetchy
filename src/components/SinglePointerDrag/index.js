@@ -45,7 +45,7 @@ class SinglePointerDrag extends Component {
     this.handleDragEnd = this.handleDragEnd.bind(this)
   }
 
-  componentWillMount() {
+  componentDidMount() {
     this.mouseMoveEvents = filterSupportedEvents(['mousemove'])
     this.mouseEndEvents = filterSupportedEvents(['mouseup'])
     this.touchMoveEvents = filterSupportedEvents(['touchmove'])
