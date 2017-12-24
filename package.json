@@ -43,7 +43,7 @@
     "babel-plugin-webpack-alias": "^2.1.2",
     "chalk": "^2.3.0",
     "common-tags": "^1.6.0",
-    "eslint": "^4.13.1",
+    "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-config-mongrel-react": "kavsingh/eslint-config-mongrel-react.git#5.0.0",
