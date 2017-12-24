@@ -1,15 +1,20 @@
 const env = process.env.NODE_ENV
+const isTest = env === 'test'
 
 module.exports = {
   presets: [
     [
       '@babel/preset-env',
-      {
-        modules: env === 'test' ? 'commonjs' : false,
-        useBuiltIns: env === 'test' ? false : 'usage',
+      Object.assign({
+        modules: false,
+        useBuiltIns: 'usage',
         shippedProposals: true,
         loose: true,
-      },
+      }, isTest ? {
+        sourceType: 'module',
+        modules: 'commonjs',
+        useBuiltIns: false,
+      } : {}),
     ],
     '@babel/preset-react',
   ],
