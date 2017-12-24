@@ -1,5 +1,4 @@
 const env = process.env.NODE_ENV
-const isTest = env === 'test'
 
 module.exports = {
   presets: [
@@ -10,7 +9,7 @@ module.exports = {
         useBuiltIns: 'usage',
         shippedProposals: true,
         loose: true,
-      }, isTest ? {
+      }, env === 'test' ? {
         sourceType: 'module',
         modules: 'commonjs',
         useBuiltIns: false,
