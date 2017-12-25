@@ -35,7 +35,7 @@
     "@babel/preset-react": "^7.0.0-beta.35",
     "@babel/register": "^7.0.0-beta.35",
     "@babel/runtime": "^7.0.0-beta.35",
-    "babel-eslint": "^8.0.3",
+    "babel-eslint": "^8.1.1",
     "babel-jest": "^22.0.4",
     "babel-loader": "^8.0.0-beta.0",
     "babel-minify-webpack-plugin": "^0.2.0",
