@@ -21,6 +21,7 @@ module.exports = {
     {
       files: 'src/**/*.test.js',
       env: { jest: true },
+      rules: { max-nested-callbacks: 'off' }
     },
     {
       files: 'scripts/bin/**/*.js',
