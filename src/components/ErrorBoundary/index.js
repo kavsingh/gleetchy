@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+
 import PropTypes from '~/PropTypes'
 import ErrorMessage from '~/components/ErrorMessage'
 
