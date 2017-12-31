@@ -1,10 +1,50 @@
 import React, { Component } from 'react'
 import color from 'color'
+
 import PropTypes from '~/PropTypes'
-import { COLOR_PAGE } from '~/constants/style'
+import { COLOR_PAGE, LAYOUT_ABSOLUTE_FILL } from '~/constants/style'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import SinglePointerDrag from '~/components/SinglePointerDrag'
 import LoopHandle from './LoopHandle'
+
+const classes = cssLabeled('loopRegion', {
+  root: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  },
+
+  handleContainer: {
+    position: 'absolute',
+    height: '100%',
+    top: 0,
+    cursor: 'ew-resize',
+    width: 10,
+    zIndex: 1,
+  },
+
+  regionsContainer: {
+    ...LAYOUT_ABSOLUTE_FILL,
+  },
+
+  activeRegion: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    cursor: 'move',
+  },
+
+  inactiveRegion: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    zIndex: 0,
+    backgroundColor: color(COLOR_PAGE)
+      .alpha(0.8)
+      .string(),
+  },
+})
 
 class LoopRegion extends Component {
   constructor(...args) {
@@ -43,7 +83,7 @@ class LoopRegion extends Component {
 
     return (
       <div
-        className="loopRegion"
+        className={classes.root}
         ref={c => {
           this.rootNode = c
         }}
@@ -53,7 +93,7 @@ class LoopRegion extends Component {
             <div
               {...dragListeners}
               role="presentation"
-              className="loopRegion__handleContainer"
+              className={classes.handleContainer}
               style={{ left: `${loopStart * 100}%` }}
             >
               <LoopHandle align="left" />
@@ -65,16 +105,16 @@ class LoopRegion extends Component {
             <div
               {...dragListeners}
               role="presentation"
-              className="loopRegion__handleContainer"
+              className={classes.handleContainer}
               style={{ left: `${loopEnd * 100}%` }}
             >
               <LoopHandle align="right" />
             </div>
           )}
         </SinglePointerDrag>
-        <div className="loopRegion__regionsContainer">
+        <div className={classes.regionsContainer}>
           <div
-            className="loopRegion__inactiveRegion"
+            className={classes.inactiveRegion}
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           {regionRatio < 1 ? (
@@ -83,7 +123,7 @@ class LoopRegion extends Component {
                 <div
                   {...dragListeners}
                   role="presentation"
-                  className="loopRegion__activeRegion"
+                  className={classes.activeRegion}
                   style={{
                     left: `${loopStart * 100}%`,
                     right: `${(1 - loopEnd) * 100}%`,
@@ -94,52 +134,10 @@ class LoopRegion extends Component {
             </SinglePointerDrag>
           ) : null}
           <div
-            className="loopRegion__inactiveRegion"
+            className={classes.inactiveRegion}
             style={{ left: `${loopEnd * 100}%`, right: 0 }}
           />
         </div>
-        <style jsx>{`
-          .loopRegion {
-            position: relative;
-            width: 100%;
-            height: 100%;
-          }
-
-          .loopRegion__handleContainer {
-            position: absolute;
-            height: 100%;
-            top: 0;
-            cursor: ew-resize;
-            width: 10px;
-            z-index: 1;
-          }
-
-          .loopRegion__regionsContainer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-          }
-
-          .loopRegion__activeRegion,
-          .loopRegion__inactiveRegion {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-          }
-
-          .loopRegion__activeRegion {
-            cursor: move;
-          }
-
-          .loopRegion__inactiveRegion {
-            z-index: 0;
-            background-color: ${color(COLOR_PAGE)
-              .alpha(0.8)
-              .string()};
-          }
-        `}</style>
       </div>
     )
   }

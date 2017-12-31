@@ -1,59 +1,79 @@
 import React from 'react'
+import classnames from 'classnames'
+
 import PropTypes from '~/PropTypes'
 import { COLOR_EMPHASIS } from '~/constants/style'
+import { cssLabeled } from '~/util/style'
+
+const classes = cssLabeled('loopHandle', {
+  root: {
+    position: 'relative',
+    height: '100%',
+    width: '100%',
+    pointerEvents: 'none',
+  },
+
+  alignRight: {
+    transform: 'translateX(-100%)',
+  },
+
+  tag: {
+    position: 'absolute',
+    top: 0,
+    pointerEvents: 'all',
+    height: 1,
+    width: '60%',
+    backgroundColor: COLOR_EMPHASIS,
+  },
+
+  tagAlignLeft: {
+    left: 0,
+  },
+
+  tagAlignRight: {
+    right: 0,
+  },
+
+  bar: {
+    position: 'absolute',
+    top: 0,
+    pointerEvents: 'all',
+    height: '100%',
+    width: '100%',
+  },
+
+  barAlignLeft: {
+    left: '-100%',
+    borderRight: `1px solid ${COLOR_EMPHASIS}`,
+  },
+
+  barAlignRight: {
+    right: '-100%',
+    borderLeft: `1px solid ${COLOR_EMPHASIS}`,
+  },
+})
 
 const LoopHandle = ({ align = 'left' }) => (
-  <div className={`loopHandle loopHandle_${align}`}>
-    <div className="loopHandle__tag" />
-    <div className="loopHandle__bar" />
-    <style jsx>{`
-      .loopHandle {
-        position: relative;
-        height: 100%;
-        width: 100%;
-        pointer-events: none;
-      }
-
-      .loopHandle_right {
-        transform: translateX(-100%);
-      }
-
-      .loopHandle__tag,
-      .loopHandle__bar {
-        position: absolute;
-        top: 0;
-        pointer-events: all;
-      }
-
-      .loopHandle__tag {
-        height: 1px;
-        width: 60%;
-        background-color: ${COLOR_EMPHASIS};
-      }
-
-      .loopHandle__bar {
-        height: 100%;
-        width: 100%;
-      }
-
-      .loopHandle_left .loopHandle__tag {
-        left: 0;
-      }
-
-      .loopHandle_right .loopHandle__tag {
-        right: 0;
-      }
-
-      .loopHandle_left .loopHandle__bar {
-        left: -100%;
-        border-right: 1px solid ${COLOR_EMPHASIS};
-      }
-
-      .loopHandle_right .loopHandle__bar {
-        right: -100%;
-        border-left: 1px solid ${COLOR_EMPHASIS};
-      }
-    `}</style>
+  <div
+    className={classnames({
+      [classes.root]: true,
+      [classes.alignRight]: align === 'right',
+    })}
+  >
+    <div
+      className={classnames({
+        [classes.tag]: true,
+        [classes.tagAlignLeft]: align === 'left',
+        [classes.tagAlignRight]: align === 'right',
+      })}
+    />
+    <div
+      className={classnames({
+        [classes.bar]: true,
+        [classes.barAlignLeft]: align === 'left',
+        [classes.barAlignRight]: align === 'right',
+      })}
+    />
   </div>
 )
 
