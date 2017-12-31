@@ -1,8 +1,28 @@
 import React, { PureComponent } from 'react'
 import AutosizeInput from 'react-input-autosize'
+
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import { cancelEvent } from '~/util/event'
+
+const classes = cssLabeled('textInput', {
+  root: {
+    '& input': {
+      transition: 'border-color 0.2s ease-out',
+      font: 'inherit',
+      color: 'currentColor',
+      border: 'none',
+      borderBottom: '1px solid transparent',
+      cursor: 'initial',
+      backgroundColor: 'transparent',
+
+      '&:focus': {
+        borderBottomColor: 'currentColor',
+      },
+    },
+  },
+})
 
 class TextInput extends PureComponent {
   constructor(...args) {
@@ -19,28 +39,13 @@ class TextInput extends PureComponent {
     const { value, placeholder, type } = this.props
 
     return (
-      <div className="textInput">
+      <div className={classes.root}>
         <AutosizeInput
           value={value}
           placeholder={placeholder}
           onChange={this.handleChange}
           type={type}
         />
-        <style jsx>{`
-          .textInput :global(input) {
-            transition: border-color 0.2s ease-out;
-            font: inherit;
-            color: currentColor;
-            border: none;
-            border-bottom: 1px solid transparent;
-            cursor: initial;
-            background-color: transparent;
-          }
-
-          .textInput :global(input:focus) {
-            border-bottom-color: currentColor;
-          }
-        `}</style>
       </div>
     )
   }
