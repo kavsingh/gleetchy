@@ -20,7 +20,7 @@ describe('Style util', () => {
       })
 
       expect(cssLabeled('readableName', styles)).toEqual({
-        root: 'css-hash-readableName__root',
+        root: 'css-hash-readableName',
         inner: 'css-hash-readableName__inner',
       })
 

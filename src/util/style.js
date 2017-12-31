@@ -1,6 +1,6 @@
 /* global process */
 import { css as emo } from 'emotion'
-import { identity, mapObjIndexed } from 'ramda'
+import { mapObjIndexed } from 'ramda'
 
 let cssLabeledFn = (rootLabel, styles) =>
   mapObjIndexed(decs => emo(decs), styles)
@@ -15,7 +15,10 @@ if (process.env.NODE_ENV !== 'production') {
       throw new Error('Expected a string for root label')
     }
 
-    const label = rootLabel ? key => `${rootLabel}__${key}` : identity
+    const label = key => {
+      if (key === 'root') return rootLabel || key
+      return rootLabel ? `${rootLabel}__${key}` : key
+    }
 
     return mapObjIndexed(
       (decs, key) => emo({ label: label(key), ...decs }),
