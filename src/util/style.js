@@ -7,6 +7,14 @@ let cssLabeledFn = (rootLabel, styles) =>
 
 if (process.env.NODE_ENV !== 'production') {
   cssLabeledFn = (rootLabel, styles) => {
+    if (typeof styles !== 'object') {
+      throw new Error('cssLabeled expects a root label and a style object')
+    }
+
+    if (rootLabel && typeof rootLabel !== 'string') {
+      throw new Error('Expected a string for root label')
+    }
+
     const label = rootLabel ? key => `${rootLabel}__${key}` : identity
 
     return mapObjIndexed(
