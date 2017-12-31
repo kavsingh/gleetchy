@@ -1,23 +1,26 @@
 import React from 'react'
+
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
+
+const classes = cssLabeled('playPauseButton', {
+  root: {
+    cursor: 'pointer',
+  },
+})
 
 const PlayPauseButton = ({ isPlaying, onClick }) => (
   <div
     role="button"
     tabIndex={0}
     onClick={onClick}
-    className="playPauseButton"
+    className={classes.root}
     onKeyDown={({ key }) => {
       if (key === 'Enter') onClick()
     }}
   >
     {isPlaying ? 'Stop' : 'Play'}
-    <style jsx>{`
-      .playPauseButton {
-        cursor: pointer;
-      }
-    `}</style>
   </div>
 )
 
