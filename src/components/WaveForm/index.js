@@ -1,11 +1,26 @@
 import React, { Component } from 'react'
 import { map } from 'ramda'
 import colorFn from 'color'
+
 import PropTypes from '~/PropTypes'
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { hasWindowWith } from '~/util/env'
+import { cssLabeled } from '~/util/style'
 
 const normaliseChannel = map(v => (v + 0.5) * 0.5)
+
+const classes = cssLabeled('waveForm', {
+  root: {
+    width: '100%',
+    height: '100%',
+    overflow: 'hidden',
+  },
+
+  canvas: {
+    width: '100%',
+    height: '100%',
+  },
+})
 
 class WaveForm extends Component {
   constructor(...args) {
@@ -115,24 +130,13 @@ class WaveForm extends Component {
 
   render() {
     return (
-      <div className="waveForm">
+      <div className={classes.root}>
         <canvas
-          className="waveForm__canvas"
+          className={classes.canvas}
           ref={c => {
             this.canvasNode = c
           }}
         />
-        <style jsx>{`
-          .waveForm,
-          .waveForm__canvas {
-            width: 100%;
-            height: 100%;
-          }
-
-          .waveForm {
-            overflow: hidden;
-          }
-        `}</style>
       </div>
     )
   }
