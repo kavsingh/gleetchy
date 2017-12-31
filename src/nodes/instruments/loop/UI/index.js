@@ -51,8 +51,6 @@ const classes = cssLabeled('loop', {
     display: 'flex',
   },
 
-  title: {},
-
   titleLoadAudio: {
     display: 'inline-block',
     cursor: 'pointer',
@@ -61,7 +59,7 @@ const classes = cssLabeled('loop', {
 })
 
 const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
-  <span className={classes.title}>
+  <span>
     {fileName ? `${fileName}` : ''}
     {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
     <span
