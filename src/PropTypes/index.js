@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types'
+import StylePropType from 'react-style-proptype'
+
 import { getWindow } from '~/util/env'
 
 const WINDOW = getWindow()
@@ -14,6 +16,8 @@ export default {
   ...PropTypes,
 
   audioNodeLight,
+
+  style: StylePropType,
 
   className: PropTypes.string,
 
