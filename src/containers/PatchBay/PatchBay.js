@@ -1,9 +1,69 @@
 import React from 'react'
+import classnames from 'classnames'
 import { always, T } from 'ramda'
 import color from 'color'
+
 import PropTypes from '~/PropTypes'
-import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
+import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
+
+const classes = cssLabeled('patchBay', {
+  root: {
+    width: '100%',
+  },
+
+  label: {
+    fontSize: '0.68em',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    fontWeight: 400,
+    maxWidth: '5.4em',
+  },
+
+  row: {
+    'td, th': {
+      textAlign: 'center',
+    },
+
+    'td:first-child, th:first-child': {
+      textAlign: 'left',
+    },
+
+    th: {
+      padding: '0 0 0.6em',
+    },
+
+    td: {
+      padding: '0.6em 0',
+    },
+
+    'td:not(:first-child)': {
+      padding: '0 0.6em',
+    },
+  },
+
+  node: {
+    transition: 'all 0.2s ease-out',
+    width: '0.8em',
+    height: '0.8em',
+    border: `1px solid ${COLOR_KEYLINE}`,
+    margin: '0 auto',
+    cursor: 'pointer',
+    backgroundColor: 'transparent',
+  },
+
+  nodeActive: {
+    backgroundColor: COLOR_EMPHASIS,
+  },
+
+  nodeBlocked: {
+    backgroundColor: COLOR_KEYLINE,
+    cursor: 'default',
+    transform: 'rotate(45deg) scale(0.5)',
+  },
+})
 
 const PatchBay = ({
   fromNodes,
@@ -12,13 +72,13 @@ const PatchBay = ({
   getConnection,
   onNodeClick,
 }) => (
-  <table className="patchBay">
+  <table className={classes.root}>
     <tbody>
-      <tr className="patchBay__row" key="titles">
-        <th className="patchBay__label">To / From</th>
+      <tr className={classes.row} key="titles">
+        <th className={classes.label}>To / From</th>
         {fromNodes.map(fromNode => (
           <th
-            className="patchBay__label"
+            className={classes.label}
             title={`From ${fromNode.label} to ...`}
             key={fromNode.id}
           >
@@ -27,9 +87,9 @@ const PatchBay = ({
         ))}
       </tr>
       {toNodes.map(toNode => (
-        <tr className="patchBay__row" key={toNode.id}>
+        <tr className={classes.row} key={toNode.id}>
           <td
-            className="patchBay__label"
+            className={classes.label}
             title={`From ... to ${toNode.label}`}
             key="rowLabel"
           >
@@ -42,9 +102,9 @@ const PatchBay = ({
               ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
               : `From ${fromNode.label} to ${toNode.label}`
 
-            let modClassName = 'patchBay__node_inactive'
-            if (blockConnect) modClassName = 'patchBay__node_blocked'
-            else if (connection) modClassName = 'patchBay__node_active'
+            let modClassName = ''
+            if (blockConnect) modClassName = classes.nodeBlocked
+            else if (connection) modClassName = classes.nodeActive
 
             const handleClick = blockConnect
               ? noop
@@ -63,7 +123,7 @@ const PatchBay = ({
                         }
                       : {}
                   }
-                  className={`patchBay__node ${modClassName}`}
+                  className={classnames(classes.node, modClassName)}
                   onClick={handleClick}
                   role="button"
                   tabIndex={0}
@@ -78,62 +138,6 @@ const PatchBay = ({
         </tr>
       ))}
     </tbody>
-    <style jsx>{`
-      .patchBay {
-        width: 100%;
-      }
-
-      .patchBay__label {
-        font-size: 0.68em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-weight: 400;
-        max-width: 5.4em;
-      }
-
-      .patchBay__row td,
-      .patchBay__row th {
-        text-align: center;
-      }
-
-      .patchBay__row td:first-child,
-      .patchBay__row th:first-child {
-        text-align: left;
-      }
-
-      .patchBay__row th {
-        padding: 0 0 0.6em;
-      }
-
-      .patchBay__row td {
-        padding: 0.6em 0;
-      }
-
-      .patchBay__row td:not(:first-child) {
-        padding: 0 0.6em;
-      }
-
-      .patchBay__node {
-        transition: all 0.2s ease-out;
-        width: 0.8em;
-        height: 0.8em;
-        border: 1px solid ${COLOR_KEYLINE};
-        margin: 0 auto;
-        cursor: pointer;
-        background-color: transparent;
-      }
-
-      .patchBay__node_active {
-        background-color: ${COLOR_EMPHASIS};
-      }
-
-      .patchBay__node_blocked {
-        background-color: ${COLOR_KEYLINE};
-        cursor: default;
-        transform: rotate(45deg) scale(0.5);
-      }
-    `}</style>
   </table>
 )
 

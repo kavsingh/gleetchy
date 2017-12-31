@@ -1,9 +1,34 @@
 import React from 'react'
+
 import PropTypes from '~/PropTypes'
 import { noop, stubArray } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import ErrorBoundary from '~/components/ErrorBoundary'
 import AnimIn from '~/components/AnimIn'
 import { UI as Loop, nodeType as loopType } from '~/nodes/instruments/loop'
+
+const classes = cssLabeled('instrumentsRack', {
+  root: {
+    width: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+
+  instrumentContainer: {
+    '&:not(:first-child)': {
+      marginTop: '2em',
+    },
+  },
+
+  addButton: {
+    cursor: 'pointer',
+    margin: '2em 0 0',
+    padding: '1em 0',
+    width: '100%',
+    textAlign: 'center',
+    fontSize: '0.8em',
+  },
+})
 
 const InstrumentsRack = ({
   instruments,
@@ -16,13 +41,13 @@ const InstrumentsRack = ({
   removeInstrument,
   getConnections,
 }) => (
-  <div className="instrumentsRack">
+  <div className={classes.root}>
     <ErrorBoundary>
       {instruments.map(({ id, type, label, props }) => {
         switch (type) {
           case loopType:
             return (
-              <div className="instrumentsRack__instrumentContainer" key={id}>
+              <div className={classes.instrumentContainer} key={id}>
                 <AnimIn>
                   <Loop
                     {...props}
@@ -55,7 +80,7 @@ const InstrumentsRack = ({
       })}
     </ErrorBoundary>
     <div
-      className="instrumentsRack__addButton"
+      className={classes.addButton}
       onClick={addLoop}
       role="button"
       tabIndex={0}
@@ -65,26 +90,6 @@ const InstrumentsRack = ({
     >
       [ Add loop ]
     </div>
-    <style jsx>{`
-      .instrumentsRack {
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-      }
-
-      .instrumentsRack__instrumentContainer:not(:first-child) {
-        margin-top: 2em;
-      }
-
-      .instrumentsRack__addButton {
-        cursor: pointer;
-        margin: 2em 0 0;
-        padding: 1em 0;
-        width: 100%;
-        text-align: center;
-        font-size: 0.8em;
-      }
-    `}</style>
   </div>
 )
 

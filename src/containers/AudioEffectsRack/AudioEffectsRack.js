@@ -1,12 +1,42 @@
 import React from 'react'
+
 import PropTypes from '~/PropTypes'
 import { noop, stubArray } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import AnimIn from '~/components/AnimIn'
 import { UI as Delay, nodeType as delayType } from '~/nodes/audioEffects/delay'
 import {
   UI as Reverb,
   nodeType as reverbType,
 } from '~/nodes/audioEffects/reverb'
+
+const classes = cssLabeled('audioEffectsRack', {
+  root: {
+    width: '100%',
+    display: 'flex',
+    flexWrap: 'wrap',
+    alignItems: 'flex-start',
+  },
+
+  audioEffectContainer: {
+    flex: '1 0 10em',
+    padding: '1em 0',
+  },
+
+  addAudioEffectContainer: {
+    minHeight: '5em',
+    padding: '1em 0',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '100%',
+  },
+
+  addAudioEffectButton: {
+    cursor: 'pointer',
+    fontSize: '0.8em',
+  },
+})
 
 const AudioEffectsRack = ({
   audioEffects,
@@ -18,12 +48,12 @@ const AudioEffectsRack = ({
   removeAudioEffect,
   getConnections,
 }) => (
-  <div className="audioEffectsRack">
+  <div className={classes.root}>
     {audioEffects.map(({ id, type, props, label }) => {
       switch (type) {
         case delayType:
           return (
-            <div className="audioEffectsRack__audioEffectContainer" key={id}>
+            <div className={classes.audioEffectContainer} key={id}>
               <AnimIn>
                 <Delay
                   label={label}
@@ -45,7 +75,7 @@ const AudioEffectsRack = ({
           )
         case reverbType:
           return (
-            <div className="audioEffectsRack__audioEffectContainer" key={id}>
+            <div className={classes.audioEffectContainer} key={id}>
               <AnimIn>
                 <Reverb
                   label={label}
@@ -65,10 +95,10 @@ const AudioEffectsRack = ({
           return null
       }
     })}
-    <div className="audioEffectsRack__addAudioEffectContainer">
+    <div className={classes.addAudioEffectContainer}>
       {[['Reverb', addReverb], ['Delay', addDelay]].map(([type, handler]) => (
         <div
-          className="audioEffectsRack__addAudioEffectButton"
+          className={classes.addAudioEffectButton}
           role="button"
           tabIndex={0}
           onClick={handler}
@@ -81,33 +111,6 @@ const AudioEffectsRack = ({
         </div>
       ))}
     </div>
-    <style jsx>{`
-      .audioEffectsRack {
-        width: 100%;
-        display: flex;
-        flex-wrap: wrap;
-        align-items: flex-start;
-      }
-
-      .audioEffectsRack__audioEffectContainer {
-        flex: 1 0 10em;
-        padding: 1em 0;
-      }
-
-      .audioEffectsRack__addAudioEffectContainer {
-        min-height: 5em;
-        padding: 1em 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 100%;
-      }
-
-      .audioEffectsRack__addAudioEffectButton {
-        cursor: pointer;
-        font-size: 0.8em;
-      }
-    `}</style>
   </div>
 )
 

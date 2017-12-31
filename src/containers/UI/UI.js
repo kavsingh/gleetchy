@@ -1,48 +1,48 @@
 import React from 'react'
 import { pure } from 'recompose'
 import Favicon from 'react-favicon'
-import { css as emo } from 'react-emotion'
 import GithubIcon from 'react-icons/lib/go/mark-github'
 
 import PropTypes from '~/PropTypes'
 import { COLOR_BODY, COLOR_KEYLINE } from '~/constants/style'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import PlayPauseButton from '~/components/PlayPauseButton'
 import InstrumentsRack from '~/containers/InstrumentsRack'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import PatchBay from '~/containers/PatchBay'
 import favicon from '~/assets/icons/48x48.png'
 
-const classes = {
-  root: emo({
+const classes = cssLabeled('ui', {
+  root: {
     maxWidth: '92em',
     margin: '0 auto',
     padding: '0 2em',
     color: COLOR_BODY,
-  }),
+  },
 
-  borderedSection: emo({
+  borderedSection: {
     padding: '1em 0',
     borderBottom: `1px solid ${COLOR_KEYLINE}`,
-  }),
+  },
 
-  connectContainer: emo({
+  connectContainer: {
     display: 'flex',
     flexWrap: 'wrap',
     padding: '2em 0',
-  }),
+  },
 
-  audioEffectsRackContainer: emo({
+  audioEffectsRackContainer: {
     flexGrow: 1,
     flexShrink: 1,
-  }),
+  },
 
-  patchBayContainer: emo({
+  patchBayContainer: {
     flexGrow: 0,
     flexShrink: 0,
-  }),
+  },
 
-  masthead: emo({
+  masthead: {
     width: '100%',
     display: 'flex',
     justifyContent: 'space-between',
@@ -57,8 +57,8 @@ const classes = {
     '& a:hover': {
       opacity: 1,
     },
-  }),
-}
+  },
+})
 
 const UI = ({ isPlaying, togglePlayback }) => (
   <div className={classes.root}>
