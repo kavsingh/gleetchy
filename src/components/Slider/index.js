@@ -1,9 +1,121 @@
 import React, { PureComponent } from 'react'
+import classnames from 'classnames'
 import { clamp, identity } from 'ramda'
+
 import PropTypes from '~/PropTypes'
 import { COLOR_KEYLINE, COLOR_EMPHASIS } from '~/constants/style'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import SinglePointerDrag from '~/components/SinglePointerDrag'
+
+const text = {
+  flexGrow: '0 0 auto',
+  fontSize: '0.8em',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+}
+
+const classes = cssLabeled('slider', {
+  root: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+  },
+
+  vertical: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+
+  horizontal: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+  },
+
+  label: text,
+
+  value: text,
+
+  labelVertical: {
+    height: '1.4em',
+  },
+
+  valueVertical: {
+    height: '1.4em',
+    display: 'flex',
+    alignItems: 'flex-end',
+  },
+
+  labelHorizontal: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '3em',
+  },
+
+  valueHorizontal: {
+    display: 'flex',
+    alignItems: 'center',
+    width: '3em',
+  },
+
+  barContainer: {
+    position: 'relative',
+    flex: '1 1',
+  },
+
+  barContainerVertical: {
+    width: '100%',
+    cursor: 'ns-resize',
+    margin: '0.4em auto 0.2em',
+  },
+
+  barContainerHorizontal: {
+    cursor: 'ew-resize',
+    height: '100%',
+    margin: 'auto 0.6em',
+  },
+
+  track: {
+    position: 'absolute',
+    zIndex: 1,
+    backgroundColor: COLOR_KEYLINE,
+  },
+
+  bar: {
+    position: 'absolute',
+    zIndex: 2,
+    backgroundColor: COLOR_EMPHASIS,
+  },
+
+  trackVertical: {
+    top: 0,
+    bottom: 0,
+    width: 1,
+    left: '50%',
+  },
+
+  barVertical: {
+    top: 0,
+    bottom: 0,
+    width: 3,
+    left: 'calc(50% - 1px)',
+  },
+
+  trackHorizontal: {
+    left: 0,
+    right: 0,
+    height: 1,
+    top: '50%',
+  },
+
+  barHorizontal: {
+    left: 0,
+    right: 0,
+    height: 3,
+    top: 'calc(50% - 1px)',
+  },
+})
 
 class Slider extends PureComponent {
   constructor(...args) {
@@ -51,10 +163,22 @@ class Slider extends PureComponent {
 
     return (
       <div
-        className={`slider ${isVert ? 'slider_vertical' : 'slider_horizontal'}`}
+        className={classnames({
+          [classes.root]: true,
+          [classes.vertical]: isVert,
+          [classes.horizontal]: !isVert,
+        })}
         title={renderTitle(value)}
       >
-        <div className="slider__label">{renderLabel(value)}</div>
+        <div
+          className={classnames({
+            [classes.label]: true,
+            [classes.labelVertical]: isVert,
+            [classes.labelHorizontal]: !isVert,
+          })}
+        >
+          {renderLabel(value)}
+        </div>
         <SinglePointerDrag
           onDragMove={this.handleDragMove}
           onDragEnd={this.handleDragEnd}
@@ -63,129 +187,44 @@ class Slider extends PureComponent {
           {({ dragListeners }) => (
             <div
               {...dragListeners}
-              className="slider__barContainer"
+              className={classnames({
+                [classes.barContainer]: true,
+                [classes.barContainerVertical]: isVert,
+                [classes.barContainerHorizontal]: !isVert,
+              })}
               role="presentation"
               onDoubleClick={this.handleDoubleClick}
               ref={c => {
                 this.barContainer = c
               }}
             >
-              <div className="slider__track" />
               <div
-                className="slider__bar"
+                className={classnames({
+                  [classes.track]: true,
+                  [classes.trackVertical]: isVert,
+                  [classes.trackHorizontal]: !isVert,
+                })}
+              />
+              <div
+                className={classnames({
+                  [classes.bar]: true,
+                  [classes.barVertical]: isVert,
+                  [classes.barHorizontal]: !isVert,
+                })}
                 style={isVert ? { top: offVal } : { right: offVal }}
               />
             </div>
           )}
         </SinglePointerDrag>
-        <div className="slider__value">{renderValue(value)}</div>
-        <style jsx>{`
-          .slider {
-            width: 100%;
-            height: 100%;
-            display: flex;
-          }
-
-          .slider_vertical {
-            flex-direction: column;
-            align-items: center;
-          }
-
-          .slider_horizontal {
-            flex-direction: row;
-            align-items: stretch;
-          }
-
-          .slider__label,
-          .slider__value {
-            flex-grow: 0 0 auto;
-            font-size: 0.8em;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
-
-          .slider_vertical .slider__value,
-          .slider_vertical .slider__label {
-            height: 1.4em;
-          }
-
-          .slider_vertical .slider__value {
-            display: flex;
-            align-items: flex-end;
-          }
-
-          .slider_horizontal .slider__value,
-          .slider_horizontal .slider__label {
-            display: flex;
-            align-items: center;
-            width: 3em;
-          }
-
-          .slider__barContainer {
-            position: relative;
-            flex: 1 1;
-          }
-
-          .slider_vertical .slider__barContainer {
-            width: 100%;
-            cursor: ns-resize;
-            margin: 0.4em auto 0.2em;
-          }
-
-          .slider_horizontal .slider__barContainer {
-            cursor: ew-resize;
-            height: 100%;
-            margin: auto 0.6em;
-          }
-
-          .slider__track,
-          .slider__bar {
-            position: absolute;
-          }
-
-          .slider__track {
-            z-index: 1;
-            background-color: ${COLOR_KEYLINE};
-          }
-
-          .slider__bar {
-            z-index: 2;
-            background-color: ${COLOR_EMPHASIS};
-          }
-
-          .slider_vertical .slider__track,
-          .slider_vertical .slider__bar {
-            top: 0;
-            bottom: 0;
-          }
-
-          .slider_horizontal .slider__track,
-          .slider_horizontal .slider__bar {
-            left: 0;
-            right: 0;
-          }
-
-          .slider_vertical .slider__track {
-            width: 1px;
-            left: 50%;
-          }
-
-          .slider_vertical .slider__bar {
-            width: 3px;
-            left: calc(50% - 1px);
-          }
-
-          .slider_horizontal .slider__track {
-            height: 1px;
-            top: 50%;
-          }
-
-          .slider_horizontal .slider__bar {
-            height: 3px;
-            top: calc(50% - 1px);
-          }
-        `}</style>
+        <div
+          className={classnames({
+            [classes.value]: true,
+            [classes.valueVertical]: isVert,
+            [classes.valueHorizontal]: !isVert,
+          })}
+        >
+          {renderValue(value)}
+        </div>
       </div>
     )
   }
