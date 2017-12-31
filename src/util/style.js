@@ -1,9 +1,9 @@
 /* global process */
-import { css as emo } from 'emotion'
+import { css } from 'emotion'
 import { mapObjIndexed } from 'ramda'
 
 let cssLabeledFn = (rootLabel, styles) =>
-  mapObjIndexed(decs => emo(decs), styles)
+  mapObjIndexed(decs => css(decs), styles)
 
 if (process.env.NODE_ENV !== 'production') {
   cssLabeledFn = (rootLabel, styles) => {
@@ -21,7 +21,7 @@ if (process.env.NODE_ENV !== 'production') {
     }
 
     return mapObjIndexed(
-      (decs, key) => emo({ label: label(key), ...decs }),
+      (decs, key) => css({ label: label(key), ...decs }),
       styles,
     )
   }
