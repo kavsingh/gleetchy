@@ -1,26 +1,30 @@
 import React from 'react'
+
 import PropTypes from '~/PropTypes'
+import cssLabeled from '~/util/style'
+
+const classes = cssLabeled('', {
+  root: {
+    padding: '1.4em 0.4em',
+    display: 'flex',
+  },
+})
 
 const Panel = ({ children, style }) => (
-  <div className="panel" style={{ ...style }}>
+  <div className={classes.root} style={{ ...style }}>
     {children}
-    <style jsx>{`
-      .panel {
-        padding: 1.4em 0.4em;
-        display: flex;
-      }
-    `}</style>
   </div>
 )
 
 Panel.propTypes = {
   children: PropTypes.node,
-  style: PropTypes.shape({}),
+  // eslint-disable-next-line react/no-typos
+  style: PropTypes.style,
 }
 
 Panel.defaultProps = {
-  children: [],
-  style: {},
+  children: null,
+  style: null,
 }
 
 export default Panel
