@@ -1,6 +1,15 @@
 import React, { PureComponent } from 'react'
 import Animated from 'animated'
+
 import PropTypes from '~/PropTypes'
+import { cssLabeled } from '~/util/style'
+
+const classes = cssLabeled('animIn', {
+  root: {
+    width: '100%',
+    height: '100%',
+  },
+})
 
 class AnimIn extends PureComponent {
   constructor(...args) {
@@ -17,7 +26,7 @@ class AnimIn extends PureComponent {
 
     return (
       <Animated.div
-        className="animIn"
+        className={classes.root}
         style={{
           opacity: visibility,
           transform: [
@@ -31,12 +40,6 @@ class AnimIn extends PureComponent {
         }}
       >
         {this.props.children}
-        <style jsx>{`
-          .AnimIn {
-            width: 100%;
-            height: 100%;
-          }
-        `}</style>
       </Animated.div>
     )
   }
