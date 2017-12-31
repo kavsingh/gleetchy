@@ -22,6 +22,7 @@ module.exports = {
     '@babel/plugin-syntax-object-rest-spread',
     '@babel/plugin-proposal-object-rest-spread',
     'webpack-alias',
+    ['emotion', { importedNames: { css: 'emo' } }],
     env !== 'test' && [
       'transform-imports',
       {

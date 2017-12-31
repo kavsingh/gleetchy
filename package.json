@@ -68,7 +68,10 @@
   },
   "dependencies": {
     "animated": "^0.2.1",
+    "babel-plugin-emotion": "^8.0.12",
+    "classnames": "^2.2.5",
     "color": "^2.0.1",
+    "emotion": "^8.0.12",
     "prop-types": "^15.6.0",
     "ramda": "^0.25.0",
     "react": "^16.2.0",
