@@ -15,6 +15,8 @@ export default {
 
   audioNodeLight,
 
+  className: PropTypes.string,
+
   error: PropTypes.instanceOf(Error),
 
   audioBuffer: WINDOW
