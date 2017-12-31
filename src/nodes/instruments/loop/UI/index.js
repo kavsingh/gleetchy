@@ -1,21 +1,73 @@
 import React, { Component } from 'react'
+import classnames from 'classnames'
 import { clamp, always } from 'ramda'
+
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
 import TitleBar from '~/components/TitleBar'
 import FileDropRegion from '~/components/FileDropRegion'
 import Sample from '~/components/Sample'
 import PlaybackControls from './PlaybackControls'
 
+const classes = cssLabeled('loop', {
+  root: {
+    transition: 'opacity 0.2s ease-out',
+    width: '100%',
+    height: '12em',
+  },
+
+  inactive: {
+    opacity: 0.4,
+  },
+
+  wrap: {
+    width: '100%',
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    justifyContent: 'stretch',
+  },
+
+  titleContainer: {
+    flexGrow: 0,
+    flexShrink: 0,
+    width: '100%',
+  },
+
+  mainContainer: {
+    display: 'flex',
+    flexWrap: 'nowrap',
+    flex: '1 0 10em',
+    width: '100%',
+    paddingLeft: '0.2em',
+  },
+
+  controlsContainer: {
+    height: '100%',
+    marginLeft: '1.2em',
+    display: 'flex',
+  },
+
+  title: {},
+
+  titleLoadAudio: {
+    display: 'inline-block',
+    cursor: 'pointer',
+    marginLeft: '0.3em',
+  },
+})
+
 const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
-  <span className="loop__titleSpan">
+  <span className={classes.title}>
     {fileName ? `${fileName}` : ''}
     {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
     <span
       role="button"
       tabIndex={0}
-      className="loop__titleLoadAudio"
+      className={classes.titleLoadAudio}
       onClick={selectAudioFile}
       onKeyDown={({ key }) => {
         if (key === 'Enter') selectAudioFile()
@@ -23,13 +75,6 @@ const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
     >
       {`${fileName ? ' / ' : ''}[ Load audio file ]`}
     </span>
-    <style jsx>{`
-      .loop__titleLoadAudio {
-        display: inline-block;
-        cursor: pointer;
-        margin-left: 0.3em;
-      }
-    `}</style>
   </span>
 )
 
@@ -102,14 +147,14 @@ class Loop extends Component {
     } = this.props
 
     return (
-      <div className={`loop loop_${isActive ? 'active' : 'inactive'}`}>
+      <div className={classnames(classes.root, !isActive && classes.inactive)}>
         <FileDropRegion
           fileFilter={({ type }) => type.startsWith('audio')}
           onFiles={files => receiveAudioFile(files[0])}
         >
           {({ dropActive, ...fileDropEvents }) => (
-            <div className="loop__wrap" {...fileDropEvents}>
-              <div className="loop__title">
+            <div className={classes.wrap} {...fileDropEvents}>
+              <div className={classes.titleContainer}>
                 <TitleBar
                   type="Loop"
                   label={label}
@@ -120,7 +165,7 @@ class Loop extends Component {
                   {() => renderTitle(fileName, audioBuffer, selectAudioFile)}
                 </TitleBar>
               </div>
-              <div className="loop__main">
+              <div className={classes.mainContainer}>
                 <Sample
                   fromSaved={!!(fileName && !audioBuffer)}
                   audioBuffer={audioBuffer}
@@ -131,7 +176,7 @@ class Loop extends Component {
                   onLoopRegionDrag={this.handleLoopRegionDrag}
                   selectAudioFile={selectAudioFile}
                 />
-                <div className="loop__controlsContainer">
+                <div className={classes.controlsContainer}>
                   <PlaybackControls
                     gain={gain}
                     playbackRate={playbackRate}
@@ -149,46 +194,6 @@ class Loop extends Component {
             </div>
           )}
         </FileDropRegion>
-        <style jsx>{`
-          .loop {
-            transition: opacity 0.2s ease-out;
-            width: 100%;
-            height: 12em;
-          }
-
-          .loop_inactive {
-            opacity: 0.4;
-          }
-
-          .loop__wrap {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            justify-content: stretch;
-          }
-
-          .loop__title {
-            flex-grow: 0;
-            flex-shrink: 0;
-            width: 100%;
-          }
-
-          .loop__main {
-            display: flex;
-            flex-wrap: nowrap;
-            flex: 1 0 10em;
-            width: 100%;
-            padding-left: 0.2em;
-          }
-
-          .loop__controlsContainer {
-            height: 100%;
-            margin-left: 1.2em;
-            display: flex;
-          }
-        `}</style>
       </div>
     )
   }
