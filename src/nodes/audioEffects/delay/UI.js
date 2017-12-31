@@ -1,9 +1,33 @@
 import React from 'react'
+import classnames from 'classnames'
+
 import PropTypes from '~/PropTypes'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
+
+const classes = cssLabeled('delay', {
+  root: {
+    width: '100%',
+    opacity: 1,
+    transition: 'opacity 0.2s ease-out',
+  },
+
+  inactive: {
+    opacity: 0.4,
+  },
+
+  controls: {
+    width: '100%',
+    display: 'flex',
+  },
+
+  knobContainer: {
+    flex: '0 0 3em',
+  },
+})
 
 const Delay = ({
   label,
@@ -16,7 +40,7 @@ const Delay = ({
   remove,
   connections,
 }) => (
-  <div className={`delay${!isActive ? ' delay_inactive' : ''}`}>
+  <div className={classnames(classes.root, !isActive && classes.inactive)}>
     <TitleBar
       type="Delay"
       label={label}
@@ -24,8 +48,8 @@ const Delay = ({
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
-    <div className="delay__controls">
-      <div className="delay__knobContainer">
+    <div className={classes.controls}>
+      <div className={classes.knobContainer}>
         <Knob
           radius="2.4em"
           value={delayTime / DELAY_UPPER_BOUND}
@@ -35,7 +59,7 @@ const Delay = ({
           renderValue={() => delayTime.toFixed(2)}
         />
       </div>
-      <div className="delay__knobContainer">
+      <div className={classes.knobContainer}>
         <Knob
           radius="2.4em"
           value={wetDryRatio}
@@ -46,26 +70,6 @@ const Delay = ({
         />
       </div>
     </div>
-    <style jsx>{`
-      .delay {
-        width: 100%;
-        opacity: 1;
-        transition: opacity 0.2s ease-out;
-      }
-
-      .delay_inactive {
-        opacity: 0.4;
-      }
-
-      .delay__controls {
-        width: 100%;
-        display: flex;
-      }
-
-      .delay__knobContainer {
-        flex: 0 0 3em;
-      }
-    `}</style>
   </div>
 )
 

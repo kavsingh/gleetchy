@@ -1,8 +1,32 @@
 import React from 'react'
+import classnames from 'classnames'
+
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
+
+const classes = cssLabeled('reverb', {
+  root: {
+    width: '100%',
+    opacity: 1,
+    transition: 'opacity 0.2s ease-out',
+  },
+
+  inactive: {
+    opacity: 0.4,
+  },
+
+  controls: {
+    width: '100%',
+    display: 'flex',
+  },
+
+  knobContainer: {
+    flex: '0 0 3em',
+  },
+})
 
 const Reverb = ({
   label,
@@ -13,7 +37,7 @@ const Reverb = ({
   remove,
   connections,
 }) => (
-  <div className={`reverb${!isActive ? ' reverb_inactive' : ''}`}>
+  <div className={classnames(classes.root, !isActive && classes.inactive)}>
     <TitleBar
       type="Reverb"
       label={label}
@@ -21,8 +45,8 @@ const Reverb = ({
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
-    <div className="reverb__controls">
-      <div className="reverb__knobContainer">
+    <div className={classes.controls}>
+      <div className={classes.knobContainer}>
         <Knob
           radius="2.4em"
           value={wetDryRatio}
@@ -33,26 +57,6 @@ const Reverb = ({
         />
       </div>
     </div>
-    <style jsx>{`
-      .reverb {
-        width: 100%;
-        opacity: 1;
-        transition: opacity 0.2s ease-out;
-      }
-
-      .reverb_inactive {
-        opacity: 0.4;
-      }
-
-      .reverb__controls {
-        width: 100%;
-        display: flex;
-      }
-
-      .reverb__knobContainer {
-        flex: 0 0 3em;
-      }
-    `}</style>
   </div>
 )
 
