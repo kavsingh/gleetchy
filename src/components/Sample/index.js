@@ -1,11 +1,50 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { onlyUpdateForKeys } from 'recompose'
 import color from 'color'
+
 import PropTypes from '~/PropTypes'
-import { COLOR_PAGE } from '~/constants/style'
+import { COLOR_PAGE, LAYOUT_ABSOLUTE_FILL } from '~/constants/style'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import WaveForm from '~/components/WaveForm'
 import LoopRegion from '~/components/LoopRegion'
+
+const classes = cssLabeled('sample', {
+  root: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  },
+
+  waveFormContainer: {
+    ...LAYOUT_ABSOLUTE_FILL,
+    zIndex: 1,
+  },
+
+  loopRegionContainer: {
+    ...LAYOUT_ABSOLUTE_FILL,
+    zIndex: 2,
+  },
+
+  initLoadButon: {
+    ...LAYOUT_ABSOLUTE_FILL,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    cursor: 'pointer',
+    zIndex: 3,
+    padding: '3em',
+    backgroundColor: color(COLOR_PAGE)
+      .alpha(0.96)
+      .string(),
+
+    '& span': {
+      display: 'block',
+      textAlign: 'center',
+    },
+  },
+})
 
 const Sample = ({
   fromSaved,
@@ -17,12 +56,12 @@ const Sample = ({
   onLoopRegionDrag,
   selectAudioFile,
 }) => (
-  <div className="sample">
-    <div className="sample__waveFormContainer">
+  <div className={classes.root}>
+    <div className={classes.waveFormContainer}>
       <WaveForm buffer={audioBuffer} />
     </div>
     {audioBuffer ? (
-      <div className="sample__loopRegionContainer">
+      <div className={classes.loopRegionContainer}>
         <LoopRegion
           loopStart={loopStart}
           loopEnd={loopEnd}
@@ -36,70 +75,21 @@ const Sample = ({
         role="button"
         tabIndex={0}
         onClick={selectAudioFile}
-        className="sample__initLoadButon"
+        className={classes.initLoadButon}
         onKeyDown={({ key }) => {
           if (key === 'Enter') selectAudioFile()
         }}
       >
-        {fromSaved
-          ? [
-              <span key="line1">
-                Unfortunately audio data is not saved with a project
-              </span>,
-              <span key="line2">
-                Click here (or drag and drop) to load files again
-              </span>,
-            ]
-          : 'Click to load audio file or drag it here'}
+        {fromSaved ? (
+          <Fragment>
+            <span>Unfortunately audio data is not saved with a project</span>
+            <span>Click here (or drag and drop) to load files again</span>
+          </Fragment>
+        ) : (
+          'Click to load audio file or drag it here'
+        )}
       </div>
     )}
-    <style jsx>{`
-      .sample {
-        position: relative;
-        width: 100%;
-        height: 100%;
-      }
-
-      .sample__waveFormContainer,
-      .sample__loopRegionContainer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-      }
-
-      .sample__waveFormContainer {
-        z-index: 1;
-      }
-
-      .sample__loopRegionContainer {
-        z-index: 2;
-      }
-
-      .sample__initLoadButon {
-        width: 100%;
-        height: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-around;
-        cursor: pointer;
-        z-index: 3;
-        background-color: ${color(COLOR_PAGE)
-          .alpha(0.96)
-          .string()};
-        padding: 3em;
-      }
-
-      .sample__initLoadButon span {
-        display: block;
-        text-align: center;
-      }
-    `}</style>
   </div>
 )
 
