@@ -1,5 +1,6 @@
 import React from 'react'
 import { map, clamp } from 'ramda'
+
 import PropTypes from '~/PropTypes'
 import { polarToCartesian } from '~/util/math'
 

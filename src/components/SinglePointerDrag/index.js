@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { pipe, tap, always } from 'ramda'
+
 import PropTypes from '~/PropTypes'
 import { cancelEvent } from '~/util/event'
 import { filterSupportedEvents } from '~/util/env'
