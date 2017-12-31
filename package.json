@@ -22,8 +22,8 @@
     "generate:audioEffect": "node ./scripts/bin/generateNode.js audioEffect",
     "generate:component": "node ./scripts/bin/generateComponent.js",
     "generate:state": "node ./scripts/bin/generateState.js",
-    "inspect": "BUNDLE_ANALYZE=true yarn build",
-    "visualize": "BUNDLE_VISUALIZE=true yarn build && open stats.html"
+    "bundle:inspect": "BUNDLE_ANALYZE=true yarn build",
+    "bundle:visualize": "BUNDLE_VISUALIZE=true yarn build && open stats.html"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.36",
@@ -40,13 +40,15 @@
     "babel-loader": "^8.0.0-beta.0",
     "babel-minify-webpack-plugin": "^0.2.0",
     "babel-plugin-transform-imports": "^1.4.1",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.12",
     "babel-plugin-webpack-alias": "^2.1.2",
     "chalk": "^2.3.0",
     "common-tags": "^1.6.0",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-mongrel-react": "kavsingh/eslint-config-mongrel-react.git#5.1.0",
+    "eslint-config-mongrel-react":
+      "kavsingh/eslint-config-mongrel-react.git#5.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-babel": "^4.1.2",

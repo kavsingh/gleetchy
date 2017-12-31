@@ -26,6 +26,13 @@ module.exports = {
     '@babel/plugin-syntax-object-rest-spread',
     '@babel/plugin-proposal-object-rest-spread',
     'webpack-alias',
+    env === 'production' && [
+      'transform-react-remove-prop-types',
+      {
+        removeImport: true,
+        additionalLibraries: ['react-style-proptype', '~/PropTypes'],
+      },
+    ],
     env !== 'test' && [
       'transform-imports',
       {
