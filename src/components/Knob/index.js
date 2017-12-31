@@ -1,10 +1,65 @@
 import React, { PureComponent } from 'react'
 import { clamp } from 'ramda'
+
 import PropTypes from '~/PropTypes'
-import { COLOR_KEYLINE, COLOR_EMPHASIS } from '~/constants/style'
+import {
+  COLOR_KEYLINE,
+  COLOR_EMPHASIS,
+  LAYOUT_ABSOLUTE_FILL,
+} from '~/constants/style'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import SinglePointerDrag from '~/components/SinglePointerDrag'
 import SVGArc from '~/components/SVGArc'
+
+const text = {
+  fontSize: '0.8em',
+  flex: '0 0 auto',
+}
+
+const classes = cssLabeled('knob', {
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+
+  knobContainer: {
+    flex: '0 0 auto',
+    position: 'relative',
+    cursor: 'move',
+    margin: '0.4em auto 0.3em',
+
+    '& svg': {
+      width: '100%',
+      height: '100%',
+      fill: 'transparent',
+    },
+  },
+
+  trackContainer: {
+    ...LAYOUT_ABSOLUTE_FILL,
+    zIndex: 1,
+
+    '& svg': {
+      stroke: COLOR_KEYLINE,
+    },
+  },
+
+  barContainer: {
+    ...LAYOUT_ABSOLUTE_FILL,
+    zIndex: 2,
+
+    '& svg': {
+      stroke: COLOR_EMPHASIS,
+    },
+  },
+
+  label: text,
+  value: text,
+})
 
 class Knob extends PureComponent {
   constructor(...args) {
@@ -59,13 +114,13 @@ class Knob extends PureComponent {
         onDragMove={this.handleDragMove}
       >
         {({ dragListeners }) => (
-          <div className="knob" title={renderTitle()}>
-            <div className="knob__label">{renderLabel()}</div>
+          <div className={classes.root} title={renderTitle()}>
+            <div className={classes.label}>{renderLabel()}</div>
             <div
               {...dragListeners}
               onDoubleClick={this.handleDoubleClick}
               role="presentation"
-              className="knob__knobContainer"
+              className={classes.knobContainer}
               style={{
                 width: radius,
                 height: radius,
@@ -75,67 +130,14 @@ class Knob extends PureComponent {
                 this.knobNode = c
               }}
             >
-              <div className="knob__trackContainer">
+              <div className={classes.trackContainer}>
                 <SVGArc startAngle={0} endAngle={360} strokeWidth={1} />
               </div>
-              <div className="knob__barContainer">
+              <div className={classes.barContainer}>
                 <SVGArc startAngle={0} endAngle={value * 360} strokeWidth={2} />
               </div>
             </div>
-            <div className="knob__value">{renderValue()}</div>
-            <style jsx>{`
-              .knob {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                width: 100%;
-                height: 100%;
-              }
-
-              .knob__knobContainer {
-                flex: 0 0 auto;
-                position: relative;
-                cursor: move;
-                margin: 0.4em auto 0.3em;
-              }
-
-              .knob__knobContainer :global(svg) {
-                width: 100%;
-                height: 100%;
-                fill: transparent;
-              }
-
-              .knob__trackContainer,
-              .knob__barContainer {
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                top: 0;
-                left: 0;
-              }
-
-              .knob__trackContainer {
-                z-index: 1;
-              }
-
-              .knob__trackContainer :global(svg) {
-                stroke: ${COLOR_KEYLINE};
-              }
-
-              .knob__barContainer {
-                z-index: 2;
-              }
-
-              .knob__barContainer :global(svg) {
-                stroke: ${COLOR_EMPHASIS};
-              }
-
-              .knob__label,
-              .knob__value {
-                font-size: 0.8em;
-                flex: 0 0 auto;
-              }
-            `}</style>
+            <div className={classes.value}>{renderValue()}</div>
           </div>
         )}
       </SinglePointerDrag>
