@@ -1,7 +1,57 @@
 import React from 'react'
+
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import TextInput from '~/components/TextInput'
+
+const classes = cssLabeled('titleBar', {
+  root: {
+    fontSize: '0.8em',
+    marginBottom: '0.6em',
+  },
+
+  labelContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+
+    '& input': {
+      fontWeight: 500,
+      padding: 0,
+      margin: 0,
+      appearance: 'none',
+    },
+  },
+
+  infoContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+
+  connections: {
+    display: 'flex',
+    height: '100%',
+  },
+
+  connection: {
+    flexShrink: 0,
+    flexGrow: 0,
+    width: '0.8em',
+    height: '0.8em',
+    marginRight: '0.3em',
+  },
+
+  typeContainer: {
+    marginRight: '0.3em',
+  },
+
+  removeButton: {
+    cursor: 'pointer',
+  },
+})
 
 const TitleBar = ({
   type,
@@ -11,12 +61,12 @@ const TitleBar = ({
   label,
   onRemoveClick,
 }) => (
-  <div className="titleBar">
-    <div className="titleBar__labelContainer">
-      <div className="titleBar__connections">
+  <div className={classes.root}>
+    <div className={classes.labelContainer}>
+      <div className={classes.connections}>
         {connections.map(({ color, from, to }) => (
           <div
-            className="titleBar__connection"
+            className={classes.connection}
             style={{ backgroundColor: color }}
             key={`${from}${to}`}
           />
@@ -24,11 +74,11 @@ const TitleBar = ({
       </div>
       <TextInput onChange={onLabelChange} value={label} />
     </div>
-    <div className="titleBar__infoContainer">
-      <div className="titleBar__typeContainer">{type} /</div>
+    <div className={classes.infoContainer}>
+      <div className={classes.typeContainer}>{type} /</div>
       {typeof children === 'function' ? children() : children}
       <div
-        className="titleBar__removeButton"
+        className={classes.removeButton}
         role="button"
         onClick={onRemoveClick}
         tabIndex={0}
@@ -39,51 +89,6 @@ const TitleBar = ({
         {'[ Remove ]'}
       </div>
     </div>
-    <style jsx>{`
-      .titleBar {
-        font-size: 0.8em;
-        margin-bottom: 0.6em;
-      }
-
-      .titleBar__labelContainer,
-      .titleBar__infoContainer {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-      }
-
-      .titleBar__labelContainer {
-        justify-content: flex-start;
-      }
-
-      .titleBar__connections {
-        display: flex;
-        height: 100%;
-      }
-
-      .titleBar__connection {
-        flex-shrink: 0;
-        flex-grow: 0;
-        width: 0.8em;
-        height: 0.8em;
-        margin-right: 0.3em;
-      }
-
-      .titleBar__typeContainer {
-        margin-right: 0.3em;
-      }
-
-      .titleBar__labelContainer :global(input) {
-        font-weight: 500;
-        padding: 0;
-        margin: 0;
-        appearance: none;
-      }
-
-      .titleBar__removeButton {
-        cursor: pointer;
-      }
-    `}</style>
   </div>
 )
 
