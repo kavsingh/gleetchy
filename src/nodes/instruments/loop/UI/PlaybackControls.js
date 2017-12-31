@@ -1,7 +1,19 @@
 import React from 'react'
+
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 import Knob from '~/components/Knob'
+
+const classes = cssLabeled('playbackControls', {
+  root: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+})
 
 const PlaybackControls = ({
   gain,
@@ -9,8 +21,8 @@ const PlaybackControls = ({
   onGainChange,
   onPlaybackRateChange,
 }) => (
-  <div className="playbackControls">
-    <div className="playbackControls__controlContainer">
+  <div className={classes.root}>
+    <div>
       <Knob
         value={gain}
         renderTitle={() => 'Gain'}
@@ -19,7 +31,7 @@ const PlaybackControls = ({
         onChange={onGainChange}
       />
     </div>
-    <div className="playbackControls__controlContainer">
+    <div>
       <Knob
         value={playbackRate * 0.5}
         renderTitle={() => 'Speed'}
@@ -28,15 +40,6 @@ const PlaybackControls = ({
         onChange={val => onPlaybackRateChange(val * 2)}
       />
     </div>
-    <style jsx>{`
-      .playbackControls {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-      }
-    `}</style>
   </div>
 )
 
