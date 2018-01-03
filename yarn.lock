@@ -2477,9 +2477,9 @@ eslint-config-airbnb@^16.1.0:
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
 
-eslint-config-mongrel-react@kavsingh/eslint-config-mongrel-react.git#5.1.0:
+eslint-config-mongrel-react@kavsingh/eslint-config-mongrel-react.git#5.1.1:
   version "5.1.0"
-  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel-react/tar.gz/76b5a6d33469a03013627cf777a28141a88ef47c"
+  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel-react/tar.gz/02e9ea06f11dbf2375c4854cd57698c5640c46aa"
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
     eslint-config-mongrel kavsingh/eslint-config-mongrel.git#3.3.0
