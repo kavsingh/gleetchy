@@ -1,5 +1,5 @@
 import React from 'react'
-import classnames from 'classnames'
+import { cx } from 'emotion'
 
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
@@ -37,7 +37,7 @@ const Reverb = ({
   remove,
   connections,
 }) => (
-  <div className={classnames(classes.root, !isActive && classes.inactive)}>
+  <div className={cx([classes.root, !isActive && classes.inactive])}>
     <TitleBar
       type="Reverb"
       label={label}

@@ -1,5 +1,5 @@
 import React, { PureComponent } from 'react'
-import classnames from 'classnames'
+import { cx } from 'emotion'
 import { clamp, identity } from 'ramda'
 
 import PropTypes from '~/PropTypes'
@@ -163,7 +163,7 @@ class Slider extends PureComponent {
 
     return (
       <div
-        className={classnames({
+        className={cx({
           [classes.root]: true,
           [classes.vertical]: isVert,
           [classes.horizontal]: !isVert,
@@ -171,7 +171,7 @@ class Slider extends PureComponent {
         title={renderTitle(value)}
       >
         <div
-          className={classnames({
+          className={cx({
             [classes.label]: true,
             [classes.labelVertical]: isVert,
             [classes.labelHorizontal]: !isVert,
@@ -187,7 +187,7 @@ class Slider extends PureComponent {
           {({ dragListeners }) => (
             <div
               {...dragListeners}
-              className={classnames({
+              className={cx({
                 [classes.barContainer]: true,
                 [classes.barContainerVertical]: isVert,
                 [classes.barContainerHorizontal]: !isVert,
@@ -199,14 +199,14 @@ class Slider extends PureComponent {
               }}
             >
               <div
-                className={classnames({
+                className={cx({
                   [classes.track]: true,
                   [classes.trackVertical]: isVert,
                   [classes.trackHorizontal]: !isVert,
                 })}
               />
               <div
-                className={classnames({
+                className={cx({
                   [classes.bar]: true,
                   [classes.barVertical]: isVert,
                   [classes.barHorizontal]: !isVert,
@@ -217,7 +217,7 @@ class Slider extends PureComponent {
           )}
         </SinglePointerDrag>
         <div
-          className={classnames({
+          className={cx({
             [classes.value]: true,
             [classes.valueVertical]: isVert,
             [classes.valueHorizontal]: !isVert,

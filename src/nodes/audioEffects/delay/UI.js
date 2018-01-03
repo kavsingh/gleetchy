@@ -1,5 +1,5 @@
 import React from 'react'
-import classnames from 'classnames'
+import { cx } from 'emotion'
 
 import PropTypes from '~/PropTypes'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
@@ -40,7 +40,7 @@ const Delay = ({
   remove,
   connections,
 }) => (
-  <div className={classnames(classes.root, !isActive && classes.inactive)}>
+  <div className={cx([classes.root, !isActive && classes.inactive])}>
     <TitleBar
       type="Delay"
       label={label}

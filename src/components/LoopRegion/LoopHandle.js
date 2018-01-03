@@ -1,5 +1,5 @@
 import React from 'react'
-import classnames from 'classnames'
+import { cx } from 'emotion'
 
 import PropTypes from '~/PropTypes'
 import { COLOR_EMPHASIS } from '~/constants/style'
@@ -55,20 +55,20 @@ const classes = cssLabeled('loopHandle', {
 
 const LoopHandle = ({ align = 'left' }) => (
   <div
-    className={classnames({
+    className={cx({
       [classes.root]: true,
       [classes.alignRight]: align === 'right',
     })}
   >
     <div
-      className={classnames({
+      className={cx({
         [classes.tag]: true,
         [classes.tagAlignLeft]: align === 'left',
         [classes.tagAlignRight]: align === 'right',
       })}
     />
     <div
-      className={classnames({
+      className={cx({
         [classes.bar]: true,
         [classes.barAlignLeft]: align === 'left',
         [classes.barAlignRight]: align === 'right',

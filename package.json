@@ -47,8 +47,7 @@
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-config-mongrel-react":
-      "kavsingh/eslint-config-mongrel-react.git#5.1.0",
+    "eslint-config-mongrel-react": "kavsingh/eslint-config-mongrel-react.git#5.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-import-resolver-webpack": "^0.8.3",
     "eslint-plugin-babel": "^4.1.2",
@@ -71,7 +70,6 @@
   "dependencies": {
     "animated": "^0.2.1",
     "babel-plugin-emotion": "^8.0.12",
-    "classnames": "^2.2.5",
     "color": "^2.0.1",
     "emotion": "^8.0.12",
     "prop-types": "^15.6.0",

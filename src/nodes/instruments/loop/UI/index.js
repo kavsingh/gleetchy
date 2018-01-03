@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import classnames from 'classnames'
+import { cx } from 'emotion'
 import { clamp, always } from 'ramda'
 
 import PropTypes from '~/PropTypes'
@@ -145,7 +145,7 @@ class Loop extends Component {
     } = this.props
 
     return (
-      <div className={classnames(classes.root, !isActive && classes.inactive)}>
+      <div className={cx([classes.root, !isActive && classes.inactive])}>
         <FileDropRegion
           fileFilter={({ type }) => type.startsWith('audio')}
           onFiles={files => receiveAudioFile(files[0])}

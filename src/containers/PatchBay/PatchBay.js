@@ -1,5 +1,5 @@
 import React from 'react'
-import classnames from 'classnames'
+import { cx } from 'emotion'
 import { always, T } from 'ramda'
 import color from 'color'
 
@@ -123,7 +123,7 @@ const PatchBay = ({
                         }
                       : {}
                   }
-                  className={classnames(classes.node, modClassName)}
+                  className={cx([classes.node, modClassName])}
                   onClick={handleClick}
                   role="button"
                   tabIndex={0}
