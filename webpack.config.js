@@ -102,6 +102,12 @@ module.exports = {
     modules: [fromRoot('src'), 'node_modules'],
     alias: {
       '~': path.resolve(__dirname, 'src'),
+      ...(isProduction
+        ? {
+            react: 'preact-compat',
+            'react-dom': 'preact-compat',
+          }
+        : {}),
     },
     extensions: ['.js'],
   },

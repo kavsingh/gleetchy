@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { cx } from 'emotion'
 import { clamp, always } from 'ramda'
 
@@ -76,7 +76,7 @@ const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
   </span>
 )
 
-class Loop extends Component {
+class Loop extends PureComponent {
   constructor(...args) {
     super(...args)
 

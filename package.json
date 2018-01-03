@@ -75,6 +75,8 @@
     "emotion": "^8.0.12",
     "popmotion": "^8.1.6",
     "popmotion-react": "^2.1.0",
+    "preact": "^8.2.7",
+    "preact-compat": "^3.17.0",
     "prop-types": "^15.6.0",
     "ramda": "^0.25.0",
     "react": "^16.2.0",
