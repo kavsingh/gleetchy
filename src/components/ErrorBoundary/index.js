@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 
 import PropTypes from '~/PropTypes'
 import ErrorMessage from '~/components/ErrorMessage'
 
-class ErrorBoundary extends Component {
+class ErrorBoundary extends PureComponent {
   constructor(...args) {
     super(...args)
     this.state = { error: undefined }

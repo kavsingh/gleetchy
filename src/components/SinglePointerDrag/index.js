@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { pipe, tap, always } from 'ramda'
 
 import PropTypes from '~/PropTypes'
@@ -15,7 +15,7 @@ const normalizeEvent = event => {
 
 const cancelAndNormalizeEvent = pipe(tap(cancelEvent), normalizeEvent)
 
-class SinglePointerDrag extends Component {
+class SinglePointerDrag extends PureComponent {
   constructor(...args) {
     super(...args)
 

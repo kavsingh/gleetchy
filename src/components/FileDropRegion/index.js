@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import { T, always } from 'ramda'
 
 import PropTypes from '~/PropTypes'
 import { cancelEvent } from '~/util/event'
 import { noop } from '~/util/function'
 
-class FileDropRegion extends Component {
+class FileDropRegion extends PureComponent {
   constructor(...args) {
     super(...args)
 
