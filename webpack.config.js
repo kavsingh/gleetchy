@@ -103,10 +103,7 @@ module.exports = {
     alias: {
       '~': path.resolve(__dirname, 'src'),
       ...(isProduction
-        ? {
-            react: 'preact-compat',
-            'react-dom': 'preact-compat',
-          }
+        ? { react: 'preact-compat', 'react-dom': 'preact-compat' }
         : {}),
     },
     extensions: ['.js'],
