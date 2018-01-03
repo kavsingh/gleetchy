@@ -1,5 +1,6 @@
 module.exports = {
   transform: { '\\.js$': 'babel-7-jest' },
+  setupFiles: ['<rootDir>/__testSetup__/polyfill.js'],
   testRegex: '\\.test\\.js$',
   coverageDirectory: '<rootDir>/coverage/',
   collectCoverageFrom: ['src/**/*.js'],
