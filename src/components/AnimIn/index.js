@@ -1,8 +1,13 @@
-import React, { PureComponent } from 'react'
-import Animated from 'animated'
+import React from 'react'
+import { MotionValue } from 'popmotion-react'
+import spring from 'popmotion/animations/spring'
 
 import PropTypes from '~/PropTypes'
 import { cssLabeled } from '~/util/style'
+
+const stateChangeHandlers = {
+  visible: ({ value }) => spring({ from: 0, to: 1 }).start(value),
+}
 
 const classes = cssLabeled('animIn', {
   root: {
@@ -11,38 +16,16 @@ const classes = cssLabeled('animIn', {
   },
 })
 
-class AnimIn extends PureComponent {
-  constructor(...args) {
-    super(...args)
-    this.state = { visibility: new Animated.Value(0) }
-  }
-
-  componentDidMount() {
-    Animated.spring(this.state.visibility, { toValue: 1 }).start()
-  }
-
-  render() {
-    const { visibility } = this.state
-
-    return (
-      <Animated.div
-        className={classes.root}
-        style={{
-          opacity: visibility,
-          transform: [
-            {
-              scale: visibility.interpolate({
-                inputRange: [0, 1],
-                outputRange: [0.9, 1],
-              }),
-            },
-          ],
-        }}
-      >
-        {this.props.children}
-      </Animated.div>
-    )
-  }
+function AnimIn({ children }) {
+  return (
+    <MotionValue onStateChange={stateChangeHandlers} initialState="visible">
+      {({ v }) => (
+        <div className={classes.root} style={{ opacity: v }}>
+          {children}
+        </div>
+      )}
+    </MotionValue>
+  )
 }
 
 AnimIn.propTypes = {

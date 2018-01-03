@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { onlyUpdateForKeys } from 'recompose'
 import color from 'color'
 
@@ -80,14 +80,16 @@ const Sample = ({
           if (key === 'Enter') selectAudioFile()
         }}
       >
-        {fromSaved ? (
-          <Fragment>
-            <span>Unfortunately audio data is not saved with a project</span>
-            <span>Click here (or drag and drop) to load files again</span>
-          </Fragment>
-        ) : (
-          'Click to load audio file or drag it here'
-        )}
+        {fromSaved
+          ? [
+              <span key="a">
+                Unfortunately audio data is not saved with a project
+              </span>,
+              <span key="b">
+                Click here (or drag and drop) to load files again
+              </span>,
+            ]
+          : 'Click to load audio file or drag it here'}
       </div>
     )}
   </div>

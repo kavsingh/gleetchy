@@ -70,10 +70,11 @@
     "webpack-visualizer-plugin": "^0.1.11"
   },
   "dependencies": {
-    "animated": "^0.2.1",
     "babel-plugin-emotion": "^8.0.12",
     "color": "^2.0.1",
     "emotion": "^8.0.12",
+    "popmotion": "^8.1.6",
+    "popmotion-react": "^2.1.0",
     "prop-types": "^15.6.0",
     "ramda": "^0.25.0",
     "react": "^16.2.0",
