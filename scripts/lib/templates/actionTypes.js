@@ -1,6 +1,8 @@
-const { jsContent } = require('../util')
+const { jsContent, toConstantName } = require('../util')
 
 module.exports = name =>
   jsContent(`
-    export const ${name.toUpperCase()}_ACTION = '${name.toUpperCase()}_ACTION'
+    export const ${toConstantName(name)}_ACTION = '${toConstantName(
+    name,
+  )}_ACTION'
   `)

@@ -1,11 +1,11 @@
-const { jsContent, upperFirst } = require('../util')
+const { jsContent, upperFirst, toConstantName } = require('../util')
 
 module.exports = name =>
   jsContent(`
-    import { ${name.toUpperCase()}_ACTION } from './actionTypes'
+    import { ${toConstantName(name)}_ACTION } from './actionTypes'
 
     export const do${upperFirst(name)}Action = val => ({
-      type: ${name.toUpperCase()}_ACTION,
+      type: ${toConstantName(name)}_ACTION,
       payload: { val },
     })
   `)

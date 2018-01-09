@@ -1,8 +1,8 @@
-const { jsContent } = require('../util')
+const { jsContent, toConstantName } = require('../util')
 
 module.exports = name =>
   jsContent(`
-    import { ${name.toUpperCase()}_ACTION } from './actionTypes'
+    import { ${toConstantName(name)}_ACTION } from './actionTypes'
 
     const defaultState = { key: 'value' }
 
@@ -13,7 +13,7 @@ module.exports = name =>
       { type, payload = {} } = {},
     ) => {
       switch (type) {
-        case ${name.toUpperCase()}_ACTION:
+        case ${toConstantName(name)}_ACTION:
           return doSomething(state, payload)
         default:
           return state
