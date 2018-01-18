@@ -6,12 +6,6 @@ module.exports = {
   extends: ['mongrel-react', 'prettier', 'prettier/react'],
   rules: {
     'prettier/prettier': 'warn',
-    // Styled-jsx requires braces around CSS template literal,
-    // causing lint errors
-    'react/jsx-curly-brace-presence': [
-      'error',
-      { props: 'never', children: 'ignore' },
-    ],
   },
   overrides: [
     {
