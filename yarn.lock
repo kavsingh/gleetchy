@@ -1828,9 +1828,9 @@ color-string@^1.5.2:
     color-name "^1.0.0"
     simple-swizzle "^0.2.2"
 
-color@^2.0.1:
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/color/-/color-2.0.1.tgz#e4ed78a3c4603d0891eba5430b04b86314f4c839"
+color@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/color/-/color-3.0.0.tgz#d920b4328d534a3ac8295d68f7bd4ba6c427be9a"
   dependencies:
     color-convert "^1.9.1"
     color-string "^1.5.2"
@@ -2283,14 +2283,7 @@ doctrine@1.5.0:
     esutils "^2.0.2"
     isarray "^1.0.0"
 
-doctrine@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-2.0.0.tgz#c73d8d2909d22291e1a007a395804da8b665fe63"
-  dependencies:
-    esutils "^2.0.2"
-    isarray "^1.0.0"
-
-doctrine@^2.1.0:
+doctrine@^2.0.2, doctrine@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/doctrine/-/doctrine-2.1.0.tgz#5cd01fc101621b42c4cd7f5d1a66243716d3f39d"
   dependencies:
@@ -2599,16 +2592,16 @@ eslint-config-airbnb@^16.1.0:
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
 
-eslint-config-mongrel-react@kavsingh/eslint-config-mongrel-react.git#5.1.1:
-  version "5.1.0"
-  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel-react/tar.gz/02e9ea06f11dbf2375c4854cd57698c5640c46aa"
+eslint-config-mongrel-react@kavsingh/eslint-config-mongrel-react.git#5.2.0:
+  version "5.2.0"
+  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel-react/tar.gz/f61d16dd2eed365f02adc50eec5f105af7291f59"
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
-    eslint-config-mongrel kavsingh/eslint-config-mongrel.git#3.3.0
+    eslint-config-mongrel kavsingh/eslint-config-mongrel.git#3.4.1
 
-eslint-config-mongrel@kavsingh/eslint-config-mongrel.git#3.3.0:
-  version "3.3.0"
-  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel/tar.gz/933759baeb62ee38ed7877597f6566354b29d86e"
+eslint-config-mongrel@kavsingh/eslint-config-mongrel.git#3.4.1:
+  version "3.4.1"
+  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel/tar.gz/2fc8996493c2619d3ef7a22cabbd40dc476d6c2f"
 
 eslint-config-prettier@^2.9.0:
   version "2.9.0"
@@ -2684,13 +2677,13 @@ eslint-plugin-prettier@^2.5.0:
     fast-diff "^1.1.1"
     jest-docblock "^21.0.0"
 
-eslint-plugin-react@^7.5.1:
-  version "7.5.1"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.5.1.tgz#52e56e8d80c810de158859ef07b880d2f56ee30b"
+eslint-plugin-react@^7.6.0:
+  version "7.6.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-react/-/eslint-plugin-react-7.6.0.tgz#351651188c74c5b2fecc2717e3936b7207baa728"
   dependencies:
-    doctrine "^2.0.0"
+    doctrine "^2.0.2"
     has "^1.0.1"
-    jsx-ast-utils "^2.0.0"
+    jsx-ast-utils "^2.0.1"
     prop-types "^15.6.0"
 
 eslint-restricted-globals@^0.1.1:
@@ -4561,7 +4554,7 @@ jstransform@^11.0.3:
     object-assign "^2.0.0"
     source-map "^0.4.2"
 
-jsx-ast-utils@^2.0.0:
+jsx-ast-utils@^2.0.0, jsx-ast-utils@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/jsx-ast-utils/-/jsx-ast-utils-2.0.1.tgz#e801b1b39985e20fffc87b40e3748080e2dcac7f"
   dependencies:
@@ -5620,9 +5613,9 @@ popmotion@^8.1.0:
     style-value-types "^1.0.3"
     stylefire "^1.1.8"
 
-popmotion@^8.1.8:
-  version "8.1.8"
-  resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.1.8.tgz#769e4ba397a8e2eb88342750b157353741de3328"
+popmotion@^8.1.9:
+  version "8.1.9"
+  resolved "https://registry.yarnpkg.com/popmotion/-/popmotion-8.1.9.tgz#c4173bda07219ab07c81b6991b756b843bc11baf"
   dependencies:
     framesync "^3.1.7"
     style-value-types "^1.0.3"
@@ -5640,9 +5633,9 @@ posix-character-classes@^0.1.0:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/posix-character-classes/-/posix-character-classes-0.1.1.tgz#01eac0fe3b5af71a2a6c02feabb8c1fef7e00eab"
 
-preact-compat@^3.17.0:
-  version "3.17.0"
-  resolved "https://registry.yarnpkg.com/preact-compat/-/preact-compat-3.17.0.tgz#528cfdfc301190c1a0f47567336be1f4be0266b3"
+preact-compat@^3.18.0:
+  version "3.18.0"
+  resolved "https://registry.yarnpkg.com/preact-compat/-/preact-compat-3.18.0.tgz#ca430cc1f67193fb9feaf7c510832957b2ebe701"
   dependencies:
     immutability-helper "^2.1.2"
     preact-render-to-string "^3.6.0"
