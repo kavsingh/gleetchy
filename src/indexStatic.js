@@ -1,5 +1,5 @@
 import React from 'react'
-import { renderToString } from 'react-dom/server'
+import renderToString from 'preact-render-to-string'
 import { renderStylesToString } from 'emotion-server'
 
 import { configureStore } from '~/state/configureStore'

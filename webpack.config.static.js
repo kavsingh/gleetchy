@@ -37,8 +37,8 @@ module.exports = {
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
     alias: {
-      // react: 'preact-compat',
-      // 'react-dom': 'preact-compat',
+      react: 'preact-compat',
+      'react-dom': 'preact-compat',
       '~': path.resolve(__dirname, 'src'),
     },
     extensions: ['.js'],
