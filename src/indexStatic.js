@@ -1,6 +1,6 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
-import { renderStyleToString } from 'emotion-server'
+import { renderStylesToString } from 'emotion-server'
 
 import { configureStore } from '~/state/configureStore'
 
@@ -11,5 +11,5 @@ export default (initialState = {}) => {
 
   applyGlobalStyles()
 
-  return renderStyleToString(renderToString(<Main store={store} />))
+  return renderStylesToString(renderToString(<Main store={store} />))
 }

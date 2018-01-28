@@ -8,9 +8,6 @@ import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
 import ErrorBoundary from '~/components/ErrorBoundary'
 
-const container = document.createElement('div')
-document.body.appendChild(container)
-
 export const applyGlobalStyles = () => injectGlobal`
   html {
     box-sizing: border-box;

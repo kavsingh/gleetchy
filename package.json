@@ -13,8 +13,6 @@
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server",
     "start:public": "PUBLIC=true NODE_ENV=development webpack-dev-server",
-    "build": "rimraf dist && NODE_ENV=production webpack",
-    "static": "rimraf distStatic && NODE_ENV=production node renderStatic",
     "lint": "eslint .",
     "jest": "NODE_ENV=test jest --config=.jestrc.js",
     "test": "npm run jest -- --coverage --verbose",
@@ -24,7 +22,10 @@
     "generate:component": "node ./scripts/bin/generateComponent.js",
     "generate:state": "node ./scripts/bin/generateState.js",
     "bundle:inspect": "BUNDLE_ANALYZE=true yarn build",
-    "bundle:visualize": "BUNDLE_VISUALIZE=true yarn build && open stats.html"
+    "bundle:visualize": "BUNDLE_VISUALIZE=true yarn build && open stats.html",
+    "build": "rimraf dist && NODE_ENV=production webpack",
+    "static": "rimraf distStatic && NODE_ENV=production node renderStatic",
+    "export": "npm run build && npm run static"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.38",
