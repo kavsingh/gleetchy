@@ -2630,16 +2630,16 @@ eslint-config-airbnb@^16.1.0:
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
 
-eslint-config-mongrel-react@kavsingh/eslint-config-mongrel-react.git#5.2.0:
-  version "5.2.0"
-  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel-react/tar.gz/f61d16dd2eed365f02adc50eec5f105af7291f59"
+eslint-config-mongrel-react@kavsingh/eslint-config-mongrel-react.git#5.2.1:
+  version "5.2.1"
+  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel-react/tar.gz/2d7a011ad064d2fda41c03ab1540afc7fac9ff07"
   dependencies:
     eslint-config-airbnb-base "^12.1.0"
-    eslint-config-mongrel kavsingh/eslint-config-mongrel.git#3.4.1
+    eslint-config-mongrel kavsingh/eslint-config-mongrel.git#3.4.2
 
-eslint-config-mongrel@kavsingh/eslint-config-mongrel.git#3.4.1:
-  version "3.4.1"
-  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel/tar.gz/2fc8996493c2619d3ef7a22cabbd40dc476d6c2f"
+eslint-config-mongrel@kavsingh/eslint-config-mongrel.git#3.4.2:
+  version "3.4.2"
+  resolved "https://codeload.github.com/kavsingh/eslint-config-mongrel/tar.gz/c786ff2a7f39d158fec006965f75ee9258cfa658"
 
 eslint-config-prettier@^2.9.0:
   version "2.9.0"
