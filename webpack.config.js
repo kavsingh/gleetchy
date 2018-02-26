@@ -19,6 +19,7 @@ const servePublic = process.env.PUBLIC === 'true'
 const publicPath = ''
 
 module.exports = {
+  mode: isProduction ? 'production' : 'development',
   entry: {
     gleetchy: ['./src/index.js'],
   },

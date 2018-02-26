@@ -5,6 +5,7 @@ const fromRoot = path.resolve.bind(path, __dirname)
 const publicPath = ''
 
 module.exports = {
+  mode: 'production',
   entry: {
     gleetchy: [
       '@babel/polyfill',
