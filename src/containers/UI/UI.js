@@ -1,7 +1,7 @@
 import React from 'react'
 import { pure } from 'recompose'
 import Favicon from 'react-favicon'
-import GithubIcon from 'react-icons/lib/go/mark-github'
+import { GoMarkGithub } from 'react-icons/go'
 
 import PropTypes from '~/PropTypes'
 import { COLOR_BODY, COLOR_KEYLINE } from '~/constants/style'
@@ -72,7 +72,7 @@ const UI = ({ isPlaying, togglePlayback }) => (
           rel="noopener noreferrer"
           title="view on github"
         >
-          <GithubIcon />
+          <GoMarkGithub />
         </a>
       </div>
     </div>

@@ -1,39 +1,55 @@
-import React from 'react'
-import { MotionValue } from 'popmotion-react'
-import spring from 'popmotion/animations/spring'
+import React, { PureComponent } from 'react'
+import posed from 'react-pose'
 
 import PropTypes from '~/PropTypes'
 import { cssLabeled } from '~/util/style'
 
-const stateChangeHandlers = {
-  visible: ({ value }) => spring({ from: 0, to: 1 }).start(value),
-}
-
-const classes = cssLabeled('animIn', {
+const classNames = cssLabeled('animIn', {
   root: {
     width: '100%',
     height: '100%',
   },
 })
 
-function AnimIn({ children }) {
-  return (
-    <MotionValue onStateChange={stateChangeHandlers} initialState="visible">
-      {({ v }) => (
-        <div className={classes.root} style={{ opacity: v }}>
-          {children}
-        </div>
-      )}
-    </MotionValue>
-  )
-}
+const Root = posed.div({
+  hidden: { opacity: 0 },
+  visible: { opacity: 1 },
+})
 
-AnimIn.propTypes = {
-  children: PropTypes.node,
-}
+export default class AnimIn extends PureComponent {
+  propTypes = {
+    children: PropTypes.node,
+  }
 
-AnimIn.defaultProps = {
-  children: [],
-}
+  defaultProps = {
+    children: [],
+  }
 
-export default AnimIn
+  state = {
+    isVisible: false,
+  }
+
+  componentDidMount() {
+    this.visibleTimeout = setTimeout(
+      () => this.setState({ isVisible: true }),
+      0,
+    )
+  }
+
+  componentWillUnmount() {
+    if (this.visibleTimeout) {
+      clearTimeout(this.visibleTimeout)
+    }
+  }
+
+  render() {
+    const { isVisible } = this.state
+    const { children } = this.props
+
+    return (
+      <Root className={classNames.root} pose={isVisible ? 'visible' : 'hidden'}>
+        {children}
+      </Root>
+    )
+  }
+}

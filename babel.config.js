@@ -13,7 +13,6 @@ module.exports = {
         },
         env === 'test'
           ? {
-              sourceType: 'module',
               modules: 'commonjs',
               useBuiltIns: false,
             }
@@ -23,8 +22,7 @@ module.exports = {
     '@babel/preset-react',
   ],
   plugins: [
-    '@babel/plugin-syntax-object-rest-spread',
-    '@babel/plugin-proposal-object-rest-spread',
+    '@babel/plugin-proposal-class-properties',
     'webpack-alias',
     env === 'production' && [
       'transform-react-remove-prop-types',

@@ -1,3 +1,5 @@
+import uuid from 'uuid-random'
+
 import COLORS from '~/constants/color'
 import {
   nodeType as loopNodeType,
@@ -26,8 +28,8 @@ const addInstrument = (state, { type }) => {
         ...state,
         {
           type: loopNodeType,
-          id: `loop${state.length}`,
-          label: `L${state.length}`,
+          id: uuid(),
+          label: 'LX',
           color: COLORS[state.length % COLORS.length],
           props: { ...loopNodeProps },
         },

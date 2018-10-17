@@ -1,3 +1,5 @@
+import uuid from 'uuid-random'
+
 import COLORS from '~/constants/color'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import * as loop from '~/nodes/instruments/loop'
@@ -17,14 +19,14 @@ export const audioContexts = [
 export const instruments = [
   {
     type: loop.nodeType,
-    id: 'loop0',
+    id: uuid(),
     label: 'L0',
     color: COLORS[1],
     props: { ...loop.nodeProps },
   },
   {
     type: loop.nodeType,
-    id: 'loop1',
+    id: uuid(),
     label: 'L1',
     color: COLORS[2],
     props: { ...loop.nodeProps },
@@ -34,28 +36,28 @@ export const instruments = [
 export const audioEffects = [
   {
     type: delay.nodeType,
-    id: 'delay0',
+    id: uuid(),
     label: 'D0',
     color: COLORS[3],
     props: { ...delay.nodeProps },
   },
   {
     type: delay.nodeType,
-    id: 'delay1',
+    id: uuid(),
     label: 'D1',
     color: COLORS[4],
     props: { ...delay.nodeProps },
   },
   {
     type: reverb.nodeType,
-    id: 'reverb0',
+    id: uuid(),
     label: 'R0',
     color: COLORS[5],
     props: { ...reverb.nodeProps },
   },
   {
     type: reverb.nodeType,
-    id: 'reverb1',
+    id: uuid(),
     label: 'R1',
     color: COLORS[6],
     props: { ...reverb.nodeProps },

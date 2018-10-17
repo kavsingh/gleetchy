@@ -2,12 +2,10 @@ const { promisify } = require('util')
 const path = require('path')
 const readFile = promisify(require('fs').readFile)
 const writeFile = promisify(require('fs').writeFile)
-
 const webpack = promisify(require('webpack'))
 const cheerio = require('cheerio')
 
 const spawnAsync = require('./scripts/lib/spawnAsync')
-
 const baseConfig = require('./webpack.config')
 const config = require('./webpack.config.static')
 

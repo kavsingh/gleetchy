@@ -1,4 +1,5 @@
-import { propEq } from 'ramda'
+import uuid from 'uuid-random'
+
 import COLORS from '~/constants/color'
 import {
   removeNodeFromState,
@@ -26,28 +27,24 @@ const defaultState = [...audioEffects]
 const addAudioEffect = (state, { type }) => {
   switch (type) {
     case delayNodeType: {
-      const delayNodes = state.filter(propEq('type', delayNodeType))
-
       return [
         ...state,
         {
           type: delayNodeType,
-          id: `delay${delayNodes.length}`,
-          label: `D${delayNodes.length}`,
+          id: uuid(),
+          label: 'DX',
           color: COLORS[state.length % COLORS.length],
           props: { delayNodeProps },
         },
       ]
     }
     case reverbNodeType: {
-      const reverbNodes = state.filter(propEq('type', reverbNodeType))
-
       return [
         ...state,
         {
           type: reverbNodeType,
-          id: `reverb${reverbNodes.length}`,
-          label: `R${reverbNodes.length}`,
+          id: uuid(),
+          label: `RX`,
           color: COLORS[state.length % COLORS.length],
           props: { ...reverbNodeProps },
         },
