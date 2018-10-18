@@ -1,5 +1,4 @@
-import uuid from 'uuid-random'
-
+import { uuid } from '~/util/uuid'
 import COLORS from '~/constants/color'
 import {
   removeNodeFromState,
@@ -15,6 +14,7 @@ import {
   nodeType as reverbNodeType,
   nodeProps as reverbNodeProps,
 } from '~/nodes/audioEffects/reverb'
+
 import {
   AUDIO_EFFECT_ADD,
   AUDIO_EFFECT_REMOVE,

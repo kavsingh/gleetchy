@@ -1,5 +1,4 @@
-import uuid from 'uuid-random'
-
+import { uuid } from '~/util/uuid'
 import COLORS from '~/constants/color'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import * as loop from '~/nodes/instruments/loop'

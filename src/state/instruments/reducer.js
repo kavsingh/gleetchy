@@ -1,5 +1,4 @@
-import uuid from 'uuid-random'
-
+import { uuid } from '~/util/uuid'
 import COLORS from '~/constants/color'
 import {
   nodeType as loopNodeType,
@@ -12,6 +11,7 @@ import {
 } from '~/state/nodeReducerUtil'
 import { instruments } from '~/state/defaultNodes'
 import { AUDIO_FILE_DECODE_COMPLETE } from '~/state/audioFiles/actionTypes'
+
 import {
   INSTRUMENT_ADD,
   INSTRUMENT_REMOVE,
