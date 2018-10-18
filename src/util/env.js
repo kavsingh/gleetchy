@@ -10,7 +10,10 @@ export const hasWindowWith = (propPaths = []) => {
 
   if (!win) return false
 
-  const windowHas = pipe(path(__, win), o => typeof o !== 'undefined')
+  const windowHas = pipe(
+    path(__, win),
+    o => typeof o !== 'undefined',
+  )
 
   return propPaths.every(windowHas)
 }

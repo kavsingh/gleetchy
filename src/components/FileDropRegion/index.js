@@ -11,37 +11,40 @@ class FileDropRegion extends PureComponent {
 
     this.state = { dropActive: false }
 
-    this.handleFileDrop = this.handleFileDrop.bind(this)
-    this.handleDragEnter = this.handleDragEnter.bind(this)
-    this.handleDragLeave = this.handleDragLeave.bind(this)
-    this.handleDragEnd = this.handleDragLeave.bind(this)
+    this.handleDragEnd = this.handleDragLeave
   }
 
-  handleDragEnter(event) {
+  handleDragEnter = event => {
     cancelEvent(event)
     this.setState(() => ({ dropActive: true }))
   }
 
-  handleDragLeave(event) {
+  handleDragLeave = event => {
     cancelEvent(event)
     this.setState(() => ({ dropActive: false }))
   }
 
-  handleFileDrop(event) {
+  handleFileDrop = event => {
+    const { fileFilter, onFiles, onNoFiles } = this.props
+
     const receivable = Array.from(
       (event.dataTransfer || {}).files || [],
-    ).filter(this.props.fileFilter)
+    ).filter(fileFilter)
 
     cancelEvent(event)
 
-    if (!receivable.length) this.props.onNoFiles()
-    else this.props.onFiles(receivable)
+    if (!receivable.length) onNoFiles()
+    else onFiles(receivable)
 
     this.setState(() => ({ dropActive: false }))
   }
 
   render() {
-    return this.props.children({
+    const { children } = this.props
+    const { dropActive } = this.state
+
+    return children({
+      dropActive,
       onDrag: cancelEvent,
       onDragStart: cancelEvent,
       onDragOver: cancelEvent,
@@ -49,7 +52,6 @@ class FileDropRegion extends PureComponent {
       onDragEnter: this.handleDragEnter,
       onDragLeave: this.handleDragLeave,
       onDrop: this.handleFileDrop,
-      dropActive: this.state.dropActive,
     })
   }
 }

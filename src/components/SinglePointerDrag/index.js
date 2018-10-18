@@ -13,7 +13,10 @@ const normalizeEvent = event => {
   return { currentTarget, clientX, clientY, timeStamp }
 }
 
-const cancelAndNormalizeEvent = pipe(tap(cancelEvent), normalizeEvent)
+const cancelAndNormalizeEvent = pipe(
+  tap(cancelEvent),
+  normalizeEvent,
+)
 
 class SinglePointerDrag extends PureComponent {
   constructor(...args) {

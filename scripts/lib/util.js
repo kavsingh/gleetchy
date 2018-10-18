@@ -16,7 +16,11 @@ const splitOnPredicate = curry((pred, str) =>
     .map(Array.isArray(str) ? identity : join('')),
 )
 
-const toConstantName = pipe(splitOnPredicate(isUpper), map(toUpper), join('_'))
+const toConstantName = pipe(
+  splitOnPredicate(isUpper),
+  map(toUpper),
+  join('_'),
+)
 
 const upperFirst = s => `${s[0].toUpperCase()}${s.slice(1)}`
 

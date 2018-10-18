@@ -40,4 +40,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(toggleConnectionAction(from, to)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(PatchBay)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(PatchBay)

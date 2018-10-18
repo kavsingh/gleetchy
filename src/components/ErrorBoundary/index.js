@@ -14,11 +14,14 @@ class ErrorBoundary extends PureComponent {
   }
 
   render() {
-    if (this.state.error && !this.props.silent) {
-      return this.props.renderError(this.state.error)
+    const { error } = this.state
+    const { silent, renderError, children } = this.props
+
+    if (error && !silent) {
+      return renderError(error)
     }
 
-    return <div>{this.props.children}</div>
+    return <div>{children}</div>
   }
 }
 

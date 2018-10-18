@@ -77,6 +77,7 @@ class Knob extends PureComponent {
   }
 
   handleDragMove({ movementX, movementY }) {
+    const { onChange, value } = this.props
     const { axis } = this.state
     const { knobNode } = this
 
@@ -90,13 +91,15 @@ class Knob extends PureComponent {
         ? movementX / knobNode.offsetWidth
         : -movementY / knobNode.offsetHeight
 
-    this.props.onChange(clamp(0, 1, this.props.value + move))
+    onChange(clamp(0, 1, value + move))
 
     if (!axis) this.setState(() => ({ axis: moveAxis }))
   }
 
   handleDoubleClick() {
-    this.props.onChange(this.props.defaultValue)
+    const { onChange, defaultValue } = this.props
+
+    onChange(defaultValue)
   }
 
   render() {

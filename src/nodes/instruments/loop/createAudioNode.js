@@ -21,7 +21,9 @@ export default curry((audioContext, initProps) => {
   gainNode.gain.value = props.gain
 
   const transferPropsToBufferSourceNode = () => {
-    const { audioBuffer: { duration } } = props
+    const {
+      audioBuffer: { duration },
+    } = props
 
     bufferSourceNode.loopStart = props.loopStart * duration
     bufferSourceNode.loopEnd = props.loopEnd * duration
