@@ -11,6 +11,7 @@ const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const VisualizerPlugin = require('webpack-visualizer-plugin')
 const PWAManifest = require('webpack-pwa-manifest')
+
 const { COLOR_PAGE } = require('./src/constants/style')
 
 const fromRoot = path.resolve.bind(path, __dirname)
@@ -28,7 +29,9 @@ module.exports = {
     path: fromRoot('dist'),
     publicPath,
   },
-  devtool: isProduction ? 'source-map' : 'cheap-eval-sourcemap',
+  // FIXME: Workaround until https://github.com/webpack-contrib/babel-minify-webpack-plugin/issues/68 is fixed
+  // devtool: isProduction ? 'source-map' : 'cheap-eval-sourcemap',
+  devtool: isProduction ? false : 'cheap-eval-sourcemap',
   devServer: {
     host: servePublic ? '0.0.0.0' : 'localhost',
     port: 3000,
