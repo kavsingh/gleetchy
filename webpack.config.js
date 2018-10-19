@@ -42,7 +42,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         exclude: fromRoot('node_modules'),
         use: [{ loader: 'babel-loader' }],
       },

@@ -1,8 +1,8 @@
 module.exports = {
   setupFiles: ['<rootDir>/__testSetup__/polyfill.js'],
-  testRegex: '\\.test\\.js$',
+  testRegex: '\\.test\\.[jt]sx?$',
   coverageDirectory: '<rootDir>/coverage/',
-  collectCoverageFrom: ['src/**/*.js'],
+  collectCoverageFrom: ['src/**/*.[jt]sx?'],
   coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
   moduleNameMapper: {
     '^~/(.*)': '<rootDir>/src/$1',

@@ -24,7 +24,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.[jt]sx?$/,
         exclude: fromRoot('node_modules'),
         use: [{ loader: 'babel-loader' }],
       },
@@ -42,6 +42,6 @@ module.exports = {
       'react-dom': 'preact-compat',
       '~': path.resolve(__dirname, 'src'),
     },
-    extensions: ['.js'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
 }
