@@ -49,7 +49,7 @@ const AudioEffectsRack = ({
   getConnections,
 }) => (
   <div className={classes.root}>
-    {audioEffects.map(({ id, type, props, label }) => {
+    {audioEffects.map(({ id, type, props: effectProps, label }) => {
       switch (type) {
         case delayType:
           return (
@@ -59,8 +59,8 @@ const AudioEffectsRack = ({
                   label={label}
                   connections={getConnections(id)}
                   isActive={activeAudioEffects.includes(id)}
-                  wetDryRatio={props.wetDryRatio}
-                  delayTime={props.delayTime}
+                  wetDryRatio={effectProps.wetDryRatio}
+                  delayTime={effectProps.delayTime}
                   onDelayTimeChange={delayTime =>
                     updateAudioEffect(id, { delayTime })
                   }
@@ -81,7 +81,7 @@ const AudioEffectsRack = ({
                   label={label}
                   connections={getConnections(id)}
                   isActive={activeAudioEffects.includes(id)}
-                  wetDryRatio={props.wetDryRatio}
+                  wetDryRatio={effectProps.wetDryRatio}
                   onWetDryRatioChange={wetDryRatio =>
                     updateAudioEffect(id, { wetDryRatio })
                   }

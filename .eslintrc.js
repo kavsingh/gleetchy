@@ -28,6 +28,7 @@ module.exports = {
   extends: ['mongrel-react', 'prettier', 'prettier/react'],
   rules: {
     ...importDev,
+    'react/destructuring-assignment': 'off',
     'prettier/prettier': 'warn',
   },
   overrides: [
