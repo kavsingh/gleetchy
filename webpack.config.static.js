@@ -10,7 +10,7 @@ module.exports = {
     gleetchy: [
       '@babel/polyfill',
       'regenerator-runtime',
-      './src/indexStatic.js',
+      './src/indexStatic.tsx',
     ],
   },
   output: {

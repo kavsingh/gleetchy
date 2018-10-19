@@ -22,7 +22,7 @@ const publicPath = ''
 module.exports = {
   mode: isProduction ? 'production' : 'development',
   entry: {
-    gleetchy: ['./src/index.js'],
+    gleetchy: ['./src/index.tsx'],
   },
   output: {
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
@@ -108,6 +108,6 @@ module.exports = {
       { '~': path.resolve(__dirname, 'src') },
       isProduction && { react: 'preact-compat', 'react-dom': 'preact-compat' },
     ),
-    extensions: ['.js'],
+    extensions: ['.js', '.ts', '.tsx'],
   },
 }

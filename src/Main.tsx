@@ -1,12 +1,13 @@
-import React from 'react'
-import { Provider } from 'react-redux'
-import { injectGlobal } from 'emotion'
+import React, { StatelessComponent } from 'react'
 
-import PropTypes from '~/PropTypes'
+import { injectGlobal } from 'emotion'
+import { Provider } from 'react-redux'
+import { Store } from 'redux'
+
+import ErrorBoundary from '~/components/ErrorBoundary'
 import { COLOR_PAGE } from '~/constants/style'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
-import ErrorBoundary from '~/components/ErrorBoundary'
 
 export const applyGlobalStyles = () => injectGlobal`
   html {
@@ -50,21 +51,17 @@ export const applyGlobalStyles = () => injectGlobal`
 
 //
 
-export default function Main({ store }) {
-  return (
-    <Provider store={store}>
-      <div>
-        <ErrorBoundary>
-          <AudioEngine />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <UI />
-        </ErrorBoundary>
-      </div>
-    </Provider>
-  )
-}
+const Main: StatelessComponent<{ store: Store }> = ({ store }) => (
+  <Provider store={store}>
+    <div>
+      <ErrorBoundary>
+        <AudioEngine />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <UI />
+      </ErrorBoundary>
+    </div>
+  </Provider>
+)
 
-Main.propTypes = {
-  store: PropTypes.shape({}).isRequired,
-}
+export default Main

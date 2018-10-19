@@ -2,6 +2,7 @@
   "extends": ["tslint:recommended", "tslint-config-prettier"],
   "rulesDirectory": ["tslint-plugin-prettier"],
   "rules": {
+    "interface-name": false,
     "prettier": { "severity": "warning" }
   }
 }

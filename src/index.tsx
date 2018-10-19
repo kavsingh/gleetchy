@@ -1,12 +1,14 @@
 import React from 'react'
 import dom from 'react-dom'
 
-import offlineInstall from '~/util/offlineInstall'
+import { Store } from 'redux'
+
 import { configureStore } from '~/state/configureStore'
+import offlineInstall from '~/util/offlineInstall'
 
 import Main, { applyGlobalStyles } from './Main'
 
-const store = configureStore()
+const store: Store = configureStore()
 
 applyGlobalStyles()
 offlineInstall('gleetchy-sw.js', '')
