@@ -1,18 +1,21 @@
-/* eslint-disable no-console, no-param-reassign */
-/* global process */
+/* tslint:disable no-console */
 /*
   Install offline service worker
   from https://github.com/ooade/NextSimpleStarter
 */
-import { noop } from './function'
 import { hasWindowWith } from './env'
+import { noop } from './function'
 
-const offlineInstall = (serviceWorkerUrl, scope) => {
+const offlineInstall = (serviceWorkerUrl: string, scope: string) => {
   navigator.serviceWorker
     .register(serviceWorkerUrl, { scope })
     .then(reg => {
       reg.onupdatefound = function regOnUpdateFound() {
         const installingWorker = reg.installing
+
+        if (!installingWorker) {
+          return
+        }
 
         installingWorker.onstatechange = function workerOnStateChange() {
           switch (installingWorker.state) {
@@ -32,8 +35,8 @@ const offlineInstall = (serviceWorkerUrl, scope) => {
         }
       }
     })
-    .catch(e => {
-      console.error('Error during service worker registration:', e)
+    .catch(error => {
+      console.error('Error during service worker registration:', error)
     })
 }
 

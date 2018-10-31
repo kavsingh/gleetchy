@@ -6,9 +6,10 @@ import { Store } from 'redux'
 import { configureStore } from '~/state/configureStore'
 import offlineInstall from '~/util/offlineInstall'
 
-import Main, { applyGlobalStyles } from './Main'
+import MainComp, { applyGlobalStyles } from './Main'
 
 const store: Store = configureStore()
+const Main = MainComp as any
 
 applyGlobalStyles()
 offlineInstall('gleetchy-sw.js', '')

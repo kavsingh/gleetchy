@@ -1,13 +1,17 @@
 import { audioContexts } from '~/state/defaultNodes'
 import { updateNodeLabelInState } from '~/state/nodeReducerUtil'
+import { GAudioNode } from '~/types'
+
 import { AUDIO_CONTEXT_UPDATE_LABEL } from './actionTypes'
 
-const defaultState = [...audioContexts]
+export type AudioContextsState = Array<GAudioNode<{}>>
+
+const defaultState: AudioContextsState = [...audioContexts]
 
 const audioContextsReducer = (
   state = defaultState,
-  { type, payload = {} } = {},
-) => {
+  { payload = {}, type }: { payload?: any; type?: string } = {},
+): AudioContextsState => {
   switch (type) {
     case AUDIO_CONTEXT_UPDATE_LABEL:
       return updateNodeLabelInState(state, payload)

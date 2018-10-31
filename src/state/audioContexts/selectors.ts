@@ -1,7 +1,7 @@
-import { identity, head } from 'ramda'
+import { head, identity } from 'ramda'
 import { createSelector } from 'reselect'
 
-const audioContextsStateSelector = state => state.audioContexts
+const audioContextsStateSelector = (state: any) => state.audioContexts
 
 export const audioContextsSelector = createSelector(
   audioContextsStateSelector,

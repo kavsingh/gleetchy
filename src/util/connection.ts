@@ -1,5 +1,12 @@
-export const createConnect = getOutNode =>
-  function connect(node) {
+type AudioNodeReturn = () => AudioNode
+
+interface AudioNodeConnectableProxy {
+  getInNode: AudioNodeReturn
+  getOutNode: AudioNodeReturn
+}
+
+export const createConnect = (getOutNode: AudioNodeReturn) =>
+  function connect(node: AudioNode | AudioNodeConnectableProxy) {
     const outNode = getOutNode()
 
     if (node instanceof AudioNode) {
@@ -11,8 +18,8 @@ export const createConnect = getOutNode =>
     }
   }
 
-export const createDisconnect = getOutNode =>
-  function disconnect(node) {
+export const createDisconnect = (getOutNode: AudioNodeReturn) =>
+  function disconnect(node: AudioNode | AudioNodeConnectableProxy) {
     const outNode = getOutNode()
 
     if (!node) {
@@ -26,10 +33,13 @@ export const createDisconnect = getOutNode =>
     }
   }
 
-export const connectable = ({ getInNode, getOutNode }) => api =>
+export const connectable = ({
+  getInNode,
+  getOutNode,
+}: AudioNodeConnectableProxy) => (api: object) =>
   Object.assign(api, {
-    getInNode,
-    getOutNode,
     connect: createConnect(getOutNode),
     disconnect: createDisconnect(getOutNode),
+    getInNode,
+    getOutNode,
   })

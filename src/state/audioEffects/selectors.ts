@@ -1,10 +1,13 @@
-import { identity, path, propEq } from 'ramda'
+import { identity, propEq } from 'ramda'
 import { createSelector } from 'reselect'
-import { hasDownstreamConnectionTo } from '~/util/audio'
-import { mainOutSelector } from '~/state/audioContexts/selectors'
-import { connectionsSelector } from '~/state/connections/selectors'
 
-const audioEffectsStateSelector = state => state.audioEffects
+import { mainOutSelector } from '~/state/audioContexts/selectors'
+import { ApplicationState } from '~/state/configureStore'
+import { connectionsSelector } from '~/state/connections/selectors'
+import { hasDownstreamConnectionTo } from '~/util/audio'
+
+const audioEffectsStateSelector = (state: ApplicationState) =>
+  state.audioEffects
 
 export const audioEffectsSelector = createSelector(
   audioEffectsStateSelector,
@@ -16,13 +19,10 @@ export const activeAudioEffectsSelector = createSelector(
   connectionsSelector,
   mainOutSelector,
   (audioEffects, connections, mainOut) => {
-    const connectedToMain = hasDownstreamConnectionTo(
-      path(['id'], mainOut),
-      connections,
-    )
+    const connectedToMain = hasDownstreamConnectionTo(mainOut.id, connections)
 
     return audioEffects
-      .map(path(['id']))
+      .map(({ id }) => id)
       .filter(id => connections.some(propEq('to', id)) && connectedToMain(id))
   },
 )

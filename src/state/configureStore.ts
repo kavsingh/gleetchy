@@ -1,9 +1,9 @@
-import { applyMiddleware, combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, createStore, Store } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
-import audioContexts from './audioContexts/reducer'
-import audioEffects from './audioEffects/reducer'
+import audioContexts, { AudioContextsState } from './audioContexts/reducer'
+import audioEffects, { AudioEffectsState } from './audioEffects/reducer'
 import audioEngine from './audioEngine/reducer'
 import audioFiles from './audioFiles/reducer'
 import connections from './connections/reducer'
@@ -13,7 +13,14 @@ import instruments from './instruments/reducer'
 const middlewares = [thunk]
 const composeEnhancers = composeWithDevTools({})
 
-export const configureStore = (initialState = {}) =>
+export interface ApplicationState {
+  audioContexts: AudioContextsState
+  audioEffects: AudioEffectsState
+}
+
+export type ApplicationStore = Store<ApplicationState>
+
+export const configureStore = (initialState = {}): ApplicationStore =>
   createStore(
     combineReducers({
       audioContexts,

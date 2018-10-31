@@ -1,5 +1,6 @@
-export const cancelEvent = event => {
+export const cancelEvent = (event: Event) => {
   event.preventDefault()
   event.stopPropagation()
+
   return false
 }

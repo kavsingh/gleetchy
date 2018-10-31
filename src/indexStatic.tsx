@@ -7,9 +7,11 @@ import { Store } from 'redux'
 
 import { configureStore } from '~/state/configureStore'
 
-import Main, { applyGlobalStyles } from './Main'
+import MainComp, { applyGlobalStyles } from './Main'
 
 type StringRenderer = (...args: any) => string
+
+const Main = MainComp as any
 
 let renderToString: StringRenderer = pRenderToString as any
 
