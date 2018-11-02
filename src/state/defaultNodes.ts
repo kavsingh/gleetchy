@@ -26,14 +26,14 @@ export const audioContexts: AudioContextNode[] = [
 export const instruments: AudioInstrumentNode[] = [
   {
     color: COLORS[1],
-    id: '0c9c1ada-f7ff-47e5-9e1a-45900b578450​​​​​',
+    id: 'looper-default0',
     label: 'L0',
     props: { ...loop.nodeProps },
     type: loop.nodeType,
   },
   {
     color: COLORS[2],
-    id: '​​​​​fa2321d8-210d-41a0-ae51-5b2d251f37c2​​​​​',
+    id: 'looper-default1',
     label: 'L1',
     props: { ...loop.nodeProps },
     type: loop.nodeType,
@@ -43,28 +43,28 @@ export const instruments: AudioInstrumentNode[] = [
 export const audioEffects: AudioEffectNode[] = [
   {
     color: COLORS[3],
-    id: '​​​​​6ca6d5f7-5fe0-4658-a6e9-5884203a724a​​​​​',
+    id: 'delay-default0',
     label: 'D0',
     props: { ...delay.nodeProps },
     type: delay.nodeType,
   },
   {
     color: COLORS[4],
-    id: '​​​​​6f2758bd-290f-43c4-b8dd-e962419c1697​​​​​',
+    id: '​​​​delay-default1',
     label: 'D1',
     props: { ...delay.nodeProps },
     type: delay.nodeType,
   },
   {
     color: COLORS[5],
-    id: '​​​​​0046409d-dbaa-4b92-ae37-889b21b7b4ca​​​​​',
+    id: '​​​​​reverb-default0',
     label: 'R0',
     props: { ...reverb.nodeProps },
     type: reverb.nodeType,
   },
   {
     color: COLORS[6],
-    id: '​​​​​1971f171-48d6-4618-89b4-899416367681​​​​​',
+    id: 'reverb-default1',
     label: 'R1',
     props: { ...reverb.nodeProps },
     type: reverb.nodeType,

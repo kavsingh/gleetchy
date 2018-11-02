@@ -1,7 +1,10 @@
 import { head, identity } from 'ramda'
 import { createSelector } from 'reselect'
 
-const audioContextsStateSelector = (state: any) => state.audioContexts
+import { ApplicationState } from '~/state/configureStore'
+
+const audioContextsStateSelector = (state: ApplicationState) =>
+  state.audioContexts
 
 export const audioContextsSelector = createSelector(
   audioContextsStateSelector,

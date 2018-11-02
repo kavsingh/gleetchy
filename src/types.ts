@@ -8,6 +8,12 @@ export interface GAudioNode<PROPS = {}> {
   type: string
 }
 
+export interface GAudioNodeConnection {
+  from: string
+  to: string
+  color: string
+}
+
 export interface ActionWithPayload<TYPE, PAYLOAD> extends Action<TYPE> {
   payload: PAYLOAD
 }

@@ -15,7 +15,7 @@ import {
   updateNodeLabelInState,
   updateNodePropsInState,
 } from '~/state/nodeReducerUtil'
-import { uuid } from '~/util/uuid'
+import { prefixedId } from '~/util/id'
 
 import { AudioEffectsAction } from './types'
 
@@ -33,7 +33,7 @@ const addAudioEffect = (
         ...state,
         {
           color: COLORS[state.length % COLORS.length],
-          id: uuid(),
+          id: prefixedId('delay'),
           label: 'DX',
           props: { delayNodeProps },
           type: delayNodeType,
@@ -45,7 +45,7 @@ const addAudioEffect = (
         ...state,
         {
           color: COLORS[state.length % COLORS.length],
-          id: uuid(),
+          id: prefixedId('reverb'),
           label: `RX`,
           props: { ...reverbNodeProps },
           type: reverbNodeType,

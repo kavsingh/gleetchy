@@ -1,9 +1,11 @@
 import { hasWindow } from '~/util/env'
 
-let fileInput
+let fileInput: HTMLInputElement
 
 const getFileInput = () => {
-  if (!hasWindow()) return undefined
+  if (!hasWindow()) {
+    return undefined
+  }
 
   if (!fileInput) {
     fileInput = document.createElement('input')
@@ -19,39 +21,59 @@ const getFileInput = () => {
 export const loadAudioFiles = () => {
   const input = getFileInput()
 
-  if (!input) return Promise.reject(new Error('Cannot load files'))
+  if (!input) {
+    return Promise.reject(new Error('Cannot load files'))
+  }
 
-  return new Promise((resolve, reject) => {
+  return new Promise<File[]>((resolve, reject) => {
     input.onchange = () => {
       const { files } = input
 
-      resolve(Array.from(files).filter(({ type }) => type.startsWith('audio/')))
-      input.value = null
+      resolve(
+        Array.from(files || []).filter(({ type }) => type.startsWith('audio/')),
+      )
+      input.value = ''
     }
 
     input.onerror = error => {
       reject(error)
-      input.value = null
+      input.value = ''
     }
 
     input.click()
   })
 }
 
-export const readFileToArrayBuffer = file => {
-  let fileReader = new FileReader()
+export interface DecodedAudioFileData {
+  buffer: ArrayBuffer | string | null
+  fileName: string
+  fileType: string
+}
 
-  return new Promise((resolve, reject) => {
+export const readFileToArrayBuffer = (file: File) => {
+  let fileReader: FileReader | null = new FileReader()
+
+  return new Promise<DecodedAudioFileData>((resolve, reject) => {
+    if (!fileReader) {
+      reject(new Error('Could not create FileReader'))
+      return
+    }
+
     fileReader.onerror = error => {
       reject(error)
       fileReader = null
     }
 
     fileReader.onloadend = () => {
+      if (!fileReader) {
+        reject(new Error('FileReader instance disposed'))
+        return
+      }
+
       resolve({
+        buffer: fileReader.result,
         fileName: file.name,
         fileType: file.type,
-        buffer: fileReader.result,
       })
 
       fileReader = null
@@ -61,7 +83,7 @@ export const readFileToArrayBuffer = file => {
   })
 }
 
-export const readFilesToArrayBuffer = files =>
+export const readFilesToArrayBuffer = (files: File[]) =>
   Promise.all(files.map(readFileToArrayBuffer))
 
 export const loadAudioFilesToArrayBuffers = () =>

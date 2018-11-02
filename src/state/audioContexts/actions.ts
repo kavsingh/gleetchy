@@ -1,6 +1,9 @@
-import { AUDIO_CONTEXT_UPDATE_LABEL } from './actionTypes'
+import { AudioContextUpdateLabelAction } from './types'
 
-export const updateAudioContextLabelAction = (id: string, label: string) => ({
+export const updateAudioContextLabelAction = (
+  id: string,
+  label: string,
+): AudioContextUpdateLabelAction => ({
   payload: { id, label },
-  type: AUDIO_CONTEXT_UPDATE_LABEL,
+  type: 'AUDIO_CONTEXT_UPDATE_LABEL',
 })
