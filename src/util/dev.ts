@@ -1,5 +1,4 @@
-/* eslint-disable no-console */
-/* global process */
+/* tslint:disable no-console */
 import { noop } from './function'
 
 const isDev = process.env.NODE_ENV !== 'production'

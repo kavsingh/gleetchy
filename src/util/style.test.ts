@@ -10,22 +10,17 @@ describe('Style util', () => {
       const styles = { root: { dec: 'foo' }, inner: { dec: 'foo' } }
 
       expect(cssLabeled('', styles)).toEqual({
-        root: 'css-hash-root',
         inner: 'css-hash-inner',
-      })
-
-      expect(cssLabeled(null, styles)).toEqual({
         root: 'css-hash-root',
-        inner: 'css-hash-inner',
       })
 
       expect(cssLabeled('readableName', styles)).toEqual({
-        root: 'css-hash-readableName',
         inner: 'css-hash-readableName__inner',
+        root: 'css-hash-readableName',
       })
 
-      expect(() => cssLabeled(styles)).toThrow()
-      expect(() => cssLabeled('')).toThrow()
+      expect(() => (cssLabeled as any)(styles)).toThrow()
+      expect(() => (cssLabeled as any)('')).toThrow()
     })
   })
 })

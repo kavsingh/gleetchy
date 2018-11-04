@@ -1,9 +1,9 @@
 /* global process */
-import { css } from 'emotion'
+import { css, Interpolation } from 'emotion'
 import { mapObjIndexed } from 'ramda'
 
-let cssLabeledFn = (rootLabel, styles) =>
-  mapObjIndexed(decs => css(decs), styles)
+let cssLabeledFn = (_: string, styles: { [key: string]: Interpolation }) =>
+  mapObjIndexed((decs: Interpolation) => css(decs), styles)
 
 if (process.env.NODE_ENV !== 'production') {
   cssLabeledFn = (rootLabel, styles) => {
@@ -15,14 +15,21 @@ if (process.env.NODE_ENV !== 'production') {
       throw new Error('Expected a string for root label')
     }
 
-    const label = key => {
-      if (key === 'root') return rootLabel || key
+    const label = (key: string) => {
+      if (key === 'root') {
+        return rootLabel || key
+      }
+
       return rootLabel ? `${rootLabel}__${key}` : key
     }
 
-    return mapObjIndexed(
-      (decs, key) => css({ label: label(key), ...decs }),
-      styles,
+    return Object.entries(styles).reduce(
+      (acc: { [key: string]: Interpolation }, [key, decs]) => {
+        acc[key] = css(Object.assign({ label: label(key) }, decs))
+
+        return acc
+      },
+      {},
     )
   }
 }

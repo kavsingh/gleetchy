@@ -38,6 +38,7 @@
     "@babel/register": "^7.0.0",
     "@babel/runtime": "^7.1.2",
     "@types/color": "^3.0.0",
+    "@types/jest": "^23.3.9",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/react": "^16.4.18",
     "@types/react-dom": "^16.0.9",
