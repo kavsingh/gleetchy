@@ -14,9 +14,7 @@ export const addInstrumentAction = (type: string): InstrumentAddAction => ({
 
 export const addLoopAction = () => addInstrumentAction(loopNodeType)
 
-export const removeAudioEffectAction = (
-  id: string,
-): InstrumentRemoveAction => ({
+export const removeInstrumentAction = (id: string): InstrumentRemoveAction => ({
   payload: { id },
   type: 'INSTRUMENT_REMOVE',
 })

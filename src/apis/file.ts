@@ -30,15 +30,17 @@ export const loadAudioFiles = () => {
     input.onchange = () => {
       const { files } = input
 
-      input.value = ''
       resolve(
         Array.from(files || []).filter(({ type }) => type.startsWith('audio/')),
       )
+
+      input.value = ''
     }
 
     input.onerror = error => {
-      input.value = ''
       reject(error)
+
+      input.value = ''
     }
 
     input.click()
