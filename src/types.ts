@@ -1,11 +1,21 @@
 import { Action } from 'redux'
 
-export interface GAudioNode<PROPS = {}> {
+export interface AudioNodeState<PROPS = {}> {
   id: string
   color: string
   label: string
   props: PROPS
   type: string
+}
+
+export interface GAudioNode extends AudioNode {
+  type: 'string'
+  set(props: object): void
+}
+
+export interface InstrumentNode extends GAudioNode {
+  play(): void
+  stop(): void
 }
 
 export interface AudioNodeConnection {

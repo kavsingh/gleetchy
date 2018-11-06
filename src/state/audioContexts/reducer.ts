@@ -2,11 +2,11 @@ import { Reducer } from 'redux'
 
 import { audioContexts } from '~/state/defaultNodes'
 import { updateNodeLabelInState } from '~/state/nodeReducerUtil'
-import { GAudioNode } from '~/types'
+import { AudioNodeState } from '~/types'
 
 import { AudioContextsAction } from './types'
 
-export type AudioContextsState = Array<GAudioNode<{}>>
+export type AudioContextsState = Array<AudioNodeState<{}>>
 
 const defaultState: AudioContextsState = [...audioContexts]
 

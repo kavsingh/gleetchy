@@ -3,15 +3,15 @@ import COLORS from '~/constants/color'
 import * as delay from '~/nodes/audioEffects/delay'
 import * as reverb from '~/nodes/audioEffects/reverb'
 import * as loop from '~/nodes/instruments/loop'
-import { GAudioNode } from '~/types'
+import { AudioNodeState } from '~/types'
 
-export type AudioContextNode = GAudioNode<{}>
+export type AudioContextNode = AudioNodeState<{}>
 
-export type AudioInstrumentNode = GAudioNode<typeof loop.nodeProps>
+export type AudioInstrumentNode = AudioNodeState<typeof loop.nodeProps>
 
 export type AudioEffectNode =
-  | GAudioNode<typeof delay.nodeProps>
-  | GAudioNode<typeof reverb.nodeProps>
+  | AudioNodeState<typeof delay.nodeProps>
+  | AudioNodeState<typeof reverb.nodeProps>
 
 export const audioContexts: AudioContextNode[] = [
   {
