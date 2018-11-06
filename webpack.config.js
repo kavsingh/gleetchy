@@ -1,6 +1,7 @@
 // Consume from es6 imports in src
 require('@babel/register')({
   plugins: ['@babel/plugin-transform-modules-commonjs'],
+  extensions: ['.js', '.jsx', '.ts', '.tsx'],
 })
 
 const path = require('path')

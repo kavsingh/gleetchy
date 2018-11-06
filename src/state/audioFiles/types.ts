@@ -1,4 +1,4 @@
-import { ActionWithPayload } from '~/types'
+import { ActionWithPayload, AudioFileData, DecodedAudioFileData } from '~/types'
 
 export type AudioFileLoadStartAction = ActionWithPayload<
   'AUDIO_FILE_LOAD_START',
@@ -12,7 +12,7 @@ export type AudioFileLoadErrorAction = ActionWithPayload<
 
 export type AudioFileLoadCompleteAction = ActionWithPayload<
   'AUDIO_FILE_LOAD_COMPLETE',
-  { id: string; file: any; buffer: AudioBuffer }
+  { id: string; file: AudioFileData }
 >
 
 export type AudioFileDecodeStartAction = ActionWithPayload<
@@ -27,7 +27,10 @@ export type AudioFileDecodeErrorAction = ActionWithPayload<
 
 export type AudioFileDecodeCompleteAction = ActionWithPayload<
   'AUDIO_FILE_DECODE_COMPLETE',
-  { id: string; file: any; buffer: AudioBuffer }
+  {
+    id: string
+    file: DecodedAudioFileData
+  }
 >
 
 export type AudioFilesAction =

@@ -5,7 +5,7 @@ import {
   nodeProps as loopNodeProps,
   nodeType as loopNodeType,
 } from '~/nodes/instruments/loop'
-import { AUDIO_FILE_DECODE_COMPLETE } from '~/state/audioFiles/actionTypes'
+import { AudioFileDecodeCompleteAction } from '~/state/audioFiles/types'
 import { AudioInstrumentNode, instruments } from '~/state/defaultNodes'
 import {
   removeNodeFromState,
@@ -38,24 +38,24 @@ const addInstrument = (state: InstrumentsState, { type }: { type: string }) => {
   }
 }
 
-const instrumentsReducer: Reducer<InstrumentsState, InstrumentsAction> = (
-  state = defaultState,
-  action,
-) => {
+const instrumentsReducer: Reducer<
+  InstrumentsState,
+  InstrumentsAction | AudioFileDecodeCompleteAction
+> = (state = defaultState, action) => {
   switch (action.type) {
     case 'INSTRUMENT_ADD':
       return addInstrument(state, action.payload)
     case 'INSTRUMENT_REMOVE':
-      return removeNodeFromState(state, action.payload)
+      return removeNodeFromState<InstrumentsState>(state, action.payload)
     case 'INSTRUMENT_UPDATE_PROPS':
-      return updateNodePropsInState(state, action.payload)
-    case AUDIO_FILE_DECODE_COMPLETE:
-      return updateNodePropsInState(state, {
+      return updateNodePropsInState<InstrumentsState>(state, action.payload)
+    case 'AUDIO_FILE_DECODE_COMPLETE':
+      return updateNodePropsInState<InstrumentsState>(state, {
         id: action.payload.id,
         props: action.payload.file,
       })
     case 'INSTRUMENT_UPDATE_LABEL':
-      return updateNodeLabelInState(state, action.payload)
+      return updateNodeLabelInState<InstrumentsState>(state, action.payload)
     default:
       return state
   }

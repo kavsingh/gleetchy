@@ -4,7 +4,7 @@ import { noop } from './function'
 const isDev = process.env.NODE_ENV !== 'production'
 const cLog = console.log.bind(console)
 const cWarn = console.warn.bind(console)
-const cError = console.warn.bind(console)
+const cError = console.error.bind(console)
 
 export const log = isDev ? cLog : noop
 export const warn = isDev ? cWarn : noop

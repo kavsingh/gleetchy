@@ -1,14 +1,14 @@
 import { omit, without } from 'ramda'
 import { Reducer } from 'redux'
 
-import { DecodedAudioFileData } from '~/apis/file'
+import { AudioFileData } from '~/types'
 
 import { AudioFilesAction } from './types'
 
 export interface AudioFilesState {
   decodeErrors: { [key: string]: Error }
   decodingIds: string[]
-  files: { [key: string]: DecodedAudioFileData }
+  files: { [key: string]: AudioFileData }
   loadErrors: { [key: string]: Error }
   loadingIds: string[]
 }

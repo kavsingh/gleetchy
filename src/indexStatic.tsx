@@ -3,9 +3,12 @@ import React from 'react'
 import { renderStylesToString } from 'emotion-server'
 import pRenderToString from 'preact-render-to-string'
 import { renderToString as rdRenderToString } from 'react-dom/server'
-import { Store } from 'redux'
 
-import { configureStore } from '~/state/configureStore'
+import {
+  ApplicationState,
+  ApplicationStore,
+  configureStore,
+} from '~/state/configureStore'
 
 import MainComp, { applyGlobalStyles } from './Main'
 
@@ -19,8 +22,8 @@ if (process.env.NODE_ENV !== 'production') {
   renderToString = rdRenderToString
 }
 
-export default (initialState = {}) => {
-  const store: Store = configureStore(initialState)
+export default (initialState: Partial<ApplicationState> = {}) => {
+  const store: ApplicationStore = configureStore(initialState)
 
   applyGlobalStyles()
 

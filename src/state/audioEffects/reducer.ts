@@ -65,11 +65,11 @@ const audioEffectsReducer: Reducer<AudioEffectsState, AudioEffectsAction> = (
     case 'AUDIO_EFFECT_ADD':
       return addAudioEffect(state, action.payload)
     case 'AUDIO_EFFECT_REMOVE':
-      return removeNodeFromState(state, action.payload)
+      return removeNodeFromState<AudioEffectsState>(state, action.payload)
     case 'AUDIO_EFFECT_UPDATE_PROPS':
-      return updateNodePropsInState(state, action.payload)
+      return updateNodePropsInState<AudioEffectsState>(state, action.payload)
     case 'AUDIO_EFFECT_UPDATE_LABEL':
-      return updateNodeLabelInState(state, action.payload)
+      return updateNodeLabelInState<AudioEffectsState>(state, action.payload)
     default:
       return state
   }

@@ -1,3 +1,4 @@
+import { AudioFileData } from '~/types'
 import { hasWindow } from '~/util/env'
 
 let fileInput: HTMLInputElement
@@ -29,31 +30,25 @@ export const loadAudioFiles = () => {
     input.onchange = () => {
       const { files } = input
 
+      input.value = ''
       resolve(
         Array.from(files || []).filter(({ type }) => type.startsWith('audio/')),
       )
-      input.value = ''
     }
 
     input.onerror = error => {
-      reject(error)
       input.value = ''
+      reject(error)
     }
 
     input.click()
   })
 }
 
-export interface DecodedAudioFileData {
-  buffer: ArrayBuffer | string | null
-  fileName: string
-  fileType: string
-}
-
 export const readFileToArrayBuffer = (file: File) => {
   let fileReader: FileReader | null = new FileReader()
 
-  return new Promise<DecodedAudioFileData>((resolve, reject) => {
+  return new Promise<AudioFileData>((resolve, reject) => {
     if (!fileReader) {
       reject(new Error('Could not create FileReader'))
       return
@@ -67,6 +62,12 @@ export const readFileToArrayBuffer = (file: File) => {
     fileReader.onloadend = () => {
       if (!fileReader) {
         reject(new Error('FileReader instance disposed'))
+        return
+      }
+
+      if (!(fileReader.result instanceof ArrayBuffer)) {
+        reject(new Error('Error reading file to ArrayBuffer'))
+        fileReader = null
         return
       }
 

@@ -2,12 +2,12 @@ import React, { StatelessComponent } from 'react'
 
 import { injectGlobal } from 'emotion'
 import { Provider } from 'react-redux'
-import { Store } from 'redux'
 
 import ErrorBoundary from '~/components/ErrorBoundary'
 import { COLOR_PAGE } from '~/constants/style'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
+import { ApplicationStore } from '~/state/configureStore'
 
 export const applyGlobalStyles = () => injectGlobal`
   html {
@@ -51,7 +51,7 @@ export const applyGlobalStyles = () => injectGlobal`
 
 //
 
-const Main: StatelessComponent<{ store: Store }> = ({ store }) => (
+const Main: StatelessComponent<{ store: ApplicationStore }> = ({ store }) => (
   <Provider store={store}>
     <div>
       <ErrorBoundary>

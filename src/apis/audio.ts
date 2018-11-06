@@ -13,7 +13,7 @@ export const getAudioContext = () => {
     throw new Error('No audio context available')
   }
 
-  const AudioContext = WINDOW.AudioContext || WINDOW.webkitAudioContext
+  const AudioContext = WINDOW.AudioContext || (WINDOW as any).webkitAudioContext
 
   if (!AudioContext) {
     throw new Error('No audio context available')

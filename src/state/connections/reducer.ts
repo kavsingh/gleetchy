@@ -5,11 +5,11 @@ import COLORS from '~/constants/color'
 import { AudioEffectRemoveAction } from '~/state/audioEffects/types'
 import { audioContexts, instruments } from '~/state/defaultNodes'
 import { InstrumentRemoveAction } from '~/state/instruments/types'
-import { GAudioNodeConnection } from '~/types'
+import { AudioNodeConnection } from '~/types'
 
 import { ConnectionDescriptor, ConnectionsAction } from './types'
 
-export type ConnectionsState = GAudioNodeConnection[]
+export type ConnectionsState = AudioNodeConnection[]
 
 const defaultState: ConnectionsState = [
   { from: instruments[0].id, to: audioContexts[0].id, color: COLORS[0] },

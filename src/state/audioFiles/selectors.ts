@@ -1,7 +1,9 @@
 import { prop } from 'ramda'
 import { createSelector } from 'reselect'
 
-const audioFilesStateSelector = state => state.audioFiles
+import { ApplicationState } from '~/state/configureStore'
+
+const audioFilesStateSelector = (state: ApplicationState) => state.audioFiles
 
 export const audioFilesSelector = createSelector(
   audioFilesStateSelector,
@@ -15,5 +17,5 @@ export const audioFilesLoadingSelector = createSelector(
 
 export const audioFilesErrorSelector = createSelector(
   audioFilesStateSelector,
-  prop('errors'),
+  prop('decodeErrors'),
 )

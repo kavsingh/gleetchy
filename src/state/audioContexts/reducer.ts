@@ -16,7 +16,7 @@ const audioContextsReducer: Reducer<AudioContextsState, AudioContextsAction> = (
 ): AudioContextsState => {
   switch (action.type) {
     case 'AUDIO_CONTEXT_UPDATE_LABEL':
-      return updateNodeLabelInState(state, action.payload)
+      return updateNodeLabelInState<AudioContextsState>(state, action.payload)
     default:
       return state
   }

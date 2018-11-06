@@ -1,12 +1,13 @@
-import { head, omit } from 'ramda'
+import { head, pick } from 'ramda'
 import { Dispatch } from 'redux'
 
 import { decodeAudioData } from '~/apis/audio'
 import {
-  DecodedAudioFileData,
   loadAudioFilesToArrayBuffers,
   readFileToArrayBuffer,
 } from '~/apis/file'
+import { AudioFileData } from '~/types'
+
 import {
   AudioFileDecodeCompleteAction,
   AudioFileDecodeErrorAction,
@@ -19,7 +20,7 @@ import {
 const decodeFileBuffer = async (
   dispatch: Dispatch,
   id: string,
-  file: { buffer: ArrayBuffer },
+  file: AudioFileData,
 ) => {
   try {
     dispatch<AudioFileDecodeStartAction>({
@@ -30,7 +31,10 @@ const decodeFileBuffer = async (
     const audioBuffer = await decodeAudioData(file.buffer)
 
     dispatch<AudioFileDecodeCompleteAction>({
-      payload: { id, file: { ...omit(['buffer'], file), audioBuffer } },
+      payload: {
+        file: { ...pick(['fileName', 'fileType'], file), audioBuffer },
+        id,
+      },
       type: 'AUDIO_FILE_DECODE_COMPLETE',
     })
   } catch (error) {
@@ -49,7 +53,7 @@ export const selectAudioFileAction = (id: string) => async (
     type: 'AUDIO_FILE_LOAD_START',
   })
 
-  let file: DecodedAudioFileData | undefined
+  let file: AudioFileData | undefined
 
   try {
     file = head(await loadAudioFilesToArrayBuffers())
@@ -80,7 +84,7 @@ export const receiveAudioFileAction = (id: string, file: File) => async (
     type: 'AUDIO_FILE_LOAD_START',
   })
 
-  let fileData: DecodedAudioFileData | undefined
+  let fileData: AudioFileData | undefined
 
   try {
     fileData = await readFileToArrayBuffer(file)
