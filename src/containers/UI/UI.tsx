@@ -1,29 +1,27 @@
-import React from 'react'
-import { pure } from 'recompose'
+import React, { memo, StatelessComponent } from 'react'
 import Favicon from 'react-favicon'
 import { GoMarkGithub } from 'react-icons/go'
 
-import PropTypes from '~/PropTypes'
-import { COLOR_BODY, COLOR_KEYLINE } from '~/constants/style'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 import PlayPauseButton from '~/components/PlayPauseButton'
-import InstrumentsRack from '~/containers/InstrumentsRack'
+import { COLOR_BODY, COLOR_KEYLINE } from '~/constants/style'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
+import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
+import { cssLabeled } from '~/util/style'
+
 import favicon from '~/assets/icons/48x48.png'
 
 const classes = cssLabeled('ui', {
   root: {
-    maxWidth: '92em',
-    margin: '0 auto',
-    padding: '0 2em',
     color: COLOR_BODY,
+    margin: '0 auto',
+    maxWidth: '92em',
+    padding: '0 2em',
   },
 
   borderedSection: {
-    padding: '1em 0',
     borderBottom: `1px solid ${COLOR_KEYLINE}`,
+    padding: '1em 0',
   },
 
   connectContainer: {
@@ -43,15 +41,15 @@ const classes = cssLabeled('ui', {
   },
 
   masthead: {
-    width: '100%',
+    alignItems: 'center',
     display: 'flex',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    width: '100%',
 
     '& a': {
-      transition: 'opacity 0.2s ease-out',
       color: COLOR_BODY,
       opacity: 0.4,
+      transition: 'opacity 0.2s ease-out',
     },
 
     '& a:hover': {
@@ -60,7 +58,12 @@ const classes = cssLabeled('ui', {
   },
 })
 
-const UI = ({ isPlaying, togglePlayback }) => (
+export interface UIProps {
+  isPlaying: boolean
+  togglePlayback(): void
+}
+
+const UI: StatelessComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
   <div className={classes.root}>
     <Favicon url={[favicon]} />
     <div className={classes.borderedSection}>
@@ -90,14 +93,4 @@ const UI = ({ isPlaying, togglePlayback }) => (
   </div>
 )
 
-UI.propTypes = {
-  isPlaying: PropTypes.bool,
-  togglePlayback: PropTypes.func,
-}
-
-UI.defaultProps = {
-  isPlaying: false,
-  togglePlayback: noop,
-}
-
-export default pure(UI)
+export default memo(UI)
