@@ -123,24 +123,26 @@ class AudioEngine extends Component<AudioEngineProps> {
       ? pick([...nodes.map(({ id }) => id), MAIN_OUT_ID], this.audioNodes)
       : { [MAIN_OUT_ID]: this.audioContext.destination }
 
-    nodes.filter(node => !this.audioNodes[node.id]).forEach(node => {
-      const nodeCreator = getNodeCreator(node) as any
+    nodes
+      .filter(node => !this.audioNodes[node.id])
+      .forEach(node => {
+        const nodeCreator = getNodeCreator(node) as any
 
-      if (!nodeCreator) {
-        return
-      }
+        if (!nodeCreator) {
+          return
+        }
 
-      const newNode: AudioEngineNode = nodeCreator(
-        this.audioContext,
-        node.props,
-      )
+        const newNode: AudioEngineNode = nodeCreator(
+          this.audioContext,
+          node.props,
+        )
 
-      this.audioNodes[node.id] = newNode
+        this.audioNodes[node.id] = newNode
 
-      if (isPlaying && isInstrument(newNode)) {
-        ;(newNode as InstrumentNode).play()
-      }
-    })
+        if (isPlaying && isInstrument(newNode)) {
+          ;(newNode as InstrumentNode).play()
+        }
+      })
   }
 
   private updateAudioGraph() {

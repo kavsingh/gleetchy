@@ -1,7 +1,7 @@
 export const sendJsonString = (json: string) => prompt('copy and keep', json)
 
 export const consumeJsonString = () =>
-  new Promise((resolve, reject) => {
+  new Promise<string>((resolve, reject) => {
     const json = prompt('Paste state json', '')
 
     if (json) {
