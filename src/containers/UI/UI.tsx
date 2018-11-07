@@ -65,7 +65,7 @@ export interface UIProps {
 
 const UI: StatelessComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
   <div className={classes.root}>
-    <Favicon url={[favicon]} />
+    <Favicon url={favicon} />
     <div className={classes.borderedSection}>
       <div className={classes.masthead}>
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
