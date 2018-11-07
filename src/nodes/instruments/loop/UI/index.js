@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import { cx } from 'emotion'
-import { clamp, always } from 'ramda'
+import { clamp } from 'ramda'
 
 import PropTypes from '~/PropTypes'
 import { noop } from '~/util/function'
@@ -218,7 +218,6 @@ Loop.propTypes = {
   receiveAudioFile: PropTypes.func,
   onLoopRegionChange: PropTypes.func,
   onLabelChange: PropTypes.func,
-  renderControls: PropTypes.func,
   remove: PropTypes.func,
 }
 
@@ -242,7 +241,6 @@ Loop.defaultProps = {
   receiveAudioFile: noop,
   onLoopRegionChange: noop,
   onLabelChange: noop,
-  renderControls: always(<div />),
   remove: noop,
 }
 

@@ -13,9 +13,9 @@ export const instrumentsSelector = createSelector(
   identity,
 )
 
-export const instrumentIdsSelector = createSelector(
+export const instrumentDescriptorsSelector = createSelector(
   instrumentsStateSelector,
-  instruments => instruments.map(({ id }) => id),
+  instruments => instruments.map(({ id, type }) => ({ id, type })),
 )
 
 export const activeInstrumentsSelector = createSelector(
