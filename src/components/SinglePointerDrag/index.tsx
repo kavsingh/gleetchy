@@ -5,7 +5,12 @@ import { filterSupportedEvents } from '~/util/env'
 import { cancelEvent } from '~/util/event'
 import { noop } from '~/util/function'
 
-type MouseOrTouchEvent = Event | MouseEvent | TouchEvent
+type MouseOrTouchEvent =
+  | Event
+  | MouseEvent
+  | TouchEvent
+  | React.MouseEvent<any>
+  | React.TouchEvent<any>
 
 interface NormalizedEvent {
   currentTarget: HTMLElement
@@ -136,7 +141,7 @@ class SinglePointerDrag extends PureComponent<
   // default
   private handleMouseDown = (event: React.MouseEvent<any>) => {
     this.registerDragStart(
-      normalizeEvent(event.nativeEvent),
+      normalizeEvent(event),
       this.mouseMoveEvents,
       this.mouseEndEvents,
     )
@@ -144,7 +149,7 @@ class SinglePointerDrag extends PureComponent<
 
   private handleTouchStart = (event: React.TouchEvent<any>) => {
     this.registerDragStart(
-      normalizeEvent(event.nativeEvent),
+      normalizeEvent(event),
       this.touchMoveEvents,
       this.touchEndEvents,
     )
@@ -205,7 +210,9 @@ class SinglePointerDrag extends PureComponent<
 
   private handleDragMove = (event: MouseOrTouchEvent) => {
     const { onDragMove = noop } = this.props
-    const { clientX, clientY, timeStamp } = cancelAndNormalizeEvent(event)
+    const { clientX, clientY, timeStamp } = cancelAndNormalizeEvent(
+      event as Event,
+    )
 
     this.setState(
       ({ targetRect, x, y, startTime, startX, startY }) => ({
@@ -226,7 +233,7 @@ class SinglePointerDrag extends PureComponent<
 
   private handleDragEnd = (event: MouseOrTouchEvent) => {
     const { onDragEnd = noop } = this.props
-    let { clientX, clientY } = cancelAndNormalizeEvent(event)
+    let { clientX, clientY } = cancelAndNormalizeEvent(event as Event)
 
     if (clientX === undefined) {
       clientX = this.state.x
