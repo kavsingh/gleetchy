@@ -1,4 +1,4 @@
-import { identity, path } from 'ramda'
+import { identity } from 'ramda'
 import { createSelector } from 'reselect'
 
 import { mainOutSelector } from '~/state/audioContexts/selectors'
@@ -13,6 +13,11 @@ export const instrumentsSelector = createSelector(
   identity,
 )
 
+export const instrumentIdsSelector = createSelector(
+  instrumentsStateSelector,
+  instruments => instruments.map(({ id }) => id),
+)
+
 export const activeInstrumentsSelector = createSelector(
   instrumentsSelector,
   connectionsSelector,
@@ -20,6 +25,6 @@ export const activeInstrumentsSelector = createSelector(
   (instruments, connections, mainOut) => {
     const connectedToMain = hasDownstreamConnectionTo(mainOut.id, connections)
 
-    return instruments.map(path(['id'])).filter(connectedToMain)
+    return instruments.map(({ id }) => id).filter(connectedToMain)
   },
 )
