@@ -215,7 +215,7 @@ class Slider extends PureComponent<SliderProps> {
       return
     }
 
-    const { orient, value, onChange = noop } = this.props
+    const { orient = 'vertical', value, onChange = noop } = this.props
     const isVert = orient === 'vertical'
     const movement = isVert ? movementY : movementX
     const dim = isVert
@@ -236,7 +236,7 @@ class Slider extends PureComponent<SliderProps> {
       return
     }
 
-    const { orient, onChange = noop } = this.props
+    const { orient = 'vertical', onChange = noop } = this.props
     const isVert = orient === 'vertical'
     const movement = isVert ? movementY : movementX
 
