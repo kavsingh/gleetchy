@@ -1,73 +1,74 @@
-import React, { PureComponent } from 'react'
-import { cx } from 'emotion'
-import { clamp, identity } from 'ramda'
+import { cx, Interpolation } from 'emotion'
+import { clamp } from 'ramda'
+import React, { PureComponent, ReactNode } from 'react'
 
-import PropTypes from '~/PropTypes'
-import { COLOR_KEYLINE, COLOR_EMPHASIS } from '~/constants/style'
-import { noop } from '~/util/function'
+import SinglePointerDrag, {
+  SinglePointerDragState,
+} from '~/components/SinglePointerDrag'
+import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
+import { noop, stubString } from '~/util/function'
 import { cssLabeled } from '~/util/style'
-import SinglePointerDrag from '~/components/SinglePointerDrag'
 
 const text = {
   flexGrow: '0 0 auto',
   fontSize: '0.8em',
-  whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 }
 
 const classes = cssLabeled('slider', {
-  root: {
-    width: '100%',
-    height: '100%',
-    display: 'flex',
+  horizontal: {
+    alignItems: 'stretch',
+    flexDirection: 'row',
   },
+
+  label: text as Interpolation,
+
+  root: {
+    display: 'flex',
+    height: '100%',
+    width: '100%',
+  },
+
+  value: text as Interpolation,
 
   vertical: {
-    flexDirection: 'column',
     alignItems: 'center',
+    flexDirection: 'column',
   },
-
-  horizontal: {
-    flexDirection: 'row',
-    alignItems: 'stretch',
-  },
-
-  label: text,
-
-  value: text,
 
   labelVertical: {
     height: '1.4em',
   },
 
   valueVertical: {
-    height: '1.4em',
-    display: 'flex',
     alignItems: 'flex-end',
+    display: 'flex',
+    height: '1.4em',
   },
 
   labelHorizontal: {
-    display: 'flex',
     alignItems: 'center',
+    display: 'flex',
     width: '3em',
   },
 
   valueHorizontal: {
-    display: 'flex',
     alignItems: 'center',
+    display: 'flex',
     width: '3em',
   },
 
   barContainer: {
-    position: 'relative',
     flex: '1 1',
+    position: 'relative',
   },
 
   barContainerVertical: {
-    width: '100%',
     cursor: 'ns-resize',
     margin: '0.4em auto 0.2em',
+    width: '100%',
   },
 
   barContainerHorizontal: {
@@ -77,87 +78,67 @@ const classes = cssLabeled('slider', {
   },
 
   track: {
+    backgroundColor: COLOR_KEYLINE,
     position: 'absolute',
     zIndex: 1,
-    backgroundColor: COLOR_KEYLINE,
   },
 
   bar: {
+    backgroundColor: COLOR_EMPHASIS,
     position: 'absolute',
     zIndex: 2,
-    backgroundColor: COLOR_EMPHASIS,
   },
 
   trackVertical: {
-    top: 0,
     bottom: 0,
-    width: 1,
     left: '50%',
+    top: 0,
+    width: 1,
   },
 
   barVertical: {
-    top: 0,
     bottom: 0,
-    width: 3,
     left: 'calc(50% - 1px)',
+    top: 0,
+    width: 3,
   },
 
   trackHorizontal: {
+    height: 1,
     left: 0,
     right: 0,
-    height: 1,
     top: '50%',
   },
 
   barHorizontal: {
+    height: 3,
     left: 0,
     right: 0,
-    height: 3,
     top: 'calc(50% - 1px)',
   },
 })
 
-class Slider extends PureComponent {
-  constructor(...args) {
-    super(...args)
+export interface SliderProps {
+  value: number
+  defaultValue?: number
+  orient?: 'vertical' | 'horizontal'
+  onChange?(value: number): void
+  renderLabel?(value: number): ReactNode
+  renderValue?(value: number): ReactNode
+  renderTitle?(value: number): string
+}
 
-    this.handleDragMove = this.handleDragMove.bind(this)
-    this.handleDragEnd = this.handleDragEnd.bind(this)
-    this.handleDoubleClick = this.handleDoubleClick.bind(this)
-  }
+class Slider extends PureComponent<SliderProps> {
+  private barContainer?: HTMLElement | null
 
-  handleDragMove({ movementX, movementY }) {
-    const { orient, value } = this.props
-    const isVert = orient === 'vertical'
-    const movement = isVert ? movementY : movementX
-    const dim = isVert
-      ? this.barContainer.offsetHeight * -1
-      : this.barContainer.offsetWidth
-
-    this.props.onChange(clamp(0, 1, movement / dim + value))
-  }
-
-  handleDragEnd({ movementX, movementY, duration, targetX, targetY }) {
-    const { orient } = this.props
-    const isVert = orient === 'vertical'
-    const movement = isVert ? movementY : movementX
-
-    if (duration > 300 || movement > 4) return
-
-    const offset = isVert ? targetY : targetX
-    const dim = isVert
-      ? this.barContainer.offsetHeight
-      : this.barContainer.offsetWidth
-
-    this.props.onChange(clamp(0, 1, isVert ? 1 - offset / dim : offset / dim))
-  }
-
-  handleDoubleClick() {
-    this.props.onChange(this.props.defaultValue)
-  }
-
-  render() {
-    const { orient, value, renderLabel, renderValue, renderTitle } = this.props
+  public render() {
+    const {
+      value,
+      orient = 'vertical',
+      renderLabel = stubString,
+      renderValue = String,
+      renderTitle = String,
+    } = this.props
     const isVert = orient === 'vertical'
     const offVal = `${(1 - value) * 100}%`
 
@@ -182,7 +163,6 @@ class Slider extends PureComponent {
         <SinglePointerDrag
           onDragMove={this.handleDragMove}
           onDragEnd={this.handleDragEnd}
-          onDoubleClick={this.handleDoubleClick}
         >
           {({ dragListeners }) => (
             <div
@@ -194,9 +174,7 @@ class Slider extends PureComponent {
               })}
               role="presentation"
               onDoubleClick={this.handleDoubleClick}
-              ref={c => {
-                this.barContainer = c
-              }}
+              ref={el => (this.barContainer = el)}
             >
               <div
                 className={cx({
@@ -228,26 +206,57 @@ class Slider extends PureComponent {
       </div>
     )
   }
-}
 
-Slider.propTypes = {
-  value: PropTypes.number,
-  defaultValue: PropTypes.number,
-  orient: PropTypes.oneOf(['vertical', 'horizontal']),
-  onChange: PropTypes.func,
-  renderLabel: PropTypes.func,
-  renderValue: PropTypes.func,
-  renderTitle: PropTypes.func,
-}
+  private handleDragMove = ({
+    movementX,
+    movementY,
+  }: SinglePointerDragState) => {
+    if (!this.barContainer) {
+      return
+    }
 
-Slider.defaultProps = {
-  value: 0.5,
-  defaultValue: 0.5,
-  orient: 'vertical',
-  onChange: noop,
-  renderLabel: identity,
-  renderValue: identity,
-  renderTitle: identity,
+    const { orient, value, onChange = noop } = this.props
+    const isVert = orient === 'vertical'
+    const movement = isVert ? movementY : movementX
+    const dim = isVert
+      ? this.barContainer.offsetHeight * -1
+      : this.barContainer.offsetWidth
+
+    onChange(clamp(0, 1, movement / dim + value))
+  }
+
+  private handleDragEnd = ({
+    movementX,
+    movementY,
+    duration,
+    targetX,
+    targetY,
+  }: SinglePointerDragState) => {
+    if (!this.barContainer) {
+      return
+    }
+
+    const { orient, onChange = noop } = this.props
+    const isVert = orient === 'vertical'
+    const movement = isVert ? movementY : movementX
+
+    if (duration > 300 || movement > 4) {
+      return
+    }
+
+    const offset = isVert ? targetY : targetX
+    const dim = isVert
+      ? this.barContainer.offsetHeight
+      : this.barContainer.offsetWidth
+
+    onChange(clamp(0, 1, isVert ? 1 - offset / dim : offset / dim))
+  }
+
+  private handleDoubleClick = () => {
+    const { onChange = noop, defaultValue = 0.5 } = this.props
+
+    onChange(defaultValue)
+  }
 }
 
 export default Slider

@@ -1,38 +1,47 @@
-import React, { Component } from 'react'
-import { map } from 'ramda'
 import colorFn from 'color'
+import { map } from 'ramda'
+import React, { Component } from 'react'
 
-import PropTypes from '~/PropTypes'
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { hasWindowWith } from '~/util/env'
 import { cssLabeled } from '~/util/style'
 
-const normaliseChannel = map(v => (v + 0.5) * 0.5)
+const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
 
 const classes = cssLabeled('waveForm', {
   root: {
-    width: '100%',
     height: '100%',
     overflow: 'hidden',
+    width: '100%',
   },
 
   canvas: {
-    width: '100%',
     height: '100%',
+    width: '100%',
   },
 })
 
-class WaveForm extends Component {
-  constructor(...args) {
-    super(...args)
+export interface WaveformProps {
+  color?: string
+  timeRegions?: number
+  buffer?: AudioBuffer
+}
 
-    this.state = { width: 0, height: 0 }
+interface WaveformState {
+  height: number
+  width: number
+}
 
-    this.handleResize = this.handleResize.bind(this)
-    this.updateWaveForm = this.updateWaveForm.bind(this)
+class WaveForm extends Component<WaveformProps, WaveformState> {
+  public state = {
+    height: 0,
+    width: 0,
   }
 
-  componentDidMount() {
+  private pixelRatio: number = 1
+  private canvasNode?: HTMLCanvasElement | null
+
+  public componentDidMount() {
     this.pixelRatio = hasWindowWith([['devicePixelRatio']])
       ? window.devicePixelRatio
       : 1
@@ -41,7 +50,7 @@ class WaveForm extends Component {
     window.addEventListener('resize', this.handleResize)
   }
 
-  shouldComponentUpdate(props, state) {
+  public shouldComponentUpdate(props: WaveformProps, state: WaveformState) {
     return (
       this.props.buffer !== props.buffer ||
       this.state.width !== state.width ||
@@ -49,23 +58,35 @@ class WaveForm extends Component {
     )
   }
 
-  componentDidUpdate() {
+  public componentDidUpdate() {
     this.updateWaveForm()
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     window.removeEventListener('resize', this.updateWaveForm)
   }
 
-  drawTempWaveform(context) {
+  public render() {
+    return (
+      <div className={classes.root}>
+        <canvas className={classes.canvas} ref={el => (this.canvasNode = el)} />
+      </div>
+    )
+  }
+
+  private drawTempWaveform(context: CanvasRenderingContext2D) {
     const { width, height } = this.state
     context.fillRect(0, height / 2, width, 1)
   }
 
-  drawWaveForm(context) {
+  private drawWaveForm(context: CanvasRenderingContext2D) {
     const { buffer } = this.props
-    const { width, height } = this.state
 
+    if (!buffer) {
+      return
+    }
+
+    const { width, height } = this.state
     const halfHeight = height / 2
     const leftChannel = normaliseChannel(buffer.getChannelData(0))
     const rightChannel =
@@ -83,8 +104,8 @@ class WaveForm extends Component {
     }
   }
 
-  drawTimeRegions(context) {
-    const { timeRegions } = this.props
+  private drawTimeRegions(context: CanvasRenderingContext2D) {
+    const { timeRegions = 4 } = this.props
     const { width, height } = this.state
 
     for (let i = 0; i < timeRegions; i += 1) {
@@ -96,12 +117,18 @@ class WaveForm extends Component {
     context.stroke()
   }
 
-  updateWaveForm() {
-    if (!this.canvasNode) return
+  private updateWaveForm = () => {
+    if (!this.canvasNode) {
+      return
+    }
 
     const { width, height } = this.state
-    const { color } = this.props
+    const { color = COLOR_EMPHASIS } = this.props
     const context = this.canvasNode.getContext('2d')
+
+    if (!context) {
+      return
+    }
 
     this.canvasNode.width = width * this.pixelRatio
     this.canvasNode.height = height * this.pixelRatio
@@ -121,38 +148,16 @@ class WaveForm extends Component {
     }
   }
 
-  handleResize() {
-    this.setState(() => ({
-      width: this.canvasNode.offsetWidth,
-      height: this.canvasNode.offsetHeight,
-    }))
-  }
-
-  render() {
-    return (
-      <div className={classes.root}>
-        <canvas
-          className={classes.canvas}
-          ref={c => {
-            this.canvasNode = c
-          }}
-        />
-      </div>
+  private handleResize = () => {
+    this.setState(() =>
+      this.canvasNode
+        ? {
+            height: this.canvasNode.offsetHeight,
+            width: this.canvasNode.offsetWidth,
+          }
+        : null,
     )
   }
-}
-
-WaveForm.propTypes = {
-  color: PropTypes.string,
-  timeRegions: PropTypes.number,
-  // eslint-disable-next-line react/no-typos
-  buffer: PropTypes.audioBuffer,
-}
-
-WaveForm.defaultProps = {
-  color: COLOR_EMPHASIS,
-  timeRegions: 4,
-  buffer: undefined,
 }
 
 export default WaveForm

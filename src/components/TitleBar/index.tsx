@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { memo, ReactNode, StatelessComponent } from 'react'
 
-import PropTypes from '~/PropTypes'
+import TextInput from '~/components/TextInput'
+import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
-import TextInput from '~/components/TextInput'
 
 const classes = cssLabeled('titleBar', {
   root: {
@@ -12,23 +12,23 @@ const classes = cssLabeled('titleBar', {
   },
 
   labelContainer: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     justifyContent: 'flex-start',
 
     '& input': {
-      fontWeight: 500,
-      padding: 0,
-      margin: 0,
       appearance: 'none',
+      fontWeight: 500,
+      margin: 0,
+      padding: 0,
     },
   },
 
   infoContainer: {
+    alignItems: 'center',
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
   },
 
   connections: {
@@ -37,11 +37,11 @@ const classes = cssLabeled('titleBar', {
   },
 
   connection: {
-    flexShrink: 0,
     flexGrow: 0,
-    width: '0.8em',
+    flexShrink: 0,
     height: '0.8em',
     marginRight: '0.3em',
+    width: '0.8em',
   },
 
   typeContainer: {
@@ -53,13 +53,22 @@ const classes = cssLabeled('titleBar', {
   },
 })
 
-const TitleBar = ({
-  type,
-  connections,
-  children,
-  onLabelChange,
+export interface TitleBarProps {
+  label: string
+  children: ReactNode | (() => ReactNode)
+  type: string
+  connections?: AudioNodeConnection[]
+  onLabelChange?(label: string): void
+  onRemoveClick?(): void
+}
+
+const TitleBar: StatelessComponent<TitleBarProps> = ({
   label,
-  onRemoveClick,
+  type,
+  onLabelChange = noop,
+  onRemoveClick = noop,
+  connections = [],
+  children = [],
 }) => (
   <div className={classes.root}>
     <div className={classes.labelContainer}>
@@ -83,7 +92,9 @@ const TitleBar = ({
         onClick={onRemoveClick}
         tabIndex={0}
         onKeyDown={event => {
-          if (event.key === 'Enter') onRemoveClick()
+          if (event.key === 'Enter') {
+            onRemoveClick()
+          }
         }}
       >
         {'[ Remove ]'}
@@ -92,22 +103,4 @@ const TitleBar = ({
   </div>
 )
 
-TitleBar.propTypes = {
-  label: PropTypes.string,
-  type: PropTypes.string,
-  connections: PropTypes.arrayOf(PropTypes.connection),
-  children: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
-  onLabelChange: PropTypes.func,
-  onRemoveClick: PropTypes.func,
-}
-
-TitleBar.defaultProps = {
-  label: '',
-  type: '',
-  connections: [],
-  children: [],
-  onLabelChange: noop,
-  onRemoveClick: noop,
-}
-
-export default TitleBar
+export default memo<TitleBarProps>(TitleBar)

@@ -1,5 +1,5 @@
 import React from 'react'
-import dom from 'react-dom'
+import { render } from 'react-dom'
 
 import { ApplicationStore, configureStore } from '~/state/configureStore'
 import offlineInstall from '~/util/offlineInstall'
@@ -11,7 +11,4 @@ const Main = MainComp as any
 
 applyGlobalStyles()
 offlineInstall('gleetchy-sw.js', '')
-;(typeof dom.hydrate === 'function' ? dom.hydrate : dom.render)(
-  <Main store={store} />,
-  document.getElementById('app-root'),
-)
+render(<Main store={store} />, document.getElementById('app-root'))

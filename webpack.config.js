@@ -105,10 +105,7 @@ module.exports = {
   ].filter(Boolean),
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
-    alias: Object.assign(
-      { '~': path.resolve(__dirname, 'src') },
-      isProduction && { react: 'preact-compat', 'react-dom': 'preact-compat' },
-    ),
+    alias: Object.assign({ '~': path.resolve(__dirname, 'src') }),
     extensions: ['.js', '.ts', '.tsx'],
   },
 }

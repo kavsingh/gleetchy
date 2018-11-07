@@ -37,11 +37,7 @@ module.exports = {
   plugins: [new webpack.EnvironmentPlugin(['NODE_ENV'])],
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
-    alias: {
-      react: 'preact-compat',
-      'react-dom': 'preact-compat',
-      '~': path.resolve(__dirname, 'src'),
-    },
+    alias: { '~': path.resolve(__dirname, 'src') },
     extensions: ['.js', '.ts', '.tsx'],
   },
 }

@@ -1,13 +1,12 @@
 import React, { PureComponent } from 'react'
 import posed from 'react-pose'
 
-import PropTypes from '~/PropTypes'
 import { cssLabeled } from '~/util/style'
 
 const classNames = cssLabeled('animIn', {
   root: {
-    width: '100%',
     height: '100%',
+    width: '100%',
   },
 })
 
@@ -16,35 +15,27 @@ const Root = posed.div({
   visible: { opacity: 1 },
 })
 
-export default class AnimIn extends PureComponent {
-  propTypes = {
-    children: PropTypes.node,
-  }
+export default class AnimIn extends PureComponent<{}, { isVisible: boolean }> {
+  public state = { isVisible: false }
 
-  defaultProps = {
-    children: [],
-  }
+  private visibleTimeout?: NodeJS.Timeout
 
-  state = {
-    isVisible: false,
-  }
-
-  componentDidMount() {
+  public componentDidMount() {
     this.visibleTimeout = setTimeout(
       () => this.setState({ isVisible: true }),
       0,
     )
   }
 
-  componentWillUnmount() {
+  public componentWillUnmount() {
     if (this.visibleTimeout) {
       clearTimeout(this.visibleTimeout)
     }
   }
 
-  render() {
+  public render() {
     const { isVisible } = this.state
-    const { children } = this.props
+    const { children = null } = this.props
 
     return (
       <Root className={classNames.root} pose={isVisible ? 'visible' : 'hidden'}>

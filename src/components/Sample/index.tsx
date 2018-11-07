@@ -1,60 +1,71 @@
-import React from 'react'
-import { onlyUpdateForKeys } from 'recompose'
 import color from 'color'
+import { Interpolation } from 'emotion'
+import React, { StatelessComponent } from 'react'
+import { onlyUpdateForKeys } from 'recompose'
 
-import PropTypes from '~/PropTypes'
+import LoopRegion from '~/components/LoopRegion'
+import WaveForm from '~/components/WaveForm'
 import { COLOR_PAGE, LAYOUT_ABSOLUTE_FILL } from '~/constants/style'
 import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
-import WaveForm from '~/components/WaveForm'
-import LoopRegion from '~/components/LoopRegion'
+
+export interface SampleProps {
+  fromSaved?: boolean
+  audioBuffer?: AudioBuffer
+  loopStart?: number
+  loopEnd?: number
+  onLoopStartDrag?(): void
+  onLoopEndDrag?(): void
+  onLoopRegionDrag?(): void
+  selectAudioFile?(): void
+}
 
 const classes = cssLabeled('sample', {
   root: {
+    height: '100%',
     position: 'relative',
     width: '100%',
-    height: '100%',
   },
 
   waveFormContainer: {
     ...LAYOUT_ABSOLUTE_FILL,
     zIndex: 1,
-  },
+  } as Interpolation,
 
   loopRegionContainer: {
     ...LAYOUT_ABSOLUTE_FILL,
     zIndex: 2,
-  },
+  } as Interpolation,
 
   initLoadButon: {
     ...LAYOUT_ABSOLUTE_FILL,
-    display: 'flex',
-    flexDirection: 'column',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    cursor: 'pointer',
-    zIndex: 3,
-    padding: '3em',
     backgroundColor: color(COLOR_PAGE)
       .alpha(0.96)
       .string(),
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    padding: '3em',
+    zIndex: 3,
 
     '& span': {
       display: 'block',
       textAlign: 'center',
     },
-  },
+  } as Interpolation,
 })
 
-const Sample = ({
-  fromSaved,
+const Sample: StatelessComponent<SampleProps> = ({
   audioBuffer,
-  loopStart,
-  loopEnd,
-  onLoopStartDrag,
-  onLoopEndDrag,
-  onLoopRegionDrag,
-  selectAudioFile,
+  loopStart = 0,
+  loopEnd = 1,
+  fromSaved = false,
+  onLoopStartDrag = noop,
+  onLoopEndDrag = noop,
+  onLoopRegionDrag = noop,
+  selectAudioFile = noop,
 }) => (
   <div className={classes.root}>
     <div className={classes.waveFormContainer}>
@@ -77,7 +88,9 @@ const Sample = ({
         onClick={selectAudioFile}
         className={classes.initLoadButon}
         onKeyDown={({ key }) => {
-          if (key === 'Enter') selectAudioFile()
+          if (key === 'Enter') {
+            selectAudioFile()
+          }
         }}
       >
         {fromSaved
@@ -94,29 +107,6 @@ const Sample = ({
     )}
   </div>
 )
-
-Sample.propTypes = {
-  fromSaved: PropTypes.bool,
-  // eslint-disable-next-line react/no-typos
-  audioBuffer: PropTypes.audioBuffer,
-  loopStart: PropTypes.number,
-  loopEnd: PropTypes.number,
-  onLoopStartDrag: PropTypes.func,
-  onLoopEndDrag: PropTypes.func,
-  onLoopRegionDrag: PropTypes.func,
-  selectAudioFile: PropTypes.func,
-}
-
-Sample.defaultProps = {
-  fromSaved: false,
-  audioBuffer: undefined,
-  loopStart: 0,
-  loopEnd: 1,
-  onLoopStartDrag: noop,
-  onLoopEndDrag: noop,
-  onLoopRegionDrag: noop,
-  selectAudioFile: noop,
-}
 
 export default onlyUpdateForKeys([
   'fromSaved',

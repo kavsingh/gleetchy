@@ -1,93 +1,81 @@
-import React, { Component } from 'react'
 import color from 'color'
+import { Interpolation } from 'emotion'
+import React, { Component } from 'react'
 
-import PropTypes from '~/PropTypes'
+import SinglePointerDrag, {
+  SinglePointerDragState,
+} from '~/components/SinglePointerDrag'
 import { COLOR_PAGE, LAYOUT_ABSOLUTE_FILL } from '~/constants/style'
 import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
-import SinglePointerDrag from '~/components/SinglePointerDrag'
+
 import LoopHandle from './LoopHandle'
 
 const classes = cssLabeled('loopRegion', {
   root: {
+    height: '100%',
     position: 'relative',
     width: '100%',
-    height: '100%',
   },
 
   handleContainer: {
-    position: 'absolute',
-    height: '100%',
-    top: 0,
     cursor: 'ew-resize',
+    height: '100%',
+    position: 'absolute',
+    top: 0,
     width: 10,
     zIndex: 1,
   },
 
   regionsContainer: {
     ...LAYOUT_ABSOLUTE_FILL,
-  },
+  } as Interpolation,
 
   activeRegion: {
-    position: 'absolute',
-    top: 0,
     bottom: 0,
     cursor: 'move',
+    position: 'absolute',
+    top: 0,
   },
 
   inactiveRegion: {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    zIndex: 0,
     backgroundColor: color(COLOR_PAGE)
       .alpha(0.8)
       .string(),
+    bottom: 0,
+    position: 'absolute',
+    top: 0,
+    zIndex: 0,
   },
 })
 
-class LoopRegion extends Component {
-  constructor(...args) {
-    super(...args)
+export interface LoopRegionProps {
+  loopStart: number
+  loopEnd: number
+  onLoopStartDrag?(position: number): void
+  onLoopEndDrag?(position: number): void
+  onLoopRegionDrag?(position: number): void
+}
 
-    this.handleStartHandleDrag = this.handleStartHandleDrag.bind(this)
-    this.handleEndHandleDrag = this.handleEndHandleDrag.bind(this)
-    this.handleLoopRegionDrag = this.handleLoopRegionDrag.bind(this)
-  }
+class LoopRegion extends Component<LoopRegionProps> {
+  private rootNode?: HTMLDivElement | null
 
-  shouldComponentUpdate(props) {
+  public shouldComponentUpdate(props: LoopRegionProps) {
     return (
       this.props.loopStart !== props.loopStart ||
       this.props.loopEnd !== props.loopEnd
     )
   }
 
-  handleStartHandleDrag({ movementX }) {
-    this.props.onLoopStartDrag(movementX / this.rootNode.offsetWidth)
-  }
-
-  handleEndHandleDrag({ movementX }) {
-    this.props.onLoopEndDrag(movementX / this.rootNode.offsetWidth)
-  }
-
-  handleLoopRegionDrag({ movementX }) {
-    this.props.onLoopRegionDrag(movementX / this.rootNode.offsetWidth)
-  }
-
-  render() {
-    const { loopStart, loopEnd } = this.props
+  public render() {
+    const { loopStart = 0, loopEnd = 1 } = this.props
     const regionRatio = loopEnd - loopStart
     const preferRegionDrag = this.rootNode
       ? regionRatio * this.rootNode.offsetWidth < 30
       : false
 
     return (
-      <div
-        className={classes.root}
-        ref={c => {
-          this.rootNode = c
-        }}
-      >
+      <div className={classes.root} ref={c => (this.rootNode = c)}>
         <SinglePointerDrag onDragMove={this.handleStartHandleDrag}>
           {({ dragListeners }) => (
             <div
@@ -141,22 +129,36 @@ class LoopRegion extends Component {
       </div>
     )
   }
-}
 
-LoopRegion.propTypes = {
-  loopStart: PropTypes.number,
-  loopEnd: PropTypes.number,
-  onLoopStartDrag: PropTypes.func,
-  onLoopEndDrag: PropTypes.func,
-  onLoopRegionDrag: PropTypes.func,
-}
+  private handleStartHandleDrag = ({ movementX }: SinglePointerDragState) => {
+    if (!this.rootNode) {
+      return
+    }
 
-LoopRegion.defaultProps = {
-  loopStart: 0,
-  loopEnd: 1,
-  onLoopStartDrag: noop,
-  onLoopEndDrag: noop,
-  onLoopRegionDrag: noop,
+    const { onLoopStartDrag = noop } = this.props
+
+    onLoopStartDrag(movementX / this.rootNode.offsetWidth)
+  }
+
+  private handleEndHandleDrag = ({ movementX }: SinglePointerDragState) => {
+    if (!this.rootNode) {
+      return
+    }
+
+    const { onLoopEndDrag = noop } = this.props
+
+    onLoopEndDrag(movementX / this.rootNode.offsetWidth)
+  }
+
+  private handleLoopRegionDrag = ({ movementX }: SinglePointerDragState) => {
+    if (!this.rootNode) {
+      return
+    }
+
+    const { onLoopRegionDrag = noop } = this.props
+
+    onLoopRegionDrag(movementX / this.rootNode.offsetWidth)
+  }
 }
 
 export default LoopRegion

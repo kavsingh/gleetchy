@@ -17,7 +17,6 @@ import {
 } from '~/nodes/instruments/loop'
 import { isInstrument } from '~/util/audio'
 import { warn } from '~/util/dev'
-import { noop } from '~/util/function'
 
 import {
   AudioEngineEvent,
@@ -57,14 +56,6 @@ export interface AudioEngineProps {
 }
 
 class AudioEngine extends Component<AudioEngineProps> {
-  public static defaultProps = {
-    audioEngineEvents: [],
-    clearAudioEngineEvents: noop,
-    connections: [],
-    isPlaying: false,
-    nodes: [],
-  }
-
   private audioContext: AudioContext
   private audioNodes: {
     [key: string]: GAudioNode | InstrumentNode | AudioNode

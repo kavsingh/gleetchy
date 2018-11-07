@@ -1,16 +1,15 @@
-import React from 'react'
 import { cx } from 'emotion'
+import React, { memo, StatelessComponent } from 'react'
 
-import PropTypes from '~/PropTypes'
 import { COLOR_EMPHASIS } from '~/constants/style'
 import { cssLabeled } from '~/util/style'
 
 const classes = cssLabeled('loopHandle', {
   root: {
-    position: 'relative',
     height: '100%',
-    width: '100%',
     pointerEvents: 'none',
+    position: 'relative',
+    width: '100%',
   },
 
   alignRight: {
@@ -18,12 +17,12 @@ const classes = cssLabeled('loopHandle', {
   },
 
   tag: {
+    backgroundColor: COLOR_EMPHASIS,
+    height: 1,
+    pointerEvents: 'all',
     position: 'absolute',
     top: 0,
-    pointerEvents: 'all',
-    height: 1,
     width: '60%',
-    backgroundColor: COLOR_EMPHASIS,
   },
 
   tagAlignLeft: {
@@ -35,25 +34,31 @@ const classes = cssLabeled('loopHandle', {
   },
 
   bar: {
+    height: '100%',
+    pointerEvents: 'all',
     position: 'absolute',
     top: 0,
-    pointerEvents: 'all',
-    height: '100%',
     width: '100%',
   },
 
   barAlignLeft: {
-    left: '-100%',
     borderRight: `1px solid ${COLOR_EMPHASIS}`,
+    left: '-100%',
   },
 
   barAlignRight: {
-    right: '-100%',
     borderLeft: `1px solid ${COLOR_EMPHASIS}`,
+    right: '-100%',
   },
 })
 
-const LoopHandle = ({ align = 'left' }) => (
+export interface LoopHandleProps {
+  align: 'left' | 'right'
+}
+
+const LoopHandle: StatelessComponent<LoopHandleProps> = ({
+  align = 'left',
+}) => (
   <div
     className={cx({
       [classes.root]: true,
@@ -77,12 +82,4 @@ const LoopHandle = ({ align = 'left' }) => (
   </div>
 )
 
-LoopHandle.propTypes = {
-  align: PropTypes.oneOf(['left', 'right']),
-}
-
-LoopHandle.defaultProps = {
-  align: 'left',
-}
-
-export default LoopHandle
+export default memo(LoopHandle)
