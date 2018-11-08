@@ -15,7 +15,7 @@ const fromNodesSelector = createSelector(
   instrumentsSelector,
   audioEffectsSelector,
   (instruments, audioEffects) =>
-    [...instruments, ...audioEffects].map(pickNodeProps),
+    [...Object.values(instruments), ...audioEffects].map(pickNodeProps),
 )
 
 const toNodesSelector = createSelector(

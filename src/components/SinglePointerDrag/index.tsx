@@ -1,3 +1,4 @@
+import rafThrottle from 'raf-throttle'
 import { pipe, tap } from 'ramda'
 import { PureComponent, ReactNode } from 'react'
 
@@ -107,6 +108,13 @@ class SinglePointerDrag extends PureComponent<
   private touchEndEvents: Array<'touchend' | 'touchcancel'> = []
   private moveEvents: MoveEvent[] = []
   private endEvents: EndEvent[] = []
+  private throttledHandleDragMove: (event: MouseOrTouchEvent) => void
+
+  public constructor(props: SinglePointerDragProps, context: any) {
+    super(props, context)
+
+    this.throttledHandleDragMove = rafThrottle(this.handleDragMove)
+  }
 
   public componentDidMount() {
     this.mouseMoveEvents = filterSupportedEvents(['mousemove'])
@@ -172,7 +180,7 @@ class SinglePointerDrag extends PureComponent<
     const targetStartY = clientY - targetRect.left
 
     moveEvents.forEach(eventName =>
-      window.addEventListener(eventName, this.handleDragMove, {
+      window.addEventListener(eventName, this.throttledHandleDragMove, {
         passive: false,
       }),
     )
@@ -244,7 +252,7 @@ class SinglePointerDrag extends PureComponent<
     }
 
     this.moveEvents.forEach(eventName =>
-      window.removeEventListener(eventName, this.handleDragMove),
+      window.removeEventListener(eventName, this.throttledHandleDragMove),
     )
 
     this.endEvents.forEach(eventName =>

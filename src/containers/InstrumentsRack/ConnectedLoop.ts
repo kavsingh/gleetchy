@@ -20,7 +20,7 @@ import { getConnectionsFor } from '~/util/audio'
 
 export default connect(
   (state: ApplicationState, { id }: { id: string }) => {
-    const loop = instrumentsSelector(state).find(i => i.id === id)
+    const loop = instrumentsSelector(state)[id]
 
     if (!loop) {
       return {}

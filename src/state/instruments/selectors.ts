@@ -1,4 +1,3 @@
-import { identity } from 'ramda'
 import { createSelector } from 'reselect'
 
 import { mainOutSelector } from '~/state/audioContexts/selectors'
@@ -10,16 +9,16 @@ const instrumentsStateSelector = (state: ApplicationState) => state.instruments
 
 export const instrumentsSelector = createSelector(
   instrumentsStateSelector,
-  identity,
+  ({ byId }) => byId,
 )
 
-export const instrumentDescriptorsSelector = createSelector(
+export const orderedInstrumentsSelector = createSelector(
   instrumentsStateSelector,
-  instruments => instruments.map(({ id, type }) => ({ id, type })),
+  ({ orderedIdAndType }) => orderedIdAndType,
 )
 
 export const activeInstrumentsSelector = createSelector(
-  instrumentsSelector,
+  orderedInstrumentsSelector,
   connectionsSelector,
   mainOutSelector,
   (instruments, connections, mainOut) => {

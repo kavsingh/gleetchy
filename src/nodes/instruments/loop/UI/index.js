@@ -77,15 +77,7 @@ const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
 )
 
 class Loop extends PureComponent {
-  constructor(...args) {
-    super(...args)
-
-    this.handleLoopStartDrag = this.handleLoopStartDrag.bind(this)
-    this.handleLoopEndDrag = this.handleLoopEndDrag.bind(this)
-    this.handleLoopRegionDrag = this.handleLoopRegionDrag.bind(this)
-  }
-
-  handleLoopStartDrag(movement) {
+  handleLoopStartDrag = movement => {
     const { loopStart, loopEnd } = this.props
 
     this.props.onLoopRegionChange(
@@ -94,7 +86,7 @@ class Loop extends PureComponent {
     )
   }
 
-  handleLoopEndDrag(movement) {
+  handleLoopEndDrag = movement => {
     const { loopStart, loopEnd } = this.props
 
     this.props.onLoopRegionChange(
@@ -103,7 +95,7 @@ class Loop extends PureComponent {
     )
   }
 
-  handleLoopRegionDrag(movement) {
+  handleLoopRegionDrag = movement => {
     const { loopStart, loopEnd } = this.props
     const gap = loopEnd - loopStart
 

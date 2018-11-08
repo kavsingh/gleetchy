@@ -19,7 +19,10 @@ export default connect(
     audioEngineEvents: audioEngineEventsSelector(state),
     connections: connectionsSelector(state),
     isPlaying: isPlayingSelector(state),
-    nodes: [...instrumentsSelector(state), ...audioEffectsSelector(state)],
+    nodes: [
+      ...Object.values(instrumentsSelector(state)),
+      ...audioEffectsSelector(state),
+    ],
   }),
   (dispatch): AudioEngineDispatchMap => ({
     clearAudioEngineEvents: () => dispatch(clearAudioEngineEventsAction()),
