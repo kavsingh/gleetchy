@@ -1,6 +1,6 @@
 import color from 'color'
 import { Interpolation } from 'emotion'
-import React, { StatelessComponent } from 'react'
+import React, { ReactNode, StatelessComponent } from 'react'
 import { onlyUpdateForKeys } from 'recompose'
 
 import LoopRegion from '~/components/LoopRegion'
@@ -14,6 +14,8 @@ export interface SampleProps {
   audioBuffer?: AudioBuffer
   loopStart?: number
   loopEnd?: number
+  // needed for recompose hoc
+  children?: ReactNode
   onLoopStartDrag?(): void
   onLoopEndDrag?(): void
   onLoopRegionDrag?(): void
@@ -108,7 +110,7 @@ const Sample: StatelessComponent<SampleProps> = ({
   </div>
 )
 
-export default onlyUpdateForKeys([
+export default onlyUpdateForKeys<SampleProps>([
   'fromSaved',
   'audioBuffer',
   'loopStart',
