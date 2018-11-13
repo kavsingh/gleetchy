@@ -1,21 +1,22 @@
-import React, { PureComponent } from 'react'
 import { cx } from 'emotion'
 import { clamp } from 'ramda'
+import React, { PureComponent } from 'react'
 
-import PropTypes from '~/PropTypes'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
-import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
-import TitleBar from '~/components/TitleBar'
 import FileDropRegion from '~/components/FileDropRegion'
 import Sample from '~/components/Sample'
+import TitleBar from '~/components/TitleBar'
+import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
+import { AudioNodeConnection } from '~/types'
+import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
+
 import PlaybackControls from './PlaybackControls'
 
 const classes = cssLabeled('loop', {
   root: {
+    height: '12em',
     transition: 'opacity 0.2s ease-out',
     width: '100%',
-    height: '12em',
   },
 
   inactive: {
@@ -23,12 +24,12 @@ const classes = cssLabeled('loop', {
   },
 
   wrap: {
-    width: '100%',
-    height: '100%',
+    alignItems: 'stretch',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'stretch',
+    height: '100%',
     justifyContent: 'stretch',
+    width: '100%',
   },
 
   titleContainer: {
@@ -39,26 +40,53 @@ const classes = cssLabeled('loop', {
 
   mainContainer: {
     display: 'flex',
-    flexWrap: 'nowrap',
     flex: '1 0 10em',
-    width: '100%',
+    flexWrap: 'nowrap',
     paddingLeft: '0.2em',
+    width: '100%',
   },
 
   controlsContainer: {
+    display: 'flex',
     height: '100%',
     marginLeft: '1.2em',
-    display: 'flex',
   },
 
   titleLoadAudio: {
-    display: 'inline-block',
     cursor: 'pointer',
+    display: 'inline-block',
     marginLeft: '0.3em',
   },
 })
 
-const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
+export interface LoopProps {
+  loopStart: number
+  loopEnd: number
+  label: string
+  fileName: string
+  connections: AudioNodeConnection[]
+  isActive: boolean
+  highGain: number
+  midGain: number
+  lowGain: number
+  playbackRate: number
+  gain: number
+  audioBuffer?: AudioBuffer
+  onGainChange(gain: number): void
+  onPlaybackRateChange(playbackRate: number): void
+  onEqChange(props: { [key: string]: number }): void
+  selectAudioFile(): void
+  receiveAudioFile(file: File): void
+  onLoopRegionChange(start: number, end: number): void
+  onLabelChange(label: string): void
+  remove(): void
+}
+
+const renderTitle = (
+  fileName: string,
+  selectAudioFile: () => void,
+  audioBuffer?: AudioBuffer,
+) => (
   <span>
     {fileName ? `${fileName}` : ''}
     {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
@@ -68,7 +96,9 @@ const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
       className={classes.titleLoadAudio}
       onClick={selectAudioFile}
       onKeyDown={({ key }) => {
-        if (key === 'Enter') selectAudioFile()
+        if (key === 'Enter') {
+          selectAudioFile()
+        }
       }}
     >
       {`${fileName ? ' / ' : ''}[ Load audio file ]`}
@@ -76,64 +106,28 @@ const renderTitle = (fileName, audioBuffer, selectAudioFile) => (
   </span>
 )
 
-class Loop extends PureComponent {
-  handleLoopStartDrag = movement => {
-    const { loopStart, loopEnd } = this.props
-
-    this.props.onLoopRegionChange(
-      clamp(0, loopEnd - 0.0001, loopStart + movement),
-      loopEnd,
-    )
-  }
-
-  handleLoopEndDrag = movement => {
-    const { loopStart, loopEnd } = this.props
-
-    this.props.onLoopRegionChange(
-      loopStart,
-      clamp(loopStart + 0.0001, 1, loopEnd + movement),
-    )
-  }
-
-  handleLoopRegionDrag = movement => {
-    const { loopStart, loopEnd } = this.props
-    const gap = loopEnd - loopStart
-
-    let nextStart
-    let nextEnd
-
-    if (movement < 0) {
-      nextStart = clamp(0, 1 - gap, loopStart + movement)
-      nextEnd = nextStart + gap
-    } else {
-      nextEnd = clamp(gap, 1, loopEnd + movement)
-      nextStart = nextEnd - gap
-    }
-
-    this.props.onLoopRegionChange(nextStart, nextEnd)
-  }
-
-  render() {
+class Loop extends PureComponent<LoopProps> {
+  public render() {
     const {
-      fileName,
       audioBuffer,
-      label,
-      loopEnd,
-      loopStart,
-      selectAudioFile,
-      receiveAudioFile,
-      onLabelChange,
-      highGain,
-      midGain,
-      lowGain,
-      playbackRate,
-      gain,
-      onGainChange,
-      onPlaybackRateChange,
-      onEqChange,
-      remove,
-      connections,
-      isActive,
+      loopStart = 0,
+      loopEnd = 1,
+      label = '',
+      fileName = '',
+      connections = [],
+      isActive = true,
+      highGain = 0,
+      midGain = 0,
+      lowGain = 0,
+      playbackRate = 1,
+      gain = 0.5,
+      onGainChange = noop,
+      onPlaybackRateChange = noop,
+      onEqChange = noop,
+      selectAudioFile = noop,
+      receiveAudioFile = noop,
+      onLabelChange = noop,
+      remove = noop,
     } = this.props
 
     return (
@@ -152,7 +146,7 @@ class Loop extends PureComponent {
                   onRemoveClick={remove}
                   connections={connections}
                 >
-                  {() => renderTitle(fileName, audioBuffer, selectAudioFile)}
+                  {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
                 </TitleBar>
               </div>
               <div className={classes.mainContainer}>
@@ -187,53 +181,42 @@ class Loop extends PureComponent {
       </div>
     )
   }
-}
 
-Loop.propTypes = {
-  loopStart: PropTypes.number,
-  loopEnd: PropTypes.number,
-  label: PropTypes.string,
-  // eslint-disable-next-line react/no-typos
-  audioBuffer: PropTypes.audioBuffer,
-  fileName: PropTypes.string,
-  connections: PropTypes.arrayOf(PropTypes.connection),
-  isActive: PropTypes.bool,
-  highGain: PropTypes.number,
-  midGain: PropTypes.number,
-  lowGain: PropTypes.number,
-  playbackRate: PropTypes.number,
-  gain: PropTypes.number,
-  onGainChange: PropTypes.func,
-  onPlaybackRateChange: PropTypes.func,
-  onEqChange: PropTypes.func,
-  selectAudioFile: PropTypes.func,
-  receiveAudioFile: PropTypes.func,
-  onLoopRegionChange: PropTypes.func,
-  onLabelChange: PropTypes.func,
-  remove: PropTypes.func,
-}
+  private handleLoopStartDrag = (movement: number) => {
+    const { loopStart, loopEnd } = this.props
 
-Loop.defaultProps = {
-  loopStart: 0,
-  loopEnd: 1,
-  label: '',
-  audioBuffer: undefined,
-  fileName: '',
-  connections: [],
-  isActive: true,
-  highGain: 0,
-  midGain: 0,
-  lowGain: 0,
-  playbackRate: 1,
-  gain: 0.5,
-  onGainChange: noop,
-  onPlaybackRateChange: noop,
-  onEqChange: noop,
-  selectAudioFile: noop,
-  receiveAudioFile: noop,
-  onLoopRegionChange: noop,
-  onLabelChange: noop,
-  remove: noop,
+    this.props.onLoopRegionChange(
+      clamp(0, loopEnd - 0.0001, loopStart + movement),
+      loopEnd,
+    )
+  }
+
+  private handleLoopEndDrag = (movement: number) => {
+    const { loopStart, loopEnd } = this.props
+
+    this.props.onLoopRegionChange(
+      loopStart,
+      clamp(loopStart + 0.0001, 1, loopEnd + movement),
+    )
+  }
+
+  private handleLoopRegionDrag = (movement: number) => {
+    const { loopStart, loopEnd } = this.props
+    const gap = loopEnd - loopStart
+
+    let nextStart
+    let nextEnd
+
+    if (movement < 0) {
+      nextStart = clamp(0, 1 - gap, loopStart + movement)
+      nextEnd = nextStart + gap
+    } else {
+      nextEnd = clamp(gap, 1, loopEnd + movement)
+      nextStart = nextEnd - gap
+    }
+
+    this.props.onLoopRegionChange(nextStart, nextEnd)
+  }
 }
 
 export default Loop

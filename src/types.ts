@@ -1,6 +1,6 @@
 import { Action } from 'redux'
 
-export interface AudioNodeState<PROPS = {}> {
+export interface AudioNodeState<PROPS extends object = {}> {
   id: string
   color: string
   label: string

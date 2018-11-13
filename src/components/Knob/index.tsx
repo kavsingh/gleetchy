@@ -68,7 +68,7 @@ const classes = cssLabeled('knob', {
 export interface KnobProps {
   value: number
   defaultValue?: number
-  radius: number | string
+  radius?: number | string
   onChange?(value: number): void
   renderTitle?(): string
   renderLabel?(): ReactNode

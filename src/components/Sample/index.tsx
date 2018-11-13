@@ -14,11 +14,10 @@ export interface SampleProps {
   audioBuffer?: AudioBuffer
   loopStart?: number
   loopEnd?: number
-  // needed for recompose hoc
-  children?: ReactNode
-  onLoopStartDrag?(): void
-  onLoopEndDrag?(): void
-  onLoopRegionDrag?(): void
+  children?: ReactNode // needed for recompose hoc
+  onLoopStartDrag?(movement: number): void
+  onLoopEndDrag?(movement: number): void
+  onLoopRegionDrag?(movement: number): void
   selectAudioFile?(): void
 }
 
