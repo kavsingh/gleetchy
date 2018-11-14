@@ -15,13 +15,16 @@ const fromNodesSelector = createSelector(
   instrumentsSelector,
   audioEffectsSelector,
   (instruments, audioEffects) =>
-    [...Object.values(instruments), ...audioEffects].map(pickNodeProps),
+    [...Object.values(instruments), ...Object.values(audioEffects)].map(
+      pickNodeProps,
+    ),
 )
 
 const toNodesSelector = createSelector(
   audioEffectsSelector,
   mainOutSelector,
-  (audioEffects, mainOut) => [...audioEffects, mainOut].map(pickNodeProps),
+  (audioEffects, mainOut) =>
+    [...Object.values(audioEffects), mainOut].map(pickNodeProps),
 )
 
 const canConnectNodes = connections => ({ id: from }, { id: to }) =>

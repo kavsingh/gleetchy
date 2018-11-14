@@ -1,14 +1,14 @@
 import React, { memo, StatelessComponent } from 'react'
 
 import AnimIn from '~/components/AnimIn'
-import { nodeType as delayType, UI as Delay } from '~/nodes/audioEffects/delay'
-import {
-  nodeType as reverbType,
-  UI as Reverb,
-} from '~/nodes/audioEffects/reverb'
-import { AudioNodeConnection, AudioNodeState } from '~/types'
-import { noop, stubArray } from '~/util/function'
+import { nodeType as delayType } from '~/nodes/audioEffects/delay'
+import { nodeType as reverbType } from '~/nodes/audioEffects/reverb'
+import { AudioNodeIdentifier } from '~/types'
+import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
+
+import ConnectedDelay from './ConnectedDelay'
+import ConnectedReverb from './ConnectedReverb'
 
 const classes = cssLabeled('audioEffectsRack', {
   root: {
@@ -39,14 +39,7 @@ const classes = cssLabeled('audioEffectsRack', {
 })
 
 export interface AudioEffectsRackProps {
-  audioEffects: Array<
-    AudioNodeState<{ wetDryRatio?: number; delayTime?: number }>
-  >
-  activeAudioEffects: string[]
-  getConnections(id: string): AudioNodeConnection[]
-  updateAudioEffect(id: string, props: any): unknown
-  updateAudioEffectLabel(id: string, label: string): unknown
-  removeAudioEffect(id: string): unknown
+  audioEffects: AudioNodeIdentifier[]
   addReverb(): unknown
   addDelay(): unknown
 }
@@ -55,38 +48,17 @@ type EffectAddButton = [string, () => void]
 
 const AudioEffectsRack: StatelessComponent<AudioEffectsRackProps> = ({
   audioEffects = [],
-  activeAudioEffects = [],
-  getConnections = stubArray,
-  updateAudioEffect = noop,
-  updateAudioEffectLabel = noop,
-  removeAudioEffect = noop,
   addReverb = noop,
   addDelay = noop,
 }) => (
   <div className={classes.root}>
-    {audioEffects.map(({ id, type, props: effectProps, label }) => {
+    {audioEffects.map(({ id, type }) => {
       switch (type) {
         case delayType:
           return (
             <div className={classes.audioEffectContainer} key={id}>
               <AnimIn>
-                <Delay
-                  label={label}
-                  connections={getConnections(id)}
-                  isActive={activeAudioEffects.includes(id)}
-                  wetDryRatio={effectProps.wetDryRatio || 0}
-                  delayTime={effectProps.delayTime || 0}
-                  onDelayTimeChange={(delayTime: number) =>
-                    updateAudioEffect(id, { delayTime })
-                  }
-                  onWetDryRatioChange={(wetDryRatio: number) =>
-                    updateAudioEffect(id, { wetDryRatio })
-                  }
-                  onLabelChange={(val: string) =>
-                    updateAudioEffectLabel(id, val)
-                  }
-                  remove={() => removeAudioEffect(id)}
-                />
+                <ConnectedDelay id={id} />
               </AnimIn>
             </div>
           )
@@ -94,19 +66,7 @@ const AudioEffectsRack: StatelessComponent<AudioEffectsRackProps> = ({
           return (
             <div className={classes.audioEffectContainer} key={id}>
               <AnimIn>
-                <Reverb
-                  label={label}
-                  connections={getConnections(id)}
-                  isActive={activeAudioEffects.includes(id)}
-                  wetDryRatio={effectProps.wetDryRatio || 0}
-                  onWetDryRatioChange={(wetDryRatio: number) =>
-                    updateAudioEffect(id, { wetDryRatio })
-                  }
-                  onLabelChange={(val: string) =>
-                    updateAudioEffectLabel(id, val)
-                  }
-                  remove={() => removeAudioEffect(id)}
-                />
+                <ConnectedReverb id={id} />
               </AnimIn>
             </div>
           )

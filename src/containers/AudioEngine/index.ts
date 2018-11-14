@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { Omit } from 'type-zoo'
 
 import { audioEffectsSelector } from '~/state/audioEffects/selectors'
 import { clearAudioEngineEventsAction } from '~/state/audioEngine/actions'
@@ -9,22 +8,19 @@ import { connectionsSelector } from '~/state/connections/selectors'
 import { isPlayingSelector } from '~/state/globalPlayback/selectors'
 import { instrumentsSelector } from '~/state/instruments/selectors'
 
-import AudioEngine, { AudioEngineProps } from './AudioEngine'
-
-type AudioEnginePropsMap = Omit<AudioEngineProps, 'clearAudioEngineEvents'>
-type AudioEngineDispatchMap = Pick<AudioEngineProps, 'clearAudioEngineEvents'>
+import AudioEngine from './AudioEngine'
 
 export default connect(
-  (state: ApplicationState): AudioEnginePropsMap => ({
+  (state: ApplicationState) => ({
     audioEngineEvents: audioEngineEventsSelector(state),
     connections: connectionsSelector(state),
     isPlaying: isPlayingSelector(state),
     nodes: [
       ...Object.values(instrumentsSelector(state)),
-      ...audioEffectsSelector(state),
+      ...Object.values(audioEffectsSelector(state)),
     ],
   }),
-  (dispatch): AudioEngineDispatchMap => ({
+  dispatch => ({
     clearAudioEngineEvents: () => dispatch(clearAudioEngineEventsAction()),
   }),
 )(AudioEngine)

@@ -3,6 +3,7 @@ import React, { memo, StatelessComponent } from 'react'
 import AnimIn from '~/components/AnimIn'
 import ErrorBoundary from '~/components/ErrorBoundary'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
+import { AudioNodeIdentifier } from '~/types'
 import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
 
@@ -32,7 +33,7 @@ const classes = cssLabeled('instrumentsRack', {
 })
 
 export interface InstrumentsRackProps {
-  instruments: Array<{ id: string; type: string }>
+  instruments: AudioNodeIdentifier[]
   addLoop(): void
 }
 
