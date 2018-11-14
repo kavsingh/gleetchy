@@ -44,11 +44,11 @@ export interface AudioEffectsRackProps {
   >
   activeAudioEffects: string[]
   getConnections(id: string): AudioNodeConnection[]
-  updateAudioEffect(id: string, props: any): void
-  updateAudioEffectLabel(id: string, label: string): void
-  removeAudioEffect(id: string): void
-  addReverb(): void
-  addDelay(): void
+  updateAudioEffect(id: string, props: any): unknown
+  updateAudioEffectLabel(id: string, label: string): unknown
+  removeAudioEffect(id: string): unknown
+  addReverb(): unknown
+  addDelay(): unknown
 }
 
 type EffectAddButton = [string, () => void]

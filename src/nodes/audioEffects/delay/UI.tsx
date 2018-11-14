@@ -1,18 +1,18 @@
-import React from 'react'
 import { cx } from 'emotion'
+import React, { StatelessComponent } from 'react'
 
-import PropTypes from '~/PropTypes'
-import { DELAY_UPPER_BOUND } from '~/constants/audio'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
+import { DELAY_UPPER_BOUND } from '~/constants/audio'
+import { AudioNodeConnection } from '~/types'
+import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 
 const classes = cssLabeled('delay', {
   root: {
-    width: '100%',
     opacity: 1,
     transition: 'opacity 0.2s ease-out',
+    width: '100%',
   },
 
   inactive: {
@@ -20,8 +20,8 @@ const classes = cssLabeled('delay', {
   },
 
   controls: {
-    width: '100%',
     display: 'flex',
+    width: '100%',
   },
 
   knobContainer: {
@@ -29,16 +29,28 @@ const classes = cssLabeled('delay', {
   },
 })
 
-const Delay = ({
-  label,
-  wetDryRatio,
-  delayTime,
-  onWetDryRatioChange,
-  onDelayTimeChange,
-  isActive,
-  onLabelChange,
-  remove,
-  connections,
+export interface DelayProps {
+  label: string
+  connections: AudioNodeConnection[]
+  wetDryRatio: number
+  delayTime: number
+  isActive: boolean
+  onDelayTimeChange(delayTime: number): void
+  onWetDryRatioChange(wetDryRatio: number): void
+  onLabelChange(label: string): void
+  remove(): void
+}
+
+const Delay: StatelessComponent<DelayProps> = ({
+  label = 'Delay',
+  connections = [],
+  wetDryRatio = 0.5,
+  delayTime = 1,
+  isActive = true,
+  onDelayTimeChange = noop,
+  onWetDryRatioChange = noop,
+  onLabelChange = noop,
+  remove = noop,
 }) => (
   <div className={cx([classes.root, !isActive && classes.inactive])}>
     <TitleBar
@@ -72,29 +84,5 @@ const Delay = ({
     </div>
   </div>
 )
-
-Delay.propTypes = {
-  label: PropTypes.string,
-  connections: PropTypes.arrayOf(PropTypes.connection),
-  wetDryRatio: PropTypes.number,
-  delayTime: PropTypes.number,
-  isActive: PropTypes.bool,
-  onDelayTimeChange: PropTypes.func,
-  onWetDryRatioChange: PropTypes.func,
-  onLabelChange: PropTypes.func,
-  remove: PropTypes.func,
-}
-
-Delay.defaultProps = {
-  label: 'Delay',
-  connections: [],
-  wetDryRatio: 0.5,
-  delayTime: 1,
-  isActive: true,
-  onDelayTimeChange: noop,
-  onWetDryRatioChange: noop,
-  onLabelChange: noop,
-  remove: noop,
-}
 
 export default Delay

@@ -1,12 +1,12 @@
-import React from 'react'
+import color from 'color'
 import { cx } from 'emotion'
 import { always, T } from 'ramda'
-import color from 'color'
+import React, { StatelessComponent } from 'react'
 
-import PropTypes from '~/PropTypes'
+import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
+import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
-import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 
 const classes = cssLabeled('patchBay', {
   root: {
@@ -15,11 +15,11 @@ const classes = cssLabeled('patchBay', {
 
   label: {
     fontSize: '0.68em',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     fontWeight: 400,
     maxWidth: '5.4em',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
 
   row: {
@@ -45,13 +45,13 @@ const classes = cssLabeled('patchBay', {
   },
 
   node: {
+    backgroundColor: 'transparent',
+    border: `1px solid ${COLOR_KEYLINE}`,
+    cursor: 'pointer',
+    height: '0.8em',
+    margin: '0 auto',
     transition: 'all 0.2s ease-out',
     width: '0.8em',
-    height: '0.8em',
-    border: `1px solid ${COLOR_KEYLINE}`,
-    margin: '0 auto',
-    cursor: 'pointer',
-    backgroundColor: 'transparent',
   },
 
   nodeActive: {
@@ -65,12 +65,29 @@ const classes = cssLabeled('patchBay', {
   },
 })
 
-const PatchBay = ({
-  fromNodes,
-  toNodes,
-  canConnect,
-  getConnection,
-  onNodeClick,
+interface ConnectedNode {
+  label: string
+  color: string
+  id: string
+}
+
+export interface PatchBayProps {
+  fromNodes: ConnectedNode[]
+  toNodes: ConnectedNode[]
+  canConnect(from: ConnectedNode, to: ConnectedNode): boolean
+  getConnection(
+    a: ConnectedNode,
+    b: ConnectedNode,
+  ): AudioNodeConnection | undefined
+  onNodeClick(from: ConnectedNode, to: ConnectedNode): void
+}
+
+const PatchBay: StatelessComponent<PatchBayProps> = ({
+  fromNodes = [],
+  toNodes = [],
+  canConnect = T,
+  getConnection = always(undefined),
+  onNodeClick = noop,
 }) => (
   <table className={classes.root}>
     <tbody>
@@ -103,8 +120,11 @@ const PatchBay = ({
               : `From ${fromNode.label} to ${toNode.label}`
 
             let modClassName = ''
-            if (blockConnect) modClassName = classes.nodeBlocked
-            else if (connection) modClassName = classes.nodeActive
+            if (blockConnect) {
+              modClassName = classes.nodeBlocked
+            } else if (connection) {
+              modClassName = classes.nodeActive
+            }
 
             const handleClick = blockConnect
               ? noop
@@ -128,7 +148,9 @@ const PatchBay = ({
                   role="button"
                   tabIndex={0}
                   onKeyUp={e => {
-                    if (e.key === 'Enter') handleClick()
+                    if (e.key === 'Enter') {
+                      handleClick()
+                    }
                   }}
                   title={title}
                 />
@@ -140,21 +162,5 @@ const PatchBay = ({
     </tbody>
   </table>
 )
-
-PatchBay.propTypes = {
-  fromNodes: PropTypes.arrayOf(PropTypes.shape({})),
-  toNodes: PropTypes.arrayOf(PropTypes.shape({})),
-  canConnect: PropTypes.func,
-  getConnection: PropTypes.func,
-  onNodeClick: PropTypes.func,
-}
-
-PatchBay.defaultProps = {
-  fromNodes: [],
-  toNodes: [],
-  canConnect: T,
-  getConnection: always(undefined),
-  onNodeClick: noop,
-}
 
 export default PatchBay

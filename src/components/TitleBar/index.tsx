@@ -55,8 +55,8 @@ const classes = cssLabeled('titleBar', {
 
 export interface TitleBarProps {
   label: string
-  children: ReactNode | (() => ReactNode)
   type: string
+  children?: ReactNode | (() => ReactNode)
   connections?: AudioNodeConnection[]
   onLabelChange?(label: string): void
   onRemoveClick?(): void

@@ -1,17 +1,17 @@
-import React from 'react'
 import { cx } from 'emotion'
+import React from 'react'
 
-import PropTypes from '~/PropTypes'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
+import { AudioNodeConnection } from '~/types'
+import { noop } from '~/util/function'
+import { cssLabeled } from '~/util/style'
 
 const classes = cssLabeled('reverb', {
   root: {
-    width: '100%',
     opacity: 1,
     transition: 'opacity 0.2s ease-out',
+    width: '100%',
   },
 
   inactive: {
@@ -19,8 +19,8 @@ const classes = cssLabeled('reverb', {
   },
 
   controls: {
-    width: '100%',
     display: 'flex',
+    width: '100%',
   },
 
   knobContainer: {
@@ -28,14 +28,24 @@ const classes = cssLabeled('reverb', {
   },
 })
 
+export interface ReverbProps {
+  label: string
+  wetDryRatio: number
+  isActive: boolean
+  connections: AudioNodeConnection
+  onWetDryRatioChange(wetDryRatio: number): void
+  onLabelChange(label: string): void
+  remove(): void
+}
+
 const Reverb = ({
-  label,
-  wetDryRatio,
-  onWetDryRatioChange,
-  isActive,
-  onLabelChange,
-  remove,
-  connections,
+  label = 'Reverb',
+  wetDryRatio = 0.5,
+  isActive = true,
+  connections = [],
+  onWetDryRatioChange = noop,
+  onLabelChange = noop,
+  remove = noop,
 }) => (
   <div className={cx([classes.root, !isActive && classes.inactive])}>
     <TitleBar
@@ -59,25 +69,5 @@ const Reverb = ({
     </div>
   </div>
 )
-
-Reverb.propTypes = {
-  label: PropTypes.string,
-  wetDryRatio: PropTypes.number,
-  isActive: PropTypes.bool,
-  connections: PropTypes.arrayOf(PropTypes.connection),
-  onWetDryRatioChange: PropTypes.func,
-  onLabelChange: PropTypes.func,
-  remove: PropTypes.func,
-}
-
-Reverb.defaultProps = {
-  label: 'Reverb',
-  wetDryRatio: 0.5,
-  isActive: true,
-  connections: [],
-  onWetDryRatioChange: noop,
-  onLabelChange: noop,
-  remove: noop,
-}
 
 export default Reverb

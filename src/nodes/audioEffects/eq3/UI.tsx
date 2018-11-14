@@ -1,30 +1,49 @@
+import { always } from 'ramda'
 import React from 'react'
 
-import PropTypes from '~/PropTypes'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 import Slider from '~/components/Slider'
+import { cssLabeled } from '~/util/style'
 
 const classes = cssLabeled('eq3', {
   root: {
+    display: 'flex',
     height: '100%',
     marginLeft: '0.6em',
-    display: 'flex',
   },
 
   sliderContainer: {
-    width: '2em',
     height: '100%',
+    width: '2em',
   },
 })
 
-const Eq3 = ({ lowGain, midGain, highGain, onChange }) => (
+export interface Eq3Props {
+  lowGain: number
+  midGain: number
+  highGain: number
+  onChange(eqProps: { [key: string]: number }): void
+}
+
+const defaultOnChange = (_: any) => undefined
+const renderLowGainTitle = always('EQ Low Gain')
+const renderLowGainLabel = always('L')
+const renderMidGainTitle = always('EQ Mid Gain')
+const renderMidGainLabel = always('M')
+const renderHighGainTitle = always('EQ High Gain')
+const renderHighGainLabel = always('H')
+
+const Eq3 = ({
+  lowGain = 0,
+  midGain = 0,
+  highGain = 0,
+  onChange = defaultOnChange,
+}) => (
   <div className={classes.root}>
     <div className={classes.sliderContainer}>
       <Slider
         value={lowGain * 0.5 + 0.5}
-        renderTitle={() => 'EQ low gain'}
-        renderLabel={() => 'L'}
+        renderTitle={renderLowGainTitle}
+        renderLabel={renderLowGainLabel}
         renderValue={() => lowGain.toFixed(1)}
         onChange={val => onChange({ lowGain: val * 2 - 1 })}
       />
@@ -32,8 +51,8 @@ const Eq3 = ({ lowGain, midGain, highGain, onChange }) => (
     <div className={classes.sliderContainer}>
       <Slider
         value={midGain * 0.5 + 0.5}
-        renderTitle={() => 'EQ mid gain'}
-        renderLabel={() => 'M'}
+        renderTitle={renderMidGainTitle}
+        renderLabel={renderMidGainLabel}
         renderValue={() => midGain.toFixed(1)}
         onChange={val => onChange({ midGain: val * 2 - 1 })}
       />
@@ -41,27 +60,13 @@ const Eq3 = ({ lowGain, midGain, highGain, onChange }) => (
     <div className={classes.sliderContainer}>
       <Slider
         value={highGain * 0.5 + 0.5}
-        renderTitle={() => 'EQ high gain'}
-        renderLabel={() => 'H'}
+        renderTitle={renderHighGainTitle}
+        renderLabel={renderHighGainLabel}
         renderValue={() => highGain.toFixed(1)}
         onChange={val => onChange({ highGain: val * 2 - 1 })}
       />
     </div>
   </div>
 )
-
-Eq3.propTypes = {
-  lowGain: PropTypes.number,
-  midGain: PropTypes.number,
-  highGain: PropTypes.number,
-  onChange: PropTypes.func,
-}
-
-Eq3.defaultProps = {
-  lowGain: 0,
-  midGain: 0,
-  highGain: 0,
-  onChange: noop,
-}
 
 export default Eq3

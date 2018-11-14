@@ -99,7 +99,6 @@
     "cuid": "^2.1.4",
     "emotion": "^9.2.12",
     "immer": "^1.7.4",
-    "prop-types": "^15.6.2",
     "raf-throttle": "^2.0.3",
     "ramda": "^0.25.0",
     "react": "^16.6.3",
