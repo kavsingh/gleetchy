@@ -1,49 +1,74 @@
-import { propEq, without } from 'ramda'
+import produce from 'immer'
+import { AudioNodeIdentifier, AudioNodeState } from '~/types'
 
-const idEquals = propEq('id')
+export interface NodesReducerState<T extends AudioNodeState> {
+  orderedIdentifiers: AudioNodeIdentifier[]
+  byId: { [key: string]: T }
+}
 
-export const removeNodeFromState = <T extends any[]>(
+interface NodeById<T = AudioNodeState> {
+  [key: string]: T
+}
+
+export const constructDefaultState = <T extends AudioNodeState>(
+  initialNodes: T[],
+) => ({
+  byId: initialNodes.reduce((acc: NodeById<T>, instrument) => {
+    acc[instrument.id] = instrument
+    return acc
+  }, {}),
+  orderedIdentifiers: initialNodes.map(({ id, type }) => ({ id, type })),
+})
+
+export const removeNodeFromState = <
+  N extends AudioNodeState,
+  T extends NodesReducerState<N>
+>(
   state: T,
   { id }: { id: string },
-) => {
-  const existing = state.find(idEquals(id))
+) =>
+  produce<T>(state, draftState => {
+    const orderedIndex = draftState.orderedIdentifiers.findIndex(
+      node => id === node.id,
+    )
 
-  return existing ? without([existing], state) : state
-}
+    if (orderedIndex !== -1) {
+      draftState.orderedIdentifiers.splice(orderedIndex, 1)
+    }
 
-export const updateNodePropsInState = <T extends any[]>(
+    if (draftState.byId[id]) {
+      delete draftState.byId[id]
+    }
+  })
+
+export const updateNodePropsInState = <
+  N extends AudioNodeState,
+  T extends NodesReducerState<N>
+>(
   state: T,
   { id, props }: { id: string; props: object },
-) => {
-  const existingIdx = state.findIndex(idEquals(id))
+) =>
+  produce<T>(state, draftState => {
+    const existing = draftState.byId[id]
 
-  if (existingIdx === -1) {
-    return state
-  }
+    if (!existing) {
+      return
+    }
 
-  const newState = [...state]
+    Object.assign(existing.props, props)
+  })
 
-  newState[existingIdx] = {
-    ...newState[existingIdx],
-    props: { ...newState[existingIdx].props, ...props },
-  }
-
-  return newState
-}
-
-export const updateNodeLabelInState = <T extends any[]>(
+export const updateNodeLabelInState = <
+  N extends AudioNodeState,
+  T extends NodesReducerState<N>
+>(
   state: T,
   { id, label }: { id: string; label: string },
-) => {
-  const existingIdx = state.findIndex(idEquals(id))
+) =>
+  produce<T>(state, draftState => {
+    const existing = draftState.byId[id]
 
-  if (existingIdx === -1) {
-    return state
-  }
-
-  const newState = [...state]
-
-  newState[existingIdx] = { ...newState[existingIdx], label }
-
-  return newState
-}
+    if (existing) {
+      existing.label = label
+    }
+  })

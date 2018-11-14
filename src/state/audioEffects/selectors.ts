@@ -1,4 +1,3 @@
-import { identity, propEq } from 'ramda'
 import { createSelector } from 'reselect'
 
 import { mainOutSelector } from '~/state/audioContexts/selectors'
@@ -11,18 +10,21 @@ const audioEffectsStateSelector = (state: ApplicationState) =>
 
 export const audioEffectsSelector = createSelector(
   audioEffectsStateSelector,
-  identity,
+  ({ byId }) => byId,
+)
+
+export const orderedAudioEffectsSelector = createSelector(
+  audioEffectsStateSelector,
+  ({ orderedIdentifiers }) => orderedIdentifiers,
 )
 
 export const activeAudioEffectsSelector = createSelector(
-  audioEffectsSelector,
+  orderedAudioEffectsSelector,
   connectionsSelector,
   mainOutSelector,
   (audioEffects, connections, mainOut) => {
     const connectedToMain = hasDownstreamConnectionTo(mainOut.id, connections)
 
-    return audioEffects
-      .map(({ id }) => id)
-      .filter(id => connections.some(propEq('to', id)) && connectedToMain(id))
+    return audioEffects.map(({ id }) => id).filter(connectedToMain)
   },
 )

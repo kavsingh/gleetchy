@@ -14,7 +14,7 @@ export const instrumentsSelector = createSelector(
 
 export const orderedInstrumentsSelector = createSelector(
   instrumentsStateSelector,
-  ({ orderedIdAndType }) => orderedIdAndType,
+  ({ orderedIdentifiers }) => orderedIdentifiers,
 )
 
 export const activeInstrumentsSelector = createSelector(

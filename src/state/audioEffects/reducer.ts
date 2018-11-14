@@ -1,3 +1,4 @@
+import produce from 'immer'
 import { Reducer } from 'redux'
 
 import COLORS from '~/constants/color'
@@ -11,6 +12,8 @@ import {
 } from '~/nodes/audioEffects/reverb'
 import { AudioEffectNode, audioEffects } from '~/state/defaultNodes'
 import {
+  constructDefaultState,
+  NodesReducerState,
   removeNodeFromState,
   updateNodeLabelInState,
   updateNodePropsInState,
@@ -19,9 +22,9 @@ import { prefixedId } from '~/util/id'
 
 import { AudioEffectsAction } from './types'
 
-export type AudioEffectsState = AudioEffectNode[]
+export type AudioEffectsState = NodesReducerState<AudioEffectNode>
 
-const defaultState: AudioEffectsState = [...audioEffects]
+const defaultState = constructDefaultState<AudioEffectNode>(audioEffects)
 
 const addAudioEffect = (
   state: AudioEffectsState,
@@ -29,28 +32,38 @@ const addAudioEffect = (
 ) => {
   switch (type) {
     case delayNodeType: {
-      return [
-        ...state,
-        {
-          color: COLORS[state.length % COLORS.length],
-          id: prefixedId('delay'),
-          label: 'DX',
-          props: { delayNodeProps },
-          type: delayNodeType,
-        },
-      ]
+      const newDelay = {
+        color: COLORS[state.orderedIdentifiers.length % COLORS.length],
+        id: prefixedId('delay'),
+        label: 'DX',
+        props: { ...delayNodeProps },
+        type: delayNodeType,
+      }
+
+      return produce<AudioEffectsState>(state, draftState => {
+        draftState.byId[newDelay.id] = newDelay
+        draftState.orderedIdentifiers.push({
+          id: newDelay.id,
+          type: newDelay.type,
+        })
+      })
     }
     case reverbNodeType: {
-      return [
-        ...state,
-        {
-          color: COLORS[state.length % COLORS.length],
-          id: prefixedId('reverb'),
-          label: `RX`,
-          props: { ...reverbNodeProps },
-          type: reverbNodeType,
-        },
-      ]
+      const newReverb = {
+        color: COLORS[state.orderedIdentifiers.length % COLORS.length],
+        id: prefixedId('reverb'),
+        label: `RX`,
+        props: { ...reverbNodeProps },
+        type: reverbNodeType,
+      }
+
+      return produce<AudioEffectsState>(state, draftState => {
+        draftState.byId[newReverb.id] = newReverb
+        draftState.orderedIdentifiers.push({
+          id: newReverb.id,
+          type: newReverb.type,
+        })
+      })
     }
     default:
       return state
@@ -65,11 +78,20 @@ const audioEffectsReducer: Reducer<AudioEffectsState, AudioEffectsAction> = (
     case 'AUDIO_EFFECT_ADD':
       return addAudioEffect(state, action.payload)
     case 'AUDIO_EFFECT_REMOVE':
-      return removeNodeFromState<AudioEffectsState>(state, action.payload)
+      return removeNodeFromState<AudioEffectNode, AudioEffectsState>(
+        state,
+        action.payload,
+      )
     case 'AUDIO_EFFECT_UPDATE_PROPS':
-      return updateNodePropsInState<AudioEffectsState>(state, action.payload)
+      return updateNodePropsInState<AudioEffectNode, AudioEffectsState>(
+        state,
+        action.payload,
+      )
     case 'AUDIO_EFFECT_UPDATE_LABEL':
-      return updateNodeLabelInState<AudioEffectsState>(state, action.payload)
+      return updateNodeLabelInState<AudioEffectNode, AudioEffectsState>(
+        state,
+        action.payload,
+      )
     default:
       return state
   }
