@@ -3,12 +3,12 @@ import { hasDownstreamConnectionTo } from './audio'
 describe('Audio util', () => {
   it('Should determine if from id is connected downstream to id', () => {
     const connections = [
-      { from: 'a', to: 'b' },
-      { from: 'a', to: 'd' },
-      { from: 'd', to: 'a' },
-      { from: 'e', to: 'f' },
-      { from: 'e', to: 'g' },
-      { from: 'b', to: 'c' },
+      { from: 'a', to: 'b', color: '#fff' },
+      { from: 'a', to: 'd', color: '#fff' },
+      { from: 'd', to: 'a', color: '#fff' },
+      { from: 'e', to: 'f', color: '#fff' },
+      { from: 'e', to: 'g', color: '#fff' },
+      { from: 'b', to: 'c', color: '#fff' },
     ]
 
     const connectedToC = hasDownstreamConnectionTo('c', connections)
@@ -20,10 +20,10 @@ describe('Audio util', () => {
 
   it('Should check circular downstream connection', () => {
     const connections = [
-      { from: 'a', to: 'b' },
-      { from: 'a', to: 'd' },
-      { from: 'd', to: 'a' },
-      { from: 'b', to: 'c' },
+      { from: 'a', to: 'b', color: '#fff' },
+      { from: 'a', to: 'd', color: '#fff' },
+      { from: 'd', to: 'a', color: '#fff' },
+      { from: 'b', to: 'c', color: '#fff' },
     ]
 
     const connectedToC = hasDownstreamConnectionTo('c', connections)

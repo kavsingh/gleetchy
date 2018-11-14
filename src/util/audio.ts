@@ -9,6 +9,9 @@ import {
   startsWith,
   tryCatch,
 } from 'ramda'
+import { Omit } from 'type-zoo'
+
+import { AudioNodeConnection } from '~/types'
 
 const typeSatisfies = (pred: (type: string) => boolean) =>
   tryCatch(propSatisfies<string>(pred, 'type'), F)
@@ -19,10 +22,7 @@ export const isMainOut = typeSatisfies(equals('AUDIO_CONTEXT'))
 
 export const sortByType = sortBy<{ type: string }>(prop('type'))
 
-interface Connection {
-  from: string
-  to: string
-}
+type Connection = Omit<AudioNodeConnection, 'color'>
 
 export const isSameConnection = curry(
   (connection1: Connection, connection2: Connection) =>
@@ -30,12 +30,12 @@ export const isSameConnection = curry(
 )
 
 export const getConnectionsFor = curry(
-  (id: string, connections: Connection[]) =>
+  (id: string, connections: AudioNodeConnection[]): AudioNodeConnection[] =>
     connections.filter(({ from, to }) => from === id || to === id),
 )
 
 export const hasDownstreamConnectionTo = curry(
-  (toId: string, connections: Connection[], fromId: string) => {
+  (toId: string, connections: AudioNodeConnection[], fromId: string) => {
     if (!connections.length) {
       return false
     }
