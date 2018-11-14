@@ -1,5 +1,5 @@
 import { cx } from 'emotion'
-import React, { StatelessComponent } from 'react'
+import React, { memo, StatelessComponent } from 'react'
 
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
@@ -85,4 +85,4 @@ const Delay: StatelessComponent<DelayProps> = ({
   </div>
 )
 
-export default Delay
+export default memo(Delay)

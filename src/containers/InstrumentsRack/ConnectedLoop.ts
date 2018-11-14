@@ -1,7 +1,6 @@
 import { connect } from 'react-redux'
 
 import { UI as Loop } from '~/nodes/instruments/loop'
-import { LoopProps } from '~/nodes/instruments/loop/UI'
 import {
   receiveAudioFileAction,
   selectAudioFileAction,
@@ -19,36 +18,8 @@ import {
 } from '~/state/instruments/selectors'
 import { getConnectionsFor } from '~/util/audio'
 
-type StateProps = Pick<
-  LoopProps,
-  | 'audioBuffer'
-  | 'connections'
-  | 'fileName'
-  | 'label'
-  | 'gain'
-  | 'highGain'
-  | 'isActive'
-  | 'loopEnd'
-  | 'loopStart'
-  | 'lowGain'
-  | 'midGain'
-  | 'playbackRate'
->
-
-type DispatchProps = Pick<
-  LoopProps,
-  | 'onEqChange'
-  | 'onGainChange'
-  | 'onLabelChange'
-  | 'onLoopRegionChange'
-  | 'onPlaybackRateChange'
-  | 'receiveAudioFile'
-  | 'remove'
-  | 'selectAudioFile'
->
-
 export default connect(
-  (state: ApplicationState, { id }: { id: string }): StateProps => {
+  (state: ApplicationState, { id }: { id: string }) => {
     const loop = instrumentsSelector(state)[id]
 
     if (!loop) {
@@ -80,7 +51,7 @@ export default connect(
       playbackRate: props.playbackRate,
     }
   },
-  (dispatch: any, { id }: { id: string }): DispatchProps => ({
+  (dispatch: any, { id }: { id: string }) => ({
     onEqChange: (eqProps: any) =>
       dispatch(updateInstrumentPropsAction(id, eqProps)),
     onGainChange: (gain: number) =>

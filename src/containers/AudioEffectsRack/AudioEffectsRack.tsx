@@ -1,4 +1,4 @@
-import React, { StatelessComponent } from 'react'
+import React, { memo, StatelessComponent } from 'react'
 
 import AnimIn from '~/components/AnimIn'
 import { nodeType as delayType, UI as Delay } from '~/nodes/audioEffects/delay'
@@ -74,8 +74,8 @@ const AudioEffectsRack: StatelessComponent<AudioEffectsRackProps> = ({
                   label={label}
                   connections={getConnections(id)}
                   isActive={activeAudioEffects.includes(id)}
-                  wetDryRatio={effectProps.wetDryRatio}
-                  delayTime={effectProps.delayTime}
+                  wetDryRatio={effectProps.wetDryRatio || 0}
+                  delayTime={effectProps.delayTime || 0}
                   onDelayTimeChange={(delayTime: number) =>
                     updateAudioEffect(id, { delayTime })
                   }
@@ -98,7 +98,7 @@ const AudioEffectsRack: StatelessComponent<AudioEffectsRackProps> = ({
                   label={label}
                   connections={getConnections(id)}
                   isActive={activeAudioEffects.includes(id)}
-                  wetDryRatio={effectProps.wetDryRatio}
+                  wetDryRatio={effectProps.wetDryRatio || 0}
                   onWetDryRatioChange={(wetDryRatio: number) =>
                     updateAudioEffect(id, { wetDryRatio })
                   }
@@ -137,4 +137,4 @@ const AudioEffectsRack: StatelessComponent<AudioEffectsRackProps> = ({
   </div>
 )
 
-export default AudioEffectsRack
+export default memo(AudioEffectsRack)

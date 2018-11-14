@@ -1,7 +1,8 @@
 import { always } from 'ramda'
-import React from 'react'
+import React, { memo, StatelessComponent } from 'react'
 
 import Slider from '~/components/Slider'
+import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
 
 const classes = cssLabeled('eq3', {
@@ -24,7 +25,6 @@ export interface Eq3Props {
   onChange(eqProps: { [key: string]: number }): void
 }
 
-const defaultOnChange = (_: any) => undefined
 const renderLowGainTitle = always('EQ Low Gain')
 const renderLowGainLabel = always('L')
 const renderMidGainTitle = always('EQ Mid Gain')
@@ -32,11 +32,11 @@ const renderMidGainLabel = always('M')
 const renderHighGainTitle = always('EQ High Gain')
 const renderHighGainLabel = always('H')
 
-const Eq3 = ({
+const Eq3: StatelessComponent<Eq3Props> = ({
   lowGain = 0,
   midGain = 0,
   highGain = 0,
-  onChange = defaultOnChange,
+  onChange = noop,
 }) => (
   <div className={classes.root}>
     <div className={classes.sliderContainer}>
@@ -69,4 +69,4 @@ const Eq3 = ({
   </div>
 )
 
-export default Eq3
+export default memo(Eq3)

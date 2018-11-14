@@ -1,5 +1,5 @@
 import { cx } from 'emotion'
-import React from 'react'
+import React, { memo, StatelessComponent } from 'react'
 
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
@@ -32,13 +32,13 @@ export interface ReverbProps {
   label: string
   wetDryRatio: number
   isActive: boolean
-  connections: AudioNodeConnection
+  connections: AudioNodeConnection[]
   onWetDryRatioChange(wetDryRatio: number): void
   onLabelChange(label: string): void
   remove(): void
 }
 
-const Reverb = ({
+const Reverb: StatelessComponent<ReverbProps> = ({
   label = 'Reverb',
   wetDryRatio = 0.5,
   isActive = true,
@@ -70,4 +70,4 @@ const Reverb = ({
   </div>
 )
 
-export default Reverb
+export default memo(Reverb)

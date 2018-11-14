@@ -32,4 +32,4 @@ export default connect(
     updateAudioEffectLabel: (id: string, label: string) =>
       dispatch(updateAudioEffectLabelAction(id, label)),
   }),
-)(AudioEffectsRack as any)
+)(AudioEffectsRack)

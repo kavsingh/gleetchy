@@ -1,7 +1,7 @@
 import color from 'color'
 import { cx } from 'emotion'
 import { always, T } from 'ramda'
-import React, { StatelessComponent } from 'react'
+import React, { memo, StatelessComponent } from 'react'
 
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { AudioNodeConnection } from '~/types'
@@ -163,4 +163,4 @@ const PatchBay: StatelessComponent<PatchBayProps> = ({
   </table>
 )
 
-export default PatchBay
+export default memo(PatchBay)
