@@ -12,9 +12,18 @@ export interface AudioNodeState<PROPS extends object = {}>
   props: PROPS
 }
 
-export interface GAudioNode extends AudioNode {
-  type: 'string'
-  set(props: object): void
+export type AudioNodeReturn = () => AudioNode
+
+export interface AudioNodeConnectableProxy {
+  getInNode: AudioNodeReturn
+  getOutNode: AudioNodeReturn
+}
+
+export interface GAudioNode<T extends string = any, P extends object = any>
+  extends AudioNode,
+    AudioNodeConnectableProxy {
+  type: T
+  set(props: P): void
 }
 
 export interface InstrumentNode extends GAudioNode {

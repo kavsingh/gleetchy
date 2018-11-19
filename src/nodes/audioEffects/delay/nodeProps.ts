@@ -1,11 +1,4 @@
-export interface NodeProps {
-  delayTime: number
-  wetDryRatio: number
-}
-
-const props: NodeProps = {
+export default Object.freeze({
   delayTime: 0.6,
   wetDryRatio: 0.5,
-}
-
-export default Object.freeze(props)
+})

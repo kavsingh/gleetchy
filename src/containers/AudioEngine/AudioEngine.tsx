@@ -38,12 +38,13 @@ const setNodeProps = tryCatch<TrySet>(({ node, props }) => {
   }
 }, warn)
 
-const getNodeCreator = pipe(
+type NodeCreator = (...args: any[]) => GAudioNode | InstrumentNode
+const getNodeCreator: (state: AudioNodeState) => NodeCreator = pipe(
   ({ type }: AudioNodeState) => type,
   cond([
     [equals(delayType), always(createDelayNode)],
     [equals(reverbType), always(createReverbNode)],
-    [equals(loopType), always(createLoopNode)],
+    [equals(loopType), always(createLoopNode) as any],
   ]),
 )
 

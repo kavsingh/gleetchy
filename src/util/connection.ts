@@ -1,9 +1,4 @@
-type AudioNodeReturn = () => AudioNode
-
-interface AudioNodeConnectableProxy {
-  getInNode: AudioNodeReturn
-  getOutNode: AudioNodeReturn
-}
+import { AudioNodeConnectableProxy, AudioNodeReturn, GAudioNode } from '~/types'
 
 export const createConnect = (getOutNode: AudioNodeReturn) =>
   function connect(node: AudioNode | AudioNodeConnectableProxy) {
@@ -33,10 +28,10 @@ export const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
-export const connectable = ({
+export const connectable = <T extends GAudioNode = GAudioNode>({
   getInNode,
   getOutNode,
-}: AudioNodeConnectableProxy) => (api: object) =>
+}: AudioNodeConnectableProxy) => (api: any): T =>
   Object.assign(api, {
     connect: createConnect(getOutNode),
     disconnect: createDisconnect(getOutNode),
