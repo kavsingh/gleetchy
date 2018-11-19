@@ -12,12 +12,7 @@ module.exports = {
           shippedProposals: true,
           loose: true,
         },
-        env === 'test'
-          ? {
-              modules: 'commonjs',
-              useBuiltIns: false,
-            }
-          : {},
+        env === 'test' ? { modules: 'commonjs', useBuiltIns: false } : {},
       ),
     ],
     '@babel/preset-react',
@@ -25,14 +20,7 @@ module.exports = {
   plugins: [
     '@babel/plugin-proposal-class-properties',
     'webpack-alias',
-    env === 'production' && [
-      'transform-react-remove-prop-types',
-      {
-        removeImport: true,
-        additionalLibraries: ['react-style-proptype', '~/PropTypes'],
-      },
-    ],
-    env !== 'test' && [
+    [
       'transform-imports',
       {
         ramda: {
@@ -41,5 +29,5 @@ module.exports = {
         },
       },
     ],
-  ].filter(Boolean),
+  ],
 }

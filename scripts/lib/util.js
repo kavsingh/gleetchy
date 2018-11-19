@@ -1,6 +1,7 @@
 const prettier = require('prettier')
 const { curry, last, pipe, map, join, toUpper, identity } = require('ramda')
 const { stripIndent } = require('common-tags/lib')
+
 const prettierConfig = require('../../.prettierrc.js')
 
 const isUpper = c => c === c.toUpperCase()
