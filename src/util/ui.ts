@@ -9,10 +9,10 @@ export const describeSVGArc = (
   endAngle: number,
 ) => {
   const toPoint = polarToCartesian(origin, radius)
-  const [sa, ea] = map(clamp(0, 359.9), [startAngle, endAngle])
-  const { x: startX, y: startY } = toPoint(ea - 90)
-  const { x: endX, y: endY } = toPoint(sa - 90)
-  const arcSweep = endAngle - startAngle <= 180 ? 0 : 1
+  const [arcStart, arcEnd] = map(clamp(0, 359.9), [startAngle, endAngle])
+  const { x: startX, y: startY } = toPoint(arcEnd - 90)
+  const { x: endX, y: endY } = toPoint(arcStart - 90)
+  const arcSweep = arcEnd - arcStart <= 180 ? 0 : 1
 
   return `M ${startX} ${startY} A ${radius} ${radius} 0 ${arcSweep} 0 ${endX} ${endY}`
 }
