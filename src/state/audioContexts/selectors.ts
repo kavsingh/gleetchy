@@ -11,4 +11,7 @@ export const audioContextsSelector = createSelector(
   identity,
 )
 
-export const mainOutSelector = createSelector(audioContextsSelector, head)
+export const mainOutSelector = createSelector(
+  audioContextsSelector,
+  head,
+)
