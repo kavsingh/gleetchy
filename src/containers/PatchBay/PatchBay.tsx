@@ -1,11 +1,11 @@
 import color from 'color'
 import { cx } from 'emotion'
-import { always, T } from 'ramda'
+import { T } from 'ramda'
 import React, { memo, StatelessComponent } from 'react'
 
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
-import { AudioNodeConnection } from '~/types'
-import { noop } from '~/util/function'
+import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
+import { noop, stubString } from '~/util/function'
 import { cssLabeled } from '~/util/style'
 
 const classes = cssLabeled('patchBay', {
@@ -65,28 +65,24 @@ const classes = cssLabeled('patchBay', {
   },
 })
 
-interface ConnectedNode {
-  label: string
-  color: string
-  id: string
-}
-
 export interface PatchBayProps {
-  fromNodes: ConnectedNode[]
-  toNodes: ConnectedNode[]
-  canConnect(from: ConnectedNode, to: ConnectedNode): boolean
+  fromNodes: AudioNodeIdentifier[]
+  toNodes: AudioNodeIdentifier[]
+  canConnect(from: AudioNodeIdentifier, to: AudioNodeIdentifier): boolean
   getConnection(
-    a: ConnectedNode,
-    b: ConnectedNode,
+    a: AudioNodeIdentifier,
+    b: AudioNodeIdentifier,
   ): AudioNodeConnection | undefined
-  onNodeClick(from: ConnectedNode, to: ConnectedNode): void
+  getNodeLabel(id: string): string
+  onNodeClick(from: AudioNodeIdentifier, to: AudioNodeIdentifier): void
 }
 
 const PatchBay: StatelessComponent<PatchBayProps> = ({
   fromNodes = [],
   toNodes = [],
   canConnect = T,
-  getConnection = always(undefined),
+  getConnection = noop,
+  getNodeLabel = stubString,
   onNodeClick = noop,
 }) => (
   <table className={classes.root}>
@@ -96,10 +92,10 @@ const PatchBay: StatelessComponent<PatchBayProps> = ({
         {fromNodes.map(fromNode => (
           <th
             className={classes.label}
-            title={`From ${fromNode.label} to ...`}
+            title={`From ${getNodeLabel(fromNode.id)} to ...`}
             key={fromNode.id}
           >
-            {fromNode.label}
+            {getNodeLabel(fromNode.id)}
           </th>
         ))}
       </tr>
@@ -107,17 +103,19 @@ const PatchBay: StatelessComponent<PatchBayProps> = ({
         <tr className={classes.row} key={toNode.id}>
           <td
             className={classes.label}
-            title={`From ... to ${toNode.label}`}
+            title={`From ... to ${getNodeLabel(toNode.id)}`}
             key="rowLabel"
           >
-            {toNode.label}
+            {getNodeLabel(toNode.id)}
           </td>
           {fromNodes.map(fromNode => {
             const connection = getConnection(fromNode, toNode)
             const blockConnect = !connection && !canConnect(fromNode, toNode)
             const title = blockConnect
               ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
-              : `From ${fromNode.label} to ${toNode.label}`
+              : `From ${getNodeLabel(fromNode.id)} to ${getNodeLabel(
+                  toNode.id,
+                )}`
 
             let modClassName = ''
             if (blockConnect) {

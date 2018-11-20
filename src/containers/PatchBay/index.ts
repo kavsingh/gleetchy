@@ -1,35 +1,42 @@
-import { pick } from 'ramda'
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 import { createSelector } from 'reselect'
 
 import { mainOutSelector } from '~/state/audioContexts/selectors'
-import { audioEffectsSelector } from '~/state/audioEffects/selectors'
+import {
+  audioEffectsSelector,
+  orderedAudioEffectsSelector,
+} from '~/state/audioEffects/selectors'
 import { ApplicationState } from '~/state/configureStore'
 import { toggleConnectionAction } from '~/state/connections/actions'
 import { connectionsSelector } from '~/state/connections/selectors'
-import { instrumentsSelector } from '~/state/instruments/selectors'
+import {
+  instrumentsSelector,
+  orderedInstrumentsSelector,
+} from '~/state/instruments/selectors'
 import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
 import { hasDownstreamConnectionTo, isSameConnection } from '~/util/audio'
 
 import PatchBay from './PatchBay'
 
-const pickNodeProps = pick(['label', 'color', 'id'])
+const getNodeLabel = (state: ApplicationState) => (id: string) => {
+  const node = instrumentsSelector(state)[id] || audioEffectsSelector(state)[id]
+  return node ? node.label : 'unknown'
+}
 
 const fromNodesSelector = createSelector(
-  instrumentsSelector,
-  audioEffectsSelector,
-  (instruments, audioEffects) =>
-    [...Object.values(instruments), ...Object.values(audioEffects)].map(
-      pickNodeProps,
-    ),
+  orderedInstrumentsSelector,
+  orderedAudioEffectsSelector,
+  (instruments, audioEffects) => [
+    ...Object.values(instruments),
+    ...Object.values(audioEffects),
+  ],
 )
 
 const toNodesSelector = createSelector(
   audioEffectsSelector,
   mainOutSelector,
-  (audioEffects, mainOut) =>
-    [...Object.values(audioEffects), mainOut].map(pickNodeProps),
+  (audioEffects, mainOut) => [...Object.values(audioEffects), mainOut],
 )
 
 const canConnectNodes = (connections: AudioNodeConnection[]) => (
@@ -44,6 +51,7 @@ const mapStateToProps = (state: ApplicationState) => ({
     { id: from }: AudioNodeIdentifier,
     { id: to }: AudioNodeIdentifier,
   ) => connectionsSelector(state).find(isSameConnection({ from, to })),
+  getNodeLabel: getNodeLabel(state),
   toNodes: toNodesSelector(state),
 })
 

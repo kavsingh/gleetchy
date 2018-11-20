@@ -7,7 +7,6 @@ export interface AudioNodeIdentifier {
 
 export interface AudioNodeState<PROPS extends object = {}>
   extends AudioNodeIdentifier {
-  color: string
   label: string
   props: PROPS
 }
