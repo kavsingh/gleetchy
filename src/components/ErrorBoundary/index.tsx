@@ -2,10 +2,8 @@ import React, { PureComponent, ReactNode } from 'react'
 
 import ErrorMessage from '~/components/ErrorMessage'
 
-const ErrorAny = ErrorMessage as any
-
 const defaultRenderError = (error: Error): ReactNode => (
-  <ErrorAny>{error.toString()}</ErrorAny>
+  <ErrorMessage>{error.toString()}</ErrorMessage>
 )
 
 export interface ErrorBoundaryProps {

@@ -9,9 +9,7 @@ import {
   configureStore,
 } from '~/state/configureStore'
 
-import MainComp, { applyGlobalStyles } from './Main'
-
-const Main = MainComp as any
+import Main, { applyGlobalStyles } from './Main'
 
 export default (initialState: Partial<ApplicationState> = {}) => {
   const store: ApplicationStore = configureStore(initialState)

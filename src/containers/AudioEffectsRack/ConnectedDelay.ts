@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
-import { nodeType, UI as Delay } from '~/nodes/audioEffects/delay'
+import { nodeProps, nodeType, UI as Delay } from '~/nodes/audioEffects/delay'
 import {
   removeAudioEffectAction,
   updateAudioEffectLabelAction,
@@ -34,7 +34,7 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
 
   return {
     connections: getConnectionsFor(id, connectionsSelector(state)),
-    delayTime: (props as any).delayTime,
+    delayTime: (props as typeof nodeProps).delayTime,
     isActive: activeAudioEffectsSelector(state).includes(id),
     label,
     wetDryRatio: props.wetDryRatio,

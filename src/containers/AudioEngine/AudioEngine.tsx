@@ -38,7 +38,7 @@ const setNodeProps = tryCatch<TrySet>(({ node, props }) => {
   }
 }, warn)
 
-type NodeCreator = (...args: any[]) => GAudioNode | InstrumentNode
+type NodeCreator = (...args: any[]) => AudioEngineNode
 const getNodeCreator: (state: AudioNodeState) => NodeCreator = pipe(
   ({ type }: AudioNodeState) => type,
   cond([
@@ -127,7 +127,7 @@ class AudioEngine extends Component<AudioEngineProps> {
     nodes
       .filter(node => !this.audioNodes[node.id])
       .forEach(node => {
-        const nodeCreator = getNodeCreator(node) as any
+        const nodeCreator = getNodeCreator(node) as NodeCreator
 
         if (!nodeCreator) {
           return
