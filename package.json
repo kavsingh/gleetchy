@@ -63,7 +63,6 @@
     "jest": "^23.6.0",
     "prettier": "^1.15.2",
     "raf": "^3.4.1",
-    "regenerator-runtime": "^0.13.1",
     "rimraf": "^2.6.2",
     "sw-precache-webpack-plugin": "^0.11.5",
     "tslint": "^5.11.0",
