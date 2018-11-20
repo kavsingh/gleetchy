@@ -14,7 +14,7 @@
     "start": "NODE_ENV=development webpack-dev-server",
     "start:public": "PUBLIC=true NODE_ENV=development webpack-dev-server",
     "lint": "tslint 'src/**/*.ts?(x)' && eslint .",
-    "jest": "NODE_ENV=test jest --config=.jestrc.js",
+    "jest": "NODE_ENV=test jest",
     "test": "npm run jest -- --coverage --verbose",
     "test:watch": "npm run jest -- --watch",
     "bundle:inspect": "BUNDLE_ANALYZE=true yarn build",

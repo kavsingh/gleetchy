@@ -7,11 +7,7 @@ const publicPath = ''
 module.exports = {
   mode: 'production',
   entry: {
-    gleetchy: [
-      '@babel/polyfill',
-      'regenerator-runtime',
-      './src/indexStatic.tsx',
-    ],
+    gleetchy: ['@babel/polyfill', './src/indexStatic.tsx'],
   },
   output: {
     library: 'gleetchy',

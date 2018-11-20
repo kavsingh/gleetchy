@@ -20,7 +20,7 @@ module.exports = {
   plugins: [
     '@babel/plugin-proposal-class-properties',
     'webpack-alias',
-    [
+    env !== 'test' && [
       'transform-imports',
       {
         ramda: {
@@ -29,5 +29,5 @@ module.exports = {
         },
       },
     ],
-  ],
+  ].filter(Boolean),
 }
