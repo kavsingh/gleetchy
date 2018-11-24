@@ -1,11 +1,11 @@
 module.exports = {
-  setupFiles: ['<rootDir>/__testSetup__/polyfill.js'],
+  setupFiles: ['<rootDir>/__testSetup__/index.js'],
   testRegex: '^.+\\.test\\.[jt]sx?$',
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/node_modules/babel-jest',
   },
   coverageDirectory: '<rootDir>/coverage/',
-  collectCoverageFrom: ['src/**/*.[jt]sx?'],
+  collectCoverageFrom: ['src/**/*.(ts|tsx)'],
   coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
