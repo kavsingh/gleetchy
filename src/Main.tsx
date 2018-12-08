@@ -9,7 +9,7 @@ import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
 import { ApplicationStore } from '~/state/configureStore'
 
-export const applyGlobalStyles = () => injectGlobal`
+const GlobalStyles = () => <Global styles={css`
   html {
     box-sizing: border-box;
     user-select: none;
@@ -47,7 +47,7 @@ export const applyGlobalStyles = () => injectGlobal`
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-`
+`} />
 
 //
 
