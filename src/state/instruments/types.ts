@@ -17,7 +17,7 @@ export type InstrumentUpdateLabelAction = ActionWithPayload<
 
 export type InstrumentUpdatePropsAction = ActionWithPayload<
   'INSTRUMENT_UPDATE_PROPS',
-  { id: string; props: any }
+  { id: string; props: object }
 >
 
 export type InstrumentsAction =

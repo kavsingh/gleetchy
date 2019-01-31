@@ -11,7 +11,7 @@ interface NodeProps extends Eq3NodeProps {
   playbackRate: number
 }
 
-export default Object.freeze({
+const nodeProps: NodeProps = Object.freeze({
   ...eq3Props,
   audioBuffer: undefined,
   fileName: '',
@@ -20,4 +20,6 @@ export default Object.freeze({
   loopEnd: 1,
   loopStart: 0,
   playbackRate: 1,
-} as NodeProps)
+})
+
+export default nodeProps

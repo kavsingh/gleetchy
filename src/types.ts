@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import { Action } from 'redux'
 
 export interface AudioNodeIdentifier {

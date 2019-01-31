@@ -1,4 +1,4 @@
-/* tslint:disable no-console */
+/* eslint-disable no-console */
 /*
   Install offline service worker
   from https://github.com/ooade/NextSimpleStarter

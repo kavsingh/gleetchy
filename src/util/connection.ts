@@ -28,6 +28,7 @@ export const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const connectable = <T extends GAudioNode = GAudioNode>({
   getInNode,
   getOutNode,
@@ -38,3 +39,4 @@ export const connectable = <T extends GAudioNode = GAudioNode>({
     getInNode,
     getOutNode,
   })
+/* eslint-enable @typescript-eslint/no-explicit-any */

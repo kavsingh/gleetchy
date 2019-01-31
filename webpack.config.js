@@ -64,6 +64,7 @@ module.exports = {
     !isProduction && new webpack.HotModuleReplacementPlugin(),
     isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
     isProduction && new BabelMinifyPlugin(),
+    /* eslint-disable @typescript-eslint/camelcase */
     new PWAManifest({
       name: 'Gleetchy',
       short_name: 'Gleetchy',
@@ -82,6 +83,7 @@ module.exports = {
         },
       ],
     }),
+    /* eslint-enable */
     isProduction &&
       new SWPrecachePlugin({
         cacheId: 'gleetchy-sw',

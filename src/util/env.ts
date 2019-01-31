@@ -14,7 +14,7 @@ export const hasWindowWith = (propPaths: string[][] = []) => {
 
   const windowHas = pipe(
     (propPath: string[]) => path(propPath, win),
-    (o: any) => typeof o !== 'undefined',
+    (o: unknown) => typeof o !== 'undefined',
   )
 
   return propPaths.every(windowHas)
@@ -23,10 +23,9 @@ export const hasWindowWith = (propPaths: string[][] = []) => {
 export const isSupportedEvent = <T extends string>(eventName: T) => {
   const name = eventName.startsWith('on') ? eventName : `on${eventName}`
 
-  return (
-    hasWindowWith([['document', 'documentElement']]) &&
-    (name in document! || name in document!.documentElement!)
-  )
+  return hasWindowWith([['document', 'documentElement']])
+    ? name in window.document || name in window.document.documentElement
+    : false
 }
 
 export const filterSupportedEvents = <T extends string = string>(

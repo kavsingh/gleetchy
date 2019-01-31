@@ -6,7 +6,7 @@ import { AudioNodeState } from '~/types'
 
 import { AudioContextsAction } from './types'
 
-export type AudioContextsState = Array<AudioNodeState<{}>>
+export type AudioContextsState = AudioNodeState<{}>[]
 
 const defaultState: AudioContextsState = [...audioContexts]
 

@@ -26,7 +26,7 @@ const defaultState = constructDefaultState<AudioInstrumentNode>(instruments)
 
 const addInstrument = (state: InstrumentsState, { type }: { type: string }) => {
   switch (type) {
-    case loopNodeType:
+    case loopNodeType: {
       const newLoop = {
         color: COLORS[state.orderedIdentifiers.length % COLORS.length],
         id: prefixedId('loop'),
@@ -42,6 +42,7 @@ const addInstrument = (state: InstrumentsState, { type }: { type: string }) => {
           type: newLoop.type,
         })
       })
+    }
     default:
       return state
   }

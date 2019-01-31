@@ -13,6 +13,7 @@ export const getAudioContext = () => {
     throw new Error('No audio context available')
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const AudioContext = WINDOW.AudioContext || (WINDOW as any).webkitAudioContext
 
   if (!AudioContext) {

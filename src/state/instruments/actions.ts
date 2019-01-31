@@ -21,7 +21,7 @@ export const removeInstrumentAction = (id: string): InstrumentRemoveAction => ({
 
 export const updateInstrumentPropsAction = (
   id: string,
-  props: any,
+  props: object,
 ): InstrumentUpdatePropsAction => ({
   payload: { id, props },
   type: 'INSTRUMENT_UPDATE_PROPS',
