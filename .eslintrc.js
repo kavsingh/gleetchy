@@ -3,6 +3,7 @@ module.exports = {
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: './',
+    jsx: true,
   },
   settings: {
     react: { version: 'detect' },
@@ -21,6 +22,7 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': ['warn', 'never'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'react/prop-types': 'off',
     'prettier/prettier': 'warn',
   },
   overrides: [
