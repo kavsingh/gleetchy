@@ -21,6 +21,7 @@ const text = {
   fontSize: '0.8em',
 }
 
+/* eslint-disable @typescript-eslint/no-object-literal-type-assertion */
 const classes = cssLabeled('knob', {
   root: {
     alignItems: 'center',
@@ -64,6 +65,7 @@ const classes = cssLabeled('knob', {
   label: text,
   value: text,
 })
+/* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
 
 export interface KnobProps {
   value: number

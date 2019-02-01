@@ -51,8 +51,8 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
   }
 }
 
-const mapDispatchToProps = (dispatch: any, { id }: { id: string }) => ({
-  onEqChange: (eqProps: any) =>
+const mapDispatchToProps = (dispatch: Function, { id }: { id: string }) => ({
+  onEqChange: (eqProps: object) =>
     dispatch(updateInstrumentPropsAction(id, eqProps)),
   onGainChange: (gain: number) =>
     dispatch(updateInstrumentPropsAction(id, { gain })),

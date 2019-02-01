@@ -1,5 +1,4 @@
 import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 import { createSelector } from 'reselect'
 
 import { mainOutSelector } from '~/state/audioContexts/selectors'
@@ -55,14 +54,14 @@ const mapStateToProps = (state: ApplicationState) => ({
   toNodes: toNodesSelector(state),
 })
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
+const mapDispatchToProps = (dispatch: Function) => ({
   onNodeClick: (
     { id: from }: AudioNodeIdentifier,
     { id: to }: AudioNodeIdentifier,
-  ) => dispatch(toggleConnectionAction(from, to) as any),
+  ) => dispatch(toggleConnectionAction(from, to)),
 })
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(PatchBay as any)
+)(PatchBay)

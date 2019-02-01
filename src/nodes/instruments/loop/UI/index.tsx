@@ -136,7 +136,7 @@ class Loop extends PureComponent<LoopProps> {
           fileFilter={({ type }) => type.startsWith('audio')}
           onFiles={files => receiveAudioFile(files[0])}
         >
-          {({ dropActive, ...fileDropEvents }) => (
+          {({ dropActive: _, ...fileDropEvents }) => (
             <div className={classes.wrap} {...fileDropEvents}>
               <div className={classes.titleContainer}>
                 <TitleBar

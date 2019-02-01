@@ -6,13 +6,13 @@ import { noop } from '~/util/function'
 
 export interface FileDropRegionChildProps {
   dropActive: boolean
-  onDrag(event: React.DragEvent<any>): any
-  onDragStart(event: React.DragEvent<any>): any
-  onDragOver(event: React.DragEvent<any>): any
-  onDragEnd(event: React.DragEvent<any>): any
-  onDragEnter(event: React.DragEvent<any>): any
-  onDragLeave(event: React.DragEvent<any>): any
-  onDrop(event: React.DragEvent<any>): any
+  onDrag(event: React.DragEvent): void
+  onDragStart(event: React.DragEvent): void
+  onDragOver(event: React.DragEvent): void
+  onDragEnd(event: React.DragEvent): void
+  onDragEnter(event: React.DragEvent): void
+  onDragLeave(event: React.DragEvent): void
+  onDrop(event: React.DragEvent): void
 }
 
 export interface FileDropRegionProps {
@@ -44,26 +44,26 @@ class FileDropRegion extends PureComponent<
     })
   }
 
-  private eventCanceler = (event: React.DragEvent<any>) => {
+  private eventCanceler = (event: React.DragEvent) => {
     cancelEvent(event.nativeEvent)
   }
 
-  private handleDragEnter = (event: React.DragEvent<any>) => {
+  private handleDragEnter = (event: React.DragEvent) => {
     this.eventCanceler(event)
     this.setState(() => ({ dropActive: true }))
   }
 
-  private handleDragEnd = (event: React.DragEvent<any>) => {
+  private handleDragEnd = (event: React.DragEvent) => {
     this.eventCanceler(event)
     this.setState(() => ({ dropActive: false }))
   }
 
-  private handleDragLeave = (event: React.DragEvent<any>) => {
+  private handleDragLeave = (event: React.DragEvent) => {
     this.eventCanceler(event)
     this.setState(() => ({ dropActive: false }))
   }
 
-  private handleFileDrop = (event: React.DragEvent<any>) => {
+  private handleFileDrop = (event: React.DragEvent) => {
     const { fileFilter = T, onFiles = noop, onNoFiles = noop } = this.props
 
     const receivable = Array.from(

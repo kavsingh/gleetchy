@@ -11,6 +11,7 @@ import { cssLabeled } from '~/util/style'
 
 import LoopHandle from './LoopHandle'
 
+/* eslint-disable @typescript-eslint/no-object-literal-type-assertion */
 const classes = cssLabeled('loopRegion', {
   root: {
     height: '100%',
@@ -48,6 +49,7 @@ const classes = cssLabeled('loopRegion', {
     zIndex: 0,
   },
 })
+/* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
 
 export interface LoopRegionProps {
   loopStart: number

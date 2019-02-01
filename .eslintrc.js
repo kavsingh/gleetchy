@@ -1,3 +1,8 @@
+const unusedVarsConfig = [
+  'warn',
+  { ignoreRestSiblings: true, varsIgnorePattern: '^_' },
+]
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -19,6 +24,8 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    'no-unused-vars': unusedVarsConfig,
+    '@typescript-eslint/no-unused-vars': unusedVarsConfig,
     '@typescript-eslint/interface-name-prefix': ['warn', 'never'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',

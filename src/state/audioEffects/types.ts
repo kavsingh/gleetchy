@@ -17,7 +17,7 @@ export type AudioEffectUpdateLabelAction = ActionWithPayload<
 
 export type AudioEffectUpdatePropsAction = ActionWithPayload<
   'AUDIO_EFFECT_UPDATE_PROPS',
-  { id: string; props: any }
+  { id: string; props: object }
 >
 
 export type AudioEffectsAction =

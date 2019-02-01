@@ -10,8 +10,8 @@ type MouseOrTouchEvent =
   | Event
   | MouseEvent
   | TouchEvent
-  | React.MouseEvent<any>
-  | React.TouchEvent<any>
+  | React.MouseEvent
+  | React.TouchEvent
 
 interface NormalizedEvent {
   currentTarget: HTMLElement
@@ -41,8 +41,8 @@ const cancelAndNormalizeEvent = pipe(
 
 interface ChildRenderProps {
   dragListeners: {
-    onMouseDown(event: React.MouseEvent<any>): void
-    onTouchStart(event: React.TouchEvent<any>): void
+    onMouseDown(event: React.MouseEvent): void
+    onTouchStart(event: React.TouchEvent): void
   }
 }
 
@@ -74,8 +74,12 @@ export interface SinglePointerDragProps {
   onDragEnd?(state: Partial<SinglePointerDragState>): void
 }
 
-type MoveEvent = 'mousemove' | 'touchmove'
-type EndEvent = 'mouseup' | 'mouseleave' | 'touchend' | 'touchcancel'
+type MouseEndEvent = 'mouseup'
+type TouchEndEvent = 'touchend' | 'touchcancel'
+type MouseMoveEvent = 'mousemove'
+type TouchMoveEvent = 'touchmove'
+type MoveEvent = MouseMoveEvent | TouchMoveEvent
+type EndEvent = MouseEndEvent | TouchEndEvent
 
 class SinglePointerDrag extends PureComponent<
   SinglePointerDragProps,
@@ -102,15 +106,15 @@ class SinglePointerDrag extends PureComponent<
     y: 0,
   }
 
-  private mouseMoveEvents: Array<'mousemove'> = []
-  private mouseEndEvents: Array<'mouseup'> = []
-  private touchMoveEvents: Array<'touchmove'> = []
-  private touchEndEvents: Array<'touchend' | 'touchcancel'> = []
+  private mouseMoveEvents: MouseMoveEvent[] = []
+  private mouseEndEvents: MouseEndEvent[] = []
+  private touchMoveEvents: TouchMoveEvent[] = []
+  private touchEndEvents: TouchEndEvent[] = []
   private moveEvents: MoveEvent[] = []
   private endEvents: EndEvent[] = []
   private throttledHandleDragMove: (event: MouseOrTouchEvent) => void
 
-  public constructor(props: SinglePointerDragProps, context: any) {
+  public constructor(props: SinglePointerDragProps, context: unknown) {
     super(props, context)
 
     this.throttledHandleDragMove = rafThrottle(this.handleDragMove)
@@ -147,7 +151,7 @@ class SinglePointerDrag extends PureComponent<
   // No point trying to cancel touchStart / mouseDown events - preventDefault
   // will be blocked by Chrome since React sets these listeners as passive by
   // default
-  private handleMouseDown = (event: React.MouseEvent<any>) => {
+  private handleMouseDown = (event: React.MouseEvent) => {
     this.registerDragStart(
       normalizeEvent(event),
       this.mouseMoveEvents,
@@ -155,7 +159,7 @@ class SinglePointerDrag extends PureComponent<
     )
   }
 
-  private handleTouchStart = (event: React.TouchEvent<any>) => {
+  private handleTouchStart = (event: React.TouchEvent) => {
     this.registerDragStart(
       normalizeEvent(event),
       this.touchMoveEvents,

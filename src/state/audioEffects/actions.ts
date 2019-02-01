@@ -26,7 +26,7 @@ export const removeAudioEffectAction = (
 
 export const updateAudioEffectPropsAction = (
   id: string,
-  props: any,
+  props: object,
 ): AudioEffectUpdatePropsAction => ({
   payload: { id, props },
   type: 'AUDIO_EFFECT_UPDATE_PROPS',

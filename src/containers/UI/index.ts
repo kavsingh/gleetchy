@@ -12,7 +12,7 @@ export default connect(
   (state: ApplicationState) => ({
     isPlaying: isPlayingSelector(state),
   }),
-  (dispatch: ThunkDispatch<ApplicationState, undefined, Action<any>>) => ({
+  (dispatch: ThunkDispatch<ApplicationState, undefined, Action>) => ({
     togglePlayback: () => dispatch(toggleGlobalPlaybackAction()),
   }),
 )(UI)

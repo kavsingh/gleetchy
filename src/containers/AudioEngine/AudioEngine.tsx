@@ -38,12 +38,13 @@ const setNodeProps = tryCatch<TrySet>(({ node, props }) => {
   }
 }, warn)
 
-type NodeCreator = (...args: any[]) => AudioEngineNode
+type NodeCreator = (...args: unknown[]) => AudioEngineNode
 const getNodeCreator: (state: AudioNodeState) => NodeCreator = pipe(
   ({ type }: AudioNodeState) => type,
   cond([
     [equals(delayType), always(createDelayNode)],
     [equals(reverbType), always(createReverbNode)],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [equals(loopType), always(createLoopNode) as any],
   ]),
 )
@@ -62,7 +63,7 @@ class AudioEngine extends Component<AudioEngineProps> {
     [key: string]: GAudioNode | InstrumentNode | AudioNode
   } = {}
 
-  constructor(props: AudioEngineProps, context: any) {
+  public constructor(props: AudioEngineProps, context: unknown) {
     super(props, context)
 
     this.audioContext = getAudioContext()
@@ -165,7 +166,7 @@ class AudioEngine extends Component<AudioEngineProps> {
     })
   }
 
-  private updateNode({ id, props }: { id: string; props: any }) {
+  private updateNode({ id, props }: { id: string; props: object }) {
     const node = this.audioNodes[id]
 
     if (!node) {

@@ -21,6 +21,7 @@ export interface SampleProps {
   selectAudioFile?(): void
 }
 
+/* eslint-disable @typescript-eslint/no-object-literal-type-assertion */
 const classes = cssLabeled('sample', {
   root: {
     height: '100%',
@@ -57,6 +58,7 @@ const classes = cssLabeled('sample', {
     },
   } as Interpolation,
 })
+/* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
 
 const Sample: StatelessComponent<SampleProps> = ({
   audioBuffer,
