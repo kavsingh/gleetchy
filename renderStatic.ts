@@ -3,6 +3,7 @@ import path from 'path'
 import { readFile as readFileCb, writeFile as writeFileCb } from 'fs'
 import webpackApi from 'webpack'
 import cheerio from 'cheerio'
+import { head, flatten } from 'ramda'
 
 import { PROJECT_ROOT } from './scripts/lib/constants'
 import spawnAsync from './scripts/lib/spawnAsync'
@@ -18,14 +19,15 @@ const baseDistPath = fromRoot(baseConfig.output.path)
 const staticDistPath = fromRoot(config.output.path)
 
 const renderStatic = async () => {
-  await webpack([config as any])
+  await webpack([config])
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const staticModule = require(fromRoot(
     config.output.path,
     config.output.filename,
   ))
-  const { default: render } = staticModule[config.output.library]
+  const libName = head(flatten([config.output.library]))
+  const { default: render } = staticModule[libName]
   const html = await readFile(path.resolve(baseDistPath, 'index.html'), 'utf-8')
   const dom = cheerio.load(html)
 

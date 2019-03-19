@@ -1,11 +1,11 @@
-const path = require('path')
-const webpack = require('webpack')
+import path from 'path'
+import webpack, { Configuration } from 'webpack'
 
 const fromRoot = path.resolve.bind(path, __dirname)
 const publicPath = ''
 
-module.exports = {
-  mode: 'production',
+const config: Configuration = {
+  mode: 'none',
   entry: {
     gleetchy: ['@babel/polyfill', './src/indexStatic.tsx'],
   },
@@ -16,7 +16,6 @@ module.exports = {
     path: fromRoot('distStatic'),
     publicPath,
   },
-  devtool: false,
   module: {
     rules: [
       {
@@ -37,3 +36,5 @@ module.exports = {
     extensions: ['.js', '.ts', '.tsx'],
   },
 }
+
+export default config
