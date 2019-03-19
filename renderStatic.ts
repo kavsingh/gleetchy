@@ -1,32 +1,72 @@
 import { promisify } from 'util'
 import path from 'path'
 import { readFile as readFileCb, writeFile as writeFileCb } from 'fs'
-import webpackApi from 'webpack'
+import webpackApi, { Configuration } from 'webpack'
 import cheerio from 'cheerio'
-import { head, flatten } from 'ramda'
 
-import { PROJECT_ROOT } from './scripts/lib/constants'
 import spawnAsync from './scripts/lib/spawnAsync'
+import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
+
 import baseConfig from './webpack.config'
-import config from './webpack.config.static'
+import staticConfig from './webpack.config.static'
 
 const webpack = promisify(webpackApi)
 const readFile = promisify(readFileCb)
 const writeFile = promisify(writeFileCb)
 
-const fromRoot = path.resolve.bind(path, PROJECT_ROOT)
-const baseDistPath = fromRoot(baseConfig.output.path)
-const staticDistPath = fromRoot(config.output.path)
+const parseBaseConfig = (config: Configuration) => {
+  const { output = {} } = config
+
+  if (!output.path) {
+    throw new Error('base config.output must have path defined')
+  }
+
+  return { baseOutputPath: output.path }
+}
+
+const parseStaticConfig = (config: Configuration) => {
+  const { output = {} } = config
+  const { library, filename, path: outputPath } = output
+
+  if (!library || !outputPath || !filename) {
+    throw new Error(
+      'static config.output must have library, path, and filename defined',
+    )
+  }
+
+  return {
+    staticOutputPath: outputPath,
+    staticOutputLibrary: library,
+    staticOutputFilename: filename,
+  }
+}
 
 const renderStatic = async () => {
-  await webpack([config])
+  const { baseOutputPath } = parseBaseConfig(baseConfig as Configuration)
+  const {
+    staticOutputPath,
+    staticOutputLibrary,
+    staticOutputFilename,
+  } = parseStaticConfig(staticConfig)
+
+  const baseDistPath = fromRoot(baseOutputPath)
+  const staticDistPath = fromRoot(staticOutputPath)
+  const staticModulePath = fromRoot(staticOutputPath, staticOutputFilename)
+  const libName = Array.isArray(staticOutputLibrary)
+    ? staticOutputLibrary[0]
+    : staticOutputLibrary
+
+  await webpack([staticConfig])
+
+  console.log(libName, staticModulePath)
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
-  const staticModule = require(fromRoot(
-    config.output.path,
-    config.output.filename,
-  ))
-  const libName = head(flatten([config.output.library]))
+  const staticModule = require(staticModulePath)
+
+  if (process) {
+    return undefined
+  }
+
   const { default: render } = staticModule[libName]
   const html = await readFile(path.resolve(baseDistPath, 'index.html'), 'utf-8')
   const dom = cheerio.load(html)

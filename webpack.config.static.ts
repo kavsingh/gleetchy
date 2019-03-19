@@ -1,20 +1,21 @@
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
 
-const fromRoot = path.resolve.bind(path, __dirname)
+import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
+
 const publicPath = ''
 
 const config: Configuration = {
-  mode: 'none',
+  mode: 'production',
   entry: {
-    gleetchy: ['@babel/polyfill', './src/indexStatic.tsx'],
+    gleetchy: ['./src/indexStatic.tsx'],
   },
   output: {
+    publicPath,
     library: 'gleetchy',
     libraryTarget: 'commonjs',
     filename: 'gleetchy.js',
     path: fromRoot('distStatic'),
-    publicPath,
   },
   module: {
     rules: [
