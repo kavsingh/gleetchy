@@ -1,21 +1,24 @@
-const { promisify } = require('util')
-const path = require('path')
-const readFile = promisify(require('fs').readFile)
-const writeFile = promisify(require('fs').writeFile)
-const webpack = promisify(require('webpack'))
-const cheerio = require('cheerio')
+import { promisify } from 'util'
+import path from 'path'
+import { readFile as readFileCb, writeFile as writeFileCb } from 'fs'
+import webpackApi from 'webpack'
+import cheerio from 'cheerio'
 
-const { projectRoot } = require('./scripts/lib/constants')
-const spawnAsync = require('./scripts/lib/spawnAsync')
-const baseConfig = require('./webpack.config')
-const config = require('./webpack.config.static')
+import { PROJECT_ROOT } from './scripts/lib/constants'
+import spawnAsync from './scripts/lib/spawnAsync'
+import baseConfig from './webpack.config'
+import config from './webpack.config.static'
 
-const fromRoot = path.resolve.bind(path, projectRoot)
+const webpack = promisify(webpackApi)
+const readFile = promisify(readFileCb)
+const writeFile = promisify(writeFileCb)
+
+const fromRoot = path.resolve.bind(path, PROJECT_ROOT)
 const baseDistPath = fromRoot(baseConfig.output.path)
 const staticDistPath = fromRoot(config.output.path)
 
 const renderStatic = async () => {
-  await webpack(config)
+  await webpack([config as any])
 
   // eslint-disable-next-line global-require, import/no-dynamic-require
   const staticModule = require(fromRoot(
