@@ -6,6 +6,7 @@ import cheerio from 'cheerio'
 
 import spawnAsync from './scripts/lib/spawnAsync'
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
+import { ApplicationState } from './src/state/configureStore'
 
 import baseConfig from './webpack.config'
 import staticConfig from './webpack.config.static'
@@ -41,7 +42,7 @@ const parseStaticConfig = (config: Configuration) => {
   }
 }
 
-const renderStatic = async () => {
+const renderStatic = async (initialState: Partial<ApplicationState>) => {
   const { baseOutputPath } = parseBaseConfig(baseConfig as Configuration)
   const {
     staticOutputPath,
@@ -58,20 +59,13 @@ const renderStatic = async () => {
 
   await webpack([staticConfig])
 
-  console.log(libName, staticModulePath)
-
-  // eslint-disable-next-line global-require, import/no-dynamic-require
-  const staticModule = require(staticModulePath)
-
-  if (process) {
-    return undefined
-  }
-
-  const { default: render } = staticModule[libName]
+  const { default: render } = require(staticModulePath)[libName]
   const html = await readFile(path.resolve(baseDistPath, 'index.html'), 'utf-8')
   const dom = cheerio.load(html)
+  const appRoot = dom('#app-root')
 
-  dom('#app-root').html(render())
+  appRoot.attr('data-ssr-state', JSON.stringify(initialState))
+  appRoot.html(render(initialState))
 
   await spawnAsync('rm', ['-rf', staticDistPath])
   await spawnAsync('cp', ['-r', baseDistPath, staticDistPath])
@@ -79,4 +73,4 @@ const renderStatic = async () => {
   return writeFile(path.resolve(staticDistPath, 'index.html'), dom.html())
 }
 
-renderStatic()
+renderStatic({})

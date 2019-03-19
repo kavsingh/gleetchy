@@ -1,11 +1,24 @@
 import React from 'react'
-import { render } from 'react-dom'
+import { render, hydrate } from 'react-dom'
 
 import { configureStore } from '~/state/configureStore'
 import offlineInstall from '~/util/offlineInstall'
 
-import Main, { applyGlobalStyles } from './Main'
+import Main from './Main'
 
-applyGlobalStyles()
+const appRoot = document.getElementById('app-root')
+
+if (!appRoot) {
+  throw new Error('could not find app mount')
+}
+
+const ssrState = appRoot.getAttribute('data-ssr-state')
+
 offlineInstall('gleetchy-sw.js', '')
-render(<Main store={configureStore()} />, document.getElementById('app-root'))
+
+if (ssrState) {
+  appRoot.removeAttribute('data-ssr-state')
+  hydrate(<Main store={configureStore(JSON.parse(ssrState))} />, appRoot)
+} else {
+  render(<Main store={configureStore()} />, appRoot)
+}

@@ -1,7 +1,8 @@
-import React, { StatelessComponent } from 'react'
+import React, { FunctionComponent, memo } from 'react'
 
 import { injectGlobal } from 'emotion'
 import { Provider } from 'react-redux'
+import { once } from 'ramda'
 
 import ErrorBoundary from '~/components/ErrorBoundary'
 import { COLOR_PAGE } from '~/constants/style'
@@ -9,7 +10,8 @@ import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
 import { ApplicationStore } from '~/state/configureStore'
 
-export const applyGlobalStyles = () => injectGlobal`
+const applyGlobalStyles = once(
+  () => injectGlobal`
   html {
     box-sizing: border-box;
     user-select: none;
@@ -47,21 +49,26 @@ export const applyGlobalStyles = () => injectGlobal`
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-`
+`,
+)
 
 //
 
-const Main: StatelessComponent<{ store: ApplicationStore }> = ({ store }) => (
-  <Provider store={store}>
-    <div>
-      <ErrorBoundary>
-        <AudioEngine />
-      </ErrorBoundary>
-      <ErrorBoundary>
-        <UI />
-      </ErrorBoundary>
-    </div>
-  </Provider>
-)
+const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => {
+  applyGlobalStyles()
 
-export default Main
+  return (
+    <Provider store={store}>
+      <div>
+        <ErrorBoundary>
+          <AudioEngine />
+        </ErrorBoundary>
+        <ErrorBoundary>
+          <UI />
+        </ErrorBoundary>
+      </div>
+    </Provider>
+  )
+}
+
+export default memo(Main)
