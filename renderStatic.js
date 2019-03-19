@@ -5,11 +5,12 @@ const writeFile = promisify(require('fs').writeFile)
 const webpack = promisify(require('webpack'))
 const cheerio = require('cheerio')
 
+const { projectRoot } = require('./scripts/lib/constants')
 const spawnAsync = require('./scripts/lib/spawnAsync')
 const baseConfig = require('./webpack.config')
 const config = require('./webpack.config.static')
 
-const fromRoot = path.resolve.bind(path, __dirname)
+const fromRoot = path.resolve.bind(path, projectRoot)
 const baseDistPath = fromRoot(baseConfig.output.path)
 const staticDistPath = fromRoot(config.output.path)
 
