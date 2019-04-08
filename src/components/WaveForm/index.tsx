@@ -3,7 +3,7 @@ import { map } from 'ramda'
 import React, { Component } from 'react'
 
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
-import { hasWindowWith } from '~/util/env'
+import { requireWindowWith } from '~/util/env'
 import { cssLabeled } from '~/util/style'
 
 const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
@@ -42,12 +42,16 @@ class WaveForm extends Component<WaveformProps, WaveformState> {
   private canvasNode?: HTMLCanvasElement | null
 
   public componentDidMount() {
-    this.pixelRatio = hasWindowWith([['devicePixelRatio']])
-      ? window.devicePixelRatio
-      : 1
+    const WINDOW = requireWindowWith([['addEventListener']])
+
+    if (!WINDOW) {
+      return
+    }
+
+    this.pixelRatio = WINDOW.devicePixelRatio || 1
 
     this.handleResize()
-    window.addEventListener('resize', this.handleResize)
+    WINDOW.addEventListener('resize', this.handleResize)
   }
 
   public shouldComponentUpdate(props: WaveformProps, state: WaveformState) {

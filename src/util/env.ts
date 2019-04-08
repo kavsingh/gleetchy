@@ -1,30 +1,26 @@
 import { path, pipe } from 'ramda'
 
-export const getWindow = () =>
-  typeof window !== 'undefined' ? window : undefined
+export const requireWindowWith = (propPaths: string[][] = []) => {
+  const WINDOW = typeof window !== 'undefined' ? window : undefined
 
-export const hasWindow = () => !!getWindow()
-
-export const hasWindowWith = (propPaths: string[][] = []) => {
-  const win = getWindow()
-
-  if (!win) {
-    return false
+  if (!WINDOW) {
+    return undefined
   }
 
   const windowHas = pipe(
-    (propPath: string[]) => path(propPath, win),
+    (propPath: string[]) => path(propPath, WINDOW),
     (o: unknown) => typeof o !== 'undefined',
   )
 
-  return propPaths.every(windowHas)
+  return propPaths.every(windowHas) ? WINDOW : undefined
 }
 
 export const isSupportedEvent = <T extends string>(eventName: T) => {
   const name = eventName.startsWith('on') ? eventName : `on${eventName}`
+  const WINDOW = requireWindowWith([['document', 'documentElement']])
 
-  return hasWindowWith([['document', 'documentElement']])
-    ? name in window.document || name in window.document.documentElement
+  return WINDOW
+    ? name in WINDOW.document || name in WINDOW.document.documentElement
     : false
 }
 

@@ -2,7 +2,7 @@ import rafThrottle from 'raf-throttle'
 import { pipe, tap } from 'ramda'
 import { PureComponent, ReactNode } from 'react'
 
-import { filterSupportedEvents } from '~/util/env'
+import { filterSupportedEvents, requireWindowWith } from '~/util/env'
 import { cancelEvent } from '~/util/event'
 import { noop } from '~/util/function'
 
@@ -130,12 +130,18 @@ class SinglePointerDrag extends PureComponent<
   }
 
   public componentWillUnmount() {
+    const WINDOW = requireWindowWith([['removeEventListener']])
+
+    if (!WINDOW) {
+      return
+    }
+
     this.moveEvents.forEach(eventName =>
-      window.removeEventListener(eventName, this.handleDragMove),
+      WINDOW.removeEventListener(eventName, this.handleDragMove),
     )
 
     this.endEvents.forEach(eventName =>
-      window.removeEventListener(eventName, this.handleDragEnd),
+      WINDOW.removeEventListener(eventName, this.handleDragEnd),
     )
   }
 
@@ -172,7 +178,9 @@ class SinglePointerDrag extends PureComponent<
     moveEvents: string[],
     endEvents: string[],
   ) {
-    if (this.state.isDragging) {
+    const WINDOW = requireWindowWith([['addEventListener']])
+
+    if (!WINDOW || this.state.isDragging) {
       return
     }
 
@@ -184,13 +192,13 @@ class SinglePointerDrag extends PureComponent<
     const targetStartY = clientY - targetRect.left
 
     moveEvents.forEach(eventName =>
-      window.addEventListener(eventName, this.throttledHandleDragMove, {
+      WINDOW.addEventListener(eventName, this.throttledHandleDragMove, {
         passive: false,
       }),
     )
 
     endEvents.forEach(eventName =>
-      window.addEventListener(eventName, this.handleDragEnd, {
+      WINDOW.addEventListener(eventName, this.handleDragEnd, {
         passive: false,
       }),
     )
@@ -244,6 +252,12 @@ class SinglePointerDrag extends PureComponent<
   }
 
   private handleDragEnd = (event: MouseOrTouchEvent) => {
+    const WINDOW = requireWindowWith([['removeEventListener']])
+
+    if (!WINDOW) {
+      return
+    }
+
     const { onDragEnd = noop } = this.props
     let { clientX, clientY } = cancelAndNormalizeEvent(event as Event)
 
@@ -256,11 +270,11 @@ class SinglePointerDrag extends PureComponent<
     }
 
     this.moveEvents.forEach(eventName =>
-      window.removeEventListener(eventName, this.throttledHandleDragMove),
+      WINDOW.removeEventListener(eventName, this.throttledHandleDragMove),
     )
 
     this.endEvents.forEach(eventName =>
-      window.removeEventListener(eventName, this.handleDragEnd),
+      WINDOW.removeEventListener(eventName, this.handleDragEnd),
     )
 
     this.setState(

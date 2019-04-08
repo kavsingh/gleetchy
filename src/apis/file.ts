@@ -1,18 +1,20 @@
 import { AudioFileData } from '~/types'
-import { hasWindowWith } from '~/util/env'
+import { requireWindowWith } from '~/util/env'
 
 let fileInput: HTMLInputElement
 
 const getFileInput = () => {
-  if (!hasWindowWith([['document', 'createElement']])) {
+  const WINDOW = requireWindowWith([['document', 'createElement']])
+
+  if (!WINDOW) {
     return undefined
   }
 
   if (!fileInput) {
-    fileInput = document.createElement('input')
+    fileInput = WINDOW.document.createElement('input')
     fileInput.setAttribute('type', 'file')
     fileInput.setAttribute('accept', '.wav, .mp3, .ogg')
-    document.body.appendChild(fileInput)
+    WINDOW.document.body.appendChild(fileInput)
     fileInput.style.display = 'none'
   }
 

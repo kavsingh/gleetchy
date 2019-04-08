@@ -1,4 +1,4 @@
-import { getWindow } from '~/util/env'
+import { requireWindowWith } from '~/util/env'
 
 let audioContext: AudioContext
 
@@ -7,7 +7,7 @@ export const getAudioContext = () => {
     return audioContext
   }
 
-  const WINDOW = getWindow()
+  const WINDOW = requireWindowWith()
 
   if (!WINDOW) {
     throw new Error('No audio context available')
