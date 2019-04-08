@@ -6,7 +6,6 @@ const unusedVarsConfig = [
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    project: './tsconfig.json',
     tsconfigRootDir: './',
     jsx: true,
   },
@@ -14,18 +13,19 @@ module.exports = {
     react: { version: 'detect' },
   },
   env: { node: true, browser: false, es6: true },
-  plugins: ['@typescript-eslint', 'jest', 'react', 'prettier'],
+  plugins: ['@typescript-eslint', 'react', 'jest', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:react/recommended',
+    'plugin:jest/recommended',
+    'plugin:jest/style',
     'prettier',
+    'prettier/react',
     'prettier/@typescript-eslint',
   ],
   rules: {
     'no-console': 'off',
-    'no-unused-vars': unusedVarsConfig,
-    '@typescript-eslint/no-unused-vars': unusedVarsConfig,
     '@typescript-eslint/interface-name-prefix': ['warn', 'never'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
@@ -34,16 +34,25 @@ module.exports = {
   },
   overrides: [
     {
+      files: ['*.js'],
+      rules: {
+        'no-unused-vars': unusedVarsConfig,
+        '@typescript-eslint/no-unused-vars': 'off',
+      },
+    },
+    {
+      files: ['*.ts', '*.tsx'],
+      rules: {
+        'no-unused-vars': 'off',
+        '@typescript-eslint/no-unused-vars': unusedVarsConfig,
+      },
+    },
+    {
       files: ['*.test.*'],
       env: { node: true, 'jest/globals': true },
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
-        'jest/no-disabled-tests': 'warn',
-        'jest/no-focused-tests': 'error',
-        'jest/no-identical-title': 'error',
-        'jest/prefer-to-have-length': 'warn',
-        'jest/valid-expect': 'error',
       },
     },
     {

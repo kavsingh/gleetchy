@@ -1,10 +1,10 @@
 import { AudioFileData } from '~/types'
-import { hasWindow } from '~/util/env'
+import { hasWindowWith } from '~/util/env'
 
 let fileInput: HTMLInputElement
 
 const getFileInput = () => {
-  if (!hasWindow()) {
+  if (!hasWindowWith([['document', 'createElement']])) {
     return undefined
   }
 
