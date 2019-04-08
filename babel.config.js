@@ -1,26 +1,22 @@
-const env = process.env.NODE_ENV
-
-module.exports = {
+module.exports = ({ env }) => ({
   presets: [
-    '@babel/preset-typescript',
     [
       '@babel/preset-env',
-      Object.assign(
-        {
-          modules: false,
-          useBuiltIns: 'usage',
-          shippedProposals: true,
-          loose: true,
-        },
-        env === 'test' ? { modules: 'commonjs', useBuiltIns: false } : {},
-      ),
+      {
+        corejs: 3,
+        modules: env('test') ? 'commonjs' : false,
+        useBuiltIns: env('test') ? false : 'usage',
+        shippedProposals: true,
+        loose: true,
+      },
     ],
     '@babel/preset-react',
+    '@babel/preset-typescript',
   ],
   plugins: [
     '@babel/plugin-proposal-class-properties',
     'webpack-alias',
-    env !== 'test' && [
+    !env('test') && [
       'transform-imports',
       {
         ramda: {
@@ -30,4 +26,4 @@ module.exports = {
       },
     ],
   ].filter(Boolean),
-}
+})

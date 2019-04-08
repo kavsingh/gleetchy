@@ -52,7 +52,7 @@ export const hasDownstreamConnectionTo = curry(
       }
 
       return connectionsFromId.reduce(
-        (accum, connection) =>
+        (accum: boolean, connection) =>
           accum || checkDownstreamConnection(connection.to),
         false,
       )
