@@ -10,10 +10,11 @@ const config: Configuration = {
   entry: {
     gleetchy: ['./src/indexStatic.tsx'],
   },
+  target: 'node',
   output: {
     publicPath,
     library: 'gleetchy',
-    libraryTarget: 'commonjs',
+    libraryTarget: 'commonjs2',
     filename: 'gleetchy.js',
     path: fromRoot('distStatic'),
   },

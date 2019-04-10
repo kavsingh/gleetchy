@@ -25,6 +25,7 @@ module.exports = {
   entry: {
     gleetchy: ['./src/index.tsx'],
   },
+  target: 'web',
   output: {
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
     path: fromRoot('dist'),

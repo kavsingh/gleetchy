@@ -15,6 +15,7 @@ module.exports = ({ env }) => ({
   ],
   plugins: [
     '@babel/plugin-proposal-class-properties',
+    'babel-plugin-emotion',
     'webpack-alias',
     !env('test') && [
       'transform-imports',

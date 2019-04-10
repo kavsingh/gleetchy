@@ -10,7 +10,7 @@ export const getAudioContext = () => {
   const WINDOW = requireWindowWith()
 
   if (!WINDOW) {
-    throw new Error('No audio context available')
+    throw new Error('Could not access dom')
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

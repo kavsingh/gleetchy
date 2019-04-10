@@ -58,16 +58,10 @@ export interface AudioEngineProps {
 }
 
 class AudioEngine extends Component<AudioEngineProps> {
-  private audioContext: AudioContext
+  private audioContext?: AudioContext
   private audioNodes: {
     [key: string]: GAudioNode | InstrumentNode | AudioNode
   } = {}
-
-  public constructor(props: AudioEngineProps, context: unknown) {
-    super(props, context)
-
-    this.audioContext = getAudioContext()
-  }
 
   public componentDidMount() {
     this.audioContext = getAudioContext()
@@ -89,7 +83,7 @@ class AudioEngine extends Component<AudioEngineProps> {
 
   public componentWillUnmount() {
     this.props.clearAudioEngineEvents()
-    this.audioContext.close()
+    if (this.audioContext) this.audioContext.close()
   }
 
   public render() {
@@ -119,6 +113,8 @@ class AudioEngine extends Component<AudioEngineProps> {
   }
 
   private updateAudioNodes() {
+    if (!this.audioContext) return
+
     const { nodes = [], isPlaying = false } = this.props
 
     this.audioNodes = Object.entries(this.audioNodes).length

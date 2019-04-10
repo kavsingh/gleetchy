@@ -1,30 +1,30 @@
 import React from 'react'
 import { render, hydrate } from 'react-dom'
 
-import { configureStore } from '~/state/configureStore'
-import offlineInstall from '~/util/offlineInstall'
 import { requireWindowWith } from '~/util/env'
+import offlineInstall from '~/util/offlineInstall'
+import { configureStore } from '~/state/configureStore'
 
 import Main from './Main'
 
 const WINDOW = requireWindowWith([['document', 'getElementById']])
 
 if (!WINDOW) {
-  throw new Error('could not access dom')
+  throw new Error('Could not access dom')
 }
 
 const appRoot = WINDOW.document.getElementById('app-root')
 
 if (!appRoot) {
-  throw new Error('could not find app mount at app-root')
+  throw new Error('Could not find app mount at app-root')
 }
 
-const ssrState = appRoot.getAttribute('data-ssr-state')
+const ssrState = appRoot.getAttribute('data-initialstate')
 
 offlineInstall('gleetchy-sw.js', '')
 
 if (ssrState) {
-  appRoot.removeAttribute('data-ssr-state')
+  appRoot.removeAttribute('data-initialstate')
   hydrate(<Main store={configureStore(JSON.parse(ssrState))} />, appRoot)
 } else {
   render(<Main store={configureStore()} />, appRoot)
