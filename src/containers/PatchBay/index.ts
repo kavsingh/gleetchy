@@ -19,7 +19,12 @@ import { hasDownstreamConnectionTo, isSameConnection } from '~/util/audio'
 import PatchBay from './PatchBay'
 
 const getNodeLabel = (state: ApplicationState) => (id: string) => {
+  const { id: mainId, label: mainLabel } = mainOutSelector(state)
+
+  if (mainId === id) return mainLabel
+
   const node = instrumentsSelector(state)[id] || audioEffectsSelector(state)[id]
+
   return node ? node.label : 'unknown'
 }
 
