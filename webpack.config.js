@@ -7,7 +7,6 @@ require('@babel/register')({
 const path = require('path')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const BabelMinifyPlugin = require('babel-minify-webpack-plugin')
 const SWPrecachePlugin = require('sw-precache-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
 const VisualizerPlugin = require('webpack-visualizer-plugin')
@@ -31,9 +30,6 @@ module.exports = {
     path: fromRoot('dist'),
     publicPath,
   },
-  // FIXME: Workaround until https://github.com/webpack-contrib/babel-minify-webpack-plugin/issues/68 is fixed
-  // devtool: isProduction ? 'source-map' : 'cheap-eval-sourcemap',
-  devtool: isProduction ? false : 'cheap-eval-sourcemap',
   devServer: {
     host: servePublic ? '0.0.0.0' : 'localhost',
     port: 3000,
@@ -55,16 +51,13 @@ module.exports = {
     ],
   },
   plugins: [
-    new webpack.EnvironmentPlugin(['NODE_ENV']),
+    new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new HtmlWebpackPlugin({
       title: 'Gleetchy',
       themeColor: COLOR_PAGE,
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),
-    !isProduction && new webpack.HotModuleReplacementPlugin(),
-    isProduction && new webpack.optimize.ModuleConcatenationPlugin(),
-    isProduction && new BabelMinifyPlugin(),
     /* eslint-disable @typescript-eslint/camelcase */
     new PWAManifest({
       name: 'Gleetchy',

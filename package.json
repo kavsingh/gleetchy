@@ -50,7 +50,6 @@
     "babel-eslint": "^10.0.1",
     "babel-jest": "^24.7.1",
     "babel-loader": "^8.0.5",
-    "babel-minify-webpack-plugin": "^0.3.1",
     "babel-plugin-emotion": "^10.0.9",
     "babel-plugin-transform-imports": "^1.5.1",
     "babel-plugin-webpack-alias": "^2.1.2",

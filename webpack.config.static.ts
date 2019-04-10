@@ -31,7 +31,7 @@ const config: Configuration = {
       },
     ],
   },
-  plugins: [new webpack.EnvironmentPlugin(['NODE_ENV'])],
+  plugins: [new webpack.EnvironmentPlugin({ NODE_ENV: 'development' })],
   resolve: {
     modules: [fromRoot('src'), 'node_modules'],
     alias: { '~': path.resolve(__dirname, 'src') },
