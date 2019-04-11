@@ -100,8 +100,6 @@ module.exports = {
       new VisualizerPlugin({ filename: '../stats.html' }),
   ].filter(Boolean),
   resolve: {
-    modules: [fromRoot('src'), 'node_modules'],
-    alias: Object.assign({ '~': path.resolve(__dirname, 'src') }),
-    extensions: ['.js', '.ts', '.tsx'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
 }

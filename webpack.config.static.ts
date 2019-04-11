@@ -1,4 +1,3 @@
-import path from 'path'
 import webpack, { Configuration } from 'webpack'
 
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
@@ -33,9 +32,7 @@ const config: Configuration = {
   },
   plugins: [new webpack.EnvironmentPlugin({ NODE_ENV: 'development' })],
   resolve: {
-    modules: [fromRoot('src'), 'node_modules'],
-    alias: { '~': path.resolve(__dirname, 'src') },
-    extensions: ['.js', '.ts', '.tsx'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
 }
 
