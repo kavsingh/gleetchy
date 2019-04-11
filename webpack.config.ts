@@ -1,25 +1,18 @@
-// Consume from es6 imports in src
-require('@babel/register')({
-  plugins: ['@babel/plugin-transform-modules-commonjs'],
-  extensions: ['.js', '.jsx', '.ts', '.tsx'],
-})
+import webpack, { Configuration } from 'webpack'
+import HtmlWebpackPlugin from 'html-webpack-plugin'
+import SWPrecachePlugin from 'sw-precache-webpack-plugin'
+import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
+import PWAManifest from 'webpack-pwa-manifest'
 
-const path = require('path')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
-const SWPrecachePlugin = require('sw-precache-webpack-plugin')
-const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
-const VisualizerPlugin = require('webpack-visualizer-plugin')
-const PWAManifest = require('webpack-pwa-manifest')
+import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
+import { COLOR_PAGE } from './src/constants/style'
 
-const { COLOR_PAGE } = require('./src/constants/style')
-
-const fromRoot = path.resolve.bind(path, __dirname)
-const isProduction = process.env.NODE_ENV === 'production'
 const servePublic = process.env.PUBLIC === 'true'
-const publicPath = ''
+const isProduction = process.env.NODE_ENV === 'production'
 
-module.exports = {
+export const publicPath = ''
+
+const config: Configuration = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     gleetchy: ['./src/index.tsx'],
@@ -35,7 +28,7 @@ module.exports = {
     port: 3000,
     inline: true,
     hot: true,
-    historyApiFallback: { index: publicPath },
+    historyApiFallback: true,
   },
   module: {
     rules: [
@@ -83,7 +76,6 @@ module.exports = {
         cacheId: 'gleetchy-sw',
         filename: 'gleetchy-sw.js',
         minify: true,
-        forceDelete: true,
         runtimeCaching: [
           {
             handler: 'fastest',
@@ -96,10 +88,10 @@ module.exports = {
         ],
       }),
     process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
-    process.env.BUNDLE_VISUALIZE === 'true' &&
-      new VisualizerPlugin({ filename: '../stats.html' }),
-  ].filter(Boolean),
+  ].filter(Boolean) as webpack.Plugin[],
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
 }
+
+export default config

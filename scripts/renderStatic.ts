@@ -4,12 +4,11 @@ import { readFile as _readFile, writeFile as _writeFile } from 'fs'
 import _webpack, { Configuration } from 'webpack'
 import cheerio from 'cheerio'
 
-import spawnAsync from './scripts/lib/spawnAsync'
-import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
-import { ApplicationState } from './src/state/configureStore'
-
-import baseConfig from './webpack.config'
-import staticConfig from './webpack.config.static'
+import { ApplicationState } from '../src/state/configureStore'
+import baseConfig from '../webpack.config'
+import staticConfig from '../webpack.config.static'
+import spawnAsync from './lib/spawnAsync'
+import { resolveFromProjectRoot as fromRoot } from './lib/util'
 
 const webpack = promisify(_webpack)
 const readFile = promisify(_readFile)
@@ -40,7 +39,7 @@ const parseStaticConfig = (config: Configuration) => {
 }
 
 const renderStatic = async (initialState: Partial<ApplicationState>) => {
-  const { baseOutputPath } = parseBaseConfig(baseConfig as Configuration)
+  const { baseOutputPath } = parseBaseConfig(baseConfig)
   const { staticOutputPath, staticOutputFilename } = parseStaticConfig(
     staticConfig,
   )

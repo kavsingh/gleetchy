@@ -11,16 +11,15 @@
   "main": "index.js",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=development webpack-dev-server",
-    "dev:public": "PUBLIC=true NODE_ENV=development webpack-dev-server",
+    "dev": "NODE_ENV=development TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server",
+    "dev:public": "PUBLIC=true NODE_ENV=development TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack-dev-server",
     "lint": "tsc && eslint --ext .js,.ts,.tsx .",
     "jest": "NODE_ENV=test jest",
     "test": "tsc && npm run jest -- --coverage --verbose",
     "test:watch": "npm run jest -- --watch",
     "bundle:inspect": "BUNDLE_ANALYZE=true yarn build",
-    "bundle:visualize": "BUNDLE_VISUALIZE=true yarn build && open stats.html",
-    "build": "rimraf dist && NODE_ENV=production webpack --progress --colors",
-    "static": "rimraf distStatic && NODE_ENV=production TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node renderStatic",
+    "build": "rimraf dist && NODE_ENV=production TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --progress --colors",
+    "static": "rimraf distStatic && NODE_ENV=production TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node scripts/renderStatic",
     "export": "npm run build && npm run static"
   },
   "devDependencies": {
@@ -35,6 +34,7 @@
     "@babel/runtime": "^7.4.3",
     "@types/cheerio": "^0.22.11",
     "@types/color": "^3.0.0",
+    "@types/html-webpack-plugin": "^3.2.0",
     "@types/jest": "^24.0.11",
     "@types/ramda": "types/npm-ramda#dist",
     "@types/react": "^16.8.13",
@@ -42,8 +42,11 @@
     "@types/react-input-autosize": "^2.0.0",
     "@types/react-redux": "^7.0.6",
     "@types/recompose": "^0.30.5",
+    "@types/sw-precache-webpack-plugin": "^0.11.0",
     "@types/webaudioapi": "^0.0.27",
     "@types/webpack": "^4.4.27",
+    "@types/webpack-bundle-analyzer": "^2.13.1",
+    "@types/webpack-dev-server": "^3.1.5",
     "@typescript-eslint/eslint-plugin": "^1.6.0",
     "@typescript-eslint/parser": "^1.6.0",
     "babel-core": "^7.0.0-bridge.0",
@@ -76,8 +79,7 @@
     "webpack-bundle-analyzer": "^3.3.0",
     "webpack-cli": "^3.3.0",
     "webpack-dev-server": "^3.3.1",
-    "webpack-pwa-manifest": "^4.0.0",
-    "webpack-visualizer-plugin": "^0.1.11"
+    "webpack-pwa-manifest": "^4.0.0"
   },
   "dependencies": {
     "@emotion/core": "^10.0.10",
