@@ -55,7 +55,7 @@ const config: Configuration = {
     new PWAManifest({
       name: 'Gleetchy',
       short_name: 'Gleetchy',
-      start_url: process.env.ROOT_URL || '/',
+      start_url: process.env.PWA_START_URL || '/',
       display: 'fullscreen',
       theme_color: COLOR_PAGE,
       background_color: COLOR_PAGE,
