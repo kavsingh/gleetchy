@@ -1,6 +1,6 @@
 import webpack, { Configuration } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
-import SWPrecachePlugin from 'sw-precache-webpack-plugin'
+import WorkboxPlugin from 'workbox-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import PWAManifest from 'webpack-pwa-manifest'
 
@@ -72,17 +72,18 @@ const config: Configuration = {
     }),
     /* eslint-enable */
     isProduction &&
-      new SWPrecachePlugin({
+      new WorkboxPlugin.GenerateSW({
         cacheId: 'gleetchy-sw',
-        filename: 'gleetchy-sw.js',
-        minify: true,
+        swDest: 'gleetchy-sw.js',
+        clientsClaim: true,
+        skipWaiting: true,
         runtimeCaching: [
           {
-            handler: 'fastest',
+            handler: 'StaleWhileRevalidate',
             urlPattern: /[.](png|jpg|css|wav|ogg|mp3)/,
           },
           {
-            handler: 'networkFirst',
+            handler: 'NetworkFirst',
             urlPattern: /^http.*/,
           },
         ],
