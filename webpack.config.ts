@@ -79,7 +79,7 @@ const config: Configuration = {
         skipWaiting: true,
         runtimeCaching: [
           {
-            handler: 'StaleWhileRevalidate',
+            handler: 'CacheFirst',
             urlPattern: /[.](png|jpg|css|wav|ogg|mp3)/,
           },
           {
