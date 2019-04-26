@@ -1,7 +1,7 @@
 import { T } from 'ramda'
 import React, { PureComponent, ReactNode } from 'react'
 
-import { cancelEvent } from '~/util/event'
+import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
 
 export interface FileDropRegionChildProps {
@@ -34,32 +34,28 @@ class FileDropRegion extends PureComponent<
 
     return children({
       dropActive,
-      onDrag: this.eventCanceler,
+      onDrag: cancelReactEvent,
       onDragEnd: this.handleDragEnd,
       onDragEnter: this.handleDragEnter,
       onDragLeave: this.handleDragLeave,
-      onDragOver: this.eventCanceler,
-      onDragStart: this.eventCanceler,
+      onDragOver: cancelReactEvent,
+      onDragStart: cancelReactEvent,
       onDrop: this.handleFileDrop,
     })
   }
 
-  private eventCanceler = (event: React.DragEvent) => {
-    cancelEvent(event.nativeEvent)
-  }
-
   private handleDragEnter = (event: React.DragEvent) => {
-    this.eventCanceler(event)
+    cancelReactEvent(event)
     this.setState(() => ({ dropActive: true }))
   }
 
   private handleDragEnd = (event: React.DragEvent) => {
-    this.eventCanceler(event)
+    cancelReactEvent(event)
     this.setState(() => ({ dropActive: false }))
   }
 
   private handleDragLeave = (event: React.DragEvent) => {
-    this.eventCanceler(event)
+    cancelReactEvent(event)
     this.setState(() => ({ dropActive: false }))
   }
 
@@ -70,7 +66,7 @@ class FileDropRegion extends PureComponent<
       (event.dataTransfer || {}).files || [],
     ).filter(fileFilter)
 
-    this.eventCanceler(event)
+    cancelReactEvent(event)
 
     if (!receivable.length) {
       onNoFiles()

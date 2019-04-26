@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import AutosizeInput from 'react-input-autosize'
 
-import { cancelEvent } from '~/util/event'
+import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
 import { cssLabeled } from '~/util/style'
 
@@ -49,7 +49,7 @@ class TextInput extends PureComponent<TextInputProps> {
   private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { onChange = noop } = this.props
 
-    cancelEvent(event.nativeEvent)
+    cancelReactEvent(event)
     onChange(event.currentTarget.value)
   }
 }
