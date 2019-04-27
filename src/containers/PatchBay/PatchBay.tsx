@@ -1,7 +1,7 @@
 import color from 'color'
 import { cx } from 'emotion'
 import { T } from 'ramda'
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
@@ -77,7 +77,7 @@ export interface PatchBayProps {
   onNodeClick(from: AudioNodeIdentifier, to: AudioNodeIdentifier): void
 }
 
-const PatchBay: StatelessComponent<PatchBayProps> = ({
+const PatchBay: FunctionComponent<PatchBayProps> = ({
   fromNodes = [],
   toNodes = [],
   canConnect = T,

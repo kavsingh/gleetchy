@@ -1,4 +1,4 @@
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import AnimIn from '~/components/AnimIn'
 import ErrorBoundary from '~/components/ErrorBoundary'
@@ -37,7 +37,7 @@ export interface InstrumentsRackProps {
   addLoop(): void
 }
 
-const InstrumentsRack: StatelessComponent<InstrumentsRackProps> = ({
+const InstrumentsRack: FunctionComponent<InstrumentsRackProps> = ({
   instruments = [],
   addLoop = noop,
 }) => (

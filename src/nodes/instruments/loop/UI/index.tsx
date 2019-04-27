@@ -1,8 +1,8 @@
 import { cx } from 'emotion'
 import { clamp } from 'ramda'
-import React, { PureComponent } from 'react'
+import React, { PureComponent, FunctionComponent } from 'react'
 
-import FileDropRegion from '~/components/FileDropRegion'
+import useFileDropRegion from '~/hooks/useFileDropRegion'
 import Sample from '~/components/Sample'
 import TitleBar from '~/components/TitleBar'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
@@ -58,6 +58,21 @@ const classes = cssLabeled('loop', {
     marginLeft: '0.3em',
   },
 })
+
+const AudioFileDropRegion: FunctionComponent<{
+  onFiles(files: File[]): void
+}> = ({ children, onFiles }) => {
+  const { isDropActive, ...dragDropEvents } = useFileDropRegion({
+    onFiles,
+    fileFilter: ({ type }) => type.startsWith('audio'),
+  })
+
+  return (
+    <div className={classes.wrap} {...dragDropEvents}>
+      {children}
+    </div>
+  )
+}
 
 export interface LoopProps {
   loopStart: number
@@ -132,52 +147,45 @@ class Loop extends PureComponent<LoopProps> {
 
     return (
       <div className={cx([classes.root, !isActive && classes.inactive])}>
-        <FileDropRegion
-          fileFilter={({ type }) => type.startsWith('audio')}
-          onFiles={files => receiveAudioFile(files[0])}
-        >
-          {({ dropActive: _, ...fileDropEvents }) => (
-            <div className={classes.wrap} {...fileDropEvents}>
-              <div className={classes.titleContainer}>
-                <TitleBar
-                  type="Loop"
-                  label={label}
-                  onLabelChange={onLabelChange}
-                  onRemoveClick={remove}
-                  connections={connections}
-                >
-                  {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
-                </TitleBar>
-              </div>
-              <div className={classes.mainContainer}>
-                <Sample
-                  fromSaved={!!(fileName && !audioBuffer)}
-                  audioBuffer={audioBuffer}
-                  loopStart={loopStart}
-                  loopEnd={loopEnd}
-                  onLoopStartDrag={this.handleLoopStartDrag}
-                  onLoopEndDrag={this.handleLoopEndDrag}
-                  onLoopRegionDrag={this.handleLoopRegionDrag}
-                  selectAudioFile={selectAudioFile}
-                />
-                <div className={classes.controlsContainer}>
-                  <PlaybackControls
-                    gain={gain}
-                    playbackRate={playbackRate}
-                    onGainChange={onGainChange}
-                    onPlaybackRateChange={onPlaybackRateChange}
-                  />
-                  <Eq3
-                    lowGain={lowGain}
-                    midGain={midGain}
-                    highGain={highGain}
-                    onChange={onEqChange}
-                  />
-                </div>
-              </div>
+        <AudioFileDropRegion onFiles={files => receiveAudioFile(files[0])}>
+          <div className={classes.titleContainer}>
+            <TitleBar
+              type="Loop"
+              label={label}
+              onLabelChange={onLabelChange}
+              onRemoveClick={remove}
+              connections={connections}
+            >
+              {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
+            </TitleBar>
+          </div>
+          <div className={classes.mainContainer}>
+            <Sample
+              fromSaved={!!(fileName && !audioBuffer)}
+              audioBuffer={audioBuffer}
+              loopStart={loopStart}
+              loopEnd={loopEnd}
+              onLoopStartDrag={this.handleLoopStartDrag}
+              onLoopEndDrag={this.handleLoopEndDrag}
+              onLoopRegionDrag={this.handleLoopRegionDrag}
+              selectAudioFile={selectAudioFile}
+            />
+            <div className={classes.controlsContainer}>
+              <PlaybackControls
+                gain={gain}
+                playbackRate={playbackRate}
+                onGainChange={onGainChange}
+                onPlaybackRateChange={onPlaybackRateChange}
+              />
+              <Eq3
+                lowGain={lowGain}
+                midGain={midGain}
+                highGain={highGain}
+                onChange={onEqChange}
+              />
             </div>
-          )}
-        </FileDropRegion>
+          </div>
+        </AudioFileDropRegion>
       </div>
     )
   }

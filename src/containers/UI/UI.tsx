@@ -1,4 +1,4 @@
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
 import { GoMarkGithub } from 'react-icons/go'
 
@@ -63,7 +63,7 @@ export interface UIProps {
   togglePlayback(): void
 }
 
-const UI: StatelessComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
+const UI: FunctionComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
   <div className={classes.root}>
     <Favicon url={favicon} />
     <div className={classes.borderedSection}>

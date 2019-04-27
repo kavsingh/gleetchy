@@ -1,5 +1,5 @@
 import { always } from 'ramda'
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import Slider from '~/components/Slider'
 import { noop } from '~/util/function'
@@ -32,7 +32,7 @@ const renderMidGainLabel = always('M')
 const renderHighGainTitle = always('EQ High Gain')
 const renderHighGainLabel = always('H')
 
-const Eq3: StatelessComponent<Eq3Props> = ({
+const Eq3: FunctionComponent<Eq3Props> = ({
   lowGain = 0,
   midGain = 0,
   highGain = 0,

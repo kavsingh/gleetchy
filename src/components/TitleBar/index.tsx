@@ -1,4 +1,4 @@
-import React, { memo, ReactNode, StatelessComponent } from 'react'
+import React, { memo, ReactNode, FunctionComponent } from 'react'
 
 import TextInput from '~/components/TextInput'
 import { AudioNodeConnection } from '~/types'
@@ -62,7 +62,7 @@ export interface TitleBarProps {
   onRemoveClick?(): void
 }
 
-const TitleBar: StatelessComponent<TitleBarProps> = ({
+const TitleBar: FunctionComponent<TitleBarProps> = ({
   label,
   type,
   onLabelChange = noop,

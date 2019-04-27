@@ -1,4 +1,4 @@
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import { describeSVGArc } from '~/util/ui'
 
@@ -9,7 +9,7 @@ export interface SVGArcProps {
   strokeWidth?: number
 }
 
-const SVGArc: StatelessComponent<SVGArcProps> = ({
+const SVGArc: FunctionComponent<SVGArcProps> = ({
   endAngle,
   startAngle = 0,
   radius = 1,

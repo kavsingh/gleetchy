@@ -1,4 +1,4 @@
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import AnimIn from '~/components/AnimIn'
 import { nodeType as delayType } from '~/nodes/audioEffects/delay'
@@ -46,7 +46,7 @@ export interface AudioEffectsRackProps {
 
 type EffectAddButton = [string, () => void]
 
-const AudioEffectsRack: StatelessComponent<AudioEffectsRackProps> = ({
+const AudioEffectsRack: FunctionComponent<AudioEffectsRackProps> = ({
   audioEffects = [],
   addReverb = noop,
   addDelay = noop,

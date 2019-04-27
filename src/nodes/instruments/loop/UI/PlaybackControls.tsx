@@ -1,5 +1,5 @@
 import { always } from 'ramda'
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import Knob from '~/components/Knob'
 import { noop } from '~/util/function'
@@ -27,7 +27,7 @@ const renderGainLabel = always('G')
 const renderSpeedTitle = always('Speed')
 const renderSpeedLabel = always('S')
 
-const PlaybackControls: StatelessComponent<PlaybackControlsProps> = ({
+const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
   gain = 1,
   playbackRate = 1,
   onGainChange = noop,

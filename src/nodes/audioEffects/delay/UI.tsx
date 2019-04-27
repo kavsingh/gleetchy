@@ -1,5 +1,5 @@
 import { cx } from 'emotion'
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
@@ -41,7 +41,7 @@ export interface DelayProps {
   remove(): void
 }
 
-const Delay: StatelessComponent<DelayProps> = ({
+const Delay: FunctionComponent<DelayProps> = ({
   label = 'Delay',
   connections = [],
   wetDryRatio = 0.5,

@@ -1,6 +1,6 @@
 import color from 'color'
 import { Interpolation } from 'emotion'
-import React, { ReactNode, StatelessComponent } from 'react'
+import React, { ReactNode, FunctionComponent } from 'react'
 import { onlyUpdateForKeys } from 'recompose'
 
 import LoopRegion from '~/components/LoopRegion'
@@ -60,7 +60,7 @@ const classes = cssLabeled('sample', {
 })
 /* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
 
-const Sample: StatelessComponent<SampleProps> = ({
+const Sample: FunctionComponent<SampleProps> = ({
   audioBuffer,
   loopStart = 0,
   loopEnd = 1,

@@ -1,4 +1,4 @@
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import { cssLabeled } from '~/util/style'
 
@@ -13,7 +13,7 @@ export interface PlayPauseButtonProps {
   onClick(): void
 }
 
-const PlayPauseButton: StatelessComponent<PlayPauseButtonProps> = ({
+const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
   isPlaying,
   onClick,
 }) => (

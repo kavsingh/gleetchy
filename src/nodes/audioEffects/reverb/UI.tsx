@@ -1,5 +1,5 @@
 import { cx } from 'emotion'
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
@@ -38,7 +38,7 @@ export interface ReverbProps {
   remove(): void
 }
 
-const Reverb: StatelessComponent<ReverbProps> = ({
+const Reverb: FunctionComponent<ReverbProps> = ({
   label = 'Reverb',
   wetDryRatio = 0.5,
   isActive = true,

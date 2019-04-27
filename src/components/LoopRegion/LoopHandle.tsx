@@ -1,5 +1,5 @@
 import { cx } from 'emotion'
-import React, { memo, StatelessComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import { COLOR_EMPHASIS } from '~/constants/style'
 import { cssLabeled } from '~/util/style'
@@ -56,9 +56,7 @@ export interface LoopHandleProps {
   align: 'left' | 'right'
 }
 
-const LoopHandle: StatelessComponent<LoopHandleProps> = ({
-  align = 'left',
-}) => (
+const LoopHandle: FunctionComponent<LoopHandleProps> = ({ align = 'left' }) => (
   <div
     className={cx({
       [classes.root]: true,

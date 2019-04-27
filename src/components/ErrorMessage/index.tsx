@@ -1,4 +1,4 @@
-import React, { memo, ReactNode, StatelessComponent } from 'react'
+import React, { memo, ReactNode, FunctionComponent } from 'react'
 
 import { COLOR_EMPHASIS, COLOR_ERROR } from '~/constants/style'
 import { cssLabeled } from '~/util/style'
@@ -13,7 +13,7 @@ const classes = cssLabeled('errorMessage', {
   },
 })
 
-const ErrorMessage: StatelessComponent<{ children: ReactNode }> = ({
+const ErrorMessage: FunctionComponent<{ children: ReactNode }> = ({
   children,
 }) => <div className={classes.root}>{children}</div>
 
