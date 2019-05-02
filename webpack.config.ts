@@ -1,4 +1,5 @@
 import webpack, { Configuration } from 'webpack'
+import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import WorkboxPlugin from 'workbox-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
@@ -12,7 +13,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 export const publicPath = ''
 
-const config: Configuration = {
+const config: Configuration & { devServer?: WebpackDevServerConfiguration } = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     gleetchy: ['./src/index.tsx'],
