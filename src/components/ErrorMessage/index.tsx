@@ -1,20 +1,19 @@
-import React, { memo, FunctionComponent } from 'react'
+import React, { memo, FunctionComponent, ReactNode } from 'react'
+import { css } from 'emotion'
 
-import { COLOR_EMPHASIS, COLOR_ERROR } from '~/constants/style'
-import { cssLabeled } from '~/util/style'
+import { colorError, colorEmphasis } from '~/style/color'
 
-const classes = cssLabeled('errorMessage', {
-  root: {
-    backgroundColor: COLOR_ERROR,
-    color: COLOR_EMPHASIS,
-    fontSize: '0.9em',
-    padding: '2em',
-    width: '100%',
-  },
+const rootStyle = css({
+  backgroundColor: colorError,
+  color: colorEmphasis,
+  fontSize: '0.9em',
+  padding: '2em',
+  width: '100%',
 })
-
-const ErrorMessage: FunctionComponent = ({ children }) => (
-  <div className={classes.root}>{children}</div>
-)
+// For some reason memo does not expose children properly.
+// TODO: kiv type uodates
+const ErrorMessage: FunctionComponent<{ children: ReactNode }> = ({
+  children,
+}) => <div className={rootStyle}>{children}</div>
 
 export default memo(ErrorMessage)

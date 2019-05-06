@@ -1,71 +1,64 @@
-import { Interpolation } from 'emotion'
+import { css, cx } from 'emotion'
 import { always, clamp } from 'ramda'
 import React, { PureComponent, ReactNode } from 'react'
 
+import { noop } from '~/util/function'
+import { layoutAbsoluteFill } from '~/style/layout'
+import { colorEmphasis, colorKeyline } from '~/style/color'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
 import SVGArc from '~/components/SVGArc'
-import {
-  COLOR_EMPHASIS,
-  COLOR_KEYLINE,
-  LAYOUT_ABSOLUTE_FILL,
-} from '~/constants/style'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
 const renderEmptyString = always('')
 
-const text = {
+const labelStyle = css({
   flex: '0 0 auto',
   fontSize: '0.8em',
-}
+})
 
-/* eslint-disable @typescript-eslint/no-object-literal-type-assertion */
-const classes = cssLabeled('knob', {
-  root: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
+const rootStyle = css({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  width: '100%',
+})
+
+const knobContainerStyle = css({
+  cursor: 'move',
+  flex: '0 0 auto',
+  margin: '0.4em auto 0.3em',
+  position: 'relative',
+
+  '& svg': {
+    fill: 'transparent',
     height: '100%',
     width: '100%',
   },
+})
 
-  knobContainer: {
-    cursor: 'move',
-    flex: '0 0 auto',
-    margin: '0.4em auto 0.3em',
-    position: 'relative',
-
-    '& svg': {
-      fill: 'transparent',
-      height: '100%',
-      width: '100%',
-    },
-  },
-
-  trackContainer: {
-    ...LAYOUT_ABSOLUTE_FILL,
+const trackContainerStyle = cx(
+  layoutAbsoluteFill,
+  css({
     zIndex: 1,
 
     '& svg': {
-      stroke: COLOR_KEYLINE,
+      stroke: colorKeyline,
     },
-  } as Interpolation,
+  }),
+)
 
-  barContainer: {
-    ...LAYOUT_ABSOLUTE_FILL,
+const barContainerStyle = cx(
+  layoutAbsoluteFill,
+  css({
     zIndex: 2,
 
     '& svg': {
-      stroke: COLOR_EMPHASIS,
+      stroke: colorEmphasis,
     },
-  } as Interpolation,
-
-  label: text,
-  value: text,
-})
-/* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
+  }),
+)
 
 export interface KnobProps {
   value: number
@@ -107,24 +100,24 @@ class Knob extends PureComponent<KnobProps, KnobState> {
         onDragMove={this.handleDragMove}
       >
         {({ dragListeners }) => (
-          <div className={classes.root} title={renderTitle()}>
-            <div className={classes.label}>{renderLabel()}</div>
+          <div className={rootStyle} title={renderTitle()}>
+            <div className={labelStyle}>{renderLabel()}</div>
             <div
               {...dragListeners}
               onDoubleClick={this.handleDoubleClick}
               role="presentation"
-              className={classes.knobContainer}
+              className={knobContainerStyle}
               style={{ height: radius, width: radius, ...cursorStyles }}
               ref={el => (this.knobNode = el)}
             >
-              <div className={classes.trackContainer}>
+              <div className={trackContainerStyle}>
                 <SVGArc startAngle={0} endAngle={360} strokeWidth={1} />
               </div>
-              <div className={classes.barContainer}>
+              <div className={barContainerStyle}>
                 <SVGArc startAngle={0} endAngle={value * 360} strokeWidth={2} />
               </div>
             </div>
-            <div className={classes.value}>{renderValue()}</div>
+            <div className={labelStyle}>{renderValue()}</div>
           </div>
         )}
       </SinglePointerDrag>

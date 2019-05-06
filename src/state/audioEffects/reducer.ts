@@ -1,7 +1,7 @@
 import produce from 'immer'
 import { Reducer } from 'redux'
 
-import COLORS from '~/constants/color'
+import { nodeColorPool } from '~/style/color'
 import {
   nodeProps as delayNodeProps,
   nodeType as delayNodeType,
@@ -33,7 +33,8 @@ const addAudioEffect = (
   switch (type) {
     case delayNodeType: {
       const newDelay = {
-        color: COLORS[state.orderedIdentifiers.length % COLORS.length],
+        color:
+          nodeColorPool[state.orderedIdentifiers.length % nodeColorPool.length],
         id: prefixedId('delay'),
         label: 'DX',
         props: { ...delayNodeProps },
@@ -50,7 +51,8 @@ const addAudioEffect = (
     }
     case reverbNodeType: {
       const newReverb = {
-        color: COLORS[state.orderedIdentifiers.length % COLORS.length],
+        color:
+          nodeColorPool[state.orderedIdentifiers.length % nodeColorPool.length],
         id: prefixedId('reverb'),
         label: `RX`,
         props: { ...reverbNodeProps },

@@ -1,24 +1,22 @@
 import React, { FunctionComponent, useRef, useEffect, memo } from 'react'
+import { css } from 'emotion'
 import colorFn from 'color'
 import { map } from 'ramda'
 
-import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { requireWindowWith } from '~/util/env'
-import { cssLabeled } from '~/util/style'
+import { colorEmphasis, colorKeyline } from '~/style/color'
 
 const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
 
-const classes = cssLabeled('waveForm', {
-  root: {
-    height: '100%',
-    overflow: 'hidden',
-    width: '100%',
-  },
+const rootStyle = css({
+  height: '100%',
+  overflow: 'hidden',
+  width: '100%',
+})
 
-  canvas: {
-    height: '100%',
-    width: '100%',
-  },
+const canvasStyle = css({
+  height: '100%',
+  width: '100%',
 })
 
 export interface WaveformProps {
@@ -77,7 +75,7 @@ const drawWaveForm = (
 const updateWaveForm = (
   canvasNode: HTMLCanvasElement,
   {
-    color = COLOR_EMPHASIS,
+    color = colorEmphasis,
     pixelRatio = 1,
     timeRegions = 4,
     buffer,
@@ -96,7 +94,7 @@ const updateWaveForm = (
   context.scale(pixelRatio, pixelRatio)
   context.clearRect(0, 0, width, height)
   context.fillStyle = color
-  context.strokeStyle = colorFn(COLOR_KEYLINE)
+  context.strokeStyle = colorFn(colorKeyline)
     .darken(0.06)
     .hex()
 
@@ -135,8 +133,8 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
   }, [color, timeRegions, buffer])
 
   return (
-    <div className={classes.root}>
-      <canvas className={classes.canvas} ref={canvasNodeRef} />
+    <div className={rootStyle}>
+      <canvas className={canvasStyle} ref={canvasNodeRef} />
     </div>
   )
 }

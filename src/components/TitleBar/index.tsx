@@ -1,56 +1,54 @@
 import React, { memo, FunctionComponent, ReactNode } from 'react'
+import { css } from 'emotion'
 
-import TextInput from '~/components/TextInput'
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
+import TextInput from '~/components/TextInput'
 
-const classes = cssLabeled('titleBar', {
-  root: {
-    fontSize: '0.8em',
-    marginBottom: '0.6em',
+const rootStyle = css({
+  fontSize: '0.8em',
+  marginBottom: '0.6em',
+})
+
+const labelContainerStyle = css({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'row',
+  justifyContent: 'flex-start',
+
+  '& input': {
+    appearance: 'none',
+    fontWeight: 500,
+    margin: 0,
+    padding: 0,
   },
+})
 
-  labelContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
+const infoContainerStyle = css({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'row',
+})
 
-    '& input': {
-      appearance: 'none',
-      fontWeight: 500,
-      margin: 0,
-      padding: 0,
-    },
-  },
+const connectionsStyle = css({
+  display: 'flex',
+  height: '100%',
+})
 
-  infoContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'row',
-  },
+const connectionStyle = css({
+  flexGrow: 0,
+  flexShrink: 0,
+  height: '0.8em',
+  marginRight: '0.3em',
+  width: '0.8em',
+})
 
-  connections: {
-    display: 'flex',
-    height: '100%',
-  },
+const typeContainerStyle = css({
+  marginRight: '0.3em',
+})
 
-  connection: {
-    flexGrow: 0,
-    flexShrink: 0,
-    height: '0.8em',
-    marginRight: '0.3em',
-    width: '0.8em',
-  },
-
-  typeContainer: {
-    marginRight: '0.3em',
-  },
-
-  removeButton: {
-    cursor: 'pointer',
-  },
+const removeButtonStyle = css({
+  cursor: 'pointer',
 })
 
 export interface TitleBarProps {
@@ -70,12 +68,12 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
   connections = [],
   children = [],
 }) => (
-  <div className={classes.root}>
-    <div className={classes.labelContainer}>
-      <div className={classes.connections}>
+  <div className={rootStyle}>
+    <div className={labelContainerStyle}>
+      <div className={connectionsStyle}>
         {connections.map(({ color, from, to }) => (
           <div
-            className={classes.connection}
+            className={connectionStyle}
             style={{ backgroundColor: color }}
             key={`${from}${to}`}
           />
@@ -83,11 +81,11 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
       </div>
       <TextInput onChange={onLabelChange} value={label} />
     </div>
-    <div className={classes.infoContainer}>
-      <div className={classes.typeContainer}>{type} /</div>
+    <div className={infoContainerStyle}>
+      <div className={typeContainerStyle}>{type} /</div>
       {typeof children === 'function' ? children() : children}
       <div
-        className={classes.removeButton}
+        className={removeButtonStyle}
         role="button"
         onClick={onRemoveClick}
         tabIndex={0}

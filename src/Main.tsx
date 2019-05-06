@@ -5,10 +5,11 @@ import { Provider } from 'react-redux'
 import { once } from 'ramda'
 
 import ErrorBoundary from '~/components/ErrorBoundary'
-import { COLOR_PAGE } from '~/constants/style'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
 import { ApplicationStore } from '~/state/configureStore'
+
+import { colorPage } from './style/color'
 
 const applyGlobalStyles = once(
   () => injectGlobal`
@@ -45,7 +46,7 @@ const applyGlobalStyles = once(
   }
 
   body {
-    background-color: ${COLOR_PAGE};
+    background-color: ${colorPage};
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
   }

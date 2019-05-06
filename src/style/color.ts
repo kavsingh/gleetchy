@@ -1,4 +1,9 @@
-export default [
+export const colorPage = '#101010'
+export const colorBody = '#efefef'
+export const colorEmphasis = '#fff'
+export const colorKeyline = '#195555'
+export const colorError = '#ec6764'
+export const nodeColorPool = [
   '#6994d0',
   '#b7cce8',
   '#b7cce8',

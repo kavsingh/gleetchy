@@ -1,32 +1,30 @@
-import { cx } from 'emotion'
 import React, { memo, FunctionComponent } from 'react'
+import { cx, css } from 'emotion'
+import { always } from 'ramda'
 
+import { AudioNodeConnection } from '~/types'
+import { noop } from '~/util/function'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
-import { AudioNodeConnection } from '~/types'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
-const classes = cssLabeled('delay', {
-  root: {
-    opacity: 1,
-    transition: 'opacity 0.2s ease-out',
-    width: '100%',
-  },
+const rootStyle = css({
+  opacity: 1,
+  transition: 'opacity 0.2s ease-out',
+  width: '100%',
+})
 
-  inactive: {
-    opacity: 0.4,
-  },
+const inactiveStyle = css({
+  opacity: 0.4,
+})
 
-  controls: {
-    display: 'flex',
-    width: '100%',
-  },
+const controlsStyle = css({
+  display: 'flex',
+  width: '100%',
+})
 
-  knobContainer: {
-    flex: '0 0 3em',
-  },
+const knobContainerStyle = css({
+  flex: '0 0 3em',
 })
 
 export interface DelayProps {
@@ -41,6 +39,11 @@ export interface DelayProps {
   remove(): unknown
 }
 
+const renderTimeLabel = always('T')
+const renderTimeTitle = always('Delay Time')
+const renderWetDryLabel = always('W / D')
+const renderWetDryTitle = always('Wet / Dry Ratio')
+
 const Delay: FunctionComponent<DelayProps> = ({
   label = 'Delay',
   connections = [],
@@ -52,7 +55,7 @@ const Delay: FunctionComponent<DelayProps> = ({
   onLabelChange = noop,
   remove = noop,
 }) => (
-  <div className={cx([classes.root, !isActive && classes.inactive])}>
+  <div className={cx([rootStyle, !isActive && inactiveStyle])}>
     <TitleBar
       type="Delay"
       label={label}
@@ -60,24 +63,24 @@ const Delay: FunctionComponent<DelayProps> = ({
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
-    <div className={classes.controls}>
-      <div className={classes.knobContainer}>
+    <div className={controlsStyle}>
+      <div className={knobContainerStyle}>
         <Knob
           radius="2.4em"
           value={delayTime / DELAY_UPPER_BOUND}
           onChange={val => onDelayTimeChange(val * DELAY_UPPER_BOUND)}
-          renderLabel={() => 'T'}
-          renderTitle={() => 'Delay time'}
+          renderLabel={renderTimeLabel}
+          renderTitle={renderTimeTitle}
           renderValue={() => delayTime.toFixed(2)}
         />
       </div>
-      <div className={classes.knobContainer}>
+      <div className={knobContainerStyle}>
         <Knob
           radius="2.4em"
           value={wetDryRatio}
           onChange={onWetDryRatioChange}
-          renderLabel={() => 'W / D'}
-          renderTitle={() => 'Wet / Dry ratio'}
+          renderLabel={renderWetDryLabel}
+          renderTitle={renderWetDryTitle}
           renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
         />
       </div>

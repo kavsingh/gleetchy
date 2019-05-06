@@ -1,7 +1,7 @@
 import produce from 'immer'
 import { Reducer } from 'redux'
 
-import COLORS from '~/constants/color'
+import { nodeColorPool } from '~/style/color'
 import {
   nodeProps as loopNodeProps,
   nodeType as loopNodeType,
@@ -28,7 +28,8 @@ const addInstrument = (state: InstrumentsState, { type }: { type: string }) => {
   switch (type) {
     case loopNodeType: {
       const newLoop = {
-        color: COLORS[state.orderedIdentifiers.length % COLORS.length],
+        color:
+          nodeColorPool[state.orderedIdentifiers.length % nodeColorPool.length],
         id: prefixedId('loop'),
         label: 'LX',
         props: { ...loopNodeProps },

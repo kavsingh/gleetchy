@@ -1,62 +1,59 @@
-import { cx } from 'emotion'
-import { clamp } from 'ramda'
 import React, { PureComponent, FunctionComponent } from 'react'
+import { css, cx } from 'emotion'
+import { clamp } from 'ramda'
 
+import { AudioNodeConnection } from '~/types'
+import { noop } from '~/util/function'
 import useFileDropRegion from '~/hooks/useFileDropRegion'
 import Sample from '~/components/Sample'
 import TitleBar from '~/components/TitleBar'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
-import { AudioNodeConnection } from '~/types'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
 import PlaybackControls from './PlaybackControls'
 
-const classes = cssLabeled('loop', {
-  root: {
-    height: '12em',
-    transition: 'opacity 0.2s ease-out',
-    width: '100%',
-  },
+const rootStyle = css({
+  height: '12em',
+  transition: 'opacity 0.2s ease-out',
+  width: '100%',
+})
 
-  inactive: {
-    opacity: 0.4,
-  },
+const inactiveStyle = css({
+  opacity: 0.4,
+})
 
-  wrap: {
-    alignItems: 'stretch',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    justifyContent: 'stretch',
-    width: '100%',
-  },
+const wrapStyle = css({
+  alignItems: 'stretch',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  justifyContent: 'stretch',
+  width: '100%',
+})
 
-  titleContainer: {
-    flexGrow: 0,
-    flexShrink: 0,
-    width: '100%',
-  },
+const titleContainerStyle = css({
+  flexGrow: 0,
+  flexShrink: 0,
+  width: '100%',
+})
 
-  mainContainer: {
-    display: 'flex',
-    flex: '1 0 10em',
-    flexWrap: 'nowrap',
-    paddingLeft: '0.2em',
-    width: '100%',
-  },
+const mainContainerStyle = css({
+  display: 'flex',
+  flex: '1 0 10em',
+  flexWrap: 'nowrap',
+  paddingLeft: '0.2em',
+  width: '100%',
+})
 
-  controlsContainer: {
-    display: 'flex',
-    height: '100%',
-    marginLeft: '1.2em',
-  },
+const controlsContainerStyle = css({
+  display: 'flex',
+  height: '100%',
+  marginLeft: '1.2em',
+})
 
-  titleLoadAudio: {
-    cursor: 'pointer',
-    display: 'inline-block',
-    marginLeft: '0.3em',
-  },
+const titleLoadAudioStyle = css({
+  cursor: 'pointer',
+  display: 'inline-block',
+  marginLeft: '0.3em',
 })
 
 const AudioFileDropRegion: FunctionComponent<{
@@ -68,7 +65,7 @@ const AudioFileDropRegion: FunctionComponent<{
   })
 
   return (
-    <div className={classes.wrap} {...dragDropEvents}>
+    <div className={wrapStyle} {...dragDropEvents}>
       {children}
     </div>
   )
@@ -108,7 +105,7 @@ const renderTitle = (
     <span
       role="button"
       tabIndex={0}
-      className={classes.titleLoadAudio}
+      className={titleLoadAudioStyle}
       onClick={selectAudioFile}
       onKeyDown={({ key }) => {
         if (key === 'Enter') {
@@ -146,9 +143,9 @@ class Loop extends PureComponent<LoopProps> {
     } = this.props
 
     return (
-      <div className={cx([classes.root, !isActive && classes.inactive])}>
+      <div className={cx([rootStyle, !isActive && inactiveStyle])}>
         <AudioFileDropRegion onFiles={files => receiveAudioFile(files[0])}>
-          <div className={classes.titleContainer}>
+          <div className={titleContainerStyle}>
             <TitleBar
               type="Loop"
               label={label}
@@ -159,7 +156,7 @@ class Loop extends PureComponent<LoopProps> {
               {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
             </TitleBar>
           </div>
-          <div className={classes.mainContainer}>
+          <div className={mainContainerStyle}>
             <Sample
               fromSaved={!!(fileName && !audioBuffer)}
               audioBuffer={audioBuffer}
@@ -170,7 +167,7 @@ class Loop extends PureComponent<LoopProps> {
               onLoopRegionDrag={this.handleLoopRegionDrag}
               selectAudioFile={selectAudioFile}
             />
-            <div className={classes.controlsContainer}>
+            <div className={controlsContainerStyle}>
               <PlaybackControls
                 gain={gain}
                 playbackRate={playbackRate}

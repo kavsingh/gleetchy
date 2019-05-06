@@ -1,11 +1,8 @@
 import React, { memo, FunctionComponent } from 'react'
+import { css } from 'emotion'
 
-import { cssLabeled } from '~/util/style'
-
-const classes = cssLabeled('playPauseButton', {
-  root: {
-    cursor: 'pointer',
-  },
+const rootStyle = css({
+  cursor: 'pointer',
 })
 
 export interface PlayPauseButtonProps {
@@ -17,7 +14,7 @@ const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
   isPlaying,
   onClick,
 }) => (
-  <div role="button" tabIndex={0} onClick={onClick} className={classes.root}>
+  <div role="button" tabIndex={0} onClick={onClick} className={rootStyle}>
     {isPlaying ? 'Stop' : 'Play'}
   </div>
 )

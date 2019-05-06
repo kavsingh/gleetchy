@@ -6,7 +6,7 @@ import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import PWAManifest from 'webpack-pwa-manifest'
 
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
-import { COLOR_PAGE } from './src/constants/style'
+import { colorPage } from './src/style/color'
 
 const servePublic = process.env.PUBLIC === 'true'
 const isProduction = process.env.NODE_ENV === 'production'
@@ -48,7 +48,7 @@ const config: Configuration & { devServer?: WebpackDevServerConfiguration } = {
     new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new HtmlWebpackPlugin({
       title: 'Gleetchy',
-      themeColor: COLOR_PAGE,
+      themeColor: colorPage,
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),
@@ -58,8 +58,8 @@ const config: Configuration & { devServer?: WebpackDevServerConfiguration } = {
       short_name: 'Gleetchy',
       start_url: process.env.PWA_START_URL || '/',
       display: 'fullscreen',
-      theme_color: COLOR_PAGE,
-      background_color: COLOR_PAGE,
+      theme_color: colorPage,
+      background_color: colorPage,
       icons: [
         ...[48, 72, 96, 144, 168, 192, 512].map(size => ({
           src: fromRoot(`src/assets/icons/${size}x${size}.png`),

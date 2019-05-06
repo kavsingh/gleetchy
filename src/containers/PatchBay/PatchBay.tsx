@@ -1,68 +1,65 @@
-import color from 'color'
-import { cx } from 'emotion'
-import { T } from 'ramda'
 import React, { memo, FunctionComponent } from 'react'
+import { cx, css } from 'emotion'
+import color from 'color'
+import { T } from 'ramda'
 
-import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
 import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
 import { noop, stubString } from '~/util/function'
-import { cssLabeled } from '~/util/style'
+import { colorKeyline, colorEmphasis } from '~/style/color'
 
-const classes = cssLabeled('patchBay', {
-  root: {
-    width: '100%',
+const rootStyle = css({
+  width: '100%',
+})
+
+const labelStyle = css({
+  fontSize: '0.68em',
+  fontWeight: 400,
+  maxWidth: '5.4em',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
+})
+
+const rowStyle = css({
+  'td, th': {
+    textAlign: 'center',
   },
 
-  label: {
-    fontSize: '0.68em',
-    fontWeight: 400,
-    maxWidth: '5.4em',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
+  'td:first-child, th:first-child': {
+    textAlign: 'left',
   },
 
-  row: {
-    'td, th': {
-      textAlign: 'center',
-    },
-
-    'td:first-child, th:first-child': {
-      textAlign: 'left',
-    },
-
-    th: {
-      padding: '0 0 0.6em',
-    },
-
-    td: {
-      padding: '0.6em 0',
-    },
-
-    'td:not(:first-child)': {
-      padding: '0 0.6em',
-    },
+  th: {
+    padding: '0 0 0.6em',
   },
 
-  node: {
-    backgroundColor: 'transparent',
-    border: `1px solid ${COLOR_KEYLINE}`,
-    cursor: 'pointer',
-    height: '0.8em',
-    margin: '0 auto',
-    transition: 'all 0.2s ease-out',
-    width: '0.8em',
+  td: {
+    padding: '0.6em 0',
   },
 
-  nodeActive: {
-    backgroundColor: COLOR_EMPHASIS,
+  'td:not(:first-child)': {
+    padding: '0 0.6em',
   },
+})
 
-  nodeBlocked: {
-    backgroundColor: COLOR_KEYLINE,
-    cursor: 'default',
-    transform: 'rotate(45deg) scale(0.5)',
-  },
+const nodeStyle = css({
+  backgroundColor: 'transparent',
+  border: `1px solid ${colorKeyline}`,
+  cursor: 'pointer',
+  height: '0.8em',
+  margin: '0 auto',
+  transition: 'all 0.2s ease-out',
+  width: '0.8em',
+})
+
+const nodeActiveStyle = css({
+  backgroundColor: colorEmphasis,
+})
+
+const nodeBlockedStyle = css({
+  backgroundColor: colorKeyline,
+  cursor: 'default',
+  transform: 'rotate(45deg) scale(0.5)',
 })
 
 export interface PatchBayProps {
@@ -85,13 +82,13 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
   getNodeLabel = stubString,
   onNodeClick = noop,
 }) => (
-  <table className={classes.root}>
+  <table className={rootStyle}>
     <tbody>
-      <tr className={classes.row} key="titles">
-        <th className={classes.label}>To / From</th>
+      <tr className={rowStyle} key="titles">
+        <th className={labelStyle}>To / From</th>
         {fromNodes.map(fromNode => (
           <th
-            className={classes.label}
+            className={labelStyle}
             title={`From ${getNodeLabel(fromNode.id)} to ...`}
             key={fromNode.id}
           >
@@ -100,9 +97,9 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
         ))}
       </tr>
       {toNodes.map(toNode => (
-        <tr className={classes.row} key={toNode.id}>
+        <tr className={rowStyle} key={toNode.id}>
           <td
-            className={classes.label}
+            className={labelStyle}
             title={`From ... to ${getNodeLabel(toNode.id)}`}
             key="rowLabel"
           >
@@ -119,9 +116,9 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
 
             let modClassName = ''
             if (blockConnect) {
-              modClassName = classes.nodeBlocked
+              modClassName = nodeBlockedStyle
             } else if (connection) {
-              modClassName = classes.nodeActive
+              modClassName = nodeActiveStyle
             }
 
             const handleClick = blockConnect
@@ -141,7 +138,7 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
                         }
                       : {}
                   }
-                  className={cx([classes.node, modClassName])}
+                  className={cx([nodeStyle, modClassName])}
                   onClick={handleClick}
                   role="button"
                   tabIndex={0}

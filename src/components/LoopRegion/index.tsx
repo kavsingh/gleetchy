@@ -1,55 +1,47 @@
 import color from 'color'
-import { Interpolation } from 'emotion'
+import { css } from 'emotion'
 import React, { Component } from 'react'
 
+import { noop } from '~/util/function'
+import { colorPage } from '~/style/color'
+import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
-import { COLOR_PAGE, LAYOUT_ABSOLUTE_FILL } from '~/constants/style'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
 import LoopHandle from './LoopHandle'
 
-/* eslint-disable @typescript-eslint/no-object-literal-type-assertion */
-const classes = cssLabeled('loopRegion', {
-  root: {
-    height: '100%',
-    position: 'relative',
-    width: '100%',
-  },
-
-  handleContainer: {
-    cursor: 'ew-resize',
-    height: '100%',
-    position: 'absolute',
-    top: 0,
-    width: 10,
-    zIndex: 1,
-  },
-
-  regionsContainer: {
-    ...LAYOUT_ABSOLUTE_FILL,
-  } as Interpolation,
-
-  activeRegion: {
-    bottom: 0,
-    cursor: 'move',
-    position: 'absolute',
-    top: 0,
-  },
-
-  inactiveRegion: {
-    backgroundColor: color(COLOR_PAGE)
-      .alpha(0.8)
-      .string(),
-    bottom: 0,
-    position: 'absolute',
-    top: 0,
-    zIndex: 0,
-  },
+const rootStyle = css({
+  height: '100%',
+  position: 'relative',
+  width: '100%',
 })
-/* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
+
+const handleContainerStyle = css({
+  cursor: 'ew-resize',
+  height: '100%',
+  position: 'absolute',
+  top: 0,
+  width: 10,
+  zIndex: 1,
+})
+
+const activeRegionStyle = css({
+  bottom: 0,
+  cursor: 'move',
+  position: 'absolute',
+  top: 0,
+})
+
+const inactiveRegionStyle = css({
+  backgroundColor: color(colorPage)
+    .alpha(0.8)
+    .string(),
+  bottom: 0,
+  position: 'absolute',
+  top: 0,
+  zIndex: 0,
+})
 
 export interface LoopRegionProps {
   loopStart: number
@@ -77,13 +69,13 @@ class LoopRegion extends Component<LoopRegionProps> {
       : false
 
     return (
-      <div className={classes.root} ref={c => (this.rootNode = c)}>
+      <div className={rootStyle} ref={c => (this.rootNode = c)}>
         <SinglePointerDrag onDragMove={this.handleStartHandleDrag}>
           {({ dragListeners }) => (
             <div
               {...dragListeners}
               role="presentation"
-              className={classes.handleContainer}
+              className={handleContainerStyle}
               style={{ left: `${loopStart * 100}%` }}
             >
               <LoopHandle align="left" />
@@ -95,16 +87,16 @@ class LoopRegion extends Component<LoopRegionProps> {
             <div
               {...dragListeners}
               role="presentation"
-              className={classes.handleContainer}
+              className={handleContainerStyle}
               style={{ left: `${loopEnd * 100}%` }}
             >
               <LoopHandle align="right" />
             </div>
           )}
         </SinglePointerDrag>
-        <div className={classes.regionsContainer}>
+        <div className={layoutAbsoluteFill}>
           <div
-            className={classes.inactiveRegion}
+            className={inactiveRegionStyle}
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           {regionRatio < 1 ? (
@@ -113,7 +105,7 @@ class LoopRegion extends Component<LoopRegionProps> {
                 <div
                   {...dragListeners}
                   role="presentation"
-                  className={classes.activeRegion}
+                  className={activeRegionStyle}
                   style={{
                     left: `${loopStart * 100}%`,
                     right: `${(1 - loopEnd) * 100}%`,
@@ -124,7 +116,7 @@ class LoopRegion extends Component<LoopRegionProps> {
             </SinglePointerDrag>
           ) : null}
           <div
-            className={classes.inactiveRegion}
+            className={inactiveRegionStyle}
             style={{ left: `${loopEnd * 100}%`, right: 0 }}
           />
         </div>

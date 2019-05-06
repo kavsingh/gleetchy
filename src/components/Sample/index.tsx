@@ -1,13 +1,13 @@
-import color from 'color'
-import { Interpolation } from 'emotion'
 import React, { ReactNode, FunctionComponent } from 'react'
 import { onlyUpdateForKeys } from 'recompose'
+import { css, cx } from 'emotion'
+import color from 'color'
 
+import { noop } from '~/util/function'
+import { layoutAbsoluteFill } from '~/style/layout'
+import { colorPage } from '~/style/color'
 import LoopRegion from '~/components/LoopRegion'
 import WaveForm from '~/components/WaveForm'
-import { COLOR_PAGE, LAYOUT_ABSOLUTE_FILL } from '~/constants/style'
-import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
 export interface SampleProps {
   fromSaved?: boolean
@@ -21,28 +21,31 @@ export interface SampleProps {
   selectAudioFile?(): unknown
 }
 
-/* eslint-disable @typescript-eslint/no-object-literal-type-assertion */
-const classes = cssLabeled('sample', {
-  root: {
-    height: '100%',
-    position: 'relative',
-    width: '100%',
-  },
+const rootStyle = css({
+  height: '100%',
+  position: 'relative',
+  width: '100%',
+})
 
-  waveFormContainer: {
-    ...LAYOUT_ABSOLUTE_FILL,
+const waveFormContainerStyle = cx(
+  layoutAbsoluteFill,
+  css({
     zIndex: 1,
-  } as Interpolation,
+  }),
+)
 
-  loopRegionContainer: {
-    ...LAYOUT_ABSOLUTE_FILL,
+const loopRegionContainerStyle = cx(
+  layoutAbsoluteFill,
+  css({
     zIndex: 2,
-  } as Interpolation,
+  }),
+)
 
-  initLoadButon: {
-    ...LAYOUT_ABSOLUTE_FILL,
+const initLoadButonStyle = cx(
+  layoutAbsoluteFill,
+  css({
     alignItems: 'center',
-    backgroundColor: color(COLOR_PAGE)
+    backgroundColor: color(colorPage)
       .alpha(0.96)
       .string(),
     cursor: 'pointer',
@@ -56,9 +59,8 @@ const classes = cssLabeled('sample', {
       display: 'block',
       textAlign: 'center',
     },
-  } as Interpolation,
-})
-/* eslint-enable @typescript-eslint/no-object-literal-type-assertion */
+  }),
+)
 
 const Sample: FunctionComponent<SampleProps> = ({
   audioBuffer,
@@ -70,12 +72,12 @@ const Sample: FunctionComponent<SampleProps> = ({
   onLoopRegionDrag = noop,
   selectAudioFile = noop,
 }) => (
-  <div className={classes.root}>
-    <div className={classes.waveFormContainer}>
+  <div className={rootStyle}>
+    <div className={waveFormContainerStyle}>
       <WaveForm buffer={audioBuffer} />
     </div>
     {audioBuffer ? (
-      <div className={classes.loopRegionContainer}>
+      <div className={loopRegionContainerStyle}>
         <LoopRegion
           loopStart={loopStart}
           loopEnd={loopEnd}
@@ -89,7 +91,7 @@ const Sample: FunctionComponent<SampleProps> = ({
         role="button"
         tabIndex={0}
         onClick={selectAudioFile}
-        className={classes.initLoadButon}
+        className={initLoadButonStyle}
         onKeyDown={({ key }) => {
           if (key === 'Enter') {
             selectAudioFile()

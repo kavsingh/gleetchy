@@ -1,7 +1,7 @@
 import { allPass, propEq, without } from 'ramda'
 import { Reducer } from 'redux'
 
-import COLORS from '~/constants/color'
+import { nodeColorPool } from '~/style/color'
 import { AudioEffectRemoveAction } from '~/state/audioEffects/types'
 import { audioContexts, instruments } from '~/state/defaultNodes'
 import { InstrumentRemoveAction } from '~/state/instruments/types'
@@ -12,8 +12,8 @@ import { ConnectionDescriptor, ConnectionsAction } from './types'
 export type ConnectionsState = AudioNodeConnection[]
 
 const defaultState: ConnectionsState = [
-  { from: instruments[0].id, to: audioContexts[0].id, color: COLORS[0] },
-  { from: instruments[1].id, to: audioContexts[0].id, color: COLORS[1] },
+  { from: instruments[0].id, to: audioContexts[0].id, color: nodeColorPool[0] },
+  { from: instruments[1].id, to: audioContexts[0].id, color: nodeColorPool[1] },
 ]
 
 const connectionIs = ({ fromId, toId }: ConnectionDescriptor) =>
@@ -29,7 +29,11 @@ const addConnection = (
     ? state
     : [
         ...state,
-        { from: fromId, to: toId, color: COLORS[state.length % COLORS.length] },
+        {
+          from: fromId,
+          to: toId,
+          color: nodeColorPool[state.length % nodeColorPool.length],
+        },
       ]
 }
 

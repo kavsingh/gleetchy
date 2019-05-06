@@ -1,121 +1,114 @@
-import { cx, Interpolation } from 'emotion'
-import { clamp } from 'ramda'
 import React, { PureComponent, ReactNode } from 'react'
+import { cx, css } from 'emotion'
+import { clamp } from 'ramda'
 
+import { noop, stubString } from '~/util/function'
+import { colorKeyline, colorEmphasis } from '~/style/color'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
-import { COLOR_EMPHASIS, COLOR_KEYLINE } from '~/constants/style'
-import { noop, stubString } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
-const text = {
-  flexGrow: '0 0 auto',
+const textStyle = css({
+  flex: '0 0 auto',
   fontSize: '0.8em',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
   whiteSpace: 'nowrap',
-}
+})
 
-const classes = cssLabeled('slider', {
-  horizontal: {
-    alignItems: 'stretch',
-    flexDirection: 'row',
-  },
+const horizontalStyle = css({
+  alignItems: 'stretch',
+  flexDirection: 'row',
+})
 
-  label: text as Interpolation,
+const rootStyle = css({
+  display: 'flex',
+  height: '100%',
+  width: '100%',
+})
 
-  root: {
-    display: 'flex',
-    height: '100%',
-    width: '100%',
-  },
+const verticalStyle = css({
+  alignItems: 'center',
+  flexDirection: 'column',
+})
 
-  value: text as Interpolation,
+const labelVerticalStyle = css({
+  height: '1.4em',
+})
 
-  vertical: {
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
+const valueVerticalStyle = css({
+  alignItems: 'flex-end',
+  display: 'flex',
+  height: '1.4em',
+})
 
-  labelVertical: {
-    height: '1.4em',
-  },
+const labelHorizontalStyle = css({
+  alignItems: 'center',
+  display: 'flex',
+  width: '3em',
+})
 
-  valueVertical: {
-    alignItems: 'flex-end',
-    display: 'flex',
-    height: '1.4em',
-  },
+const valueHorizontalStyle = css({
+  alignItems: 'center',
+  display: 'flex',
+  width: '3em',
+})
 
-  labelHorizontal: {
-    alignItems: 'center',
-    display: 'flex',
-    width: '3em',
-  },
+const barContainerStyle = css({
+  flex: '1 1',
+  position: 'relative',
+})
 
-  valueHorizontal: {
-    alignItems: 'center',
-    display: 'flex',
-    width: '3em',
-  },
+const barContainerVerticalStyle = css({
+  cursor: 'ns-resize',
+  margin: '0.4em auto 0.2em',
+  width: '100%',
+})
 
-  barContainer: {
-    flex: '1 1',
-    position: 'relative',
-  },
+const barContainerHorizontalStyle = css({
+  cursor: 'ew-resize',
+  height: '100%',
+  margin: 'auto 0.6em',
+})
 
-  barContainerVertical: {
-    cursor: 'ns-resize',
-    margin: '0.4em auto 0.2em',
-    width: '100%',
-  },
+const trackStyle = css({
+  backgroundColor: colorKeyline,
+  position: 'absolute',
+  zIndex: 1,
+})
 
-  barContainerHorizontal: {
-    cursor: 'ew-resize',
-    height: '100%',
-    margin: 'auto 0.6em',
-  },
+const barStyle = css({
+  backgroundColor: colorEmphasis,
+  position: 'absolute',
+  zIndex: 2,
+})
 
-  track: {
-    backgroundColor: COLOR_KEYLINE,
-    position: 'absolute',
-    zIndex: 1,
-  },
+const trackVerticalStyle = css({
+  bottom: 0,
+  left: '50%',
+  top: 0,
+  width: 1,
+})
 
-  bar: {
-    backgroundColor: COLOR_EMPHASIS,
-    position: 'absolute',
-    zIndex: 2,
-  },
+const barVerticalStyle = css({
+  bottom: 0,
+  left: 'calc(50% - 1px)',
+  top: 0,
+  width: 3,
+})
 
-  trackVertical: {
-    bottom: 0,
-    left: '50%',
-    top: 0,
-    width: 1,
-  },
+const trackHorizontalStyle = css({
+  height: 1,
+  left: 0,
+  right: 0,
+  top: '50%',
+})
 
-  barVertical: {
-    bottom: 0,
-    left: 'calc(50% - 1px)',
-    top: 0,
-    width: 3,
-  },
-
-  trackHorizontal: {
-    height: 1,
-    left: 0,
-    right: 0,
-    top: '50%',
-  },
-
-  barHorizontal: {
-    height: 3,
-    left: 0,
-    right: 0,
-    top: 'calc(50% - 1px)',
-  },
+const barHorizontalStyle = css({
+  height: 3,
+  left: 0,
+  right: 0,
+  top: 'calc(50% - 1px)',
 })
 
 export interface SliderProps {
@@ -145,17 +138,17 @@ class Slider extends PureComponent<SliderProps> {
     return (
       <div
         className={cx({
-          [classes.root]: true,
-          [classes.vertical]: isVert,
-          [classes.horizontal]: !isVert,
+          [rootStyle]: true,
+          [verticalStyle]: isVert,
+          [horizontalStyle]: !isVert,
         })}
         title={renderTitle(value)}
       >
         <div
           className={cx({
-            [classes.label]: true,
-            [classes.labelVertical]: isVert,
-            [classes.labelHorizontal]: !isVert,
+            [textStyle]: true,
+            [labelVerticalStyle]: isVert,
+            [labelHorizontalStyle]: !isVert,
           })}
         >
           {renderLabel(value)}
@@ -168,9 +161,9 @@ class Slider extends PureComponent<SliderProps> {
             <div
               {...dragListeners}
               className={cx({
-                [classes.barContainer]: true,
-                [classes.barContainerVertical]: isVert,
-                [classes.barContainerHorizontal]: !isVert,
+                [barContainerStyle]: true,
+                [barContainerVerticalStyle]: isVert,
+                [barContainerHorizontalStyle]: !isVert,
               })}
               role="presentation"
               onDoubleClick={this.handleDoubleClick}
@@ -178,16 +171,16 @@ class Slider extends PureComponent<SliderProps> {
             >
               <div
                 className={cx({
-                  [classes.track]: true,
-                  [classes.trackVertical]: isVert,
-                  [classes.trackHorizontal]: !isVert,
+                  [trackStyle]: true,
+                  [trackVerticalStyle]: isVert,
+                  [trackHorizontalStyle]: !isVert,
                 })}
               />
               <div
                 className={cx({
-                  [classes.bar]: true,
-                  [classes.barVertical]: isVert,
-                  [classes.barHorizontal]: !isVert,
+                  [barStyle]: true,
+                  [barVerticalStyle]: isVert,
+                  [barHorizontalStyle]: !isVert,
                 })}
                 style={isVert ? { top: offVal } : { right: offVal }}
               />
@@ -196,9 +189,9 @@ class Slider extends PureComponent<SliderProps> {
         </SinglePointerDrag>
         <div
           className={cx({
-            [classes.value]: true,
-            [classes.valueVertical]: isVert,
-            [classes.valueHorizontal]: !isVert,
+            [textStyle]: true,
+            [valueVerticalStyle]: isVert,
+            [valueHorizontalStyle]: !isVert,
           })}
         >
           {renderValue(value)}

@@ -1,55 +1,52 @@
-import { cx } from 'emotion'
+import { css, cx } from 'emotion'
 import React, { memo, FunctionComponent } from 'react'
 
-import { COLOR_EMPHASIS } from '~/constants/style'
-import { cssLabeled } from '~/util/style'
+import { colorEmphasis } from '~/style/color'
 
-const classes = cssLabeled('loopHandle', {
-  root: {
-    height: '100%',
-    pointerEvents: 'none',
-    position: 'relative',
-    width: '100%',
-  },
+const rootStyle = css({
+  height: '100%',
+  pointerEvents: 'none',
+  position: 'relative',
+  width: '100%',
+})
 
-  alignRight: {
-    transform: 'translateX(-100%)',
-  },
+const alignRightStyle = css({
+  transform: 'translateX(-100%)',
+})
 
-  tag: {
-    backgroundColor: COLOR_EMPHASIS,
-    height: 1,
-    pointerEvents: 'all',
-    position: 'absolute',
-    top: 0,
-    width: '60%',
-  },
+const tagStyle = css({
+  backgroundColor: colorEmphasis,
+  height: 1,
+  pointerEvents: 'all',
+  position: 'absolute',
+  top: 0,
+  width: '60%',
+})
 
-  tagAlignLeft: {
-    left: 0,
-  },
+const tagAlignLeftStyle = css({
+  left: 0,
+})
 
-  tagAlignRight: {
-    right: 0,
-  },
+const tagAlignRightStyle = css({
+  right: 0,
+})
 
-  bar: {
-    height: '100%',
-    pointerEvents: 'all',
-    position: 'absolute',
-    top: 0,
-    width: '100%',
-  },
+const barStyle = css({
+  height: '100%',
+  pointerEvents: 'all',
+  position: 'absolute',
+  top: 0,
+  width: '100%',
+})
 
-  barAlignLeft: {
-    borderRight: `1px solid ${COLOR_EMPHASIS}`,
-    left: '-100%',
-  },
+const barAlignLeftStyle = css({
+  borderRight: `1px solid ${colorEmphasis}`,
+  left: '-100%',
+})
 
-  barAlignRight: {
-    borderLeft: `1px solid ${COLOR_EMPHASIS}`,
-    right: '-100%',
-  },
+const barAlignRightStyle = css({
+  borderLeft: `1px solid ${colorEmphasis}`,
+  right: '-100%',
 })
 
 export interface LoopHandleProps {
@@ -59,22 +56,22 @@ export interface LoopHandleProps {
 const LoopHandle: FunctionComponent<LoopHandleProps> = ({ align = 'left' }) => (
   <div
     className={cx({
-      [classes.root]: true,
-      [classes.alignRight]: align === 'right',
+      [rootStyle]: true,
+      [alignRightStyle]: align === 'right',
     })}
   >
     <div
       className={cx({
-        [classes.tag]: true,
-        [classes.tagAlignLeft]: align === 'left',
-        [classes.tagAlignRight]: align === 'right',
+        [tagStyle]: true,
+        [tagAlignLeftStyle]: align === 'left',
+        [tagAlignRightStyle]: align === 'right',
       })}
     />
     <div
       className={cx({
-        [classes.bar]: true,
-        [classes.barAlignLeft]: align === 'left',
-        [classes.barAlignRight]: align === 'right',
+        [barStyle]: true,
+        [barAlignLeftStyle]: align === 'left',
+        [barAlignRightStyle]: align === 'right',
       })}
     />
   </div>

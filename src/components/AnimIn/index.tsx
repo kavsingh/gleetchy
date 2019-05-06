@@ -1,13 +1,16 @@
-import React, { FunctionComponent, useState, useEffect, memo } from 'react'
+import React, {
+  FunctionComponent,
+  useState,
+  useEffect,
+  memo,
+  ReactNode,
+} from 'react'
 import posed from 'react-pose'
+import { css } from 'emotion'
 
-import { cssLabeled } from '~/util/style'
-
-const classNames = cssLabeled('animIn', {
-  root: {
-    height: '100%',
-    width: '100%',
-  },
+const rootStyle = css({
+  height: '100%',
+  width: '100%',
 })
 
 const Root = posed.div({
@@ -15,7 +18,9 @@ const Root = posed.div({
   visible: { opacity: 1 },
 })
 
-const AnimIn: FunctionComponent = ({ children }) => {
+// For some reason memo does not expose children properly.
+// TODO: kiv type uodates
+const AnimIn: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false)
 
   useEffect(() => {
@@ -25,7 +30,7 @@ const AnimIn: FunctionComponent = ({ children }) => {
   }, [])
 
   return (
-    <Root className={classNames.root} pose={isVisible ? 'visible' : 'hidden'}>
+    <Root className={rootStyle} pose={isVisible ? 'visible' : 'hidden'}>
       {children}
     </Root>
   )

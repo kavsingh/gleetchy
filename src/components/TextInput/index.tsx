@@ -1,24 +1,22 @@
 import React, { PureComponent } from 'react'
 import AutosizeInput from 'react-input-autosize'
+import { css } from 'emotion'
 
 import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
 
-const classes = cssLabeled('textInput', {
-  root: {
-    '& input': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      borderBottom: '1px solid transparent',
-      color: 'currentColor',
-      cursor: 'initial',
-      font: 'inherit',
-      transition: 'border-color 0.2s ease-out',
+const rootStyle = css({
+  '& input': {
+    backgroundColor: 'transparent',
+    border: 'none',
+    borderBottom: '1px solid transparent',
+    color: 'currentColor',
+    cursor: 'initial',
+    font: 'inherit',
+    transition: 'border-color 0.2s ease-out',
 
-      '&:focus': {
-        borderBottomColor: 'currentColor',
-      },
+    '&:focus': {
+      borderBottomColor: 'currentColor',
     },
   },
 })
@@ -35,7 +33,7 @@ class TextInput extends PureComponent<TextInputProps> {
     const { value, placeholder = '', type = 'text' } = this.props
 
     return (
-      <div className={classes.root}>
+      <div className={rootStyle}>
         <AutosizeInput
           value={value}
           placeholder={placeholder}

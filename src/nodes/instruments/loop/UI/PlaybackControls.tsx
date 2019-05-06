@@ -1,18 +1,16 @@
-import { always } from 'ramda'
 import React, { memo, FunctionComponent } from 'react'
+import { css } from 'emotion'
+import { always } from 'ramda'
 
-import Knob from '~/components/Knob'
 import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
+import Knob from '~/components/Knob'
 
-const classes = cssLabeled('playbackControls', {
-  root: {
-    alignItems: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100%',
-    justifyContent: 'space-between',
-  },
+const rootStyle = css({
+  alignItems: 'center',
+  display: 'flex',
+  flexDirection: 'column',
+  height: '100%',
+  justifyContent: 'space-between',
 })
 
 export interface PlaybackControlsProps {
@@ -33,7 +31,7 @@ const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
   onGainChange = noop,
   onPlaybackRateChange = noop,
 }) => (
-  <div className={classes.root}>
+  <div className={rootStyle}>
     <div>
       <Knob
         value={gain}

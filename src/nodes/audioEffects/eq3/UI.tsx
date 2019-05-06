@@ -1,21 +1,19 @@
-import { always } from 'ramda'
 import React, { memo, FunctionComponent } from 'react'
+import { css } from 'emotion'
+import { always } from 'ramda'
 
-import Slider from '~/components/Slider'
 import { noop } from '~/util/function'
-import { cssLabeled } from '~/util/style'
+import Slider from '~/components/Slider'
 
-const classes = cssLabeled('eq3', {
-  root: {
-    display: 'flex',
-    height: '100%',
-    marginLeft: '0.6em',
-  },
+const rootStyle = css({
+  display: 'flex',
+  height: '100%',
+  marginLeft: '0.6em',
+})
 
-  sliderContainer: {
-    height: '100%',
-    width: '2em',
-  },
+const sliderContainerStyle = css({
+  height: '100%',
+  width: '2em',
 })
 
 export interface Eq3Props {
@@ -38,8 +36,8 @@ const Eq3: FunctionComponent<Eq3Props> = ({
   highGain = 0,
   onChange = noop,
 }) => (
-  <div className={classes.root}>
-    <div className={classes.sliderContainer}>
+  <div className={rootStyle}>
+    <div className={sliderContainerStyle}>
       <Slider
         value={lowGain * 0.5 + 0.5}
         renderTitle={renderLowGainTitle}
@@ -48,7 +46,7 @@ const Eq3: FunctionComponent<Eq3Props> = ({
         onChange={val => onChange({ lowGain: val * 2 - 1 })}
       />
     </div>
-    <div className={classes.sliderContainer}>
+    <div className={sliderContainerStyle}>
       <Slider
         value={midGain * 0.5 + 0.5}
         renderTitle={renderMidGainTitle}
@@ -57,7 +55,7 @@ const Eq3: FunctionComponent<Eq3Props> = ({
         onChange={val => onChange({ midGain: val * 2 - 1 })}
       />
     </div>
-    <div className={classes.sliderContainer}>
+    <div className={sliderContainerStyle}>
       <Slider
         value={highGain * 0.5 + 0.5}
         renderTitle={renderHighGainTitle}
