@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 import { always } from 'ramda'
 
 import { noop } from '~/util/function'
@@ -36,8 +36,8 @@ const Eq3: FunctionComponent<Eq3Props> = ({
   highGain = 0,
   onChange = noop,
 }) => (
-  <div className={rootStyle}>
-    <div className={sliderContainerStyle}>
+  <div css={rootStyle}>
+    <div css={sliderContainerStyle}>
       <Slider
         value={lowGain * 0.5 + 0.5}
         renderTitle={renderLowGainTitle}
@@ -46,7 +46,7 @@ const Eq3: FunctionComponent<Eq3Props> = ({
         onChange={val => onChange({ lowGain: val * 2 - 1 })}
       />
     </div>
-    <div className={sliderContainerStyle}>
+    <div css={sliderContainerStyle}>
       <Slider
         value={midGain * 0.5 + 0.5}
         renderTitle={renderMidGainTitle}
@@ -55,7 +55,7 @@ const Eq3: FunctionComponent<Eq3Props> = ({
         onChange={val => onChange({ midGain: val * 2 - 1 })}
       />
     </div>
-    <div className={sliderContainerStyle}>
+    <div css={sliderContainerStyle}>
       <Slider
         value={highGain * 0.5 + 0.5}
         renderTitle={renderHighGainTitle}

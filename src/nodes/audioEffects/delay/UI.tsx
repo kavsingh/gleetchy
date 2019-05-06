@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { cx, css } from 'emotion'
+import { css } from '@emotion/core'
 import { always } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
@@ -55,7 +55,7 @@ const Delay: FunctionComponent<DelayProps> = ({
   onLabelChange = noop,
   remove = noop,
 }) => (
-  <div className={cx([rootStyle, !isActive && inactiveStyle])}>
+  <div css={[rootStyle, !isActive && inactiveStyle]}>
     <TitleBar
       type="Delay"
       label={label}
@@ -63,8 +63,8 @@ const Delay: FunctionComponent<DelayProps> = ({
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
-    <div className={controlsStyle}>
-      <div className={knobContainerStyle}>
+    <div css={controlsStyle}>
+      <div css={knobContainerStyle}>
         <Knob
           radius="2.4em"
           value={delayTime / DELAY_UPPER_BOUND}
@@ -74,7 +74,7 @@ const Delay: FunctionComponent<DelayProps> = ({
           renderValue={() => delayTime.toFixed(2)}
         />
       </div>
-      <div className={knobContainerStyle}>
+      <div css={knobContainerStyle}>
         <Knob
           radius="2.4em"
           value={wetDryRatio}

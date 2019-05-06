@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 import { always } from 'ramda'
 
 import { noop } from '~/util/function'
@@ -31,7 +31,7 @@ const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
   onGainChange = noop,
   onPlaybackRateChange = noop,
 }) => (
-  <div className={rootStyle}>
+  <div css={rootStyle}>
     <div>
       <Knob
         value={gain}

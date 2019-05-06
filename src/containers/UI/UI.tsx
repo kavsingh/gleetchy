@@ -1,5 +1,6 @@
 import React, { memo, FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
+import { css } from '@emotion/core'
 import { GoMarkGithub } from 'react-icons/go'
 
 import { colorBody, colorKeyline } from '~/style/color'
@@ -9,7 +10,6 @@ import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
 
 import favicon from '~/assets/icons/48x48.png'
-import { css } from 'emotion'
 
 const rootStyle = css({
   color: colorBody,
@@ -62,10 +62,10 @@ export interface UIProps {
 }
 
 const UI: FunctionComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
-  <div className={rootStyle}>
+  <div css={rootStyle}>
     <Favicon url={favicon} />
-    <div className={borderedSectionStyle}>
-      <div className={mastheadStyle}>
+    <div css={borderedSectionStyle}>
+      <div css={mastheadStyle}>
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
         <a
           href="https://www.github.com/kavsingh/gleetchy"
@@ -77,14 +77,14 @@ const UI: FunctionComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
         </a>
       </div>
     </div>
-    <div className={borderedSectionStyle}>
+    <div css={borderedSectionStyle}>
       <InstrumentsRack />
     </div>
-    <div className={connectContainerStyle}>
-      <div className={audioEffectsRackContainerStyle}>
+    <div css={connectContainerStyle}>
+      <div css={audioEffectsRackContainerStyle}>
         <AudioEffectsRack />
       </div>
-      <div className={patchBayContainerStyle}>
+      <div css={patchBayContainerStyle}>
         <PatchBay />
       </div>
     </div>

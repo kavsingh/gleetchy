@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 
 import { AudioNodeIdentifier } from '~/types'
 import { noop } from '~/util/function'
@@ -39,13 +39,13 @@ const InstrumentsRack: FunctionComponent<InstrumentsRackProps> = ({
   instruments = [],
   addLoop = noop,
 }) => (
-  <div className={rootStyle}>
+  <div css={rootStyle}>
     <ErrorBoundary>
       {instruments.map(({ id, type }) => {
         switch (type) {
           case loopType:
             return (
-              <div className={instrumentContainerStyle} key={id}>
+              <div css={instrumentContainerStyle} key={id}>
                 <AnimIn>
                   <ConnectedLoop id={id} />
                 </AnimIn>
@@ -57,7 +57,7 @@ const InstrumentsRack: FunctionComponent<InstrumentsRackProps> = ({
       })}
     </ErrorBoundary>
     <div
-      className={addButtonStyle}
+      css={addButtonStyle}
       onClick={addLoop}
       role="button"
       tabIndex={0}

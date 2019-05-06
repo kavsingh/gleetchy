@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 
 import { AudioNodeIdentifier } from '~/types'
 import { noop } from '~/util/function'
@@ -49,12 +49,12 @@ const AudioEffectsRack: FunctionComponent<AudioEffectsRackProps> = ({
   addReverb = noop,
   addDelay = noop,
 }) => (
-  <div className={rootStyle}>
+  <div css={rootStyle}>
     {audioEffects.map(({ id, type }) => {
       switch (type) {
         case delayType:
           return (
-            <div className={audioEffectContainerStyle} key={id}>
+            <div css={audioEffectContainerStyle} key={id}>
               <AnimIn>
                 <ConnectedDelay id={id} />
               </AnimIn>
@@ -62,7 +62,7 @@ const AudioEffectsRack: FunctionComponent<AudioEffectsRackProps> = ({
           )
         case reverbType:
           return (
-            <div className={audioEffectContainerStyle} key={id}>
+            <div css={audioEffectContainerStyle} key={id}>
               <AnimIn>
                 <ConnectedReverb id={id} />
               </AnimIn>
@@ -72,11 +72,11 @@ const AudioEffectsRack: FunctionComponent<AudioEffectsRackProps> = ({
           return null
       }
     })}
-    <div className={addAudioEffectContainerStyle}>
+    <div css={addAudioEffectContainerStyle}>
       {([['Reverb', addReverb], ['Delay', addDelay]] as EffectAddButton[]).map(
         ([type, handler]) => (
           <div
-            className={addAudioEffectButtonStyle}
+            css={addAudioEffectButtonStyle}
             role="button"
             tabIndex={0}
             onClick={handler}

@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { cx, css } from 'emotion'
+import { css } from '@emotion/core'
 import { always } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
@@ -48,7 +48,7 @@ const Reverb: FunctionComponent<ReverbProps> = ({
   onLabelChange = noop,
   remove = noop,
 }) => (
-  <div className={cx([rootStyle, !isActive && inactiveStyle])}>
+  <div css={[rootStyle, !isActive && inactiveStyle]}>
     <TitleBar
       type="Reverb"
       label={label}
@@ -56,8 +56,8 @@ const Reverb: FunctionComponent<ReverbProps> = ({
       onLabelChange={onLabelChange}
       onRemoveClick={remove}
     />
-    <div className={controlsStyle}>
-      <div className={knobContainerStyle}>
+    <div css={controlsStyle}>
+      <div css={knobContainerStyle}>
         <Knob
           radius="2.4em"
           value={wetDryRatio}

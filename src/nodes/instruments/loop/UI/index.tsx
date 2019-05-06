@@ -1,5 +1,5 @@
 import React, { PureComponent, FunctionComponent } from 'react'
-import { css, cx } from 'emotion'
+import { css } from '@emotion/core'
 import { clamp } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
@@ -65,7 +65,7 @@ const AudioFileDropRegion: FunctionComponent<{
   })
 
   return (
-    <div className={wrapStyle} {...dragDropEvents}>
+    <div css={wrapStyle} {...dragDropEvents}>
       {children}
     </div>
   )
@@ -105,7 +105,7 @@ const renderTitle = (
     <span
       role="button"
       tabIndex={0}
-      className={titleLoadAudioStyle}
+      css={titleLoadAudioStyle}
       onClick={selectAudioFile}
       onKeyDown={({ key }) => {
         if (key === 'Enter') {
@@ -143,9 +143,9 @@ class Loop extends PureComponent<LoopProps> {
     } = this.props
 
     return (
-      <div className={cx([rootStyle, !isActive && inactiveStyle])}>
+      <div css={[rootStyle, !isActive && inactiveStyle]}>
         <AudioFileDropRegion onFiles={files => receiveAudioFile(files[0])}>
-          <div className={titleContainerStyle}>
+          <div css={titleContainerStyle}>
             <TitleBar
               type="Loop"
               label={label}
@@ -156,7 +156,7 @@ class Loop extends PureComponent<LoopProps> {
               {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
             </TitleBar>
           </div>
-          <div className={mainContainerStyle}>
+          <div css={mainContainerStyle}>
             <Sample
               fromSaved={!!(fileName && !audioBuffer)}
               audioBuffer={audioBuffer}
@@ -167,7 +167,7 @@ class Loop extends PureComponent<LoopProps> {
               onLoopRegionDrag={this.handleLoopRegionDrag}
               selectAudioFile={selectAudioFile}
             />
-            <div className={controlsContainerStyle}>
+            <div css={controlsContainerStyle}>
               <PlaybackControls
                 gain={gain}
                 playbackRate={playbackRate}
