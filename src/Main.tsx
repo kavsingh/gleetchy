@@ -1,8 +1,7 @@
 import React, { FunctionComponent, memo } from 'react'
 
-import { injectGlobal } from 'emotion'
 import { Provider } from 'react-redux'
-import { once } from 'ramda'
+import { css, Global } from '@emotion/core'
 
 import ErrorBoundary from '~/components/ErrorBoundary'
 import AudioEngine from '~/containers/AudioEngine'
@@ -11,8 +10,7 @@ import { ApplicationStore } from '~/state/configureStore'
 
 import { colorPage } from './style/color'
 
-const applyGlobalStyles = once(
-  () => injectGlobal`
+const globalStyles = css`
   html {
     box-sizing: border-box;
     user-select: none;
@@ -50,26 +48,22 @@ const applyGlobalStyles = once(
     font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
-`,
-)
+`
 
 //
 
-const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => {
-  applyGlobalStyles()
-
-  return (
-    <Provider store={store}>
-      <div>
-        <ErrorBoundary>
-          <AudioEngine />
-        </ErrorBoundary>
-        <ErrorBoundary>
-          <UI />
-        </ErrorBoundary>
-      </div>
-    </Provider>
-  )
-}
+const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
+  <Provider store={store}>
+    <>
+      <Global styles={globalStyles} />
+      <ErrorBoundary>
+        <AudioEngine />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <UI />
+      </ErrorBoundary>
+    </>
+  </Provider>
+)
 
 export default memo(Main)
