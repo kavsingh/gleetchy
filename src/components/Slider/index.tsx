@@ -1,5 +1,5 @@
 import React, { PureComponent, ReactNode } from 'react'
-import { cx, css } from 'emotion'
+import { css } from '@emotion/core'
 import { clamp } from 'ramda'
 
 import { noop, stubString } from '~/util/function'
@@ -137,19 +137,15 @@ class Slider extends PureComponent<SliderProps> {
 
     return (
       <div
-        className={cx({
-          [rootStyle]: true,
-          [verticalStyle]: isVert,
-          [horizontalStyle]: !isVert,
-        })}
+        css={[rootStyle, isVert && verticalStyle, !isVert && horizontalStyle]}
         title={renderTitle(value)}
       >
         <div
-          className={cx({
-            [textStyle]: true,
-            [labelVerticalStyle]: isVert,
-            [labelHorizontalStyle]: !isVert,
-          })}
+          css={[
+            textStyle,
+            isVert && labelVerticalStyle,
+            !isVert && labelHorizontalStyle,
+          ]}
         >
           {renderLabel(value)}
         </div>
@@ -160,39 +156,39 @@ class Slider extends PureComponent<SliderProps> {
           {({ dragListeners }) => (
             <div
               {...dragListeners}
-              className={cx({
-                [barContainerStyle]: true,
-                [barContainerVerticalStyle]: isVert,
-                [barContainerHorizontalStyle]: !isVert,
-              })}
+              css={[
+                barContainerStyle,
+                isVert && barContainerVerticalStyle,
+                !isVert && barContainerHorizontalStyle,
+              ]}
               role="presentation"
               onDoubleClick={this.handleDoubleClick}
               ref={el => (this.barContainer = el)}
             >
               <div
-                className={cx({
-                  [trackStyle]: true,
-                  [trackVerticalStyle]: isVert,
-                  [trackHorizontalStyle]: !isVert,
-                })}
+                css={[
+                  trackStyle,
+                  isVert && trackVerticalStyle,
+                  !isVert && trackHorizontalStyle,
+                ]}
               />
               <div
-                className={cx({
-                  [barStyle]: true,
-                  [barVerticalStyle]: isVert,
-                  [barHorizontalStyle]: !isVert,
-                })}
+                css={[
+                  barStyle,
+                  isVert && barVerticalStyle,
+                  !isVert && barHorizontalStyle,
+                ]}
                 style={isVert ? { top: offVal } : { right: offVal }}
               />
             </div>
           )}
         </SinglePointerDrag>
         <div
-          className={cx({
-            [textStyle]: true,
-            [valueVerticalStyle]: isVert,
-            [valueHorizontalStyle]: !isVert,
-          })}
+          css={[
+            textStyle,
+            isVert && valueVerticalStyle,
+            !isVert && valueHorizontalStyle,
+          ]}
         >
           {renderValue(value)}
         </div>

@@ -1,5 +1,5 @@
-import { css, cx } from 'emotion'
 import React, { memo, FunctionComponent } from 'react'
+import { css } from '@emotion/core'
 
 import { colorEmphasis } from '~/style/color'
 
@@ -54,25 +54,20 @@ export interface LoopHandleProps {
 }
 
 const LoopHandle: FunctionComponent<LoopHandleProps> = ({ align = 'left' }) => (
-  <div
-    className={cx({
-      [rootStyle]: true,
-      [alignRightStyle]: align === 'right',
-    })}
-  >
+  <div css={[rootStyle, align === 'right' && alignRightStyle]}>
     <div
-      className={cx({
-        [tagStyle]: true,
-        [tagAlignLeftStyle]: align === 'left',
-        [tagAlignRightStyle]: align === 'right',
-      })}
+      css={[
+        tagStyle,
+        align === 'left' && tagAlignLeftStyle,
+        align === 'right' && tagAlignRightStyle,
+      ]}
     />
     <div
-      className={cx({
-        [barStyle]: true,
-        [barAlignLeftStyle]: align === 'left',
-        [barAlignRightStyle]: align === 'right',
-      })}
+      css={[
+        barStyle,
+        align === 'left' && barAlignLeftStyle,
+        align === 'right' && barAlignRightStyle,
+      ]}
     />
   </div>
 )

@@ -1,6 +1,6 @@
+import { PureComponent, ReactNode } from 'react'
 import rafThrottle from 'raf-throttle'
 import { pipe, tap } from 'ramda'
-import { PureComponent, ReactNode } from 'react'
 
 import { filterSupportedEvents, requireWindowWith } from '~/util/env'
 import { cancelEvent } from '~/util/event'

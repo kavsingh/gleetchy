@@ -1,5 +1,5 @@
 import color from 'color'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 import React, { Component } from 'react'
 
 import { noop } from '~/util/function'
@@ -69,13 +69,13 @@ class LoopRegion extends Component<LoopRegionProps> {
       : false
 
     return (
-      <div className={rootStyle} ref={c => (this.rootNode = c)}>
+      <div css={rootStyle} ref={c => (this.rootNode = c)}>
         <SinglePointerDrag onDragMove={this.handleStartHandleDrag}>
           {({ dragListeners }) => (
             <div
               {...dragListeners}
               role="presentation"
-              className={handleContainerStyle}
+              css={handleContainerStyle}
               style={{ left: `${loopStart * 100}%` }}
             >
               <LoopHandle align="left" />
@@ -87,16 +87,16 @@ class LoopRegion extends Component<LoopRegionProps> {
             <div
               {...dragListeners}
               role="presentation"
-              className={handleContainerStyle}
+              css={handleContainerStyle}
               style={{ left: `${loopEnd * 100}%` }}
             >
               <LoopHandle align="right" />
             </div>
           )}
         </SinglePointerDrag>
-        <div className={layoutAbsoluteFill}>
+        <div css={layoutAbsoluteFill}>
           <div
-            className={inactiveRegionStyle}
+            css={inactiveRegionStyle}
             style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
           />
           {regionRatio < 1 ? (
@@ -105,7 +105,7 @@ class LoopRegion extends Component<LoopRegionProps> {
                 <div
                   {...dragListeners}
                   role="presentation"
-                  className={activeRegionStyle}
+                  css={activeRegionStyle}
                   style={{
                     left: `${loopStart * 100}%`,
                     right: `${(1 - loopEnd) * 100}%`,
@@ -116,7 +116,7 @@ class LoopRegion extends Component<LoopRegionProps> {
             </SinglePointerDrag>
           ) : null}
           <div
-            className={inactiveRegionStyle}
+            css={inactiveRegionStyle}
             style={{ left: `${loopEnd * 100}%`, right: 0 }}
           />
         </div>

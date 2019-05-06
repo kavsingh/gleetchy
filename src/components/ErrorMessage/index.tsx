@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent, ReactNode } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 
 import { colorError, colorEmphasis } from '~/style/color'
 
@@ -11,9 +11,9 @@ const rootStyle = css({
   width: '100%',
 })
 // For some reason memo does not expose children properly.
-// TODO: kiv type uodates
+// TODO: kiv type updates
 const ErrorMessage: FunctionComponent<{ children: ReactNode }> = ({
   children,
-}) => <div className={rootStyle}>{children}</div>
+}) => <div css={rootStyle}>{children}</div>
 
 export default memo(ErrorMessage)

@@ -11,6 +11,7 @@ module.exports = ({ env }) => ({
       },
     ],
     '@babel/preset-react',
+    '@emotion/babel-preset-css-prop',
     '@babel/preset-typescript',
   ],
   plugins: [

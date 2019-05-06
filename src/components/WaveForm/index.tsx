@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useRef, useEffect, memo } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 import colorFn from 'color'
 import { map } from 'ramda'
 
@@ -133,8 +133,8 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
   }, [color, timeRegions, buffer])
 
   return (
-    <div className={rootStyle}>
-      <canvas className={canvasStyle} ref={canvasNodeRef} />
+    <div css={rootStyle}>
+      <canvas css={canvasStyle} ref={canvasNodeRef} />
     </div>
   )
 }

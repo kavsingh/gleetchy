@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { cx, css } from 'emotion'
+import { css, SerializedStyles } from '@emotion/core'
 import color from 'color'
 import { T } from 'ramda'
 
@@ -82,13 +82,13 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
   getNodeLabel = stubString,
   onNodeClick = noop,
 }) => (
-  <table className={rootStyle}>
+  <table css={rootStyle}>
     <tbody>
-      <tr className={rowStyle} key="titles">
-        <th className={labelStyle}>To / From</th>
+      <tr css={rowStyle} key="titles">
+        <th css={labelStyle}>To / From</th>
         {fromNodes.map(fromNode => (
           <th
-            className={labelStyle}
+            css={labelStyle}
             title={`From ${getNodeLabel(fromNode.id)} to ...`}
             key={fromNode.id}
           >
@@ -97,9 +97,9 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
         ))}
       </tr>
       {toNodes.map(toNode => (
-        <tr className={rowStyle} key={toNode.id}>
+        <tr css={rowStyle} key={toNode.id}>
           <td
-            className={labelStyle}
+            css={labelStyle}
             title={`From ... to ${getNodeLabel(toNode.id)}`}
             key="rowLabel"
           >
@@ -114,7 +114,7 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
                   toNode.id,
                 )}`
 
-            let modClassName = ''
+            let modClassName: SerializedStyles | undefined
             if (blockConnect) {
               modClassName = nodeBlockedStyle
             } else if (connection) {
@@ -138,7 +138,7 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
                         }
                       : {}
                   }
-                  className={cx([nodeStyle, modClassName])}
+                  css={[nodeStyle, modClassName]}
                   onClick={handleClick}
                   role="button"
                   tabIndex={0}

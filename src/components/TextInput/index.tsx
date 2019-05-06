@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react'
 import AutosizeInput from 'react-input-autosize'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 
 import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
@@ -33,7 +33,7 @@ class TextInput extends PureComponent<TextInputProps> {
     const { value, placeholder = '', type = 'text' } = this.props
 
     return (
-      <div className={rootStyle}>
+      <div css={rootStyle}>
         <AutosizeInput
           value={value}
           placeholder={placeholder}

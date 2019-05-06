@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 
 const rootStyle = css({
   cursor: 'pointer',
@@ -14,7 +14,7 @@ const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
   isPlaying,
   onClick,
 }) => (
-  <div role="button" tabIndex={0} onClick={onClick} className={rootStyle}>
+  <div role="button" tabIndex={0} onClick={onClick} css={rootStyle}>
     {isPlaying ? 'Stop' : 'Play'}
   </div>
 )

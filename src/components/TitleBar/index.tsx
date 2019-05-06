@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent, ReactNode } from 'react'
-import { css } from 'emotion'
+import { css } from '@emotion/core'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
@@ -68,12 +68,12 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
   connections = [],
   children = [],
 }) => (
-  <div className={rootStyle}>
-    <div className={labelContainerStyle}>
-      <div className={connectionsStyle}>
+  <div css={rootStyle}>
+    <div css={labelContainerStyle}>
+      <div css={connectionsStyle}>
         {connections.map(({ color, from, to }) => (
           <div
-            className={connectionStyle}
+            css={connectionStyle}
             style={{ backgroundColor: color }}
             key={`${from}${to}`}
           />
@@ -81,11 +81,11 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
       </div>
       <TextInput onChange={onLabelChange} value={label} />
     </div>
-    <div className={infoContainerStyle}>
-      <div className={typeContainerStyle}>{type} /</div>
+    <div css={infoContainerStyle}>
+      <div css={typeContainerStyle}>{type} /</div>
       {typeof children === 'function' ? children() : children}
       <div
-        className={removeButtonStyle}
+        css={removeButtonStyle}
         role="button"
         onClick={onRemoveClick}
         tabIndex={0}

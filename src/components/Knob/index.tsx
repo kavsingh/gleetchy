@@ -1,6 +1,6 @@
-import { css, cx } from 'emotion'
-import { always, clamp } from 'ramda'
 import React, { PureComponent, ReactNode } from 'react'
+import { css } from '@emotion/core'
+import { always, clamp } from 'ramda'
 
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
@@ -38,27 +38,21 @@ const knobContainerStyle = css({
   },
 })
 
-const trackContainerStyle = cx(
-  layoutAbsoluteFill,
-  css({
-    zIndex: 1,
+const trackContainerStyle = css({
+  zIndex: 1,
 
-    '& svg': {
-      stroke: colorKeyline,
-    },
-  }),
-)
+  '& svg': {
+    stroke: colorKeyline,
+  },
+})
 
-const barContainerStyle = cx(
-  layoutAbsoluteFill,
-  css({
-    zIndex: 2,
+const barContainerStyle = css({
+  zIndex: 2,
 
-    '& svg': {
-      stroke: colorEmphasis,
-    },
-  }),
-)
+  '& svg': {
+    stroke: colorEmphasis,
+  },
+})
 
 export interface KnobProps {
   value: number
@@ -100,24 +94,24 @@ class Knob extends PureComponent<KnobProps, KnobState> {
         onDragMove={this.handleDragMove}
       >
         {({ dragListeners }) => (
-          <div className={rootStyle} title={renderTitle()}>
-            <div className={labelStyle}>{renderLabel()}</div>
+          <div css={rootStyle} title={renderTitle()}>
+            <div css={labelStyle}>{renderLabel()}</div>
             <div
               {...dragListeners}
               onDoubleClick={this.handleDoubleClick}
               role="presentation"
-              className={knobContainerStyle}
+              css={knobContainerStyle}
               style={{ height: radius, width: radius, ...cursorStyles }}
               ref={el => (this.knobNode = el)}
             >
-              <div className={trackContainerStyle}>
+              <div css={[layoutAbsoluteFill, trackContainerStyle]}>
                 <SVGArc startAngle={0} endAngle={360} strokeWidth={1} />
               </div>
-              <div className={barContainerStyle}>
+              <div css={[layoutAbsoluteFill, barContainerStyle]}>
                 <SVGArc startAngle={0} endAngle={value * 360} strokeWidth={2} />
               </div>
             </div>
-            <div className={labelStyle}>{renderValue()}</div>
+            <div css={labelStyle}>{renderValue()}</div>
           </div>
         )}
       </SinglePointerDrag>
