@@ -1,54 +1,48 @@
 import React, { FunctionComponent, memo } from 'react'
-
-import { Provider } from 'react-redux'
 import { css, Global } from '@emotion/core'
+import { Provider } from 'react-redux'
 
+import { ApplicationStore } from '~/state/configureStore'
 import ErrorBoundary from '~/components/ErrorBoundary'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
-import { ApplicationStore } from '~/state/configureStore'
 
 import { colorPage } from './style/color'
 
-const globalStyles = css`
-  html {
-    box-sizing: border-box;
-    user-select: none;
-    cursor: default;
-    font-size: 14px;
-  }
+const globalStyles = css({
+  html: {
+    boxSizing: 'border-box',
+    userSelect: 'none',
+    cursor: 'default',
+    fontSize: '14px',
+  },
 
-  *,
-  *::before,
-  *::after {
-    box-sizing: inherit;
-    user-select: inherit;
-    cursor: inherit;
-  }
+  '*, *::before, *::after': {
+    boxSizing: 'inherit',
+    userSelect: 'inherit',
+    cursor: 'inherit',
+  },
 
-  *:focus,
-  *:active {
-    outline: none;
-  }
+  '*:focus, *:active': {
+    outline: 'none',
+  },
 
-  a,
-  button {
-    cursor: initial;
-  }
+  'a, button': {
+    cursor: 'initial',
+  },
 
-  html,
-  body {
-    width: 100%;
-    padding: 0;
-    margin: 0;
-  }
+  'html, body': {
+    width: '100%',
+    padding: '0',
+    margin: '0',
+  },
 
-  body {
-    background-color: ${colorPage};
-    font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-    -webkit-font-smoothing: antialiased;
-  }
-`
+  body: {
+    backgroundColor: colorPage,
+    fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
+    '-webkit-font-smoothing': 'antialiased',
+  },
+})
 
 //
 
