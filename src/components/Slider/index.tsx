@@ -122,7 +122,7 @@ export interface SliderProps {
   value: number
   defaultValue?: number
   orient?: 'vertical' | 'horizontal'
-  onChange?(value: number): void
+  onChange?(value: number): unknown
   renderLabel?(value: number): ReactNode
   renderValue?(value: number): ReactNode
   renderTitle?(value: number): string

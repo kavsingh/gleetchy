@@ -1,4 +1,4 @@
-import React, { memo, ReactNode, FunctionComponent } from 'react'
+import React, { memo, FunctionComponent, ReactNode } from 'react'
 
 import TextInput from '~/components/TextInput'
 import { AudioNodeConnection } from '~/types'
@@ -56,10 +56,10 @@ const classes = cssLabeled('titleBar', {
 export interface TitleBarProps {
   label: string
   type: string
-  children?: ReactNode | (() => ReactNode)
   connections?: AudioNodeConnection[]
-  onLabelChange?(label: string): void
-  onRemoveClick?(): void
+  children?: ReactNode | (() => ReactNode)
+  onLabelChange?(label: string): unknown
+  onRemoveClick?(): unknown
 }
 
 const TitleBar: FunctionComponent<TitleBarProps> = ({
@@ -103,4 +103,4 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
   </div>
 )
 
-export default memo<TitleBarProps>(TitleBar)
+export default memo(TitleBar)

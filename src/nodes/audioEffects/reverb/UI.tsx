@@ -33,9 +33,9 @@ export interface ReverbProps {
   wetDryRatio: number
   isActive: boolean
   connections: AudioNodeConnection[]
-  onWetDryRatioChange(wetDryRatio: number): void
-  onLabelChange(label: string): void
-  remove(): void
+  onWetDryRatioChange(wetDryRatio: number): unknown
+  onLabelChange(label: string): unknown
+  remove(): unknown
 }
 
 const Reverb: FunctionComponent<ReverbProps> = ({

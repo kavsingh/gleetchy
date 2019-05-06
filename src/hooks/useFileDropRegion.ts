@@ -6,11 +6,11 @@ import { cancelReactEvent } from '~/util/event'
 
 export interface UseFileDropRegionProps {
   fileFilter?(file: File, index: number, array: File[]): boolean
-  onFiles?(files: File[]): void
-  onNoFiles?(): void
+  onFiles?(files: File[]): unknown
+  onNoFiles?(): unknown
 }
 
-const withCancelEvent = (fn: () => void) => (event: React.DragEvent) => {
+const withCancelEvent = (fn: () => unknown) => (event: React.DragEvent) => {
   cancelReactEvent(event)
   fn()
 }

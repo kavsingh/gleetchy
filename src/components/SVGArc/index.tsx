@@ -34,4 +34,4 @@ const SVGArc: FunctionComponent<SVGArcProps> = ({
   </svg>
 )
 
-export default memo<SVGArcProps>(SVGArc)
+export default memo(SVGArc)

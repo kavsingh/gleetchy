@@ -71,7 +71,7 @@ export interface KnobProps {
   value: number
   defaultValue?: number
   radius?: number | string
-  onChange?(value: number): void
+  onChange?(value: number): unknown
   renderTitle?(): string
   renderLabel?(): ReactNode
   renderValue?(): ReactNode

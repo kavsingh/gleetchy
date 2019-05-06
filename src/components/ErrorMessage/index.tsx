@@ -1,4 +1,4 @@
-import React, { memo, ReactNode, FunctionComponent } from 'react'
+import React, { memo, FunctionComponent } from 'react'
 
 import { COLOR_EMPHASIS, COLOR_ERROR } from '~/constants/style'
 import { cssLabeled } from '~/util/style'
@@ -13,8 +13,8 @@ const classes = cssLabeled('errorMessage', {
   },
 })
 
-const ErrorMessage: FunctionComponent<{ children: ReactNode }> = ({
-  children,
-}) => <div className={classes.root}>{children}</div>
+const ErrorMessage: FunctionComponent = ({ children }) => (
+  <div className={classes.root}>{children}</div>
+)
 
 export default memo(ErrorMessage)

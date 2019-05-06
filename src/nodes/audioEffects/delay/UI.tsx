@@ -35,10 +35,10 @@ export interface DelayProps {
   wetDryRatio: number
   delayTime: number
   isActive: boolean
-  onDelayTimeChange(delayTime: number): void
-  onWetDryRatioChange(wetDryRatio: number): void
-  onLabelChange(label: string): void
-  remove(): void
+  onDelayTimeChange(delayTime: number): unknown
+  onWetDryRatioChange(wetDryRatio: number): unknown
+  onLabelChange(label: string): unknown
+  remove(): unknown
 }
 
 const Delay: FunctionComponent<DelayProps> = ({

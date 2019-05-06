@@ -34,7 +34,7 @@ const classes = cssLabeled('instrumentsRack', {
 
 export interface InstrumentsRackProps {
   instruments: AudioNodeIdentifier[]
-  addLoop(): void
+  addLoop(): unknown
 }
 
 const InstrumentsRack: FunctionComponent<InstrumentsRackProps> = ({

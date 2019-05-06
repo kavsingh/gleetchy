@@ -27,7 +27,7 @@ export interface TextInputProps {
   value: string | number
   placeholder?: string
   type?: 'text' | 'number'
-  onChange?(value: string | number): void
+  onChange?(value: string | number): unknown
 }
 
 class TextInput extends PureComponent<TextInputProps> {

@@ -74,7 +74,7 @@ export interface PatchBayProps {
     b: AudioNodeIdentifier,
   ): AudioNodeConnection | undefined
   getNodeLabel(id: string): string
-  onNodeClick(from: AudioNodeIdentifier, to: AudioNodeIdentifier): void
+  onNodeClick(from: AudioNodeIdentifier, to: AudioNodeIdentifier): unknown
 }
 
 const PatchBay: FunctionComponent<PatchBayProps> = ({

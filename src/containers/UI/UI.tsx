@@ -60,7 +60,7 @@ const classes = cssLabeled('ui', {
 
 export interface UIProps {
   isPlaying: boolean
-  togglePlayback(): void
+  togglePlayback(): unknown
 }
 
 const UI: FunctionComponent<UIProps> = ({ isPlaying, togglePlayback }) => (

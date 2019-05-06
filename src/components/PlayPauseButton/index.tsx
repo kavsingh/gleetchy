@@ -10,7 +10,7 @@ const classes = cssLabeled('playPauseButton', {
 
 export interface PlayPauseButtonProps {
   isPlaying: boolean
-  onClick(): void
+  onClick(): unknown
 }
 
 const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
@@ -22,4 +22,4 @@ const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
   </div>
 )
 
-export default memo<PlayPauseButtonProps>(PlayPauseButton)
+export default memo(PlayPauseButton)

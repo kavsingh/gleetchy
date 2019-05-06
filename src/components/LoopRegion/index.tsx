@@ -54,9 +54,9 @@ const classes = cssLabeled('loopRegion', {
 export interface LoopRegionProps {
   loopStart: number
   loopEnd: number
-  onLoopStartDrag?(movement: number): void
-  onLoopEndDrag?(movement: number): void
-  onLoopRegionDrag?(movement: number): void
+  onLoopStartDrag?(movement: number): unknown
+  onLoopEndDrag?(movement: number): unknown
+  onLoopRegionDrag?(movement: number): unknown
 }
 
 class LoopRegion extends Component<LoopRegionProps> {

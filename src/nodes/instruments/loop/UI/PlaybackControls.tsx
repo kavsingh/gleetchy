@@ -18,8 +18,8 @@ const classes = cssLabeled('playbackControls', {
 export interface PlaybackControlsProps {
   gain: number
   playbackRate: number
-  onGainChange(gain: number): void
-  onPlaybackRateChange(playbackRate: number): void
+  onGainChange(gain: number): unknown
+  onPlaybackRateChange(playbackRate: number): unknown
 }
 
 const renderGainTitle = always('Gain')

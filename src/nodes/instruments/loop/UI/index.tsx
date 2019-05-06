@@ -60,7 +60,7 @@ const classes = cssLabeled('loop', {
 })
 
 const AudioFileDropRegion: FunctionComponent<{
-  onFiles(files: File[]): void
+  onFiles(files: File[]): unknown
 }> = ({ children, onFiles }) => {
   const { isDropActive, ...dragDropEvents } = useFileDropRegion({
     onFiles,
@@ -87,14 +87,14 @@ export interface LoopProps {
   playbackRate: number
   gain: number
   audioBuffer?: AudioBuffer
-  onGainChange(gain: number): void
-  onPlaybackRateChange(playbackRate: number): void
-  onEqChange(props: { [key: string]: number }): void
-  selectAudioFile(): void
-  receiveAudioFile(file: File): void
-  onLoopRegionChange(start: number, end: number): void
-  onLabelChange(label: string): void
-  remove(): void
+  onGainChange(gain: number): unknown
+  onPlaybackRateChange(playbackRate: number): unknown
+  onEqChange(props: { [key: string]: number }): unknown
+  selectAudioFile(): unknown
+  receiveAudioFile(file: File): unknown
+  onLoopRegionChange(start: number, end: number): unknown
+  onLabelChange(label: string): unknown
+  remove(): unknown
 }
 
 const renderTitle = (

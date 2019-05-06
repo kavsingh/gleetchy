@@ -54,7 +54,7 @@ export interface AudioEngineProps {
   connections: AudioNodeConnection[]
   isPlaying: boolean
   nodes: AudioNodeState[]
-  clearAudioEngineEvents(): void
+  clearAudioEngineEvents(): unknown
 }
 
 class AudioEngine extends Component<AudioEngineProps> {

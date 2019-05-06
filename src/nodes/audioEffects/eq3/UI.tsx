@@ -22,7 +22,7 @@ export interface Eq3Props {
   lowGain: number
   midGain: number
   highGain: number
-  onChange(eqProps: { [key: string]: number }): void
+  onChange(eqProps: { [key: string]: number }): unknown
 }
 
 const renderLowGainTitle = always('EQ Low Gain')

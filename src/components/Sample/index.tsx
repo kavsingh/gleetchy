@@ -15,10 +15,10 @@ export interface SampleProps {
   loopStart?: number
   loopEnd?: number
   children?: ReactNode // needed for recompose hoc
-  onLoopStartDrag?(movement: number): void
-  onLoopEndDrag?(movement: number): void
-  onLoopRegionDrag?(movement: number): void
-  selectAudioFile?(): void
+  onLoopStartDrag?(movement: number): unknown
+  onLoopEndDrag?(movement: number): unknown
+  onLoopRegionDrag?(movement: number): unknown
+  selectAudioFile?(): unknown
 }
 
 /* eslint-disable @typescript-eslint/no-object-literal-type-assertion */

@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { FunctionComponent, useState, useEffect, memo } from 'react'
 import posed from 'react-pose'
 
 import { cssLabeled } from '~/util/style'
@@ -15,32 +15,20 @@ const Root = posed.div({
   visible: { opacity: 1 },
 })
 
-export default class AnimIn extends PureComponent<{}, { isVisible: boolean }> {
-  public state = { isVisible: false }
+const AnimIn: FunctionComponent = ({ children }) => {
+  const [isVisible, setIsVisible] = useState(false)
 
-  private visibleTimeout?: NodeJS.Timeout
+  useEffect(() => {
+    let visibleTimeout: NodeJS.Timeout = setTimeout(() => setIsVisible(true), 0)
 
-  public componentDidMount() {
-    this.visibleTimeout = setTimeout(
-      () => this.setState({ isVisible: true }),
-      0,
-    )
-  }
+    return () => visibleTimeout && clearTimeout(visibleTimeout)
+  }, [])
 
-  public componentWillUnmount() {
-    if (this.visibleTimeout) {
-      clearTimeout(this.visibleTimeout)
-    }
-  }
-
-  public render() {
-    const { isVisible } = this.state
-    const { children = null } = this.props
-
-    return (
-      <Root className={classNames.root} pose={isVisible ? 'visible' : 'hidden'}>
-        {children}
-      </Root>
-    )
-  }
+  return (
+    <Root className={classNames.root} pose={isVisible ? 'visible' : 'hidden'}>
+      {children}
+    </Root>
+  )
 }
+
+export default memo(AnimIn)

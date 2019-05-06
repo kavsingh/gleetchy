@@ -41,8 +41,8 @@ const cancelAndNormalizeEvent = pipe(
 
 interface ChildRenderProps {
   dragListeners: {
-    onMouseDown(event: React.MouseEvent): void
-    onTouchStart(event: React.TouchEvent): void
+    onMouseDown(event: React.MouseEvent): unknown
+    onTouchStart(event: React.TouchEvent): unknown
   }
 }
 
@@ -69,9 +69,9 @@ export interface SinglePointerDragState {
 
 export interface SinglePointerDragProps {
   children(props: ChildRenderProps): ReactNode
-  onDragStart?(state: Partial<SinglePointerDragState>): void
-  onDragMove?(state: Partial<SinglePointerDragState>): void
-  onDragEnd?(state: Partial<SinglePointerDragState>): void
+  onDragStart?(state: Partial<SinglePointerDragState>): unknown
+  onDragMove?(state: Partial<SinglePointerDragState>): unknown
+  onDragEnd?(state: Partial<SinglePointerDragState>): unknown
 }
 
 type MouseEndEvent = 'mouseup'
