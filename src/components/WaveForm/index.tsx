@@ -111,25 +111,28 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
   timeRegions,
   buffer,
 }) => {
-  const WINDOW = requireWindowWith([['addEventListener']])
   const canvasNodeRef = useRef<HTMLCanvasElement>(null)
-  const pixelRatio = WINDOW ? WINDOW.devicePixelRatio || 1 : 1
-
-  const handleResize = () => {
-    if (canvasNodeRef.current) {
-      updateWaveForm(canvasNodeRef.current, {
-        color,
-        timeRegions,
-        buffer,
-        pixelRatio,
-      })
-    }
-  }
 
   useEffect(() => {
+    const WINDOW = requireWindowWith()
+
+    if (!WINDOW) return
+
+    const handleResize = () => {
+      if (canvasNodeRef.current) {
+        updateWaveForm(canvasNodeRef.current, {
+          color,
+          timeRegions,
+          buffer,
+          pixelRatio: WINDOW.devicePixelRatio || 1,
+        })
+      }
+    }
+
     handleResize()
-    WINDOW && WINDOW.addEventListener('resize', handleResize)
-    return () => WINDOW && WINDOW.removeEventListener('resize', handleResize)
+    WINDOW.addEventListener('resize', handleResize)
+
+    return () => WINDOW.removeEventListener('resize', handleResize)
   }, [color, timeRegions, buffer])
 
   return (

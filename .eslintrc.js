@@ -13,7 +13,7 @@ module.exports = {
     react: { version: 'detect' },
   },
   env: { node: true, browser: false, es6: true },
-  plugins: ['@typescript-eslint', 'react', 'jest', 'prettier'],
+  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
@@ -30,6 +30,8 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'react/prop-types': 'off',
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
     'prettier/prettier': 'warn',
   },
   overrides: [
