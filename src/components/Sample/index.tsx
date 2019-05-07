@@ -1,5 +1,4 @@
-import React, { ReactNode, FunctionComponent } from 'react'
-import { onlyUpdateForKeys } from 'recompose'
+import React, { FunctionComponent, memo, useMemo } from 'react'
 import { css } from '@emotion/core'
 import color from 'color'
 
@@ -14,7 +13,6 @@ export interface SampleProps {
   audioBuffer?: AudioBuffer
   loopStart?: number
   loopEnd?: number
-  children?: ReactNode // needed for recompose hoc
   onLoopStartDrag?(movement: number): unknown
   onLoopEndDrag?(movement: number): unknown
   onLoopRegionDrag?(movement: number): unknown
@@ -62,51 +60,69 @@ const Sample: FunctionComponent<SampleProps> = ({
   onLoopEndDrag = noop,
   onLoopRegionDrag = noop,
   selectAudioFile = noop,
-}) => (
-  <div css={rootStyle}>
-    <div css={[layoutAbsoluteFill, waveFormContainerStyle]}>
-      <WaveForm buffer={audioBuffer} />
-    </div>
-    {audioBuffer ? (
-      <div css={[layoutAbsoluteFill, loopRegionContainerStyle]}>
-        <LoopRegion
-          loopStart={loopStart}
-          loopEnd={loopEnd}
-          onLoopStartDrag={onLoopStartDrag}
-          onLoopEndDrag={onLoopEndDrag}
-          onLoopRegionDrag={onLoopRegionDrag}
-        />
-      </div>
-    ) : (
-      <div
-        role="button"
-        tabIndex={0}
-        onClick={selectAudioFile}
-        css={[layoutAbsoluteFill, initLoadButonStyle]}
-        onKeyDown={({ key }) => {
-          if (key === 'Enter') {
-            selectAudioFile()
-          }
-        }}
-      >
-        {fromSaved
-          ? [
-              <span key="a">
-                Unfortunately audio data is not saved with a project
-              </span>,
-              <span key="b">
-                Click here (or drag and drop) to load files again
-              </span>,
-            ]
-          : 'Click to load audio file or drag it here'}
-      </div>
-    )}
-  </div>
-)
+}) => {
+  const waveform = useMemo(() => <WaveForm buffer={audioBuffer} />, [
+    audioBuffer,
+  ])
+  const loopRegion = useMemo(
+    () => (
+      <LoopRegion
+        loopStart={loopStart}
+        loopEnd={loopEnd}
+        onLoopStartDrag={onLoopStartDrag}
+        onLoopEndDrag={onLoopEndDrag}
+        onLoopRegionDrag={onLoopRegionDrag}
+      />
+    ),
+    [loopStart, loopEnd, onLoopStartDrag, onLoopEndDrag, onLoopRegionDrag],
+  )
 
-export default onlyUpdateForKeys<SampleProps>([
+  return (
+    <div css={rootStyle}>
+      <div css={[layoutAbsoluteFill, waveFormContainerStyle]}>{waveform}</div>
+      {audioBuffer ? (
+        <div css={[layoutAbsoluteFill, loopRegionContainerStyle]}>
+          {loopRegion}
+        </div>
+      ) : (
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={selectAudioFile}
+          css={[layoutAbsoluteFill, initLoadButonStyle]}
+          onKeyDown={({ key }) => {
+            if (key === 'Enter') {
+              selectAudioFile()
+            }
+          }}
+        >
+          {fromSaved
+            ? [
+                <span key="a">
+                  Unfortunately audio data is not saved with a project
+                </span>,
+                <span key="b">
+                  Click here (or drag and drop) to load files again
+                </span>,
+              ]
+            : 'Click to load audio file or drag it here'}
+        </div>
+      )}
+    </div>
+  )
+}
+
+type SampleProp = keyof SampleProps
+
+const updateProps: SampleProp[] = [
   'fromSaved',
   'audioBuffer',
   'loopStart',
   'loopEnd',
-])(Sample)
+]
+
+export default memo<SampleProps>(
+  Sample,
+  (prevProps, nextProps) =>
+    !updateProps.some(prop => prevProps[prop] !== nextProps[prop]),
+)
