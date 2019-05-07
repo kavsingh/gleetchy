@@ -38,14 +38,16 @@ export default function useFileDropRegion({
     setIsDropActive(false)
   }
 
-  return {
-    onDrop,
+  return [
     isDropActive,
-    onDrag: cancelReactEvent,
-    onDragOver: cancelReactEvent,
-    onDragStart: cancelReactEvent,
-    onDragEnter: withCancelEvent(() => setIsDropActive(true)),
-    onDragLeave: withCancelEvent(() => setIsDropActive(false)),
-    onDragEnd: withCancelEvent(() => setIsDropActive(false)),
-  }
+    {
+      onDrop,
+      onDrag: cancelReactEvent,
+      onDragOver: cancelReactEvent,
+      onDragStart: cancelReactEvent,
+      onDragEnter: withCancelEvent(() => setIsDropActive(true)),
+      onDragLeave: withCancelEvent(() => setIsDropActive(false)),
+      onDragEnd: withCancelEvent(() => setIsDropActive(false)),
+    },
+  ]
 }

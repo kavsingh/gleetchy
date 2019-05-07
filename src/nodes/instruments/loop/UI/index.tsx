@@ -59,13 +59,13 @@ const titleLoadAudioStyle = css({
 const AudioFileDropRegion: FunctionComponent<{
   onFiles(files: File[]): unknown
 }> = ({ children, onFiles }) => {
-  const { isDropActive, ...dragDropEvents } = useFileDropRegion({
+  const [, events] = useFileDropRegion({
     onFiles,
     fileFilter: ({ type }) => type.startsWith('audio'),
   })
 
   return (
-    <div css={wrapStyle} {...dragDropEvents}>
+    <div css={wrapStyle} {...events}>
       {children}
     </div>
   )
