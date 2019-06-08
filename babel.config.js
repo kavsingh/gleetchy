@@ -3,11 +3,11 @@ module.exports = ({ env }) => ({
     [
       '@babel/preset-env',
       {
-        corejs: 3,
-        modules: env('test') ? 'commonjs' : false,
-        useBuiltIns: env('test') ? false : 'usage',
-        shippedProposals: true,
         loose: true,
+        shippedProposals: true,
+        ...(env('test')
+          ? { modules: 'commonjs', useBuiltIns: false }
+          : { modules: false, useBuiltIns: 'usage', corejs: 3 }),
       },
     ],
     '@babel/preset-react',
