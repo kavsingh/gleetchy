@@ -11,11 +11,12 @@ export interface ErrorBoundaryProps {
   renderError?(error: Error): ReactNode
 }
 
-class ErrorBoundary extends PureComponent<
-  ErrorBoundaryProps,
-  { error?: Error }
-> {
-  public state = { error: undefined }
+interface State {
+  error?: Error
+}
+
+class ErrorBoundary extends PureComponent<ErrorBoundaryProps, State> {
+  public state: State = { error: undefined }
 
   public componentDidCatch(error: Error) {
     this.setState(() => ({ error }))
