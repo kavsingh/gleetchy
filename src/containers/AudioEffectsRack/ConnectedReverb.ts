@@ -24,9 +24,7 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
 
   if (reverb.type !== nodeType) {
     throw new Error(
-      `Unexpected effect type for ${id}, expected ${nodeType}, got ${
-        reverb.type
-      }`,
+      `Unexpected effect type for ${id}, expected ${nodeType}, got ${reverb.type}`,
     )
   }
 

@@ -27,9 +27,7 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
 
   if (loop.type !== nodeType) {
     throw new Error(
-      `Unexpected instrument type for ${id}, expected ${nodeType}, got ${
-        loop.type
-      }`,
+      `Unexpected instrument type for ${id}, expected ${nodeType}, got ${loop.type}`,
     )
   }
 

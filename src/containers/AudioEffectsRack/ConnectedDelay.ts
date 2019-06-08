@@ -24,9 +24,7 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
 
   if (delay.type !== nodeType) {
     throw new Error(
-      `Unexpected effect type for ${id}, expected ${nodeType}, got ${
-        delay.type
-      }`,
+      `Unexpected effect type for ${id}, expected ${nodeType}, got ${delay.type}`,
     )
   }
 

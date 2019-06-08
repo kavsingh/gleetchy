@@ -44,4 +44,4 @@ const shouldInstall =
   process.env.NODE_ENV === 'production' &&
   !!requireWindowWith([['navigator', 'serviceWorker']])
 
-export default (shouldInstall ? offlineInstall : noop)
+export default shouldInstall ? offlineInstall : noop
