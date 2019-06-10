@@ -3,11 +3,10 @@ import { css, Global } from '@emotion/core'
 import { Provider } from 'react-redux'
 
 import { ApplicationStore } from '~/state/configureStore'
+import theme from '~/style/theme'
 import ErrorBoundary from '~/components/ErrorBoundary'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
-
-import { colorPage } from './style/color'
 
 const globalStyles = css({
   html: {
@@ -35,12 +34,7 @@ const globalStyles = css({
     width: '100%',
     padding: '0',
     margin: '0',
-  },
-
-  body: {
-    backgroundColor: colorPage,
-    fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
-    '-webkit-font-smoothing': 'antialiased',
+    backgroundColor: theme.colorPage,
   },
 })
 

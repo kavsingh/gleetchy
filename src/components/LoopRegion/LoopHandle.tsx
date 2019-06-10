@@ -1,7 +1,7 @@
 import React, { memo, FunctionComponent } from 'react'
 import { css } from '@emotion/core'
 
-import { colorEmphasis } from '~/style/color'
+import theme from '~/style/theme'
 
 const rootStyle = css({
   height: '100%',
@@ -15,7 +15,7 @@ const alignRightStyle = css({
 })
 
 const tagStyle = css({
-  backgroundColor: colorEmphasis,
+  backgroundColor: theme.colorEmphasis,
   height: 1,
   pointerEvents: 'all',
   position: 'absolute',
@@ -40,12 +40,12 @@ const barStyle = css({
 })
 
 const barAlignLeftStyle = css({
-  borderRight: `1px solid ${colorEmphasis}`,
+  borderRight: `1px solid ${theme.colorEmphasis}`,
   left: '-100%',
 })
 
 const barAlignRightStyle = css({
-  borderLeft: `1px solid ${colorEmphasis}`,
+  borderLeft: `1px solid ${theme.colorEmphasis}`,
   right: '-100%',
 })
 

@@ -1,11 +1,11 @@
 import React, { memo, FunctionComponent, ReactNode } from 'react'
 import { css } from '@emotion/core'
 
-import { colorError, colorEmphasis } from '~/style/color'
+import theme from '~/style/theme'
 
 const rootStyle = css({
-  backgroundColor: colorError,
-  color: colorEmphasis,
+  backgroundColor: theme.colorError,
+  color: theme.colorEmphasis,
   fontSize: '0.9em',
   padding: '2em',
   width: '100%',

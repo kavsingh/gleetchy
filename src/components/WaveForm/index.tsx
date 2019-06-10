@@ -4,7 +4,7 @@ import colorFn from 'color'
 import { map } from 'ramda'
 
 import { requireWindowWith } from '~/util/env'
-import { colorEmphasis, colorKeyline } from '~/style/color'
+import theme from '~/style/theme'
 
 const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
 
@@ -75,7 +75,7 @@ const drawWaveForm = (
 const updateWaveForm = (
   canvasNode: HTMLCanvasElement,
   {
-    color = colorEmphasis,
+    color = theme.colorEmphasis,
     pixelRatio = 1,
     timeRegions = 4,
     buffer,
@@ -94,7 +94,7 @@ const updateWaveForm = (
   context.scale(pixelRatio, pixelRatio)
   context.clearRect(0, 0, width, height)
   context.fillStyle = color
-  context.strokeStyle = colorFn(colorKeyline)
+  context.strokeStyle = colorFn(theme.colorKeyline)
     .darken(0.06)
     .hex()
 

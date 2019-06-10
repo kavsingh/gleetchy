@@ -3,7 +3,7 @@ import { css } from '@emotion/core'
 import React, { Component } from 'react'
 
 import { noop } from '~/util/function'
-import { colorPage } from '~/style/color'
+import theme from '~/style/theme'
 import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag, {
   SinglePointerDragState,
@@ -34,7 +34,7 @@ const activeRegionStyle = css({
 })
 
 const inactiveRegionStyle = css({
-  backgroundColor: color(colorPage)
+  backgroundColor: color(theme.colorPage)
     .alpha(0.8)
     .string(),
   bottom: 0,

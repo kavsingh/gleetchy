@@ -4,7 +4,7 @@ import color from 'color'
 
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { colorPage } from '~/style/color'
+import theme from '~/style/theme'
 import LoopRegion from '~/components/LoopRegion'
 import WaveForm from '~/components/WaveForm'
 
@@ -35,7 +35,7 @@ const loopRegionContainerStyle = css({
 
 const initLoadButonStyle = css({
   alignItems: 'center',
-  backgroundColor: color(colorPage)
+  backgroundColor: color(theme.colorPage)
     .alpha(0.96)
     .string(),
   cursor: 'pointer',

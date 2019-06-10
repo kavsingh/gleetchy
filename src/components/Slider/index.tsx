@@ -3,7 +3,7 @@ import { css } from '@emotion/core'
 import { clamp } from 'ramda'
 
 import { noop, stubString } from '~/util/function'
-import { colorKeyline, colorEmphasis } from '~/style/color'
+import theme from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
@@ -72,13 +72,13 @@ const barContainerHorizontalStyle = css({
 })
 
 const trackStyle = css({
-  backgroundColor: colorKeyline,
+  backgroundColor: theme.colorKeyline,
   position: 'absolute',
   zIndex: 1,
 })
 
 const barStyle = css({
-  backgroundColor: colorEmphasis,
+  backgroundColor: theme.colorEmphasis,
   position: 'absolute',
   zIndex: 2,
 })

@@ -5,7 +5,7 @@ import { T } from 'ramda'
 
 import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
 import { noop, stubString } from '~/util/function'
-import { colorKeyline, colorEmphasis } from '~/style/color'
+import theme from '~/style/theme'
 
 const rootStyle = css({
   width: '100%',
@@ -44,7 +44,7 @@ const rowStyle = css({
 
 const nodeStyle = css({
   backgroundColor: 'transparent',
-  border: `1px solid ${colorKeyline}`,
+  border: `1px solid ${theme.colorKeyline}`,
   cursor: 'pointer',
   height: '0.8em',
   margin: '0 auto',
@@ -53,11 +53,11 @@ const nodeStyle = css({
 })
 
 const nodeActiveStyle = css({
-  backgroundColor: colorEmphasis,
+  backgroundColor: theme.colorEmphasis,
 })
 
 const nodeBlockedStyle = css({
-  backgroundColor: colorKeyline,
+  backgroundColor: theme.colorKeyline,
   cursor: 'default',
   transform: 'rotate(45deg) scale(0.5)',
 })

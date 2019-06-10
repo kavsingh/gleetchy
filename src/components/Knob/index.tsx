@@ -4,7 +4,7 @@ import { always, clamp } from 'ramda'
 
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { colorEmphasis, colorKeyline } from '~/style/color'
+import theme from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
@@ -42,7 +42,7 @@ const trackContainerStyle = css({
   zIndex: 1,
 
   '& svg': {
-    stroke: colorKeyline,
+    stroke: theme.colorKeyline,
   },
 })
 
@@ -50,7 +50,7 @@ const barContainerStyle = css({
   zIndex: 2,
 
   '& svg': {
-    stroke: colorEmphasis,
+    stroke: theme.colorEmphasis,
   },
 })
 

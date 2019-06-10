@@ -3,7 +3,7 @@ import Favicon from 'react-favicon'
 import { css } from '@emotion/core'
 import { GoMarkGithub } from 'react-icons/go'
 
-import { colorBody, colorKeyline } from '~/style/color'
+import theme from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
@@ -12,14 +12,16 @@ import PatchBay from '~/containers/PatchBay'
 import favicon from '~/assets/icons/48x48.png'
 
 const rootStyle = css({
-  color: colorBody,
+  backgroundColor: theme.colorPage,
+  color: theme.colorBody,
+  fontFamily: theme.fontBody,
   margin: '0 auto',
   maxWidth: '92em',
   padding: '0 2em',
 })
 
 const borderedSectionStyle = css({
-  borderBottom: `1px solid ${colorKeyline}`,
+  borderBottom: `1px solid ${theme.colorKeyline}`,
   padding: '1em 0',
 })
 
@@ -46,7 +48,7 @@ const mastheadStyle = css({
   width: '100%',
 
   '& a': {
-    color: colorBody,
+    color: theme.colorBody,
     opacity: 0.4,
     transition: 'opacity 0.2s ease-out',
   },
