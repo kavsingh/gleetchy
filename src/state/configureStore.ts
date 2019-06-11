@@ -16,6 +16,8 @@ import globalPlayback, { GlobalPlaybackState } from './globalPlayback/reducer'
 import { GlobalPlaybackAction } from './globalPlayback/types'
 import instruments, { InstrumentsState } from './instruments/reducer'
 import { InstrumentsAction } from './instruments/types'
+import ui, { UIState } from './ui/reducer'
+import { UIAction } from './ui/types'
 
 const middlewares = [thunk]
 const composeEnhancers = composeWithDevTools({})
@@ -28,6 +30,7 @@ export interface ApplicationState {
   connections: ConnectionsState
   globalPlayback: GlobalPlaybackState
   instruments: InstrumentsState
+  ui: UIState
 }
 
 export type ApplicationAction =
@@ -38,6 +41,7 @@ export type ApplicationAction =
   | ConnectionsAction
   | GlobalPlaybackAction
   | InstrumentsAction
+  | UIAction
 
 export type ApplicationStore = Store<ApplicationState, ApplicationAction>
 
@@ -53,6 +57,7 @@ export const configureStore = (
       connections,
       globalPlayback,
       instruments,
+      ui,
     }),
     initialState,
     composeEnhancers(applyMiddleware(...middlewares)),

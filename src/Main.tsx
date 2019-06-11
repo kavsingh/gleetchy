@@ -35,6 +35,7 @@ const globalStyles = css({
     padding: '0',
     margin: '0',
     backgroundColor: theme.colorPage,
+    '-webkit-font-smoothing': 'antialiased',
   },
 })
 

@@ -2,8 +2,9 @@ import React, { memo, FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
 import { css } from '@emotion/core'
 import { GoMarkGithub } from 'react-icons/go'
+import { withTheme } from 'emotion-theming'
 
-import theme from '~/style/theme'
+import theme, { UITheme } from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
@@ -61,9 +62,14 @@ const mastheadStyle = css({
 export interface UIProps {
   isPlaying: boolean
   togglePlayback(): unknown
+  theme: UITheme
 }
 
-const UI: FunctionComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
+const UI: FunctionComponent<UIProps> = ({
+  isPlaying,
+  togglePlayback,
+  theme,
+}) => (
   <div css={rootStyle}>
     <Favicon url={favicon} />
     <div css={borderedSectionStyle}>
@@ -93,4 +99,4 @@ const UI: FunctionComponent<UIProps> = ({ isPlaying, togglePlayback }) => (
   </div>
 )
 
-export default memo(UI)
+export default memo(withTheme(UI))
