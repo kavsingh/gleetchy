@@ -3,13 +3,14 @@ import { css } from '@emotion/core'
 import React, { Component } from 'react'
 
 import { noop } from '~/util/function'
-import theme from '~/style/theme'
+import { UITheme } from '~/style/theme'
 import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
 
 import LoopHandle from './LoopHandle'
+import { withTheme } from 'emotion-theming'
 
 const rootStyle = css({
   height: '100%',
@@ -33,15 +34,16 @@ const activeRegionStyle = css({
   top: 0,
 })
 
-const inactiveRegionStyle = css({
-  backgroundColor: color(theme.colorPage)
-    .alpha(0.8)
-    .string(),
-  bottom: 0,
-  position: 'absolute',
-  top: 0,
-  zIndex: 0,
-})
+const inactiveRegionStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: color(theme.colorPage)
+      .alpha(0.8)
+      .string(),
+    bottom: 0,
+    position: 'absolute',
+    top: 0,
+    zIndex: 0,
+  })
 
 export interface LoopRegionProps {
   loopStart: number
@@ -155,4 +157,4 @@ class LoopRegion extends Component<LoopRegionProps> {
   }
 }
 
-export default LoopRegion
+export default withTheme(LoopRegion)

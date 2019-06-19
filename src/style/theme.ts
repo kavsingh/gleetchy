@@ -22,10 +22,10 @@ export const themeDark: UITheme = {
 
 export const themeLight: UITheme = {
   ...common,
-  colorPage: '#fefefe',
+  colorPage: '#fff',
   colorBody: '#222',
   colorEmphasis: '#000',
-  colorKeyline: '#eee',
+  colorKeyline: '#e8e8e8',
   colorError: '#ec6764',
 }
 

@@ -4,7 +4,6 @@ import colorFn from 'color'
 import { map } from 'ramda'
 
 import { requireWindowWith } from '~/util/env'
-import theme from '~/style/theme'
 
 const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
 
@@ -20,7 +19,8 @@ const canvasStyle = css({
 })
 
 export interface WaveformProps {
-  color?: string
+  color: string
+  baselineColor: string
   timeRegions?: number
   buffer?: AudioBuffer
 }
@@ -75,7 +75,8 @@ const drawWaveForm = (
 const updateWaveForm = (
   canvasNode: HTMLCanvasElement,
   {
-    color = theme.colorEmphasis,
+    color,
+    baselineColor,
     pixelRatio = 1,
     timeRegions = 4,
     buffer,
@@ -94,7 +95,7 @@ const updateWaveForm = (
   context.scale(pixelRatio, pixelRatio)
   context.clearRect(0, 0, width, height)
   context.fillStyle = color
-  context.strokeStyle = colorFn(theme.colorKeyline)
+  context.strokeStyle = colorFn(baselineColor)
     .darken(0.06)
     .hex()
 
@@ -108,6 +109,7 @@ const updateWaveForm = (
 
 const WaveForm: FunctionComponent<WaveformProps> = ({
   color,
+  baselineColor,
   timeRegions,
   buffer,
 }) => {
@@ -122,6 +124,7 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
       if (canvasNodeRef.current) {
         updateWaveForm(canvasNodeRef.current, {
           color,
+          baselineColor,
           timeRegions,
           buffer,
           pixelRatio: WINDOW.devicePixelRatio || 1,
@@ -133,7 +136,7 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
     WINDOW.addEventListener('resize', handleResize)
 
     return () => WINDOW.removeEventListener('resize', handleResize)
-  }, [color, timeRegions, buffer])
+  }, [color, baselineColor, timeRegions, buffer])
 
   return (
     <div css={rootStyle}>

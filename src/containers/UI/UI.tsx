@@ -4,7 +4,7 @@ import { css } from '@emotion/core'
 import { GoMarkGithub } from 'react-icons/go'
 import { withTheme } from 'emotion-theming'
 
-import theme, { UITheme } from '~/style/theme'
+import { UITheme } from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
@@ -12,19 +12,21 @@ import PatchBay from '~/containers/PatchBay'
 
 import favicon from '~/assets/icons/48x48.png'
 
-const rootStyle = css({
-  backgroundColor: theme.colorPage,
-  color: theme.colorBody,
-  fontFamily: theme.fontBody,
-  margin: '0 auto',
-  maxWidth: '92em',
-  padding: '0 2em',
-})
+const rootStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: theme.colorPage,
+    color: theme.colorBody,
+    fontFamily: theme.fontBody,
+    margin: '0 auto',
+    maxWidth: '92em',
+    padding: '0 2em',
+  })
 
-const borderedSectionStyle = css({
-  borderBottom: `1px solid ${theme.colorKeyline}`,
-  padding: '1em 0',
-})
+const borderedSectionStyle = (theme: UITheme) =>
+  css({
+    borderBottom: `1px solid ${theme.colorKeyline}`,
+    padding: '1em 0',
+  })
 
 const connectContainerStyle = css({
   display: 'flex',
@@ -47,42 +49,65 @@ const mastheadStyle = css({
   display: 'flex',
   justifyContent: 'space-between',
   width: '100%',
-
-  '& a': {
-    color: theme.colorBody,
-    opacity: 0.4,
-    transition: 'opacity 0.2s ease-out',
-  },
-
-  '& a:hover': {
-    opacity: 1,
-  },
 })
+
+const metaControlStyle = (theme: UITheme) =>
+  css({
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    alignItems: 'center',
+    alignSelf: 'stretch',
+
+    '& a, & button': {
+      display: 'block',
+      appearance: 'none',
+      color: theme.colorBody,
+      opacity: 0.4,
+      transition: 'opacity 0.2s ease-out',
+      cursor: 'pointer',
+    },
+
+    '& a:hover, & button:hover': {
+      opacity: 1,
+    },
+
+    '& button': {
+      backgroundColor: 'transparent',
+      fontFamily: theme.fontBody,
+      fontSize: '0.8em',
+      margin: '0 1em 0 0',
+      padding: 0,
+      border: 'none',
+    },
+  })
 
 export interface UIProps {
   isPlaying: boolean
   togglePlayback(): unknown
-  theme: UITheme
+  changeTheme?(): unknown
 }
 
 const UI: FunctionComponent<UIProps> = ({
   isPlaying,
   togglePlayback,
-  theme,
+  changeTheme,
 }) => (
   <div css={rootStyle}>
     <Favicon url={favicon} />
     <div css={borderedSectionStyle}>
       <div css={mastheadStyle}>
         <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
-        <a
-          href="https://www.github.com/kavsingh/gleetchy"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="view on github"
-        >
-          <GoMarkGithub />
-        </a>
+        <div css={metaControlStyle}>
+          <button onClick={changeTheme}>L/D</button>
+          <a
+            href="https://www.github.com/kavsingh/gleetchy"
+            target="_blank"
+            rel="noopener noreferrer"
+            title="view on github"
+          >
+            <GoMarkGithub />
+          </a>
+        </div>
       </div>
     </div>
     <div css={borderedSectionStyle}>

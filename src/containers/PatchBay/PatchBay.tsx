@@ -5,7 +5,8 @@ import { T } from 'ramda'
 
 import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
 import { noop, stubString } from '~/util/function'
-import theme from '~/style/theme'
+import { UITheme } from '~/style/theme'
+import { withTheme } from 'emotion-theming'
 
 const rootStyle = css({
   width: '100%',
@@ -42,25 +43,28 @@ const rowStyle = css({
   },
 })
 
-const nodeStyle = css({
-  backgroundColor: 'transparent',
-  border: `1px solid ${theme.colorKeyline}`,
-  cursor: 'pointer',
-  height: '0.8em',
-  margin: '0 auto',
-  transition: 'all 0.2s ease-out',
-  width: '0.8em',
-})
+const nodeStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: 'transparent',
+    border: `1px solid ${theme.colorKeyline}`,
+    cursor: 'pointer',
+    height: '0.8em',
+    margin: '0 auto',
+    transition: 'all 0.2s ease-out',
+    width: '0.8em',
+  })
 
-const nodeActiveStyle = css({
-  backgroundColor: theme.colorEmphasis,
-})
+const nodeActiveStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: theme.colorEmphasis,
+  })
 
-const nodeBlockedStyle = css({
-  backgroundColor: theme.colorKeyline,
-  cursor: 'default',
-  transform: 'rotate(45deg) scale(0.5)',
-})
+const nodeBlockedStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: theme.colorKeyline,
+    cursor: 'default',
+    transform: 'rotate(45deg) scale(0.5)',
+  })
 
 export interface PatchBayProps {
   fromNodes: AudioNodeIdentifier[]
@@ -72,6 +76,7 @@ export interface PatchBayProps {
   ): AudioNodeConnection | undefined
   getNodeLabel(id: string): string
   onNodeClick(from: AudioNodeIdentifier, to: AudioNodeIdentifier): unknown
+  theme: UITheme
 }
 
 const PatchBay: FunctionComponent<PatchBayProps> = ({
@@ -81,6 +86,7 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
   getConnection = noop,
   getNodeLabel = stubString,
   onNodeClick = noop,
+  theme,
 }) => (
   <table css={rootStyle}>
     <tbody>
@@ -116,9 +122,9 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
 
             let modClassName: SerializedStyles | undefined
             if (blockConnect) {
-              modClassName = nodeBlockedStyle
+              modClassName = nodeBlockedStyle(theme)
             } else if (connection) {
-              modClassName = nodeActiveStyle
+              modClassName = nodeActiveStyle(theme)
             }
 
             const handleClick = blockConnect
@@ -138,7 +144,7 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
                         }
                       : {}
                   }
-                  css={[nodeStyle, modClassName]}
+                  css={[nodeStyle(theme), modClassName]}
                   onClick={handleClick}
                   role="button"
                   tabIndex={0}
@@ -158,4 +164,4 @@ const PatchBay: FunctionComponent<PatchBayProps> = ({
   </table>
 )
 
-export default memo(PatchBay)
+export default memo(withTheme(PatchBay))

@@ -1,10 +1,11 @@
 import React, { PureComponent, ReactNode } from 'react'
 import { css } from '@emotion/core'
 import { always, clamp } from 'ramda'
+import { withTheme } from 'emotion-theming'
 
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
-import theme from '~/style/theme'
+import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
@@ -38,21 +39,23 @@ const knobContainerStyle = css({
   },
 })
 
-const trackContainerStyle = css({
-  zIndex: 1,
+const trackContainerStyle = (theme: UITheme) =>
+  css({
+    zIndex: 1,
 
-  '& svg': {
-    stroke: theme.colorKeyline,
-  },
-})
+    '& svg': {
+      stroke: theme.colorKeyline,
+    },
+  })
 
-const barContainerStyle = css({
-  zIndex: 2,
+const barContainerStyle = (theme: UITheme) =>
+  css({
+    zIndex: 2,
 
-  '& svg': {
-    stroke: theme.colorEmphasis,
-  },
-})
+    '& svg': {
+      stroke: theme.colorEmphasis,
+    },
+  })
 
 export interface KnobProps {
   value: number
@@ -62,6 +65,7 @@ export interface KnobProps {
   renderTitle?(): string
   renderLabel?(): ReactNode
   renderValue?(): ReactNode
+  theme: UITheme
 }
 
 interface KnobState {
@@ -81,6 +85,7 @@ class Knob extends PureComponent<KnobProps, KnobState> {
       renderTitle = renderEmptyString,
       renderLabel = renderEmptyString,
       renderValue = renderEmptyString,
+      theme,
     } = this.props
 
     const cursorStyles = axis
@@ -104,10 +109,10 @@ class Knob extends PureComponent<KnobProps, KnobState> {
               style={{ height: radius, width: radius, ...cursorStyles }}
               ref={el => (this.knobNode = el)}
             >
-              <div css={[layoutAbsoluteFill, trackContainerStyle]}>
+              <div css={[layoutAbsoluteFill, trackContainerStyle(theme)]}>
                 <SVGArc startAngle={0} endAngle={360} strokeWidth={1} />
               </div>
-              <div css={[layoutAbsoluteFill, barContainerStyle]}>
+              <div css={[layoutAbsoluteFill, barContainerStyle(theme)]}>
                 <SVGArc startAngle={0} endAngle={value * 360} strokeWidth={2} />
               </div>
             </div>
@@ -156,4 +161,4 @@ class Knob extends PureComponent<KnobProps, KnobState> {
   }
 }
 
-export default Knob
+export default withTheme(Knob)

@@ -1,4 +1,4 @@
-import themeDark, { themeLight } from '~/style/theme'
+import { themeDark, themeLight } from '~/style/theme'
 
 import { UISetThemeAction } from './types'
 

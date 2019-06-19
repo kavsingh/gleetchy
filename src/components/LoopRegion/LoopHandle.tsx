@@ -1,7 +1,8 @@
 import React, { memo, FunctionComponent } from 'react'
 import { css } from '@emotion/core'
 
-import theme from '~/style/theme'
+import { UITheme } from '~/style/theme'
+import { withTheme } from 'emotion-theming'
 
 const rootStyle = css({
   height: '100%',
@@ -14,14 +15,15 @@ const alignRightStyle = css({
   transform: 'translateX(-100%)',
 })
 
-const tagStyle = css({
-  backgroundColor: theme.colorEmphasis,
-  height: 1,
-  pointerEvents: 'all',
-  position: 'absolute',
-  top: 0,
-  width: '60%',
-})
+const tagStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: theme.colorEmphasis,
+    height: 1,
+    pointerEvents: 'all',
+    position: 'absolute',
+    top: 0,
+    width: '60%',
+  })
 
 const tagAlignLeftStyle = css({
   left: 0,
@@ -39,25 +41,31 @@ const barStyle = css({
   width: '100%',
 })
 
-const barAlignLeftStyle = css({
-  borderRight: `1px solid ${theme.colorEmphasis}`,
-  left: '-100%',
-})
+const barAlignLeftStyle = (theme: UITheme) =>
+  css({
+    borderRight: `1px solid ${theme.colorEmphasis}`,
+    left: '-100%',
+  })
 
-const barAlignRightStyle = css({
-  borderLeft: `1px solid ${theme.colorEmphasis}`,
-  right: '-100%',
-})
+const barAlignRightStyle = (theme: UITheme) =>
+  css({
+    borderLeft: `1px solid ${theme.colorEmphasis}`,
+    right: '-100%',
+  })
 
 export interface LoopHandleProps {
   align: 'left' | 'right'
+  theme: UITheme
 }
 
-const LoopHandle: FunctionComponent<LoopHandleProps> = ({ align = 'left' }) => (
+const LoopHandle: FunctionComponent<LoopHandleProps> = ({
+  align = 'left',
+  theme,
+}) => (
   <div css={[rootStyle, align === 'right' && alignRightStyle]}>
     <div
       css={[
-        tagStyle,
+        tagStyle(theme),
         align === 'left' && tagAlignLeftStyle,
         align === 'right' && tagAlignRightStyle,
       ]}
@@ -65,11 +73,11 @@ const LoopHandle: FunctionComponent<LoopHandleProps> = ({ align = 'left' }) => (
     <div
       css={[
         barStyle,
-        align === 'left' && barAlignLeftStyle,
-        align === 'right' && barAlignRightStyle,
+        align === 'left' && barAlignLeftStyle(theme),
+        align === 'right' && barAlignRightStyle(theme),
       ]}
     />
   </div>
 )
 
-export default memo(LoopHandle)
+export default memo(withTheme(LoopHandle))

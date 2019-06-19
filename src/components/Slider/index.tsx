@@ -1,9 +1,10 @@
 import React, { PureComponent, ReactNode } from 'react'
 import { css } from '@emotion/core'
+import { withTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
 import { noop, stubString } from '~/util/function'
-import theme from '~/style/theme'
+import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
@@ -71,17 +72,19 @@ const barContainerHorizontalStyle = css({
   margin: 'auto 0.6em',
 })
 
-const trackStyle = css({
-  backgroundColor: theme.colorKeyline,
-  position: 'absolute',
-  zIndex: 1,
-})
+const trackStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: theme.colorKeyline,
+    position: 'absolute',
+    zIndex: 1,
+  })
 
-const barStyle = css({
-  backgroundColor: theme.colorEmphasis,
-  position: 'absolute',
-  zIndex: 2,
-})
+const barStyle = (theme: UITheme) =>
+  css({
+    backgroundColor: theme.colorEmphasis,
+    position: 'absolute',
+    zIndex: 2,
+  })
 
 const trackVerticalStyle = css({
   bottom: 0,
@@ -119,6 +122,7 @@ export interface SliderProps {
   renderLabel?(value: number): ReactNode
   renderValue?(value: number): ReactNode
   renderTitle?(value: number): string
+  theme: UITheme
 }
 
 class Slider extends PureComponent<SliderProps> {
@@ -131,6 +135,7 @@ class Slider extends PureComponent<SliderProps> {
       renderLabel = stubString,
       renderValue = String,
       renderTitle = String,
+      theme,
     } = this.props
     const isVert = orient === 'vertical'
     const offVal = `${(1 - value) * 100}%`
@@ -167,14 +172,14 @@ class Slider extends PureComponent<SliderProps> {
             >
               <div
                 css={[
-                  trackStyle,
+                  trackStyle(theme),
                   isVert && trackVerticalStyle,
                   !isVert && trackHorizontalStyle,
                 ]}
               />
               <div
                 css={[
-                  barStyle,
+                  barStyle(theme),
                   isVert && barVerticalStyle,
                   !isVert && barHorizontalStyle,
                 ]}
@@ -248,4 +253,4 @@ class Slider extends PureComponent<SliderProps> {
   }
 }
 
-export default Slider
+export default withTheme(Slider)

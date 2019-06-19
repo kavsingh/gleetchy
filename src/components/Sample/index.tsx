@@ -1,10 +1,11 @@
 import React, { FunctionComponent, memo, useMemo } from 'react'
 import { css } from '@emotion/core'
+import { withTheme } from 'emotion-theming'
 import color from 'color'
 
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
-import theme from '~/style/theme'
+import { UITheme } from '~/style/theme'
 import LoopRegion from '~/components/LoopRegion'
 import WaveForm from '~/components/WaveForm'
 
@@ -17,6 +18,7 @@ export interface SampleProps {
   onLoopEndDrag?(movement: number): unknown
   onLoopRegionDrag?(movement: number): unknown
   selectAudioFile?(): unknown
+  theme: UITheme
 }
 
 const rootStyle = css({
@@ -33,23 +35,24 @@ const loopRegionContainerStyle = css({
   zIndex: 2,
 })
 
-const initLoadButonStyle = css({
-  alignItems: 'center',
-  backgroundColor: color(theme.colorPage)
-    .alpha(0.96)
-    .string(),
-  cursor: 'pointer',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'space-around',
-  padding: '3em',
-  zIndex: 3,
+const initLoadButonStyle = (theme: UITheme) =>
+  css({
+    alignItems: 'center',
+    backgroundColor: color(theme.colorPage)
+      .alpha(0.96)
+      .string(),
+    cursor: 'pointer',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-around',
+    padding: '3em',
+    zIndex: 3,
 
-  '& span': {
-    display: 'block',
-    textAlign: 'center',
-  },
-})
+    '& span': {
+      display: 'block',
+      textAlign: 'center',
+    },
+  })
 
 const Sample: FunctionComponent<SampleProps> = ({
   audioBuffer,
@@ -60,10 +63,18 @@ const Sample: FunctionComponent<SampleProps> = ({
   onLoopEndDrag = noop,
   onLoopRegionDrag = noop,
   selectAudioFile = noop,
+  theme,
 }) => {
-  const waveform = useMemo(() => <WaveForm buffer={audioBuffer} />, [
-    audioBuffer,
-  ])
+  const waveform = useMemo(
+    () => (
+      <WaveForm
+        color={theme.colorEmphasis}
+        baselineColor={theme.colorKeyline}
+        buffer={audioBuffer}
+      />
+    ),
+    [audioBuffer, theme],
+  )
   const loopRegion = useMemo(
     () => (
       <LoopRegion
@@ -89,7 +100,7 @@ const Sample: FunctionComponent<SampleProps> = ({
           role="button"
           tabIndex={0}
           onClick={selectAudioFile}
-          css={[layoutAbsoluteFill, initLoadButonStyle]}
+          css={[layoutAbsoluteFill, initLoadButonStyle(theme)]}
           onKeyDown={({ key }) => {
             if (key === 'Enter') {
               selectAudioFile()
@@ -121,8 +132,8 @@ const updateProps: SampleProp[] = [
   'loopEnd',
 ]
 
-export default memo<SampleProps>(
-  Sample,
+export default memo(
+  withTheme(Sample),
   (prevProps, nextProps) =>
     !updateProps.some(prop => prevProps[prop] !== nextProps[prop]),
 )
