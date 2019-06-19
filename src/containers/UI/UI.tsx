@@ -1,8 +1,8 @@
 import React, { memo, FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
-import { css } from '@emotion/core'
+import { css, Global } from '@emotion/core'
 import { GoMarkGithub } from 'react-icons/go'
-import { withTheme } from 'emotion-theming'
+import { withTheme, ThemeProvider } from 'emotion-theming'
 
 import { UITheme } from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
@@ -11,6 +11,38 @@ import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
 
 import favicon from '~/assets/icons/48x48.png'
+
+const globalStyles = (theme: UITheme) =>
+  css({
+    html: {
+      boxSizing: 'border-box',
+      userSelect: 'none',
+      cursor: 'default',
+      fontSize: '14px',
+    },
+
+    '*, *::before, *::after': {
+      boxSizing: 'inherit',
+      userSelect: 'inherit',
+      cursor: 'inherit',
+    },
+
+    '*:focus, *:active': {
+      outline: 'none',
+    },
+
+    'a, button': {
+      cursor: 'initial',
+    },
+
+    'html, body': {
+      width: '100%',
+      padding: '0',
+      margin: '0',
+      backgroundColor: theme.colorPage,
+      '-webkit-font-smoothing': 'antialiased',
+    },
+  })
 
 const rootStyle = (theme: UITheme) =>
   css({
@@ -81,13 +113,13 @@ const metaControlStyle = (theme: UITheme) =>
     },
   })
 
-export interface UIProps {
+interface UIMainProps {
   isPlaying: boolean
   togglePlayback(): unknown
-  changeTheme?(): unknown
+  changeTheme(): unknown
 }
 
-const UI: FunctionComponent<UIProps> = ({
+const UIMain: FunctionComponent<UIMainProps> = ({
   isPlaying,
   togglePlayback,
   changeTheme,
@@ -124,4 +156,17 @@ const UI: FunctionComponent<UIProps> = ({
   </div>
 )
 
-export default memo(withTheme(UI))
+const UIMainThemable = memo(withTheme(UIMain))
+
+export interface UIProps extends UIMainProps {
+  theme: UITheme
+}
+
+const UI: FunctionComponent<UIProps> = ({ theme, ...uiMainProps }) => (
+  <ThemeProvider theme={theme}>
+    <Global styles={globalStyles} />
+    <UIMainThemable {...uiMainProps} />
+  </ThemeProvider>
+)
+
+export default memo(UI)

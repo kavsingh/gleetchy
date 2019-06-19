@@ -1,16 +1,16 @@
 import produce from 'immer'
 import { Reducer } from 'redux'
 
-import defaultTheme, { UITheme } from '~/style/theme'
+import defaultTheme, { ThemeName } from '~/style/theme'
 
 import { UIAction } from './types'
 
 export interface UIState {
-  theme: UITheme
+  currentThemeName: ThemeName
 }
 
 const defaultState: UIState = {
-  theme: defaultTheme,
+  currentThemeName: defaultTheme.name,
 }
 
 const UIReducer: Reducer<UIState, UIAction> = (
@@ -20,7 +20,7 @@ const UIReducer: Reducer<UIState, UIAction> = (
   switch (action.type) {
     case 'UI_SET_THEME':
       return produce<UIState>(state, draftState => {
-        Object.assign(draftState.theme, action.payload)
+        draftState.currentThemeName = action.payload
       })
     default:
       return state
