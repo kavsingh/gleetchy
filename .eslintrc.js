@@ -3,6 +3,8 @@ const unusedVarsConfig = [
   { ignoreRestSiblings: true, varsIgnorePattern: '^_' },
 ]
 
+const camelcaseConfig = ['error', { properties: 'never' }]
+
 const srcDependencies = {
   devDependencies: false,
   optionalDependencies: false,
@@ -66,14 +68,18 @@ module.exports = {
     {
       files: ['*.js'],
       rules: {
+        camelcase: camelcaseConfig,
         'no-unused-vars': unusedVarsConfig,
+        '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
       },
     },
     {
       files: ['*.ts', '*.tsx'],
       rules: {
+        camelcase: 'off',
         'no-unused-vars': 'off',
+        '@typescript-eslint/camelcase': camelcaseConfig,
         '@typescript-eslint/no-unused-vars': unusedVarsConfig,
       },
     },

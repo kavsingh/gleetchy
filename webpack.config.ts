@@ -1,5 +1,4 @@
 import webpack, { Configuration } from 'webpack'
-import { Configuration as WebpackDevServerConfiguration } from 'webpack-dev-server'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import WorkboxPlugin from 'workbox-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
@@ -13,7 +12,7 @@ const isProduction = process.env.NODE_ENV === 'production'
 
 export const publicPath = ''
 
-const config: Configuration & { devServer?: WebpackDevServerConfiguration } = {
+const config: Configuration = {
   mode: isProduction ? 'production' : 'development',
   entry: {
     gleetchy: ['./src/index.tsx'],
@@ -52,7 +51,6 @@ const config: Configuration & { devServer?: WebpackDevServerConfiguration } = {
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),
-    /* eslint-disable @typescript-eslint/camelcase */
     new PWAManifest({
       name: 'Gleetchy',
       short_name: 'Gleetchy',
@@ -71,7 +69,6 @@ const config: Configuration & { devServer?: WebpackDevServerConfiguration } = {
         },
       ],
     }),
-    /* eslint-enable */
     isProduction &&
       new WorkboxPlugin.GenerateSW({
         cacheId: 'gleetchy-sw',
