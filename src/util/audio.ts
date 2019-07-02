@@ -9,7 +9,6 @@ import {
   startsWith,
   tryCatch,
 } from 'ramda'
-import { Omit } from 'type-zoo'
 
 import { AudioNodeConnection } from '~/types'
 

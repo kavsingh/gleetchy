@@ -3,6 +3,18 @@ const unusedVarsConfig = [
   { ignoreRestSiblings: true, varsIgnorePattern: '^_' },
 ]
 
+const srcDependencies = {
+  devDependencies: false,
+  optionalDependencies: false,
+  peerDependencies: false,
+}
+
+const devDependencies = {
+  devDependencies: true,
+  optionalDependencies: false,
+  peerDependencies: false,
+}
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -11,12 +23,22 @@ module.exports = {
   },
   settings: {
     react: { version: 'detect' },
+    'import/resolver': 'babel-module',
   },
   env: { node: true, browser: false, es6: true },
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jest', 'prettier'],
+  plugins: [
+    '@typescript-eslint',
+    'import',
+    'react',
+    'react-hooks',
+    'jest',
+    'prettier',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     'plugin:react/recommended',
     'plugin:jest/recommended',
     'plugin:jest/style',
@@ -29,6 +51,12 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': ['warn', 'never'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'import/no-absolute-path': 'warn',
+    'import/no-cycle': 'warn',
+    'import/no-extraneous-dependencies': ['error', devDependencies],
+    'import/no-self-import': 'warn',
+    'import/no-unused-modules': 'warn',
+    'import/no-useless-path-segments': 'warn',
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
@@ -55,6 +83,7 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
+        'import/no-extraneous-dependencies': ['error', devDependencies],
       },
     },
     {
@@ -63,6 +92,7 @@ module.exports = {
       rules: {
         'no-console': 'error',
         '@typescript-eslint/no-var-requires': 'error',
+        'import/no-extraneous-dependencies': ['error', srcDependencies],
       },
     },
   ],
