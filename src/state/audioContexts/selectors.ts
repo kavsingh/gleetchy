@@ -1,6 +1,6 @@
-import { head, identity } from 'ramda'
 import { createSelector } from 'reselect'
 
+import { MAIN_OUT_ID } from '~/constants/audio'
 import { ApplicationState } from '~/state/configureStore'
 
 const audioContextsStateSelector = (state: ApplicationState) =>
@@ -8,10 +8,10 @@ const audioContextsStateSelector = (state: ApplicationState) =>
 
 export const audioContextsSelector = createSelector(
   audioContextsStateSelector,
-  identity,
+  ({ byId }) => byId,
 )
 
 export const mainOutSelector = createSelector(
-  audioContextsSelector,
-  head,
+  audioContextsStateSelector,
+  ({ byId }) => byId[MAIN_OUT_ID],
 )

@@ -1,30 +1,28 @@
-import produce from 'immer'
 import { Reducer } from 'redux'
 
-import { audioContexts } from '~/state/defaultNodes'
-import { AudioNodeState } from '~/types'
+import { audioContexts, AudioContextNode } from '~/state/defaultNodes'
+import {
+  constructDefaultState,
+  NodesReducerState,
+  updateNodeLabelInState,
+} from '~/state/nodeReducerUtil'
 
 import { AudioContextsAction } from './types'
 
-export type AudioContextsState = AudioNodeState<{}>[]
+export type AudioContextsState = NodesReducerState<AudioContextNode>
 
-const defaultState: AudioContextsState = [...audioContexts]
+const defaultState = constructDefaultState<AudioContextNode>(audioContexts)
 
 const audioContextsReducer: Reducer<AudioContextsState, AudioContextsAction> = (
   state = defaultState,
   action,
-): AudioContextsState => {
+) => {
   switch (action.type) {
     case 'AUDIO_CONTEXT_UPDATE_LABEL':
-      return produce<AudioContextsState>(state, draftState => {
-        const existingIdx = draftState.findIndex(
-          ({ id }) => id === action.payload.id,
-        )
-
-        if (existingIdx !== -1) {
-          draftState[existingIdx].label = action.payload.label
-        }
-      })
+      return updateNodeLabelInState<AudioContextNode, AudioContextsState>(
+        state,
+        action.payload,
+      )
     default:
       return state
   }
