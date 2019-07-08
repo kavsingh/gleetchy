@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, FunctionComponent } from 'react'
 
 import { getConnectionBetween, canConnectNodes } from '~/util/audio'
 import useConnections from '~/hooks/useConnections'
@@ -6,7 +6,7 @@ import useAllNodes from '~/hooks/useAllNodes'
 
 import PatchBay from './PatchBay'
 
-export default function ConnectedPatchBay() {
+const PatchBayContainer: FunctionComponent = () => {
   const { allNodes } = useAllNodes()
   const { sources, targets, connections, toggleConnection } = useConnections()
 
@@ -29,3 +29,5 @@ export default function ConnectedPatchBay() {
     />
   )
 }
+
+export default PatchBayContainer
