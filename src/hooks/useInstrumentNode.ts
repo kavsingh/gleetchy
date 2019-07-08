@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { AudioNodeConnection } from '~/types'
+import { AudioNodeConnection, AudioNodeState } from '~/types'
 import {
   updateInstrumentPropsAction,
   updateInstrumentLabelAction,
@@ -14,7 +14,7 @@ import useConnections from './useConnections'
 
 const useInstrumentNode = <T>(
   id: string,
-  isValid: (node: unknown) => boolean,
+  isValid: (node: AudioNodeState) => boolean,
   defaultAudioProps: T,
 ) => {
   const dispatch = useDispatch()
@@ -23,7 +23,7 @@ const useInstrumentNode = <T>(
   const { connections: allConnections } = useConnections()
 
   const [label, setLabel] = useState('')
-  const [props, setProps] = useState<T>(defaultAudioProps)
+  const [audioProps, setAudioProps] = useState<T>(defaultAudioProps)
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
   const [isActive, setIsActive] = useState(false)
 
@@ -48,7 +48,7 @@ const useInstrumentNode = <T>(
     if (!node) throw new Error(`Instrument not found at id ${id}`)
     if (!isValid(node)) throw new Error(`Unexpected node type for ${id}`)
 
-    setProps(node.props as any)
+    setAudioProps(node.props as any) // eslint-disable-line
     setLabel(node.label)
   }, [id, nodes, isValid])
 
@@ -62,7 +62,7 @@ const useInstrumentNode = <T>(
 
   return {
     label,
-    props,
+    audioProps,
     connections,
     isActive,
     updateAudioProps,
