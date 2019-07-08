@@ -4,7 +4,7 @@ import UI from './UI'
 import useUITheme from '~/hooks/useUITheme'
 import useGlobalPlayback from '~/hooks/useGlobalPlayback'
 
-const UIContainer: FunctionComponent = () => {
+const ConnectedUI: FunctionComponent = () => {
   const { isPlaying, togglePlayBack } = useGlobalPlayback()
   const { theme, toggleTheme } = useUITheme()
 
@@ -18,4 +18,4 @@ const UIContainer: FunctionComponent = () => {
   )
 }
 
-export default UIContainer
+export default ConnectedUI
