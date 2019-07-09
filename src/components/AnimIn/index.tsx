@@ -5,17 +5,22 @@ import React, {
   memo,
   ReactNode,
 } from 'react'
-import posed from 'react-pose'
 import { css } from '@emotion/core'
 
 const rootStyle = css({
   height: '100%',
   width: '100%',
+  transition: 'transform 0.3s ease-out, opacity 0.3s ease-out',
 })
 
-const Root = posed.div({
-  hidden: { opacity: 0 },
-  visible: { opacity: 1 },
+const hiddenStyle = css({
+  opacity: 0,
+  transform: 'translate(0, -4%)',
+})
+
+const visibleStyle = css({
+  opacity: 1,
+  transform: 'translate(0, 0)',
 })
 
 // For some reason memo does not expose children properly.
@@ -30,9 +35,9 @@ const AnimIn: FunctionComponent<{ children: ReactNode }> = ({ children }) => {
   }, [])
 
   return (
-    <Root css={rootStyle} pose={isVisible ? 'visible' : 'hidden'}>
+    <div css={[rootStyle, isVisible ? visibleStyle : hiddenStyle]}>
       {children}
-    </Root>
+    </div>
   )
 }
 
