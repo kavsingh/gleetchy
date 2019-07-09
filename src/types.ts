@@ -39,11 +39,6 @@ export interface AudioNodeConnection {
   color: string
 }
 
-export interface AudioEngineEvent<PAYLOAD = any> {
-  type: string
-  payload: PAYLOAD
-}
-
 export interface AudioFileData {
   buffer: ArrayBuffer
   fileName: string

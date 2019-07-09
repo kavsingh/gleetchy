@@ -1,12 +1,11 @@
 import { Reducer } from 'redux'
+import produce from 'immer'
 
-import { AudioFilesAction } from '~/state/audioFiles/types'
-import { ConnectionsAction } from '~/state/connections/types'
-import { GlobalPlaybackAction } from '~/state/globalPlayback/types'
-import { AudioEngineEvent } from '~/types'
-
-import { AudioEngineAction } from './types'
+import { AudioFilesAction } from '../audioFiles/types'
+import { ConnectionsAction } from '../connections/types'
+import { GlobalPlaybackAction } from '../globalPlayback/types'
 import { AudioNodesAction } from '../audioNodes/types'
+import { AudioEngineAction, AudioEngineEvent } from './types'
 
 export interface AudioEngineState {
   events: AudioEngineEvent[]
@@ -28,22 +27,17 @@ const audioEngineReducer: Reducer<
     case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
     case 'CONNECTION_ADD':
     case 'CONNECTION_REMOVE':
-    case 'AUDIO_FILE_DECODE_COMPLETE': {
-      const event: AudioEngineEvent<typeof action.payload> = {
-        payload: action.payload,
-        type: action.type,
-      }
-
-      return { ...state, events: state.events.concat(event) }
-    }
+    case 'AUDIO_FILE_DECODE_COMPLETE':
     case 'GLOBAL_PLAYBACK_START':
     case 'GLOBAL_PLAYBACK_STOP': {
-      const event: AudioEngineEvent<{}> = { type: action.type, payload: {} }
-
-      return { ...state, events: state.events.concat(event) }
+      return produce(state, draftState => {
+        draftState.events.push(action as AudioEngineEvent)
+      })
     }
     case 'AUDIO_ENGINE_CLEAR_EVENTS':
-      return state.events.length ? { ...state, events: [] } : state
+      return produce(state, draftState => {
+        if (draftState.events.length) draftState.events = []
+      })
     default:
       return state
   }
