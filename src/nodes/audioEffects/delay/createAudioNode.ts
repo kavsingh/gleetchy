@@ -1,10 +1,10 @@
-import { always, curry, pick } from 'ramda'
+import { always, curry } from 'ramda'
 
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { GAudioNode } from '~/types'
 import { connectable } from '~/util/connection'
 
-import nodeProps from './nodeProps'
+import { defaultProps, Props } from './nodeProps'
 import nodeType from './nodeType'
 
 const updateWetDry = (
@@ -16,11 +16,9 @@ const updateWetDry = (
   Object.assign(dryGainNode.gain, { value: 1 - wetDryRatio })
 }
 
-export const pickProps = pick(Object.keys(nodeProps))
-
 export default curry(
-  (audioContext: AudioContext, initProps: typeof nodeProps): GAudioNode => {
-    const props = { ...nodeProps, ...pickProps(initProps || {}) }
+  (audioContext: AudioContext, initProps: Partial<Props>): GAudioNode => {
+    const props: Props = { ...defaultProps, ...initProps }
     const delayNode = audioContext.createDelay(DELAY_UPPER_BOUND)
     const inNode = audioContext.createGain()
     const outNode = audioContext.createGain()
@@ -43,8 +41,8 @@ export default curry(
     })({
       type: nodeType,
 
-      set(newProps = {}) {
-        Object.assign(props, pickProps(newProps))
+      set(newProps: Partial<Props> = {}) {
+        Object.assign(props, newProps)
 
         delayNode.delayTime.value = props.delayTime
         updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)

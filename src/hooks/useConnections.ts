@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { AudioNodeIdentifier } from '~/types'
+import { AudioNodeMeta } from '~/types'
 import { connectionsSelector } from '~/state/connections/selectors'
 import { toggleConnectionAction } from '~/state/connections/actions'
 
@@ -17,8 +17,8 @@ const useConnections = () => {
   const { orderedIdentifiers: audioEffectIdentifiers } = useAudioEffectNodes()
   const { mainOut } = useAudioContextNodes()
 
-  const [sources, setSources] = useState<AudioNodeIdentifier[]>([])
-  const [targets, setTargets] = useState<AudioNodeIdentifier[]>([])
+  const [sources, setSources] = useState<AudioNodeMeta[]>([])
+  const [targets, setTargets] = useState<AudioNodeMeta[]>([])
 
   useEffect(() => {
     setSources([...instrumentIdentifiers, ...audioEffectIdentifiers])
@@ -31,8 +31,8 @@ const useConnections = () => {
   }, [audioEffectIdentifiers, mainOut])
 
   const toggleConnection = (
-    { id: from }: AudioNodeIdentifier,
-    { id: to }: AudioNodeIdentifier,
+    { id: from }: AudioNodeMeta,
+    { id: to }: AudioNodeMeta,
   ) => dispatch(toggleConnectionAction(from, to))
 
   return {

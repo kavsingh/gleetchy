@@ -132,7 +132,7 @@ class AudioEngine extends Component<AudioEngineProps> {
 
         const newNode: AudioEngineNode = nodeCreator(
           this.audioContext,
-          node.props,
+          node.audioProps,
         )
 
         this.audioNodes[node.id] = newNode

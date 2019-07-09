@@ -2,15 +2,15 @@
 
 import { Action } from 'redux'
 
-export interface AudioNodeIdentifier {
+export interface AudioNodeMeta {
   id: string
   type: string
 }
 
 export interface AudioNodeState<PROPS extends object = {}>
-  extends AudioNodeIdentifier {
+  extends AudioNodeMeta {
   label: string
-  props: PROPS
+  audioProps: PROPS
 }
 
 export type AudioNodeReturn = () => AudioNode
@@ -20,14 +20,15 @@ export interface AudioNodeConnectableProxy {
   getOutNode: AudioNodeReturn
 }
 
-export interface GAudioNode<T extends string = any, P extends object = any>
+export interface GAudioNode<P extends object = any, T extends string = any>
   extends AudioNode,
     AudioNodeConnectableProxy {
   type: T
   set(props: P): void
 }
 
-export interface InstrumentNode extends GAudioNode {
+export interface InstrumentNode<P extends object = any, T extends string = any>
+  extends GAudioNode<P, T> {
   play(): void
   stop(): void
 }

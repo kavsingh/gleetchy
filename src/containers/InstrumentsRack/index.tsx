@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import { css } from '@emotion/core'
 
-import { AudioNodeIdentifier } from '~/types'
+import { AudioNodeMeta } from '~/types'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
 import useInstrumentNodes from '~/hooks/useInstrumentNodes'
 import AnimIn from '~/components/AnimIn'
@@ -31,7 +31,7 @@ const addButtonStyle = css({
 })
 
 export interface InstrumentsRackProps {
-  instruments: AudioNodeIdentifier[]
+  instruments: AudioNodeMeta[]
   addLoop(): unknown
 }
 

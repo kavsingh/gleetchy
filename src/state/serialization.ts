@@ -38,13 +38,7 @@ const unsetUnserializable = (struct: unknown): unknown => {
 }
 
 export const serialize: (state: ApplicationState) => string = pipe(
-  pick<keyof ApplicationState>([
-    'audioContexts',
-    'instruments',
-    'audioEffects',
-    'connections',
-    'audioFiles',
-  ]),
+  pick<keyof ApplicationState>(['audioNodes', 'connections', 'audioFiles']),
   (state: Partial<ApplicationState>) =>
     JSON.stringify(unsetUnserializable(state)),
 )

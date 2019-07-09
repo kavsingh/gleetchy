@@ -1,7 +1,7 @@
 import React, { memo, FunctionComponent } from 'react'
 import { css } from '@emotion/core'
 
-import { AudioNodeIdentifier } from '~/types'
+import { AudioNodeMeta } from '~/types'
 import { noop } from '~/util/function'
 import AnimIn from '~/components/AnimIn'
 import { nodeType as delayType } from '~/nodes/audioEffects/delay'
@@ -37,7 +37,7 @@ const addAudioEffectButtonStyle = css({
 })
 
 export interface AudioEffectsRackProps {
-  audioEffects: AudioNodeIdentifier[]
+  audioEffects: AudioNodeMeta[]
   addReverb(): unknown
   addDelay(): unknown
 }

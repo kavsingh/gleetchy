@@ -28,7 +28,7 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
     )
   }
 
-  const { props, label } = delay
+  const { audioProps: props, label } = delay
 
   return {
     connections: getConnectionsFor(id, connectionsSelector(state)),

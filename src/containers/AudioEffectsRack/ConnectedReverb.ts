@@ -28,7 +28,7 @@ const mapStateToProps = (state: ApplicationState, { id }: { id: string }) => {
     )
   }
 
-  const { props, label } = reverb
+  const { audioProps: props, label } = reverb
 
   return {
     connections: getConnectionsFor(id, connectionsSelector(state)),

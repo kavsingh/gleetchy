@@ -1,8 +1,8 @@
 import produce from 'immer'
-import { AudioNodeIdentifier, AudioNodeState } from '~/types'
+import { AudioNodeMeta, AudioNodeState } from '~/types'
 
 export interface NodesReducerState<T extends AudioNodeState> {
-  orderedIdentifiers: AudioNodeIdentifier[]
+  orderedIdentifiers: AudioNodeMeta[]
   byId: { [key: string]: T }
 }
 
@@ -55,7 +55,7 @@ export const updateNodePropsInState = <
       return
     }
 
-    Object.assign(existing.props, props)
+    Object.assign(existing.audioProps, props)
   })
 
 export const updateNodeLabelInState = <
