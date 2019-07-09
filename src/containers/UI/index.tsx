@@ -1,8 +1,9 @@
 import React, { FunctionComponent } from 'react'
 
-import UI from './UI'
 import useUITheme from '~/hooks/useUITheme'
 import useGlobalPlayback from '~/hooks/useGlobalPlayback'
+
+import UI from './UI'
 
 const ConnectedUI: FunctionComponent = () => {
   const { isPlaying, togglePlayBack } = useGlobalPlayback()

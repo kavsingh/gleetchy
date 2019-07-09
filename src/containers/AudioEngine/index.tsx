@@ -6,6 +6,7 @@ import { clearAudioEngineEventsAction } from '~/state/audioEngine/actions'
 import useConnections from '~/hooks/useConnections'
 import useGlobalPlayback from '~/hooks/useGlobalPlayback'
 import useAudioNodes from '~/hooks/useAudioNodes'
+import ErrorBoundary from '~/components/ErrorBoundary'
 
 import AudioEngine from './AudioEngine'
 
@@ -23,13 +24,15 @@ const ConnectedAudioEngine: FunctionComponent = () => {
   )
 
   return (
-    <AudioEngine
-      isPlaying={isPlaying}
-      nodes={nodes}
-      connections={connections}
-      audioEngineEvents={audioEngineEvents}
-      clearAudioEngineEvents={clearAudioEngineEvents}
-    />
+    <ErrorBoundary>
+      <AudioEngine
+        isPlaying={isPlaying}
+        nodes={nodes}
+        connections={connections}
+        audioEngineEvents={audioEngineEvents}
+        clearAudioEngineEvents={clearAudioEngineEvents}
+      />
+    </ErrorBoundary>
   )
 }
 

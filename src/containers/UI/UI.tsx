@@ -4,13 +4,13 @@ import { css, Global } from '@emotion/core'
 import { GoMarkGithub } from 'react-icons/go'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
+import favicon from '~/assets/icons/48x48.png'
 import { UITheme } from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
-
-import favicon from '~/assets/icons/48x48.png'
+import ErrorBoundary from '~/components/ErrorBoundary'
 
 const globalStyles = (theme: UITheme) =>
   css({
@@ -143,14 +143,20 @@ const UIMain: FunctionComponent<UIMainProps> = ({
       </div>
     </div>
     <div css={borderedSectionStyle}>
-      <InstrumentsRack />
+      <ErrorBoundary>
+        <InstrumentsRack />
+      </ErrorBoundary>
     </div>
     <div css={connectContainerStyle}>
       <div css={audioEffectsRackContainerStyle}>
-        <AudioEffectsRack />
+        <ErrorBoundary>
+          <AudioEffectsRack />
+        </ErrorBoundary>
       </div>
       <div css={patchBayContainerStyle}>
-        <PatchBay />
+        <ErrorBoundary>
+          <PatchBay />
+        </ErrorBoundary>
       </div>
     </div>
   </div>
@@ -165,7 +171,9 @@ export interface UIProps extends UIMainProps {
 const UI: FunctionComponent<UIProps> = ({ theme, ...uiMainProps }) => (
   <ThemeProvider theme={theme}>
     <Global styles={globalStyles} />
-    <UIMainThemable {...uiMainProps} />
+    <ErrorBoundary>
+      <UIMainThemable {...uiMainProps} />
+    </ErrorBoundary>
   </ThemeProvider>
 )
 
