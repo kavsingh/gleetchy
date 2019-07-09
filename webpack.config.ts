@@ -89,6 +89,9 @@ const config: Configuration = {
     process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
   ].filter(Boolean) as webpack.Plugin[],
   resolve: {
+    alias: isProduction
+      ? { react: 'preact/compat', 'react-dom': 'preact/compat' }
+      : {},
     extensions: ['.ts', '.tsx', '.js'],
   },
 }
