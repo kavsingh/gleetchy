@@ -1,18 +1,17 @@
-import React, { memo, FunctionComponent } from 'react'
+import React, { FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
 import { css, Global } from '@emotion/core'
-import { GoMarkGithub } from 'react-icons/go'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
 import favicon from '~/assets/icons/48x48.png'
 import { UITheme } from '~/style/theme'
-import useGlobalPlayback from '~/hooks/useGlobalPlayback'
 import useUITheme from '~/hooks/useUITheme'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
-import PlayPauseButton from '~/components/PlayPauseButton'
 import ErrorBoundary from '~/components/ErrorBoundary'
+
+import Masthead from './Masthead'
 
 const globalStyles = (theme: UITheme) =>
   css({
@@ -78,72 +77,12 @@ const patchBayContainerStyle = css({
   flexShrink: 0,
 })
 
-const mastheadStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: '100%',
-})
-
-const metaControlStyle = (theme: UITheme) =>
-  css({
-    display: 'flex',
-    flexFlow: 'row nowrap',
-    alignItems: 'center',
-    alignSelf: 'stretch',
-
-    '& a, & button': {
-      display: 'block',
-      appearance: 'none',
-      color: theme.colorBody,
-      opacity: 0.4,
-      transition: 'opacity 0.2s ease-out',
-      cursor: 'pointer',
-    },
-
-    '& a:hover, & button:hover': {
-      opacity: 1,
-    },
-
-    '& button': {
-      backgroundColor: 'transparent',
-      fontFamily: theme.fontBody,
-      fontSize: '0.8em',
-      margin: '0 1em 0 0',
-      padding: 0,
-      border: 'none',
-    },
-  })
-
-interface UIMainProps {
-  isPlaying: boolean
-  togglePlayback(): unknown
-  changeTheme(): unknown
-}
-
-const UIMain: FunctionComponent<UIMainProps> = ({
-  isPlaying,
-  togglePlayback,
-  changeTheme,
-}) => (
+const UIMain: FunctionComponent = () => (
   <div css={rootStyle}>
     <Favicon url={favicon} />
     <div css={borderedSectionStyle}>
       <ErrorBoundary>
-        <div css={mastheadStyle}>
-          <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
-          <div css={metaControlStyle}>
-            <button onClick={changeTheme}>L/D</button>
-            <a
-              href="https://www.github.com/kavsingh/gleetchy"
-              target="_blank"
-              rel="noopener noreferrer"
-              title="view on github"
-            >
-              <GoMarkGithub />
-            </a>
-          </div>
-        </div>
+        <Masthead />
       </ErrorBoundary>
     </div>
     <div css={borderedSectionStyle}>
@@ -166,20 +105,15 @@ const UIMain: FunctionComponent<UIMainProps> = ({
   </div>
 )
 
-const UIMainThemable = memo(withTheme(UIMain))
+const UIMainThemable = withTheme(UIMain)
 
 const UI: FunctionComponent = () => {
-  const { theme, toggleTheme } = useUITheme()
-  const { isPlaying, togglePlayBack } = useGlobalPlayback()
+  const { theme } = useUITheme()
 
   return (
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles} />
-      <UIMainThemable
-        isPlaying={isPlaying}
-        togglePlayback={togglePlayBack}
-        changeTheme={toggleTheme}
-      />
+      <UIMainThemable />
     </ThemeProvider>
   )
 }

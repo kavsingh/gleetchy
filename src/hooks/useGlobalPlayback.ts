@@ -8,12 +8,12 @@ const useGlobalPlayback = () => {
 
   const isPlaying = useSelector(isPlayingSelector)
 
-  const togglePlayBack = useCallback(
+  const togglePlayback = useCallback(
     () => dispatch(toggleGlobalPlaybackAction()),
     [dispatch],
   )
 
-  return { isPlaying, togglePlayBack }
+  return { isPlaying, togglePlayback }
 }
 
 export default useGlobalPlayback

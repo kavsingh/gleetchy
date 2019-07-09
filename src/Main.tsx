@@ -4,11 +4,16 @@ import { Provider } from 'react-redux'
 import { ApplicationStore } from '~/state/configureStore'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
+import ErrorBoundary from './components/ErrorBoundary'
 
 const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
   <Provider store={store}>
-    <AudioEngine />
-    <UI />
+    <ErrorBoundary>
+      <AudioEngine />
+    </ErrorBoundary>
+    <ErrorBoundary>
+      <UI />
+    </ErrorBoundary>
   </Provider>
 )
 
