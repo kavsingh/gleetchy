@@ -6,7 +6,7 @@ import color from 'color'
 import { noop } from '~/util/function'
 import { canConnectNodes, getConnectionBetween } from '~/util/audio'
 import { UITheme } from '~/style/theme'
-import useAllNodes from '~/hooks/useAllNodes'
+import useAudioNodes from '~/hooks/useAudioNodes'
 import useConnections from '~/hooks/useConnections'
 import useUITheme from '~/hooks/useUITheme'
 
@@ -69,16 +69,14 @@ const nodeBlockedStyle = (theme: UITheme) =>
   })
 
 const PatchBay: FunctionComponent = () => {
-  const { allNodes } = useAllNodes()
+  const { nodes } = useAudioNodes()
   const { sources, targets, connections, toggleConnection } = useConnections()
   const { theme } = useUITheme()
 
   const canConnect = useCallback(canConnectNodes(connections), [connections])
+  const getNodeLabel = useCallback((id: string) => nodes[id].label, [nodes])
   const getConnection = useCallback(getConnectionBetween(connections), [
     connections,
-  ])
-  const getNodeLabel = useCallback((id: string) => allNodes[id].label, [
-    allNodes,
   ])
 
   return (

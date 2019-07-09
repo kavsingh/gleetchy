@@ -18,8 +18,10 @@ import {
 } from '~/nodes/instruments/loop'
 import initialNodes from '~/state/defaultNodes'
 import { prefixedId } from '~/util/id'
+import { pickObjectKeys } from '~/util/object'
 import { AudioNodeState, AudioNodeMeta } from '~/types'
 
+import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
 import { AudioNodesAction } from './types'
 
 type NodeState = AudioNodeState<
@@ -62,9 +64,9 @@ const getNewNodeState = (type: string): AudioNodeState | null => {
     }
     case loopNodeType: {
       return {
-        type: loopNodeType,
+        type,
         id: prefixedId(loopNodeType),
-        label: `RX`,
+        label: 'LX',
         audioProps: { ...loopDefaultProps },
       }
     }
@@ -87,10 +89,10 @@ const addNode = (state: AudioNodesState, { type }: { type: string }) => {
   })
 }
 
-const audioNodesReducer: Reducer<AudioNodesState, AudioNodesAction> = (
-  state = defaultState,
-  action,
-) => {
+const audioNodesReducer: Reducer<
+  AudioNodesState,
+  AudioNodesAction | AudioFileDecodeCompleteAction
+> = (state = defaultState, action) => {
   switch (action.type) {
     case 'AUDIO_NODE_ADD':
       return addNode(state, action.payload)
@@ -122,6 +124,18 @@ const audioNodesReducer: Reducer<AudioNodesState, AudioNodesAction> = (
         const existing = draftState.byId[action.payload.id]
 
         if (existing) existing.label = action.payload.label
+      })
+    case 'AUDIO_FILE_DECODE_COMPLETE':
+      return produce(state, draftState => {
+        const { id, file } = action.payload
+        const existing = draftState.byId[id]
+
+        if (existing) {
+          Object.assign(
+            existing.audioProps,
+            pickObjectKeys(existing.audioProps)(file),
+          )
+        }
       })
     default:
       return state

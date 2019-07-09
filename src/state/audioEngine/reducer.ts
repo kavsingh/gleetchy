@@ -1,13 +1,12 @@
 import { Reducer } from 'redux'
 
-import { AudioEffectsAction } from '~/state/audioEffects/types'
 import { AudioFilesAction } from '~/state/audioFiles/types'
 import { ConnectionsAction } from '~/state/connections/types'
 import { GlobalPlaybackAction } from '~/state/globalPlayback/types'
-import { InstrumentsAction } from '~/state/instruments/types'
 import { AudioEngineEvent } from '~/types'
 
 import { AudioEngineAction } from './types'
+import { AudioNodesAction } from '../audioNodes/types'
 
 export interface AudioEngineState {
   events: AudioEngineEvent[]
@@ -17,20 +16,16 @@ const defaultState = { events: [] }
 
 const audioEngineReducer: Reducer<
   AudioEngineState,
-  | AudioEffectsAction
+  | AudioNodesAction
   | AudioFilesAction
   | ConnectionsAction
   | GlobalPlaybackAction
-  | InstrumentsAction
   | AudioEngineAction
 > = (state = defaultState, action) => {
   switch (action.type) {
-    case 'INSTRUMENT_ADD':
-    case 'INSTRUMENT_REMOVE':
-    case 'INSTRUMENT_UPDATE_PROPS':
-    case 'AUDIO_EFFECT_ADD':
-    case 'AUDIO_EFFECT_REMOVE':
-    case 'AUDIO_EFFECT_UPDATE_PROPS':
+    case 'AUDIO_NODE_ADD':
+    case 'AUDIO_NODE_REMOVE':
+    case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
     case 'CONNECTION_ADD':
     case 'CONNECTION_REMOVE':
     case 'AUDIO_FILE_DECODE_COMPLETE': {

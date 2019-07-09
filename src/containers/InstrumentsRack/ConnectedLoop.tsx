@@ -1,14 +1,12 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { nodeType, nodeProps, UI as Loop } from '~/nodes/instruments/loop'
+import { nodeType, NodeProps, defaultProps, UI } from '~/nodes/instruments/loop'
 import {
   receiveAudioFileAction,
   selectAudioFileAction,
 } from '~/state/audioFiles/actions'
-import useInstrumentNode from '~/hooks/useInstrumentNode'
-
-type LoopNodeProps = typeof nodeProps
+import useAudioNode from '~/hooks/useAudioNode'
 
 const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
   const {
@@ -19,11 +17,7 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
     updateAudioProps,
     updateLabel,
     remove,
-  } = useInstrumentNode<LoopNodeProps>(
-    id,
-    node => node.type === nodeType,
-    nodeProps,
-  )
+  } = useAudioNode<NodeProps>(id, node => node.type === nodeType, defaultProps)
 
   const dispatch = useDispatch()
 
@@ -38,7 +32,7 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
   )
 
   return (
-    <Loop
+    <UI
       loopStart={audioProps.loopStart}
       loopEnd={audioProps.loopEnd}
       label={label}

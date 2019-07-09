@@ -53,7 +53,7 @@ export interface AudioEngineProps {
   audioEngineEvents: AudioEngineEvent[]
   connections: AudioNodeConnection[]
   isPlaying: boolean
-  nodes: AudioNodeState[]
+  nodes: { [key: string]: AudioNodeState }
   clearAudioEngineEvents(): unknown
 }
 
@@ -115,20 +115,20 @@ class AudioEngine extends Component<AudioEngineProps> {
   private updateAudioNodes() {
     if (!this.audioContext) return
 
-    const { nodes = [], isPlaying = false } = this.props
+    const { nodes: nextNodes = {}, isPlaying = false } = this.props
+    const nextNodeIds = Object.keys(nextNodes)
 
     this.audioNodes = Object.entries(this.audioNodes).length
-      ? pick([...nodes.map(({ id }) => id), MAIN_OUT_ID], this.audioNodes)
+      ? pick(nextNodeIds, this.audioNodes)
       : { [MAIN_OUT_ID]: this.audioContext.destination }
 
-    nodes
-      .filter(node => !this.audioNodes[node.id])
-      .forEach(node => {
+    nextNodeIds
+      .filter(id => !this.audioNodes[id])
+      .forEach(id => {
+        const node = nextNodes[id]
         const nodeCreator = getNodeCreator(node) as NodeCreator
 
-        if (!nodeCreator) {
-          return
-        }
+        if (!nodeCreator) return
 
         const newNode: AudioEngineNode = nodeCreator(
           this.audioContext,
@@ -148,9 +148,7 @@ class AudioEngine extends Component<AudioEngineProps> {
 
     const { connections } = this.props
 
-    if (!connections.length) {
-      return
-    }
+    if (!connections.length) return
 
     connections.forEach(({ from, to }) => {
       const fromNode = this.audioNodes[from]
@@ -165,9 +163,7 @@ class AudioEngine extends Component<AudioEngineProps> {
   private updateNode({ id, props }: { id: string; props: object }) {
     const node = this.audioNodes[id]
 
-    if (!node) {
-      return
-    }
+    if (!node) return
 
     setNodeProps({ node, props })
   }

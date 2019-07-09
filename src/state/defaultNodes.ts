@@ -4,7 +4,7 @@ import * as reverb from '~/nodes/audioEffects/reverb'
 import * as loop from '~/nodes/instruments/loop'
 import { AudioNodeState } from '~/types'
 
-const nodes: AudioNodeState<
+const defaultNodes: AudioNodeState<
   delay.NodeProps | reverb.NodeProps | loop.NodeProps | {}
 >[] = [
   {
@@ -51,4 +51,4 @@ const nodes: AudioNodeState<
   },
 ]
 
-export default nodes
+export default defaultNodes

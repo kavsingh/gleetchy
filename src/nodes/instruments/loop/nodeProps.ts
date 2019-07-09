@@ -13,5 +13,5 @@ export const defaultProps = Object.freeze({
 
 export interface Props
   extends Mutable<Omit<typeof defaultProps, 'audioBuffer'>> {
-  audioBuffer?: AudioBuffer
+  audioBuffer: AudioBuffer | undefined
 }
