@@ -2,15 +2,20 @@ import { useState, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { AudioNodeMeta } from '~/types'
+import {
+  orderedInstrumentsMetaSelector,
+  orderedAudioEffectsMetaSelector,
+  mainOutMetaSelector,
+} from '~/state/audioNodes/selectors'
 import { connectionsSelector } from '~/state/connections/selectors'
 import { toggleConnectionAction } from '~/state/connections/actions'
 
-import useAudioNodesMeta from './useAudioNodesMeta'
-
 const useConnections = () => {
-  const { instruments, audioEffects, mainOut } = useAudioNodesMeta()
-
   const dispatch = useDispatch()
+
+  const instruments = useSelector(orderedInstrumentsMetaSelector)
+  const audioEffects = useSelector(orderedAudioEffectsMetaSelector)
+  const mainOut = useSelector(mainOutMetaSelector)
   const connections = useSelector(connectionsSelector)
 
   const [sources, setSources] = useState<AudioNodeMeta[]>([])

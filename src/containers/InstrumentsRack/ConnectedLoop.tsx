@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { FunctionComponent, useCallback, memo } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { nodeType, NodeProps, defaultProps, UI } from '~/nodes/instruments/loop'
@@ -31,6 +31,25 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
     [id, dispatch],
   )
 
+  const handleGainChange = useCallback(
+    (gain: number) => updateAudioProps({ gain }),
+    [updateAudioProps],
+  )
+
+  const handlePlaybackRateChange = useCallback(
+    (playbackRate: number) => updateAudioProps({ playbackRate }),
+    [updateAudioProps],
+  )
+
+  const handleEqChange = useCallback(eqProps => updateAudioProps(eqProps), [
+    updateAudioProps,
+  ])
+
+  const handleLoopRegionChange = useCallback(
+    (loopStart, loopEnd) => updateAudioProps({ loopStart, loopEnd }),
+    [updateAudioProps],
+  )
+
   return (
     <UI
       loopStart={audioProps.loopStart}
@@ -45,18 +64,16 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
       playbackRate={audioProps.playbackRate}
       gain={audioProps.gain}
       audioBuffer={audioProps.audioBuffer}
-      onGainChange={gain => updateAudioProps({ gain })}
-      onPlaybackRateChange={playbackRate => updateAudioProps({ playbackRate })}
-      onEqChange={eqProps => updateAudioProps(eqProps)}
+      onGainChange={handleGainChange}
+      onPlaybackRateChange={handlePlaybackRateChange}
+      onEqChange={handleEqChange}
       selectAudioFile={selectAudioFile}
       receiveAudioFile={receiveAudioFile}
-      onLoopRegionChange={(loopStart, loopEnd) =>
-        updateAudioProps({ loopStart, loopEnd })
-      }
+      onLoopRegionChange={handleLoopRegionChange}
       onLabelChange={updateLabel}
       remove={remove}
     />
   )
 }
 
-export default ConnectedLoop
+export default memo(ConnectedLoop)

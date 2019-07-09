@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, memo, useCallback } from 'react'
 
 import {
   nodeType,
@@ -19,6 +19,16 @@ const ConnectedReverb: FunctionComponent<{ id: string }> = ({ id }) => {
     remove,
   } = useAudioNode<NodeProps>(id, node => node.type === nodeType, defaultProps)
 
+  const handleDelayTimeChange = useCallback(
+    delayTime => updateAudioProps({ delayTime }),
+    [updateAudioProps],
+  )
+
+  const handleWetDryRatioChange = useCallback(
+    wetDryRatio => updateAudioProps({ wetDryRatio }),
+    [updateAudioProps],
+  )
+
   return (
     <UI
       connections={connections}
@@ -27,11 +37,11 @@ const ConnectedReverb: FunctionComponent<{ id: string }> = ({ id }) => {
       delayTime={audioProps.delayTime}
       wetDryRatio={audioProps.wetDryRatio}
       onLabelChange={updateLabel}
-      onDelayTimeChange={delayTime => updateAudioProps({ delayTime })}
-      onWetDryRatioChange={wetDryRatio => updateAudioProps({ wetDryRatio })}
+      onDelayTimeChange={handleDelayTimeChange}
+      onWetDryRatioChange={handleWetDryRatioChange}
       remove={remove}
     />
   )
 }
 
-export default ConnectedReverb
+export default memo(ConnectedReverb)

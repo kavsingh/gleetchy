@@ -5,13 +5,18 @@ import {
   activeAudioNodeIdsSelector,
 } from '~/state/audioNodes/selectors'
 import { addAudioNodeAction } from '~/state/audioNodes/actions'
+import { useCallback } from 'react'
 
 const useAudioNodes = () => {
   const dispatch = useDispatch()
+
   const nodes = useSelector(audioNodesSelector)
   const activeIds = useSelector(activeAudioNodeIdsSelector)
 
-  const add = (type: string) => dispatch(addAudioNodeAction(type))
+  const add = useCallback(
+    (type: string) => dispatch(addAudioNodeAction(type)),
+    [dispatch],
+  )
 
   return { nodes, activeIds, add }
 }

@@ -1,5 +1,5 @@
 import { T } from 'ramda'
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 
 import { noop } from '~/util/function'
 import { cancelReactEvent } from '~/util/event'
@@ -22,21 +22,24 @@ export default function useFileDropRegion({
 }: UseFileDropRegionProps) {
   const [isDropActive, setIsDropActive] = useState(false)
 
-  const onDrop = (event: React.DragEvent) => {
-    const receivable = Array.from(
-      (event.dataTransfer || {}).files || [],
-    ).filter(fileFilter)
+  const onDrop = useCallback(
+    (event: React.DragEvent) => {
+      const receivable = Array.from(
+        (event.dataTransfer || {}).files || [],
+      ).filter(fileFilter)
 
-    cancelReactEvent(event)
+      cancelReactEvent(event)
 
-    if (!receivable.length) {
-      onNoFiles()
-    } else {
-      onFiles(receivable)
-    }
+      if (!receivable.length) {
+        onNoFiles()
+      } else {
+        onFiles(receivable)
+      }
 
-    setIsDropActive(false)
-  }
+      setIsDropActive(false)
+    },
+    [setIsDropActive, onFiles, onNoFiles, fileFilter],
+  )
 
   return [
     isDropActive,

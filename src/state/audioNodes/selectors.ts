@@ -22,6 +22,11 @@ export const mainOutNodeSelector = createSelector(
   ({ byId }) => byId[MAIN_OUT_ID],
 )
 
+export const mainOutMetaSelector = createSelector(
+  mainOutNodeSelector,
+  ({ id, type }) => ({ id, type }),
+)
+
 export const orderedInstrumentsMetaSelector = createSelector(
   orderedAudioNodesMetaSelector,
   meta => meta.filter(node => /^instrument/i.test(node.type)),

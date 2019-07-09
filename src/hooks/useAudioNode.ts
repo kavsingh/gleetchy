@@ -17,8 +17,9 @@ const useAudioNode = <T>(
   isValid: (node: AudioNodeState) => boolean,
   defaultAudioProps: T,
 ) => {
-  const { nodes, activeIds } = useAudioNodes()
   const dispatch = useDispatch()
+
+  const { nodes, activeIds } = useAudioNodes()
   const { connections: allConnections } = useConnections()
 
   const [label, setLabel] = useState('')
