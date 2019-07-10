@@ -5,11 +5,11 @@ import { Action } from 'redux'
 export interface AudioNodeMeta {
   id: string
   type: string
+  label: string
 }
 
 export interface AudioNodeState<PROPS extends object = {}>
   extends AudioNodeMeta {
-  label: string
   audioProps: PROPS
 }
 

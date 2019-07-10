@@ -6,7 +6,6 @@ import color from 'color'
 import { noop } from '~/util/function'
 import { canConnectNodes, getConnectionBetween } from '~/util/audio'
 import { UITheme } from '~/style/theme'
-import useAudioNodes from '~/hooks/useAudioNodes'
 import useConnections from '~/hooks/useConnections'
 
 const rootStyle = css({
@@ -44,7 +43,7 @@ const rowStyle = css({
   },
 })
 
-const nodeStyle = (theme: UITheme) =>
+const nodeStyle = (theme: UITheme, connectionColor?: string) =>
   css({
     backgroundColor: 'transparent',
     border: `1px solid ${theme.colorKeyline}`,
@@ -53,6 +52,10 @@ const nodeStyle = (theme: UITheme) =>
     margin: '0 auto',
     transition: 'all 0.2s ease-out',
     width: '0.8em',
+
+    '&:hover': {
+      borderColor: connectionColor || theme.colorBody,
+    },
   })
 
 const nodeActiveStyle = (theme: UITheme) =>
@@ -68,11 +71,9 @@ const nodeBlockedStyle = (theme: UITheme) =>
   })
 
 const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
-  const { nodes } = useAudioNodes()
   const { sources, targets, connections, toggleConnection } = useConnections()
 
   const canConnect = useCallback(canConnectNodes(connections), [connections])
-  const getNodeLabel = useCallback((id: string) => nodes[id].label, [nodes])
   const getConnection = useCallback(getConnectionBetween(connections), [
     connections,
   ])
@@ -85,10 +86,10 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
           {sources.map(source => (
             <th
               css={labelStyle}
-              title={`From ${getNodeLabel(source.id)} to ...`}
+              title={`From ${source.label} to ...`}
               key={source.id}
             >
-              {getNodeLabel(source.id)}
+              {source.label}
             </th>
           ))}
         </tr>
@@ -96,45 +97,43 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
           <tr css={rowStyle} key={target.id}>
             <td
               css={labelStyle}
-              title={`From ... to ${getNodeLabel(target.id)}`}
+              title={`From ... to ${target.label}`}
               key="rowLabel"
             >
-              {getNodeLabel(target.id)}
+              {target.label}
             </td>
             {sources.map(source => {
               const connection = getConnection(source, target)
               const blockConnect = !connection && !canConnect(source, target)
               const title = blockConnect
                 ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
-                : `From ${getNodeLabel(source.id)} to ${getNodeLabel(
-                    target.id,
-                  )}`
+                : `From ${source.label} to ${target.label}`
 
               let modClassName: SerializedStyles | undefined
-              if (blockConnect) {
-                modClassName = nodeBlockedStyle(theme)
-              } else if (connection) {
-                modClassName = nodeActiveStyle(theme)
-              }
+
+              if (blockConnect) modClassName = nodeBlockedStyle(theme)
+              else if (connection) modClassName = nodeActiveStyle(theme)
 
               const handleClick = blockConnect
                 ? noop
                 : () => toggleConnection(source, target)
 
+              const connectionColor = connection ? connection.color : ''
+
               return (
-                <td key={source.id}>
+                <td key={`${source.id}-${target.id}`}>
                   <div
                     style={
-                      connection
+                      connectionColor
                         ? {
-                            backgroundColor: connection.color,
-                            borderColor: color(connection.color)
+                            backgroundColor: connectionColor,
+                            borderColor: color(connectionColor)
                               .darken(0.06)
                               .hex(),
                           }
                         : {}
                     }
-                    css={[nodeStyle(theme), modClassName]}
+                    css={[nodeStyle(theme, connectionColor), modClassName]}
                     onClick={handleClick}
                     role="button"
                     tabIndex={0}

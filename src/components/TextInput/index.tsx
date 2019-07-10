@@ -16,7 +16,7 @@ const rootStyle = (theme: UITheme) =>
       color: 'currentColor',
       cursor: 'initial',
       font: 'inherit',
-      transition: 'border-color 0.2s ease-out',
+      transition: 'color 0.2s ease-out, border-color 0.2s ease-out',
 
       '&:hover, &:active, &:focus': {
         color: theme.colorEmphasis,

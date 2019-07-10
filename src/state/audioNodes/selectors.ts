@@ -17,7 +17,7 @@ export const audioNodesSelector = createSelector(
 export const orderedAudioNodesMetaSelector = createSelector(
   audioNodesStateSelector,
   (nodes): AudioNodeMeta[] =>
-    Object.values(nodes).map(({ id, type }) => ({ id, type })),
+    Object.values(nodes).map(({ id, type, label }) => ({ id, type, label })),
 )
 
 export const mainOutNodeSelector = createSelector(
@@ -27,7 +27,7 @@ export const mainOutNodeSelector = createSelector(
 
 export const mainOutMetaSelector = createSelector(
   mainOutNodeSelector,
-  ({ id, type }): AudioNodeMeta => ({ id, type }),
+  ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 )
 
 export const orderedInstrumentsMetaSelector = createSelector(

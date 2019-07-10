@@ -7,6 +7,7 @@ import { UITheme } from '~/style/theme'
 const buttonStyle = (theme: UITheme) =>
   css({
     cursor: 'pointer',
+    transition: 'color 0.2s ease-out',
 
     '&:hover, &:active': {
       color: theme.colorEmphasis,
