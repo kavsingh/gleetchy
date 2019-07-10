@@ -3,7 +3,9 @@ import { css } from '@emotion/core'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
-import TextInput from '~/components/TextInput'
+
+import TextInput from '../TextInput'
+import Button from '../Button'
 
 const rootStyle = css({
   fontSize: '0.8em',
@@ -47,10 +49,6 @@ const typeContainerStyle = css({
   marginRight: '0.3em',
 })
 
-const removeButtonStyle = css({
-  cursor: 'pointer',
-})
-
 export interface TitleBarProps {
   label: string
   type: string
@@ -84,19 +82,7 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
     <div css={infoContainerStyle}>
       <div css={typeContainerStyle}>{type} /</div>
       {typeof children === 'function' ? children() : children}
-      <div
-        css={removeButtonStyle}
-        role="button"
-        onClick={onRemoveClick}
-        tabIndex={0}
-        onKeyDown={event => {
-          if (event.key === 'Enter') {
-            onRemoveClick()
-          }
-        }}
-      >
-        {'[ Remove ]'}
-      </div>
+      <Button label="Remove" handler={onRemoveClick} />
     </div>
   </div>
 )

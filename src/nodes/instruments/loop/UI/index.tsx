@@ -10,6 +10,7 @@ import TitleBar from '~/components/TitleBar'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
 
 import PlaybackControls from './PlaybackControls'
+import Button from '~/components/Button'
 
 const rootStyle = css({
   height: '12em',
@@ -48,12 +49,6 @@ const controlsContainerStyle = css({
   display: 'flex',
   height: '100%',
   marginLeft: '1.2em',
-})
-
-const titleLoadAudioStyle = css({
-  cursor: 'pointer',
-  display: 'inline-block',
-  marginLeft: '0.3em',
 })
 
 const AudioFileDropRegion: FunctionComponent<{
@@ -102,19 +97,8 @@ const renderTitle = (
   <span>
     {fileName ? `${fileName}` : ''}
     {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
-    <span
-      role="button"
-      tabIndex={0}
-      css={titleLoadAudioStyle}
-      onClick={selectAudioFile}
-      onKeyDown={({ key }) => {
-        if (key === 'Enter') {
-          selectAudioFile()
-        }
-      }}
-    >
-      {`${fileName ? ' / ' : ''}[ Load audio file ]`}
-    </span>
+    {fileName ? ' / ' : ''}
+    <Button handler={selectAudioFile} label="Load audio file" />
   </span>
 )
 
