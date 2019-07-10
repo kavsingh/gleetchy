@@ -19,7 +19,7 @@ export const themes: UITheme[] = [
     ...common,
     name: 'dark',
     colorPage: '#101010',
-    colorBody: '#efefef',
+    colorBody: '#c8c8c8',
     colorEmphasis: '#fff',
     colorKeyline: '#195555',
     colorError: '#ec6764',

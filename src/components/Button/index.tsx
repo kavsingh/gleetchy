@@ -1,9 +1,17 @@
 import React, { FunctionComponent } from 'react'
 import { css } from '@emotion/core'
+import { withTheme } from 'emotion-theming'
 
-const buttonStyle = css({
-  cursor: 'pointer',
-})
+import { UITheme } from '~/style/theme'
+
+const buttonStyle = (theme: UITheme) =>
+  css({
+    cursor: 'pointer',
+
+    '&:hover, &:active': {
+      color: theme.colorEmphasis,
+    },
+  })
 
 const Button: FunctionComponent<{
   label: string
@@ -22,4 +30,4 @@ const Button: FunctionComponent<{
   </div>
 )
 
-export default Button
+export default withTheme(Button)

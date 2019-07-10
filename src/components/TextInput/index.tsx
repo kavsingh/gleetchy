@@ -1,25 +1,32 @@
 import React, { PureComponent } from 'react'
 import AutosizeInput from 'react-input-autosize'
 import { css } from '@emotion/core'
+import { withTheme } from 'emotion-theming'
 
 import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
+import { UITheme } from '~/style/theme'
 
-const rootStyle = css({
-  '& input': {
-    backgroundColor: 'transparent',
-    border: 'none',
-    borderBottom: '1px solid transparent',
-    color: 'currentColor',
-    cursor: 'initial',
-    font: 'inherit',
-    transition: 'border-color 0.2s ease-out',
+const rootStyle = (theme: UITheme) =>
+  css({
+    '& input': {
+      backgroundColor: 'transparent',
+      border: 'none',
+      borderBottom: '1px solid transparent',
+      color: 'currentColor',
+      cursor: 'initial',
+      font: 'inherit',
+      transition: 'border-color 0.2s ease-out',
 
-    '&:focus': {
-      borderBottomColor: 'currentColor',
+      '&:hover, &:active, &:focus': {
+        color: theme.colorEmphasis,
+      },
+
+      '&:focus': {
+        borderBottomColor: 'currentColor',
+      },
     },
-  },
-})
+  })
 
 export interface TextInputProps {
   value: string | number
@@ -52,4 +59,4 @@ class TextInput extends PureComponent<TextInputProps> {
   }
 }
 
-export default TextInput
+export default withTheme(TextInput)
