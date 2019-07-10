@@ -51,6 +51,14 @@ const controlsContainerStyle = css({
   marginLeft: '1.2em',
 })
 
+const titleStyle = css({
+  display: 'flex',
+
+  '& span': {
+    marginRight: '0.3em',
+  },
+})
+
 const AudioFileDropRegion: FunctionComponent<{
   onFiles(files: File[]): unknown
 }> = ({ children, onFiles }) => {
@@ -94,12 +102,14 @@ const renderTitle = (
   selectAudioFile: () => void,
   audioBuffer?: AudioBuffer,
 ) => (
-  <span>
-    {fileName ? `${fileName}` : ''}
-    {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
-    {fileName ? ' / ' : ''}
+  <div css={titleStyle}>
+    {fileName ? <span>{fileName}</span> : null}
+    {fileName && audioBuffer ? (
+      <span> - {audioBuffer.duration.toFixed(2)}s</span>
+    ) : null}
+    {fileName ? <span>/</span> : null}
     <Button handler={selectAudioFile} label="Load audio file" />
-  </span>
+  </div>
 )
 
 class Loop extends PureComponent<LoopProps> {
