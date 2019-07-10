@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect'
 
+import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import { hasDownstreamConnectionTo } from '~/util/audio'
 import { ApplicationState } from '~/state/configureStore'
@@ -24,7 +25,7 @@ export const mainOutNodeSelector = createSelector(
 
 export const mainOutMetaSelector = createSelector(
   mainOutNodeSelector,
-  ({ id, type }) => ({ id, type }),
+  ({ id, type }): AudioNodeMeta => ({ id, type }),
 )
 
 export const orderedInstrumentsMetaSelector = createSelector(
@@ -46,4 +47,16 @@ export const activeAudioNodeIdsSelector = createSelector(
 
     return meta.map(({ id }) => id).filter(connectedToMain)
   },
+)
+
+export const connectableSourcesSelector = createSelector(
+  orderedInstrumentsMetaSelector,
+  orderedAudioEffectsMetaSelector,
+  (instruments, effects) => [...instruments, ...effects],
+)
+
+export const connectableTargetsSelector = createSelector(
+  orderedAudioEffectsMetaSelector,
+  mainOutMetaSelector,
+  (effects, out) => [...effects, out],
 )
