@@ -19,12 +19,7 @@ module.exports = ({ env }) => ({
     [
       'babel-plugin-module-resolver',
       {
-        alias: {
-          ...(env('production')
-            ? { react: 'preact/compat', 'react-dom': 'preact/compat' }
-            : {}),
-          '~': './src',
-        },
+        alias: { '~': './src' },
         extensions: ['.ts', '.tsx', '.js'],
       },
     ],
