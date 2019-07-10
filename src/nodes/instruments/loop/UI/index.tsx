@@ -4,13 +4,13 @@ import { clamp } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
+import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
 import useFileDropRegion from '~/hooks/useFileDropRegion'
 import Sample from '~/components/Sample'
 import TitleBar from '~/components/TitleBar'
-import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
+import Button from '~/components/Button'
 
 import PlaybackControls from './PlaybackControls'
-import Button from '~/components/Button'
 
 const rootStyle = css({
   height: '12em',

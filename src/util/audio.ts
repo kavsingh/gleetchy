@@ -1,6 +1,5 @@
 import {
   curry,
-  equals,
   F,
   prop,
   propEq,
@@ -17,7 +16,6 @@ const typeSatisfies = (pred: (type: string) => boolean) =>
 
 export const isEffect = typeSatisfies(startsWith('AUDIO_EFFECT_'))
 export const isInstrument = typeSatisfies(startsWith('INSTRUMENT_'))
-export const isMainOut = typeSatisfies(equals('AUDIO_CONTEXT'))
 
 export const sortByType = sortBy<{ type: string }>(prop('type'))
 

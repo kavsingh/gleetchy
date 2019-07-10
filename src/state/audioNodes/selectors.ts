@@ -3,7 +3,7 @@ import { identity } from 'ramda'
 
 import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
-import { hasDownstreamConnectionTo } from '~/util/audio'
+import { hasDownstreamConnectionTo, isInstrument, isEffect } from '~/util/audio'
 import { ApplicationState } from '~/state/configureStore'
 import { connectionsSelector } from '~/state/connections/selectors'
 
@@ -32,12 +32,12 @@ export const mainOutMetaSelector = createSelector(
 
 export const orderedInstrumentsMetaSelector = createSelector(
   orderedAudioNodesMetaSelector,
-  meta => meta.filter(node => /^instrument/i.test(node.type)),
+  meta => meta.filter(isInstrument),
 )
 
 export const orderedAudioEffectsMetaSelector = createSelector(
   orderedAudioNodesMetaSelector,
-  meta => meta.filter(node => /^audio_effect/i.test(node.type)),
+  meta => meta.filter(isEffect),
 )
 
 export const activeAudioNodeIdsSelector = createSelector(
