@@ -1,3 +1,14 @@
+export const asciiBlockFills = {
+  sparse: '░',
+  medium: '▒',
+  dense: '▓',
+  full: '█',
+  fullTopHalf: '▀',
+  fullRightHalf: '▐',
+  fullBottomHalf: '▄',
+  fullLeftHalf: '▌',
+}
+
 export const nodeColorPool = [
   '#6994d0',
   '#b7cce8',

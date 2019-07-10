@@ -10,6 +10,7 @@ import TitleBar from '~/components/TitleBar'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
 
 import PlaybackControls from './PlaybackControls'
+import Button from '~/components/Button'
 
 const rootStyle = css({
   height: '12em',
@@ -50,10 +51,12 @@ const controlsContainerStyle = css({
   marginLeft: '1.2em',
 })
 
-const titleLoadAudioStyle = css({
-  cursor: 'pointer',
-  display: 'inline-block',
-  marginLeft: '0.3em',
+const titleStyle = css({
+  display: 'flex',
+
+  '& span': {
+    marginRight: '0.3em',
+  },
 })
 
 const AudioFileDropRegion: FunctionComponent<{
@@ -99,23 +102,14 @@ const renderTitle = (
   selectAudioFile: () => void,
   audioBuffer?: AudioBuffer,
 ) => (
-  <span>
-    {fileName ? `${fileName}` : ''}
-    {fileName && audioBuffer ? ` - ${audioBuffer.duration.toFixed(2)}s` : ''}
-    <span
-      role="button"
-      tabIndex={0}
-      css={titleLoadAudioStyle}
-      onClick={selectAudioFile}
-      onKeyDown={({ key }) => {
-        if (key === 'Enter') {
-          selectAudioFile()
-        }
-      }}
-    >
-      {`${fileName ? ' / ' : ''}[ Load audio file ]`}
-    </span>
-  </span>
+  <div css={titleStyle}>
+    {fileName ? <span>{fileName}</span> : null}
+    {fileName && audioBuffer ? (
+      <span> - {audioBuffer.duration.toFixed(2)}s</span>
+    ) : null}
+    {fileName ? <span>/</span> : null}
+    <Button handler={selectAudioFile} label="Load audio file" />
+  </div>
 )
 
 class Loop extends PureComponent<LoopProps> {

@@ -9,6 +9,7 @@ import useAudioNodesMeta from '~/hooks/useAudioNodesMeta'
 import ConnectedDelay from './ConnectedDelay'
 import ConnectedReverb from './ConnectedReverb'
 import useAudioNodes from '~/hooks/useAudioNodes'
+import AddNodeButtons from '~/components/AddNodeButtons'
 
 const rootStyle = css({
   alignItems: 'flex-start',
@@ -21,22 +22,6 @@ const audioEffectContainerStyle = css({
   flex: '1 0 10em',
   padding: '1em 0',
 })
-
-const addAudioEffectContainerStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  justifyContent: 'center',
-  minHeight: '5em',
-  padding: '1em 0',
-  width: '100%',
-})
-
-const addAudioEffectButtonStyle = css({
-  cursor: 'pointer',
-  fontSize: '0.8em',
-})
-
-type EffectAddButton = [string, () => void]
 
 const AudioEffectsRack: FunctionComponent = () => {
   const { audioEffects } = useAudioNodesMeta()
@@ -69,27 +54,7 @@ const AudioEffectsRack: FunctionComponent = () => {
             return null
         }
       })}
-      <div css={addAudioEffectContainerStyle}>
-        {([
-          ['Reverb', addReverb],
-          ['Delay', addDelay],
-        ] as EffectAddButton[]).map(([type, handler]) => (
-          <div
-            css={addAudioEffectButtonStyle}
-            role="button"
-            tabIndex={0}
-            onClick={handler}
-            onKeyDown={event => {
-              if (event.key === 'Enter') {
-                handler()
-              }
-            }}
-            key={type}
-          >
-            [ Add {type} ]
-          </div>
-        ))}
-      </div>
+      <AddNodeButtons buttons={[['Reverb', addReverb], ['Delay', addDelay]]} />
     </div>
   )
 }

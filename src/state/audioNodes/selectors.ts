@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect'
+import { identity } from 'ramda'
 
 import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
@@ -10,22 +11,23 @@ const audioNodesStateSelector = (state: ApplicationState) => state.audioNodes
 
 export const audioNodesSelector = createSelector(
   audioNodesStateSelector,
-  ({ byId }) => byId,
+  identity,
 )
 
 export const orderedAudioNodesMetaSelector = createSelector(
   audioNodesStateSelector,
-  ({ orderedMeta }) => orderedMeta,
+  (nodes): AudioNodeMeta[] =>
+    Object.values(nodes).map(({ id, type, label }) => ({ id, type, label })),
 )
 
 export const mainOutNodeSelector = createSelector(
   audioNodesStateSelector,
-  ({ byId }) => byId[MAIN_OUT_ID],
+  nodes => nodes[MAIN_OUT_ID],
 )
 
 export const mainOutMetaSelector = createSelector(
   mainOutNodeSelector,
-  ({ id, type }): AudioNodeMeta => ({ id, type }),
+  ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 )
 
 export const orderedInstrumentsMetaSelector = createSelector(

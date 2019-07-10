@@ -19,7 +19,7 @@ import {
 import initialNodes from '~/state/defaultNodes'
 import { prefixedId } from '~/util/id'
 import { pickObjectKeys } from '~/util/object'
-import { AudioNodeState, AudioNodeMeta } from '~/types'
+import { AudioNodeState } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
 import { AudioNodesAction } from './types'
@@ -28,22 +28,17 @@ type NodeState = AudioNodeState<
   LoopNodeProps | DelayNodeProps | ReverbNodeProps | {}
 >
 
-interface ById {
+export interface AudioNodesState {
   [key: string]: NodeState
 }
 
-export interface AudioNodesState {
-  byId: ById
-  orderedMeta: AudioNodeMeta[]
-}
-
-const defaultState: AudioNodesState = {
-  byId: initialNodes.reduce((acc: ById, instrument) => {
+const defaultState: AudioNodesState = initialNodes.reduce(
+  (acc: AudioNodesState, instrument) => {
     acc[instrument.id] = instrument
     return acc
-  }, {}),
-  orderedMeta: initialNodes.map(({ id, type }) => ({ id, type })),
-}
+  },
+  {},
+)
 
 const getNewNodeState = (type: string): AudioNodeState | null => {
   switch (type) {
@@ -81,11 +76,7 @@ const addNode = (state: AudioNodesState, { type }: { type: string }) => {
   if (!newNodeState) return state
 
   return produce<AudioNodesState>(state, draftState => {
-    draftState.byId[newNodeState.id] = newNodeState
-    draftState.orderedMeta.push({
-      id: newNodeState.id,
-      type: newNodeState.type,
-    })
+    draftState[newNodeState.id] = newNodeState
   })
 }
 
@@ -99,21 +90,12 @@ const audioNodesReducer: Reducer<
     case 'AUDIO_NODE_REMOVE':
       return produce(state, draftState => {
         const { id } = action.payload
-        const orderedIndex = draftState.orderedMeta.findIndex(
-          node => id === node.id,
-        )
 
-        if (orderedIndex !== -1) {
-          draftState.orderedMeta.splice(orderedIndex, 1)
-        }
-
-        if (draftState.byId[id]) {
-          delete draftState.byId[id]
-        }
+        if (draftState[id]) delete draftState[id]
       })
     case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
       return produce(state, draftState => {
-        const existing = draftState.byId[action.payload.id]
+        const existing = draftState[action.payload.id]
 
         if (existing) {
           Object.assign(existing.audioProps, action.payload.audioProps)
@@ -121,14 +103,14 @@ const audioNodesReducer: Reducer<
       })
     case 'AUDIO_NODE_UPDATE_LABEL':
       return produce(state, draftState => {
-        const existing = draftState.byId[action.payload.id]
+        const existing = draftState[action.payload.id]
 
         if (existing) existing.label = action.payload.label
       })
     case 'AUDIO_FILE_DECODE_COMPLETE':
       return produce(state, draftState => {
         const { id, file } = action.payload
-        const existing = draftState.byId[id]
+        const existing = draftState[id]
 
         if (existing) {
           Object.assign(
