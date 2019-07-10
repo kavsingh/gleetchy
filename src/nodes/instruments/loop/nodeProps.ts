@@ -1,18 +1,7 @@
-import eq3Props from '~/nodes/audioEffects/eq3/nodeProps'
+import { defaultProps as eq3DefaultProps } from '~/nodes/audioEffects/eq3/nodeProps'
 
-type Eq3NodeProps = typeof eq3Props
-interface NodeProps extends Eq3NodeProps {
-  audioBuffer?: AudioBuffer
-  fileName: string
-  fileType: string
-  gain: number
-  loopEnd: number
-  loopStart: number
-  playbackRate: number
-}
-
-const nodeProps: NodeProps = Object.freeze({
-  ...eq3Props,
+export const defaultProps = Object.freeze({
+  ...eq3DefaultProps,
   audioBuffer: undefined,
   fileName: '',
   fileType: '',
@@ -22,4 +11,7 @@ const nodeProps: NodeProps = Object.freeze({
   playbackRate: 1,
 })
 
-export default nodeProps
+export interface Props
+  extends Mutable<Omit<typeof defaultProps, 'audioBuffer'>> {
+  audioBuffer: AudioBuffer | undefined
+}

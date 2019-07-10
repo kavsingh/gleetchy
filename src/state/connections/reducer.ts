@@ -2,18 +2,21 @@ import { allPass, propEq, without } from 'ramda'
 import { Reducer } from 'redux'
 
 import { nodeColorPool } from '~/style/color'
-import { AudioEffectRemoveAction } from '~/state/audioEffects/types'
-import { audioContexts, instruments } from '~/state/defaultNodes'
-import { InstrumentRemoveAction } from '~/state/instruments/types'
 import { AudioNodeConnection } from '~/types'
 
+import defaultNodes from '../defaultNodes'
+import { AudioNodeRemoveAction } from '../audioNodes/types'
 import { ConnectionDescriptor, ConnectionsAction } from './types'
 
 export type ConnectionsState = AudioNodeConnection[]
 
+const mainOut = defaultNodes[0]
+const loop1 = defaultNodes[1]
+const loop2 = defaultNodes[2]
+
 const defaultState: ConnectionsState = [
-  { from: instruments[0].id, to: audioContexts[0].id, color: nodeColorPool[0] },
-  { from: instruments[1].id, to: audioContexts[0].id, color: nodeColorPool[1] },
+  { from: loop1.id, to: mainOut.id, color: nodeColorPool[0] },
+  { from: loop2.id, to: mainOut.id, color: nodeColorPool[1] },
 ]
 
 const connectionIs = ({ fromId, toId }: ConnectionDescriptor) =>
@@ -57,15 +60,14 @@ const removeAllConnectionsForId = (
 
 const connectionsReducer: Reducer<
   ConnectionsState,
-  ConnectionsAction | InstrumentRemoveAction | AudioEffectRemoveAction
+  ConnectionsAction | AudioNodeRemoveAction
 > = (state = defaultState, action) => {
   switch (action.type) {
     case 'CONNECTION_ADD':
       return addConnection(state, action.payload)
     case 'CONNECTION_REMOVE':
       return removeConnection(state, action.payload)
-    case 'INSTRUMENT_REMOVE':
-    case 'AUDIO_EFFECT_REMOVE':
+    case 'AUDIO_NODE_REMOVE':
       return removeAllConnectionsForId(state, action.payload)
     default:
       return state

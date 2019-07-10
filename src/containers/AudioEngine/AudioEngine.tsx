@@ -1,6 +1,8 @@
 import { always, cond, equals, pick, pipe, tryCatch } from 'ramda'
 import { Component } from 'react'
 
+import { warn } from '~/util/dev'
+import { isInstrument } from '~/util/audio'
 import { getAudioContext } from '~/apis/audio'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {
@@ -15,11 +17,8 @@ import {
   createAudioNode as createLoopNode,
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
-import { isInstrument } from '~/util/audio'
-import { warn } from '~/util/dev'
-
+import { AudioEngineEvent } from '~/state/audioEngine/types'
 import {
-  AudioEngineEvent,
   AudioNodeConnection,
   AudioNodeState,
   GAudioNode,
@@ -28,14 +27,12 @@ import {
 
 type AudioEngineNode = AudioNode | GAudioNode | InstrumentNode
 type InstrumentNodeProcessor = (node: InstrumentNode) => void
-type TrySet = (args: { node: AudioEngineNode; props: object }) => void
+type TrySet = (args: { node: AudioEngineNode; audioProps: object }) => void
 
-const setNodeProps = tryCatch<TrySet>(({ node, props }) => {
+const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
   const target = node as GAudioNode
 
-  if (typeof target.set === 'function') {
-    target.set(props)
-  }
+  if (typeof target.set === 'function') target.set(audioProps)
 }, warn)
 
 type NodeCreator = (...args: unknown[]) => AudioEngineNode
@@ -53,7 +50,7 @@ export interface AudioEngineProps {
   audioEngineEvents: AudioEngineEvent[]
   connections: AudioNodeConnection[]
   isPlaying: boolean
-  nodes: AudioNodeState[]
+  nodes: { [key: string]: AudioNodeState }
   clearAudioEngineEvents(): unknown
 }
 
@@ -115,24 +112,24 @@ class AudioEngine extends Component<AudioEngineProps> {
   private updateAudioNodes() {
     if (!this.audioContext) return
 
-    const { nodes = [], isPlaying = false } = this.props
+    const { nodes: nextNodes = {}, isPlaying = false } = this.props
+    const nextNodeIds = Object.keys(nextNodes)
 
     this.audioNodes = Object.entries(this.audioNodes).length
-      ? pick([...nodes.map(({ id }) => id), MAIN_OUT_ID], this.audioNodes)
+      ? pick(nextNodeIds, this.audioNodes)
       : { [MAIN_OUT_ID]: this.audioContext.destination }
 
-    nodes
-      .filter(node => !this.audioNodes[node.id])
-      .forEach(node => {
+    nextNodeIds
+      .filter(id => !this.audioNodes[id])
+      .forEach(id => {
+        const node = nextNodes[id]
         const nodeCreator = getNodeCreator(node) as NodeCreator
 
-        if (!nodeCreator) {
-          return
-        }
+        if (!nodeCreator) return
 
         const newNode: AudioEngineNode = nodeCreator(
           this.audioContext,
-          node.props,
+          node.audioProps,
         )
 
         this.audioNodes[node.id] = newNode
@@ -148,9 +145,7 @@ class AudioEngine extends Component<AudioEngineProps> {
 
     const { connections } = this.props
 
-    if (!connections.length) {
-      return
-    }
+    if (!connections.length) return
 
     connections.forEach(({ from, to }) => {
       const fromNode = this.audioNodes[from]
@@ -162,14 +157,12 @@ class AudioEngine extends Component<AudioEngineProps> {
     })
   }
 
-  private updateNode({ id, props }: { id: string; props: object }) {
+  private updateNode({ id, audioProps }: { id: string; audioProps: object }) {
     const node = this.audioNodes[id]
 
-    if (!node) {
-      return
-    }
+    if (!node) return
 
-    setNodeProps({ node, props })
+    setNodeProps({ node, audioProps })
   }
 
   private rebuildAll() {
@@ -181,35 +174,32 @@ class AudioEngine extends Component<AudioEngineProps> {
     this.updateAudioGraph()
   }
 
-  private processAudioEngineEvent = ({
-    type,
-    payload = {},
-  }: AudioEngineEvent) => {
-    switch (type) {
+  private processAudioEngineEvent = (event: AudioEngineEvent) => {
+    switch (event.type) {
       case 'GLOBAL_PLAYBACK_START':
         this.forEachInstrument(node => node.play())
         break
       case 'GLOBAL_PLAYBACK_STOP':
         this.forEachInstrument(node => node.stop())
         break
-      case 'AUDIO_EFFECT_UPDATE_PROPS':
-      case 'INSTRUMENT_UPDATE_PROPS':
-        this.updateNode(payload)
+      case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
+        this.updateNode(event.payload)
         break
       case 'AUDIO_FILE_DECODE_COMPLETE':
-        this.updateNode({ id: payload.id, props: payload.file })
+        this.updateNode({
+          id: event.payload.id,
+          audioProps: event.payload.file,
+        })
         break
       case 'CONNECTION_ADD':
       case 'CONNECTION_REMOVE':
         this.updateAudioGraph()
         break
-      case 'INSTRUMENT_ADD':
-      case 'AUDIO_EFFECT_ADD':
+      case 'AUDIO_NODE_ADD':
         this.updateAudioNodes()
         this.updateAudioGraph()
         break
-      case 'INSTRUMENT_REMOVE':
-      case 'AUDIO_EFFECT_REMOVE':
+      case 'AUDIO_NODE_REMOVE':
         this.rebuildAll()
         break
       default:

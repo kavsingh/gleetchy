@@ -1,16 +1,14 @@
-import { always, curry, pick } from 'ramda'
+import { always, curry } from 'ramda'
 
 import { GAudioNode } from '~/types'
 import { connectable } from '~/util/connection'
 
-import nodeProps from './nodeProps'
+import { defaultProps, Props } from './nodeProps'
 import nodeType from './nodeType'
 
-export const pickProps = pick(Object.keys(nodeProps))
-
 export default curry(
-  (audioContext: AudioContext, initProps: typeof nodeProps): GAudioNode => {
-    const props = { ...nodeProps, ...pickProps(initProps || {}) }
+  (audioContext: AudioContext, initProps: Partial<Props>): GAudioNode => {
+    const props: Props = { ...defaultProps, ...initProps }
     const lowNode = audioContext.createBiquadFilter()
     const midNode = audioContext.createBiquadFilter()
     const highNode = audioContext.createBiquadFilter()
@@ -42,8 +40,8 @@ export default curry(
     })({
       type: nodeType,
 
-      set(newProps = {}) {
-        Object.assign(props, pickProps(newProps))
+      set(newProps: Partial<Props> = {}) {
+        Object.assign(props, newProps)
         transferProps()
       },
     })

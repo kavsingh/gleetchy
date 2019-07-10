@@ -1,13 +1,14 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
 import { css } from '@emotion/core'
 
-import { AudioNodeIdentifier } from '~/types'
+import { AudioNodeMeta } from '~/types'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
-import useInstrumentNodes from '~/hooks/useInstrumentNodes'
 import AnimIn from '~/components/AnimIn'
 import ErrorBoundary from '~/components/ErrorBoundary'
+import useAudioNodes from '~/hooks/useAudioNodes'
 
 import ConnectedLoop from './ConnectedLoop'
+import useAudioNodesMeta from '~/hooks/useAudioNodesMeta'
 
 const rootStyle = css({
   display: 'flex',
@@ -31,17 +32,20 @@ const addButtonStyle = css({
 })
 
 export interface InstrumentsRackProps {
-  instruments: AudioNodeIdentifier[]
+  instruments: AudioNodeMeta[]
   addLoop(): unknown
 }
 
 const InstrumentsRack: FunctionComponent = () => {
-  const { orderedIdentifiers, addLoop } = useInstrumentNodes()
+  const { add } = useAudioNodes()
+  const { instruments } = useAudioNodesMeta()
+
+  const addLoop = useCallback(() => add(loopType), [add])
 
   return (
     <div css={rootStyle}>
       <ErrorBoundary>
-        {orderedIdentifiers.map(({ id, type }) => {
+        {instruments.map(({ id, type }) => {
           switch (type) {
             case loopType:
               return (

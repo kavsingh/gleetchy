@@ -1,26 +1,20 @@
-import { always, curry, pick } from 'ramda'
+import { always, curry } from 'ramda'
 
-import { nodeProps as eq3NodeProps } from '~/nodes/audioEffects/eq3'
-import createEq3Node, {
-  pickProps as pickEq3Props,
-} from '~/nodes/audioEffects/eq3/createAudioNode'
+import createEq3Node from '~/nodes/audioEffects/eq3/createAudioNode'
 import { InstrumentNode } from '~/types'
 import { connectable } from '~/util/connection'
 
-import nodeProps from './nodeProps'
+import { defaultProps, Props } from './nodeProps'
 import nodeType from './nodeType'
 
-export const pickProps = pick(Object.keys(nodeProps))
-
 export default curry(
-  (
-    audioContext: AudioContext,
-    initProps: typeof nodeProps & typeof eq3NodeProps,
-  ): InstrumentNode => {
-    const props = { ...nodeProps, ...pickProps(initProps || {}) }
-    const eq3Node = createEq3Node(audioContext, pickEq3Props(
-      initProps,
-    ) as typeof eq3NodeProps)
+  (audioContext: AudioContext, initProps: Partial<Props>): InstrumentNode => {
+    const props = { ...defaultProps, ...initProps }
+    const eq3Node = createEq3Node(audioContext, {
+      lowGain: props.lowGain,
+      midGain: props.midGain,
+      highGain: props.highGain,
+    })
     const gainNode = audioContext.createGain()
     const getGainNode = always(gainNode)
 
@@ -103,14 +97,21 @@ export default curry(
         removeBufferSourceNode()
       },
 
-      set(newProps = {}) {
+      set(newProps: Partial<Props> = {}) {
         const prevProps = { ...props }
 
-        Object.assign(props, pickProps(newProps))
+        Object.assign(props, newProps)
 
-        const { gain, audioBuffer, loopStart } = props
+        const {
+          gain,
+          audioBuffer,
+          loopStart,
+          midGain,
+          lowGain,
+          highGain,
+        } = props
 
-        eq3Node.set(pickEq3Props(props))
+        eq3Node.set({ midGain, lowGain, highGain })
         gainNode.gain.value = gain
 
         if (

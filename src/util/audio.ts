@@ -10,7 +10,7 @@ import {
   tryCatch,
 } from 'ramda'
 
-import { AudioNodeConnection, AudioNodeIdentifier } from '~/types'
+import { AudioNodeConnection, AudioNodeMeta } from '~/types'
 
 const typeSatisfies = (pred: (type: string) => boolean) =>
   tryCatch(propSatisfies<string>(pred, 'type'), F)
@@ -64,15 +64,15 @@ export const hasDownstreamConnectionTo = curry(
 export const canConnectNodes = curry(
   (
     connections: AudioNodeConnection[],
-    { id: from }: AudioNodeIdentifier,
-    { id: to }: AudioNodeIdentifier,
+    { id: from }: AudioNodeMeta,
+    { id: to }: AudioNodeMeta,
   ) => from !== to && !hasDownstreamConnectionTo(from, connections, to),
 )
 
 export const getConnectionBetween = curry(
   (
     connections: AudioNodeConnection[],
-    { id: from }: AudioNodeIdentifier,
-    { id: to }: AudioNodeIdentifier,
+    { id: from }: AudioNodeMeta,
+    { id: to }: AudioNodeMeta,
   ) => connections.find(isSameConnection({ from, to })),
 )
