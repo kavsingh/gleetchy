@@ -4,8 +4,4 @@ import { always } from 'ramda'
 // see: https://github.com/ramda/ramda/issues/701
 export const noop = always(undefined)
 
-export const stubArray = always([])
-
-export const stubObject = always({})
-
-export const stubString = always('')
+export const stubEmptyString = always('')

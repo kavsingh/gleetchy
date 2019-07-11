@@ -3,7 +3,7 @@ import { css } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
-import { noop, stubString } from '~/util/function'
+import { noop, stubEmptyString } from '~/util/function'
 import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
@@ -132,7 +132,7 @@ class Slider extends PureComponent<SliderProps> {
     const {
       value,
       orient = 'vertical',
-      renderLabel = stubString,
+      renderLabel = stubEmptyString,
       renderValue = String,
       renderTitle = String,
       theme,
