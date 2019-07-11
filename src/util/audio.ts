@@ -1,23 +1,13 @@
-import {
-  curry,
-  F,
-  prop,
-  propEq,
-  propSatisfies,
-  sortBy,
-  startsWith,
-  tryCatch,
-} from 'ramda'
+import { curry, F, propEq, propSatisfies, test, tryCatch } from 'ramda'
 
 import { AudioNodeConnection, AudioNodeMeta } from '~/types'
 
 const typeSatisfies = (pred: (type: string) => boolean) =>
   tryCatch(propSatisfies<string>(pred, 'type'), F)
 
-export const isEffect = typeSatisfies(startsWith('AUDIO_EFFECT_'))
-export const isInstrument = typeSatisfies(startsWith('INSTRUMENT_'))
+export const isEffect = typeSatisfies(test(/^audio_effect_/i))
 
-export const sortByType = sortBy<{ type: string }>(prop('type'))
+export const isInstrument = typeSatisfies(test(/^instrument_/i))
 
 type Connection = Omit<AudioNodeConnection, 'color'>
 
