@@ -3,13 +3,13 @@ import Favicon from 'react-favicon'
 import { css, Global } from '@emotion/core'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
-import favicon from '~/assets/icons/48x48.png'
+import useUITheme from '~/state/hooks/useUITheme'
 import { UITheme } from '~/style/theme'
-import useUITheme from '~/hooks/useUITheme'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
 import ErrorBoundary from '~/components/ErrorBoundary'
+import favicon from '~/assets/icons/48x48.png'
 
 import Masthead from './Masthead'
 

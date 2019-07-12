@@ -3,9 +3,9 @@ import { GoMarkGithub } from 'react-icons/go'
 import { css } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 
+import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
+import useUITheme from '~/state/hooks/useUITheme'
 import { UITheme } from '~/style/theme'
-import useGlobalPlayback from '~/hooks/useGlobalPlayback'
-import useUITheme from '~/hooks/useUITheme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 
 const mastheadStyle = css({

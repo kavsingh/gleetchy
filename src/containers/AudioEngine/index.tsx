@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import { audioEngineEventsSelector } from '~/state/audioEngine/selectors'
 import { clearAudioEngineEventsAction } from '~/state/audioEngine/actions'
-import useConnections from '~/hooks/useConnections'
-import useGlobalPlayback from '~/hooks/useGlobalPlayback'
-import useAudioNodes from '~/hooks/useAudioNodes'
+import useConnections from '~/state/hooks/useConnections'
+import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
+import useAudioNodes from '~/state/hooks/useAudioNodes'
 
 import AudioEngine from './AudioEngine'
 

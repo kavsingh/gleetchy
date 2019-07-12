@@ -6,7 +6,7 @@ import {
   receiveAudioFileAction,
   selectAudioFileAction,
 } from '~/state/audioFiles/actions'
-import useAudioNode from '~/hooks/useAudioNode'
+import useAudioNode from '~/state/hooks/useAudioNode'
 
 const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
   const {

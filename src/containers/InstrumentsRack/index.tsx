@@ -2,14 +2,14 @@ import React, { FunctionComponent, useCallback } from 'react'
 import { css } from '@emotion/core'
 
 import { AudioNodeMeta } from '~/types'
+import useAudioNodes from '~/state/hooks/useAudioNodes'
+import useAudioNodesMeta from '~/state/hooks/useAudioNodesMeta'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
 import AnimIn from '~/components/AnimIn'
 import ErrorBoundary from '~/components/ErrorBoundary'
-import useAudioNodes from '~/hooks/useAudioNodes'
+import AddNodeButtons from '~/components/AddNodeButtons'
 
 import ConnectedLoop from './ConnectedLoop'
-import useAudioNodesMeta from '~/hooks/useAudioNodesMeta'
-import AddNodeButtons from '~/components/AddNodeButtons'
 
 const rootStyle = css({
   display: 'flex',

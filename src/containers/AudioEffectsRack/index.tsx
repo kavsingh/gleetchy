@@ -4,11 +4,11 @@ import { css } from '@emotion/core'
 import AnimIn from '~/components/AnimIn'
 import { nodeType as delayType } from '~/nodes/audioEffects/delay'
 import { nodeType as reverbType } from '~/nodes/audioEffects/reverb'
-import useAudioNodesMeta from '~/hooks/useAudioNodesMeta'
+import useAudioNodesMeta from '~/state/hooks/useAudioNodesMeta'
+import useAudioNodes from '~/state/hooks/useAudioNodes'
 
 import ConnectedDelay from './ConnectedDelay'
 import ConnectedReverb from './ConnectedReverb'
-import useAudioNodes from '~/hooks/useAudioNodes'
 import AddNodeButtons from '~/components/AddNodeButtons'
 
 const rootStyle = css({

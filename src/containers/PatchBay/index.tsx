@@ -5,8 +5,8 @@ import color from 'color'
 
 import { noop } from '~/util/function'
 import { canConnectNodes, getConnectionBetween } from '~/util/audio'
+import useConnections from '~/state/hooks/useConnections'
 import { UITheme } from '~/style/theme'
-import useConnections from '~/hooks/useConnections'
 
 const rootStyle = css({
   width: '100%',
