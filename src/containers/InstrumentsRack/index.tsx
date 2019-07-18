@@ -28,31 +28,42 @@ export interface InstrumentsRackProps {
   addLoop(): unknown
 }
 
-const InstrumentsRack: FunctionComponent = () => {
-  const { add } = useAudioNodes()
+const Rack: FunctionComponent = () => {
   const { instruments } = useAudioNodesMeta()
+
+  return (
+    <ErrorBoundary>
+      {instruments.map(({ id, type }) => {
+        switch (type) {
+          case loopType:
+            return (
+              <div css={instrumentContainerStyle} key={id}>
+                <AnimIn>
+                  <ConnectedLoop id={id} />
+                </AnimIn>
+              </div>
+            )
+          default:
+            return null
+        }
+      })}
+    </ErrorBoundary>
+  )
+}
+
+const Add: FunctionComponent = () => {
+  const { add } = useAudioNodes()
 
   const addLoop = useCallback(() => add(loopType), [add])
 
+  return <AddNodeButtons buttons={[['Loop', addLoop]]} />
+}
+
+const InstrumentsRack: FunctionComponent = () => {
   return (
     <div css={rootStyle}>
-      <ErrorBoundary>
-        {instruments.map(({ id, type }) => {
-          switch (type) {
-            case loopType:
-              return (
-                <div css={instrumentContainerStyle} key={id}>
-                  <AnimIn>
-                    <ConnectedLoop id={id} />
-                  </AnimIn>
-                </div>
-              )
-            default:
-              return null
-          }
-        })}
-      </ErrorBoundary>
-      <AddNodeButtons buttons={[['Loop', addLoop]]} />
+      <Rack />
+      <Add />
     </div>
   )
 }

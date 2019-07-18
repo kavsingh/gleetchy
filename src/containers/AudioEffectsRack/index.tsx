@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useMemo } from 'react'
+import React, { FunctionComponent, useCallback } from 'react'
 import { css } from '@emotion/core'
 
 import AnimIn from '~/components/AnimIn'
@@ -10,6 +10,7 @@ import useAudioNodes from '~/state/hooks/useAudioNodes'
 import ConnectedDelay from './ConnectedDelay'
 import ConnectedReverb from './ConnectedReverb'
 import AddNodeButtons from '~/components/AddNodeButtons'
+import ErrorBoundary from '~/components/ErrorBoundary'
 
 const rootStyle = css({
   alignItems: 'flex-start',
@@ -27,7 +28,7 @@ const Rack: FunctionComponent = () => {
   const { audioEffects } = useAudioNodesMeta()
 
   return (
-    <>
+    <ErrorBoundary>
       {audioEffects.map(({ id, type }) => {
         switch (type) {
           case delayType:
@@ -50,7 +51,7 @@ const Rack: FunctionComponent = () => {
             return null
         }
       })}
-    </>
+    </ErrorBoundary>
   )
 }
 
