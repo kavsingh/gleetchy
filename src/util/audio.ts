@@ -23,7 +23,7 @@ export const getConnectionsFor = curry(
     connections.filter(({ from, to }) => from === id || to === id),
 )
 
-export const hasDownstreamConnectionTo = curry(
+export const hasConnectionTo = curry(
   (connections: Connection[], toId: string, fromId: string) => {
     if (!connections.length) return false
 
@@ -49,7 +49,7 @@ export const canConnectNodes = curry(
     connections: Connection[],
     { id: fromId }: Pick<AudioNodeMeta, 'id'>,
     { id: toId }: Pick<AudioNodeMeta, 'id'>,
-  ) => fromId !== toId && !hasDownstreamConnectionTo(connections, toId, fromId),
+  ) => fromId !== toId && !hasConnectionTo(connections, fromId, toId),
 )
 
 export const getConnectionBetween = curry(

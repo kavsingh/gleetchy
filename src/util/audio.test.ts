@@ -3,9 +3,9 @@ import {
   isInstrument,
   isSameConnection,
   getConnectionsFor,
-  hasDownstreamConnectionTo,
+  hasConnectionTo,
   canConnectNodes,
-  // getConnectionBetween,
+  getConnectionBetween,
 } from './audio'
 
 describe('Audio util', () => {
@@ -72,8 +72,8 @@ describe('Audio util', () => {
     })
   })
 
-  describe('hasDownstreamConnectionTo', () => {
-    it('Should determine if from id is connected downstream to id', () => {
+  describe('hasConnectionTo', () => {
+    it('Should determine if from id is connected to id', () => {
       const connections = [
         { from: 'a', to: 'b' },
         { from: 'a', to: 'd' },
@@ -83,23 +83,12 @@ describe('Audio util', () => {
         { from: 'b', to: 'c' },
       ]
 
-      const connectedToC = hasDownstreamConnectionTo(connections, 'c')
+      const connectedToC = hasConnectionTo(connections, 'c')
 
       expect(connectedToC('a')).toBe(true)
       expect(connectedToC('d')).toBe(true)
       expect(connectedToC('e')).toBe(false)
-      expect(hasDownstreamConnectionTo(connections, 'f', 'e')).toBe(true)
-    })
-
-    it('Should check circular downstream connection', () => {
-      const connections = [
-        { from: 'a', to: 'b' },
-        { from: 'a', to: 'd' },
-        { from: 'd', to: 'a' },
-        { from: 'b', to: 'c' },
-      ]
-
-      expect(hasDownstreamConnectionTo(connections)('c', 'd')).toBe(true)
+      expect(hasConnectionTo(connections, 'f', 'e')).toBe(true)
     })
   })
 
@@ -112,18 +101,31 @@ describe('Audio util', () => {
       expect(canConnectNodes([], { id: 'a' }, { id: 'a' })).toBe(false)
     })
 
-    it('returns false if nodes are connected', () => {
-      const connections = [
-        { from: 'a', to: 'b' },
-        { from: 'a', to: 'd' },
-        { from: 'd', to: 'a' },
-        { from: 'b', to: 'c' },
-      ]
+    it('returns false if to node is connected to from node', () => {
+      const connections = [{ from: 'd', to: 'b' }, { from: 'b', to: 'a' }]
 
       const canConnectIn = canConnectNodes(connections)
 
       expect(canConnectIn({ id: 'a' }, { id: 'd' })).toBe(false)
-      expect(canConnectIn({ id: 'a' }, { id: 'c' })).toBe(false)
+    })
+  })
+
+  describe('getConnectionBetween', () => {
+    it('returns first found connection between nodes', () => {
+      const connections = [
+        { from: 'a', to: 'b', color: 'black' },
+        { from: 'a', to: 'b', color: 'white' },
+      ]
+
+      const getConnection = getConnectionBetween(connections)
+
+      expect(getConnection({ id: 'a' }, { id: 'b' })).toEqual({
+        from: 'a',
+        to: 'b',
+        color: 'black',
+      })
+      expect(getConnection({ id: 'b' }, { id: 'a' })).toBeUndefined()
+      expect(getConnection({ id: 'q' }, { id: 'r' })).toBeUndefined()
     })
   })
 })
