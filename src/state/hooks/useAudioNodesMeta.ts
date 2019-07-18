@@ -1,14 +1,15 @@
 import { useSelector } from 'react-redux'
 
 import {
-  orderedInstrumentsMetaSelector,
-  orderedAudioEffectsMetaSelector,
   mainOutMetaSelector,
+  immutableInstrumentsMetaSelector,
+  immutableAudioEffectsMetaSelector,
 } from '~/state/audioNodes/selectors'
 
 const useAudioNodesMeta = () => {
-  const instruments = useSelector(orderedInstrumentsMetaSelector)
-  const audioEffects = useSelector(orderedAudioEffectsMetaSelector)
+  const instruments = useSelector(immutableInstrumentsMetaSelector)
+  const audioEffects = useSelector(immutableAudioEffectsMetaSelector)
+  // TODO: strip out label
   const mainOut = useSelector(mainOutMetaSelector)
 
   return { instruments, audioEffects, mainOut }

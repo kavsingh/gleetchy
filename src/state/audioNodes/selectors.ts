@@ -13,9 +13,21 @@ export const audioNodesSelector = createSelector(
   state => state.byId,
 )
 
-export const orderedAudioNodeIdsSelector = createSelector(
+// TODO: Better naming
+
+export const immutableNodesMetaSelector = createSelector(
   audioNodesStateSelector,
-  state => state.orderedIds,
+  state => state.orderedMeta,
+)
+
+export const immutableInstrumentsMetaSelector = createSelector(
+  immutableNodesMetaSelector,
+  meta => meta.filter(isInstrument),
+)
+
+export const immutableAudioEffectsMetaSelector = createSelector(
+  immutableNodesMetaSelector,
+  meta => meta.filter(isAudioEffect),
 )
 
 export const orderedAudioNodesMetaSelector = createSelector(

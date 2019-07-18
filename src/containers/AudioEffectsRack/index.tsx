@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { FunctionComponent, useCallback, useMemo } from 'react'
 import { css } from '@emotion/core'
 
 import AnimIn from '~/components/AnimIn'
@@ -23,15 +23,11 @@ const audioEffectContainerStyle = css({
   padding: '1em 0',
 })
 
-const AudioEffectsRack: FunctionComponent = () => {
+const Rack: FunctionComponent = () => {
   const { audioEffects } = useAudioNodesMeta()
-  const { add } = useAudioNodes()
-
-  const addReverb = useCallback(() => add(reverbType), [add])
-  const addDelay = useCallback(() => add(delayType), [add])
 
   return (
-    <div css={rootStyle}>
+    <>
       {audioEffects.map(({ id, type }) => {
         switch (type) {
           case delayType:
@@ -54,9 +50,26 @@ const AudioEffectsRack: FunctionComponent = () => {
             return null
         }
       })}
-      <AddNodeButtons buttons={[['Reverb', addReverb], ['Delay', addDelay]]} />
-    </div>
+    </>
   )
 }
+
+const Add: FunctionComponent = () => {
+  const { add } = useAudioNodes()
+
+  const addReverb = useCallback(() => add(reverbType), [add])
+  const addDelay = useCallback(() => add(delayType), [add])
+
+  return (
+    <AddNodeButtons buttons={[['Reverb', addReverb], ['Delay', addDelay]]} />
+  )
+}
+
+const AudioEffectsRack: FunctionComponent = () => (
+  <div css={rootStyle}>
+    <Rack />
+    <Add />
+  </div>
+)
 
 export default AudioEffectsRack

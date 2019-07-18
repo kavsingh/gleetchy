@@ -1,6 +1,5 @@
 import produce from 'immer'
 import { Reducer } from 'redux'
-import { without } from 'ramda'
 
 import {
   defaultProps as delayDefaultProps,
@@ -20,7 +19,7 @@ import {
 import initialNodes from '~/state/defaultNodes'
 import { prefixedId } from '~/util/id'
 import { pickObjectKeys } from '~/util/object'
-import { AudioNodeState } from '~/types'
+import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
 import { AudioNodesAction } from './types'
@@ -31,16 +30,16 @@ type NodeState = AudioNodeState<
 
 export interface AudioNodesState {
   byId: { [key: string]: NodeState }
-  orderedIds: string[]
+  orderedMeta: ImmutableAudioNodeMeta[]
 }
 
 const defaultState: AudioNodesState = initialNodes.reduce(
   (acc: AudioNodesState, instrument) => {
     acc.byId[instrument.id] = instrument
-    acc.orderedIds.push(instrument.id)
+    acc.orderedMeta.push({ id: instrument.id, type: instrument.type })
     return acc
   },
-  { byId: {}, orderedIds: [] },
+  { byId: {}, orderedMeta: [] },
 )
 
 const getNewNodeState = (type: string): AudioNodeState | null => {
@@ -80,7 +79,10 @@ const addNode = (state: AudioNodesState, { type }: { type: string }) => {
 
   return produce<AudioNodesState>(state, draftState => {
     draftState.byId[newNodeState.id] = newNodeState
-    draftState.orderedIds.push(newNodeState.id)
+    draftState.orderedMeta.push({
+      id: newNodeState.id,
+      type: newNodeState.type,
+    })
   })
 }
 
@@ -97,8 +99,12 @@ const audioNodesReducer: Reducer<
 
         if (draftState.byId[id]) delete draftState.byId[id]
 
-        if (draftState.orderedIds.includes(id)) {
-          draftState.orderedIds = without([id], draftState.orderedIds)
+        const orderedMetaIndex = draftState.orderedMeta.findIndex(
+          meta => meta.id === id,
+        )
+
+        if (orderedMetaIndex > -1) {
+          draftState.orderedMeta.splice(orderedMetaIndex, 1)
         }
       })
     case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':

@@ -2,9 +2,12 @@
 
 import { Action } from 'redux'
 
-export interface AudioNodeMeta {
-  id: string
-  type: string
+export interface ImmutableAudioNodeMeta {
+  readonly id: string
+  readonly type: string
+}
+
+export interface AudioNodeMeta extends ImmutableAudioNodeMeta {
   label: string
 }
 
