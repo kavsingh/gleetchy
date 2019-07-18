@@ -1,5 +1,6 @@
 import produce from 'immer'
 import { Reducer } from 'redux'
+import { without } from 'ramda'
 
 import {
   defaultProps as delayDefaultProps,
@@ -29,15 +30,17 @@ type NodeState = AudioNodeState<
 >
 
 export interface AudioNodesState {
-  [key: string]: NodeState
+  byId: { [key: string]: NodeState }
+  orderedIds: string[]
 }
 
 const defaultState: AudioNodesState = initialNodes.reduce(
   (acc: AudioNodesState, instrument) => {
-    acc[instrument.id] = instrument
+    acc.byId[instrument.id] = instrument
+    acc.orderedIds.push(instrument.id)
     return acc
   },
-  {},
+  { byId: {}, orderedIds: [] },
 )
 
 const getNewNodeState = (type: string): AudioNodeState | null => {
@@ -76,7 +79,8 @@ const addNode = (state: AudioNodesState, { type }: { type: string }) => {
   if (!newNodeState) return state
 
   return produce<AudioNodesState>(state, draftState => {
-    draftState[newNodeState.id] = newNodeState
+    draftState.byId[newNodeState.id] = newNodeState
+    draftState.orderedIds.push(newNodeState.id)
   })
 }
 
@@ -91,11 +95,15 @@ const audioNodesReducer: Reducer<
       return produce(state, draftState => {
         const { id } = action.payload
 
-        if (draftState[id]) delete draftState[id]
+        if (draftState.byId[id]) delete draftState.byId[id]
+
+        if (draftState.orderedIds.includes(id)) {
+          draftState.orderedIds = without([id], draftState.orderedIds)
+        }
       })
     case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
       return produce(state, draftState => {
-        const existing = draftState[action.payload.id]
+        const existing = draftState.byId[action.payload.id]
 
         if (existing) {
           Object.assign(existing.audioProps, action.payload.audioProps)
@@ -103,14 +111,14 @@ const audioNodesReducer: Reducer<
       })
     case 'AUDIO_NODE_UPDATE_LABEL':
       return produce(state, draftState => {
-        const existing = draftState[action.payload.id]
+        const existing = draftState.byId[action.payload.id]
 
         if (existing) existing.label = action.payload.label
       })
     case 'AUDIO_FILE_DECODE_COMPLETE':
       return produce(state, draftState => {
         const { id, file } = action.payload
-        const existing = draftState[id]
+        const existing = draftState.byId[id]
 
         if (existing) {
           Object.assign(
