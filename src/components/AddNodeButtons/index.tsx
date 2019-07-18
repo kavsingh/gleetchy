@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, memo } from 'react'
 import { css } from '@emotion/core'
 
 import Button from '../Button'
@@ -23,4 +23,4 @@ const AddNodeButtons: FunctionComponent<{
   </div>
 )
 
-export default AddNodeButtons
+export default memo(AddNodeButtons)

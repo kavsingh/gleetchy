@@ -1,7 +1,8 @@
+import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+
 import { isPlayingSelector } from '~/state/globalPlayback/selectors'
 import { toggleGlobalPlaybackAction } from '~/state/globalPlayback/actions'
-import { useCallback } from 'react'
 
 const useGlobalPlayback = () => {
   const dispatch = useDispatch()

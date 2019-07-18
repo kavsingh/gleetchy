@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react'
+import React, { FunctionComponent, memo } from 'react'
 import { css } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 
@@ -31,4 +31,4 @@ const Button: FunctionComponent<{
   </div>
 )
 
-export default withTheme(Button)
+export default memo(withTheme(Button))
