@@ -1,6 +1,6 @@
 import { AudioNodeConnectableProxy, AudioNodeReturn, GAudioNode } from '~/types'
 
-export const createConnect = (getOutNode: AudioNodeReturn) =>
+const createConnect = (getOutNode: AudioNodeReturn) =>
   function connect(node: AudioNode | AudioNodeConnectableProxy) {
     const outNode = getOutNode()
 
@@ -13,7 +13,7 @@ export const createConnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
-export const createDisconnect = (getOutNode: AudioNodeReturn) =>
+const createDisconnect = (getOutNode: AudioNodeReturn) =>
   function disconnect(node: AudioNode | AudioNodeConnectableProxy) {
     const outNode = getOutNode()
 
@@ -28,15 +28,14 @@ export const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
 export const connectable = <T extends GAudioNode = GAudioNode>({
   getInNode,
   getOutNode,
-}: AudioNodeConnectableProxy) => (api: any): T =>
+}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+AudioNodeConnectableProxy) => (api: any): T =>
   Object.assign(api, {
     connect: createConnect(getOutNode),
     disconnect: createDisconnect(getOutNode),
     getInNode,
     getOutNode,
   })
-/* eslint-enable @typescript-eslint/no-explicit-any */

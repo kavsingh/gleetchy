@@ -5,7 +5,7 @@ export interface Point {
   y: number
 }
 
-export const degreesToRadians = (angle: number) => (Math.PI / 180) * angle
+const degreesToRadians = (angle: number) => (Math.PI / 180) * angle
 
 export const polarToCartesian = curry(
   (origin: Point, radius: number, angle: number): Point => ({

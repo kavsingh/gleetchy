@@ -15,7 +15,7 @@ export const requireWindowWith = (propPaths: string[][] = []) => {
   return propPaths.every(windowHas) ? WINDOW : undefined
 }
 
-export const isSupportedEvent = <T extends string>(eventName: T) => {
+const isSupportedEvent = <T extends string>(eventName: T) => {
   const name = eventName.startsWith('on') ? eventName : `on${eventName}`
   const WINDOW = requireWindowWith([['document', 'documentElement']])
 

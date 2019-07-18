@@ -6,7 +6,7 @@ const typeSatisfies = (pred: (type: string) => boolean) =>
   tryCatch(propSatisfies<string>(pred, 'type'), F)
 
 /* eslint-disable jest/no-disabled-tests */
-export const isEffect = typeSatisfies(test(/^audio_effect_/i))
+export const isAudioEffect = typeSatisfies(test(/^audio_effect_/i))
 
 export const isInstrument = typeSatisfies(test(/^instrument_/i))
 /* eslint-enable */
@@ -23,22 +23,15 @@ export const getConnectionsFor = curry(
     connections.filter(({ from, to }) => from === id || to === id),
 )
 
-export const hasDownstreamConnectionTo = curry(
-  (toId: string, connections: AudioNodeConnection[], fromId: string) => {
-    if (!connections.length) {
-      return false
-    }
+export const hasConnectionTo = curry(
+  (connections: Connection[], toId: string, fromId: string) => {
+    if (!connections.length) return false
 
     const checkDownstreamConnection = (innerFromId: string): boolean => {
       const connectionsFromId = connections.filter(propEq('from', innerFromId))
 
-      if (!connectionsFromId.length) {
-        return false
-      }
-
-      if (connectionsFromId.some(propEq('to', toId))) {
-        return true
-      }
+      if (!connectionsFromId.length) return false
+      if (connectionsFromId.some(propEq('to', toId))) return true
 
       return connectionsFromId.reduce(
         (accum: boolean, connection) =>
@@ -53,16 +46,16 @@ export const hasDownstreamConnectionTo = curry(
 
 export const canConnectNodes = curry(
   (
-    connections: AudioNodeConnection[],
-    { id: from }: AudioNodeMeta,
-    { id: to }: AudioNodeMeta,
-  ) => from !== to && !hasDownstreamConnectionTo(from, connections, to),
+    connections: Connection[],
+    { id: fromId }: Pick<AudioNodeMeta, 'id'>,
+    { id: toId }: Pick<AudioNodeMeta, 'id'>,
+  ) => fromId !== toId && !hasConnectionTo(connections, fromId, toId),
 )
 
 export const getConnectionBetween = curry(
   (
     connections: AudioNodeConnection[],
-    { id: from }: AudioNodeMeta,
-    { id: to }: AudioNodeMeta,
+    { id: from }: Pick<AudioNodeMeta, 'id'>,
+    { id: to }: Pick<AudioNodeMeta, 'id'>,
   ) => connections.find(isSameConnection({ from, to })),
 )
