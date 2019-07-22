@@ -5,7 +5,13 @@ module.exports = {
     '^.+\\.[jt]sx?$': '<rootDir>/node_modules/babel-jest',
   },
   coverageDirectory: '<rootDir>/coverage/',
-  collectCoverageFrom: ['src/**/*.(ts|tsx)'],
+  collectCoverageFrom: [
+    'src/apis/**/*.ts',
+    'src/constants/**/*.ts',
+    'src/nodes/**/createAudioNode.ts',
+    'src/state/**/*.ts',
+    'src/util/**/*.ts',
+  ],
   coveragePathIgnorePatterns: ['<rootDir>/dist/', '<rootDir>/node_modules/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   moduleNameMapper: {
