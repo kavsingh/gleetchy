@@ -28,11 +28,15 @@ const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
-export const connectable = <T extends GAudioNode = GAudioNode>({
+export const connectable = <
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  P extends object = any,
+  N extends GAudioNode = GAudioNode<P, string>
+>({
   getInNode,
   getOutNode,
 }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-AudioNodeConnectableProxy) => (api: any): T =>
+AudioNodeConnectableProxy) => (api: any): N =>
   Object.assign(api, {
     connect: createConnect(getOutNode),
     disconnect: createDisconnect(getOutNode),
