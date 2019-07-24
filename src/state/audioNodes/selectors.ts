@@ -30,12 +30,6 @@ export const immutableAudioEffectsMetaSelector = createSelector(
   meta => meta.filter(isAudioEffect),
 )
 
-export const orderedAudioNodesMetaSelector = createSelector(
-  audioNodesSelector,
-  (nodes): AudioNodeMeta[] =>
-    Object.values(nodes).map(({ id, type, label }) => ({ id, type, label })),
-)
-
 export const mainOutNodeSelector = createSelector(
   audioNodesSelector,
   nodes => nodes[MAIN_OUT_ID],
@@ -46,18 +40,8 @@ export const mainOutMetaSelector = createSelector(
   ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 )
 
-export const orderedInstrumentsMetaSelector = createSelector(
-  orderedAudioNodesMetaSelector,
-  meta => meta.filter(isInstrument),
-)
-
-export const orderedAudioEffectsMetaSelector = createSelector(
-  orderedAudioNodesMetaSelector,
-  meta => meta.filter(isAudioEffect),
-)
-
 export const activeAudioNodeIdsSelector = createSelector(
-  orderedAudioNodesMetaSelector,
+  immutableNodesMetaSelector,
   connectionsSelector,
   mainOutNodeSelector,
   (meta, connections, mainOut) => {
@@ -68,13 +52,21 @@ export const activeAudioNodeIdsSelector = createSelector(
 )
 
 export const connectableSourcesSelector = createSelector(
-  orderedInstrumentsMetaSelector,
-  orderedAudioEffectsMetaSelector,
-  (instruments, effects) => [...instruments, ...effects],
+  audioNodesSelector,
+  immutableInstrumentsMetaSelector,
+  immutableAudioEffectsMetaSelector,
+  (nodes, instruments, effects) => [
+    ...instruments.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+    ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+  ],
 )
 
 export const connectableTargetsSelector = createSelector(
-  orderedAudioEffectsMetaSelector,
+  audioNodesSelector,
+  immutableAudioEffectsMetaSelector,
   mainOutMetaSelector,
-  (effects, out) => [...effects, out],
+  (nodes, effects, out) => [
+    ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+    out,
+  ],
 )
