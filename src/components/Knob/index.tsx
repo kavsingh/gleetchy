@@ -31,31 +31,7 @@ const knobContainerStyle = css({
   flex: '0 0 auto',
   margin: '0.4em auto 0.3em',
   position: 'relative',
-
-  '& svg': {
-    fill: 'transparent',
-    height: '100%',
-    width: '100%',
-  },
 })
-
-const trackContainerStyle = (theme: UITheme) =>
-  css({
-    zIndex: 1,
-
-    '& svg': {
-      stroke: theme.colorKeyline,
-    },
-  })
-
-const barContainerStyle = (theme: UITheme) =>
-  css({
-    zIndex: 2,
-
-    '& svg': {
-      stroke: theme.colorEmphasis,
-    },
-  })
 
 export interface KnobProps {
   value: number
@@ -109,11 +85,14 @@ class Knob extends PureComponent<KnobProps, KnobState> {
               style={{ height: radius, width: radius, ...cursorStyles }}
               ref={el => (this.knobNode = el)}
             >
-              <div css={[layoutAbsoluteFill, trackContainerStyle(theme)]}>
-                <SVGArc startAngle={0} endAngle={360} strokeWidth={1} />
-              </div>
-              <div css={[layoutAbsoluteFill, barContainerStyle(theme)]}>
-                <SVGArc startAngle={0} endAngle={value * 360} strokeWidth={2} />
+              <div css={layoutAbsoluteFill}>
+                <SVGArc
+                  endRatio={value}
+                  strokeWidth={6}
+                  backgroundStrokeWidth={3}
+                  strokeColor={theme.colorEmphasis}
+                  backgroundStrokeColor={theme.colorKeyline}
+                />
               </div>
             </div>
             <div css={labelStyle}>{renderValue()}</div>

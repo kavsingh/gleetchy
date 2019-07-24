@@ -1,37 +1,45 @@
 import React, { memo, FunctionComponent } from 'react'
 
-import { describeSVGArc } from '~/util/ui'
-
-export interface SVGArcProps {
-  endAngle: number
-  radius?: number
-  startAngle?: number
+// Adapted from https://codepen.io/JMChristensen/pen/Ablch
+const SVGArc: FunctionComponent<{
+  endRatio: number
+  strokeColor: string
+  backgroundStrokeColor: string
   strokeWidth?: number
-}
+  backgroundStrokeWidth?: number
+}> = ({
+  endRatio,
+  strokeColor,
+  backgroundStrokeColor,
+  strokeWidth = 4,
+  backgroundStrokeWidth = 1,
+}) => {
+  const radius = 50 - strokeWidth / 2
+  const circumference = 2 * Math.PI * radius
 
-const SVGArc: FunctionComponent<SVGArcProps> = ({
-  endAngle,
-  startAngle = 0,
-  radius = 1,
-  strokeWidth = 1,
-}) => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox={`0 0 ${radius * 2} ${radius * 2}`}
-  >
-    <defs>
-      <clipPath id="stroke-mask">
-        <circle cx={radius} cy={radius} r={radius} />
-      </clipPath>
-    </defs>
-    <path
-      id="stroke"
-      d={describeSVGArc({ x: radius, y: radius }, radius, startAngle, endAngle)}
-      clipPath="url(#stroke-mask)"
-      vectorEffect="non-scaling-stroke"
-      strokeWidth={strokeWidth * 2}
-    />
-  </svg>
-)
+  return (
+    <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <circle
+        cx="50"
+        cy="50"
+        r={radius}
+        fill="transparent"
+        strokeWidth={backgroundStrokeWidth}
+        stroke={backgroundStrokeColor}
+      />
+      <circle
+        transform="rotate(-90, 50, 50)"
+        cx="50"
+        cy="50"
+        r={radius}
+        strokeDasharray={circumference}
+        strokeDashoffset={(1 - endRatio) * circumference}
+        fill="transparent"
+        strokeWidth={strokeWidth}
+        stroke={strokeColor}
+      />
+    </svg>
+  )
+}
 
 export default memo(SVGArc)
