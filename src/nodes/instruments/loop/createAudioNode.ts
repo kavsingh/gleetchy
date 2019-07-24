@@ -73,7 +73,7 @@ export default curry(
       }
     }
 
-    return connectable<InstrumentNode>({
+    return connectable<Props, InstrumentNode>({
       getInNode: getGainNode,
       getOutNode: getGainNode,
     })({

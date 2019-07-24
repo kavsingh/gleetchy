@@ -10,6 +10,7 @@ import useAudioNodes from '~/state/hooks/useAudioNodes'
 import ConnectedDelay from './ConnectedDelay'
 import ConnectedReverb from './ConnectedReverb'
 import AddNodeButtons from '~/components/AddNodeButtons'
+import ErrorBoundary from '~/components/ErrorBoundary'
 
 const rootStyle = css({
   alignItems: 'flex-start',
@@ -23,15 +24,11 @@ const audioEffectContainerStyle = css({
   padding: '1em 0',
 })
 
-const AudioEffectsRack: FunctionComponent = () => {
+const Rack: FunctionComponent = () => {
   const { audioEffects } = useAudioNodesMeta()
-  const { add } = useAudioNodes()
-
-  const addReverb = useCallback(() => add(reverbType), [add])
-  const addDelay = useCallback(() => add(delayType), [add])
 
   return (
-    <div css={rootStyle}>
+    <ErrorBoundary>
       {audioEffects.map(({ id, type }) => {
         switch (type) {
           case delayType:
@@ -54,9 +51,26 @@ const AudioEffectsRack: FunctionComponent = () => {
             return null
         }
       })}
-      <AddNodeButtons buttons={[['Reverb', addReverb], ['Delay', addDelay]]} />
-    </div>
+    </ErrorBoundary>
   )
 }
+
+const Add: FunctionComponent = () => {
+  const { add } = useAudioNodes()
+
+  const addReverb = useCallback(() => add(reverbType), [add])
+  const addDelay = useCallback(() => add(delayType), [add])
+
+  return (
+    <AddNodeButtons buttons={[['Reverb', addReverb], ['Delay', addDelay]]} />
+  )
+}
+
+const AudioEffectsRack: FunctionComponent = () => (
+  <div css={rootStyle}>
+    <Rack />
+    <Add />
+  </div>
+)
 
 export default AudioEffectsRack

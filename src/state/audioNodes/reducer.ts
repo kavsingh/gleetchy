@@ -19,7 +19,7 @@ import {
 import initialNodes from '~/state/defaultNodes'
 import { prefixedId } from '~/util/id'
 import { pickObjectKeys } from '~/util/object'
-import { AudioNodeState } from '~/types'
+import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
 import { AudioNodesAction } from './types'
@@ -29,15 +29,17 @@ type NodeState = AudioNodeState<
 >
 
 export interface AudioNodesState {
-  [key: string]: NodeState
+  byId: { [key: string]: NodeState }
+  orderedMeta: ImmutableAudioNodeMeta[]
 }
 
 const defaultState: AudioNodesState = initialNodes.reduce(
   (acc: AudioNodesState, instrument) => {
-    acc[instrument.id] = instrument
+    acc.byId[instrument.id] = instrument
+    acc.orderedMeta.push({ id: instrument.id, type: instrument.type })
     return acc
   },
-  {},
+  { byId: {}, orderedMeta: [] },
 )
 
 const getNewNodeState = (type: string): AudioNodeState | null => {
@@ -76,7 +78,11 @@ const addNode = (state: AudioNodesState, { type }: { type: string }) => {
   if (!newNodeState) return state
 
   return produce<AudioNodesState>(state, draftState => {
-    draftState[newNodeState.id] = newNodeState
+    draftState.byId[newNodeState.id] = newNodeState
+    draftState.orderedMeta.push({
+      id: newNodeState.id,
+      type: newNodeState.type,
+    })
   })
 }
 
@@ -91,11 +97,19 @@ const audioNodesReducer: Reducer<
       return produce(state, draftState => {
         const { id } = action.payload
 
-        if (draftState[id]) delete draftState[id]
+        if (draftState.byId[id]) delete draftState.byId[id]
+
+        const orderedMetaIndex = draftState.orderedMeta.findIndex(
+          meta => meta.id === id,
+        )
+
+        if (orderedMetaIndex > -1) {
+          draftState.orderedMeta.splice(orderedMetaIndex, 1)
+        }
       })
     case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
       return produce(state, draftState => {
-        const existing = draftState[action.payload.id]
+        const existing = draftState.byId[action.payload.id]
 
         if (existing) {
           Object.assign(existing.audioProps, action.payload.audioProps)
@@ -103,14 +117,14 @@ const audioNodesReducer: Reducer<
       })
     case 'AUDIO_NODE_UPDATE_LABEL':
       return produce(state, draftState => {
-        const existing = draftState[action.payload.id]
+        const existing = draftState.byId[action.payload.id]
 
         if (existing) existing.label = action.payload.label
       })
     case 'AUDIO_FILE_DECODE_COMPLETE':
       return produce(state, draftState => {
         const { id, file } = action.payload
-        const existing = draftState[id]
+        const existing = draftState.byId[id]
 
         if (existing) {
           Object.assign(

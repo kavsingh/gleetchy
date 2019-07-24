@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect'
-import { identity } from 'ramda'
 
 import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
@@ -11,17 +10,28 @@ const audioNodesStateSelector = (state: ApplicationState) => state.audioNodes
 
 export const audioNodesSelector = createSelector(
   audioNodesStateSelector,
-  identity,
+  state => state.byId,
 )
 
-export const orderedAudioNodesMetaSelector = createSelector(
+// TODO: Better naming
+
+export const immutableNodesMetaSelector = createSelector(
   audioNodesStateSelector,
-  (nodes): AudioNodeMeta[] =>
-    Object.values(nodes).map(({ id, type, label }) => ({ id, type, label })),
+  state => state.orderedMeta,
+)
+
+export const immutableInstrumentsMetaSelector = createSelector(
+  immutableNodesMetaSelector,
+  meta => meta.filter(isInstrument),
+)
+
+export const immutableAudioEffectsMetaSelector = createSelector(
+  immutableNodesMetaSelector,
+  meta => meta.filter(isAudioEffect),
 )
 
 export const mainOutNodeSelector = createSelector(
-  audioNodesStateSelector,
+  audioNodesSelector,
   nodes => nodes[MAIN_OUT_ID],
 )
 
@@ -30,18 +40,8 @@ export const mainOutMetaSelector = createSelector(
   ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 )
 
-export const orderedInstrumentsMetaSelector = createSelector(
-  orderedAudioNodesMetaSelector,
-  meta => meta.filter(isInstrument),
-)
-
-export const orderedAudioEffectsMetaSelector = createSelector(
-  orderedAudioNodesMetaSelector,
-  meta => meta.filter(isAudioEffect),
-)
-
 export const activeAudioNodeIdsSelector = createSelector(
-  orderedAudioNodesMetaSelector,
+  immutableNodesMetaSelector,
   connectionsSelector,
   mainOutNodeSelector,
   (meta, connections, mainOut) => {
@@ -52,13 +52,21 @@ export const activeAudioNodeIdsSelector = createSelector(
 )
 
 export const connectableSourcesSelector = createSelector(
-  orderedInstrumentsMetaSelector,
-  orderedAudioEffectsMetaSelector,
-  (instruments, effects) => [...instruments, ...effects],
+  audioNodesSelector,
+  immutableInstrumentsMetaSelector,
+  immutableAudioEffectsMetaSelector,
+  (nodes, instruments, effects) => [
+    ...instruments.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+    ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+  ],
 )
 
 export const connectableTargetsSelector = createSelector(
-  orderedAudioEffectsMetaSelector,
+  audioNodesSelector,
+  immutableAudioEffectsMetaSelector,
   mainOutMetaSelector,
-  (effects, out) => [...effects, out],
+  (nodes, effects, out) => [
+    ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+    out,
+  ],
 )
