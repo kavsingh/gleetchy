@@ -116,6 +116,6 @@ module.exports = {
     },
   ],
   globals: {
-    process: false,
+    process: 'readonly',
   },
 }

@@ -1,11 +1,10 @@
+node_modules/
+dist/
+distStatic/
+coverage/
 .DS_Store
 *.log
 *.log.*
 *.sublime-project
 *.sublime-workspace
-.vscode
-node_modules
-/dist
-/distStatic
-/coverage
 *stats.html
