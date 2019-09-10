@@ -38,6 +38,7 @@ module.exports = {
   ],
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
@@ -50,7 +51,6 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
-    '@typescript-eslint/interface-name-prefix': ['warn', 'never'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'import/no-absolute-path': 'warn',

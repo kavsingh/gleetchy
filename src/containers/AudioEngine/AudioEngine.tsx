@@ -123,7 +123,7 @@ class AudioEngine extends Component<AudioEngineProps> {
       .filter(id => !this.audioNodes[id])
       .forEach(id => {
         const node = nextNodes[id]
-        const nodeCreator = getNodeCreator(node) as NodeCreator
+        const nodeCreator = getNodeCreator(node)
 
         if (!nodeCreator) return
 

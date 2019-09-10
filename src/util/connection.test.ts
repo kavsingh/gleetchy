@@ -12,10 +12,14 @@ describe('util/connection', () => {
         getOutNode: stubAudioNode,
       })({ type: 'node' })
 
-      expect(node.connect).toEqual(expect.any(Function))
-      expect(node.disconnect).toEqual(expect.any(Function))
-      expect(node.getInNode).toEqual(expect.any(Function))
-      expect(node.getOutNode).toEqual(expect.any(Function))
+      expect(node).toEqual(
+        expect.objectContaining({
+          connect: expect.any(Function),
+          disconnect: expect.any(Function),
+          getInNode: expect.any(Function),
+          getOutNode: expect.any(Function),
+        }),
+      )
     })
   })
 })
