@@ -46,7 +46,13 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
 
   const baseDistPath = fromRoot(baseOutputPath)
   const staticDistPath = fromRoot(staticOutputPath)
-  const staticModulePath = fromRoot(staticOutputPath, staticOutputFilename)
+  const staticModulePath = fromRoot(
+    staticOutputPath,
+    // TODO: properly deal with chunkdata => string
+    typeof staticOutputFilename === 'string'
+      ? staticOutputFilename
+      : 'gleetchy',
+  )
 
   await webpack([staticConfig])
   const { default: render } = await import(staticModulePath)
