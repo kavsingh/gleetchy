@@ -5,11 +5,9 @@ import { AudioNodeConnection, AudioNodeMeta } from '~/types'
 const typeSatisfies = (pred: (type: string) => boolean) =>
   tryCatch(propSatisfies<string>(pred, 'type'), F)
 
-/* eslint-disable jest/no-disabled-tests */
 export const isAudioEffect = typeSatisfies(test(/^audio_effect_/i))
 
 export const isInstrument = typeSatisfies(test(/^instrument_/i))
-/* eslint-enable */
 
 type Connection = Omit<AudioNodeConnection, 'color'>
 

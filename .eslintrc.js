@@ -28,14 +28,7 @@ module.exports = {
     'import/resolver': 'babel-module',
   },
   env: { node: true, browser: false, es6: true },
-  plugins: [
-    '@typescript-eslint',
-    'import',
-    'react',
-    'react-hooks',
-    'jest',
-    'prettier',
-  ],
+  plugins: ['@typescript-eslint', 'import', 'react', 'react-hooks', 'prettier'],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -43,8 +36,6 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:react/recommended',
-    'plugin:jest/recommended',
-    'plugin:jest/style',
     'prettier',
     'prettier/react',
     'prettier/@typescript-eslint',
@@ -97,8 +88,10 @@ module.exports = {
       },
     },
     {
-      files: ['*.test.*'],
+      files: ['*.test.*', '**/__test*/*'],
       env: { node: true, 'jest/globals': true },
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
