@@ -1,6 +1,8 @@
-import { path, pipe } from 'ramda'
+import { path, pipe, split, uniq, __ } from 'ramda'
 
-export const requireWindowWith = (propPaths: string[][] = []) => {
+import { isNotNil } from './object'
+
+export const requireWindowWith = (propPaths: string[] = []) => {
   const WINDOW = typeof window !== 'undefined' ? window : undefined
 
   if (!WINDOW) {
@@ -8,22 +10,31 @@ export const requireWindowWith = (propPaths: string[][] = []) => {
   }
 
   const windowHas = pipe(
-    (propPath: string[]) => path(propPath, WINDOW),
-    (o: unknown) => typeof o !== 'undefined',
+    split('.'),
+    path(__, WINDOW),
+    isNotNil,
   )
 
   return propPaths.every(windowHas) ? WINDOW : undefined
 }
 
-const isSupportedEvent = <T extends string>(eventName: T) => {
-  const name = eventName.startsWith('on') ? eventName : `on${eventName}`
-  const WINDOW = requireWindowWith([['document', 'documentElement']])
+const asEventName = (name: string) =>
+  name.startsWith('on') ? name.slice(2) : name
+
+const isSupportedEvent = (name: string) => {
+  const asHandlerName = name.startsWith('on') ? name : `on${name}`
+  const WINDOW = requireWindowWith(['document.documentElement'])
 
   return WINDOW
-    ? name in WINDOW.document || name in WINDOW.document.documentElement
+    ? asHandlerName in WINDOW.document ||
+        asHandlerName in WINDOW.document.documentElement
     : false
 }
 
-export const filterSupportedEvents = <T extends string = string>(
-  eventNames: T[],
-) => eventNames.filter(name => isSupportedEvent<T>(name))
+export const filterSupportedEvents = (eventNames: string[]) =>
+  uniq(
+    eventNames.reduce((acc: string[], name) => {
+      if (isSupportedEvent(name)) acc.push(asEventName(name))
+      return acc
+    }, []),
+  )

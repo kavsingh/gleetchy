@@ -4,7 +4,7 @@ import { requireWindowWith } from '~/util/env'
 let fileInput: HTMLInputElement
 
 const getFileInput = () => {
-  const WINDOW = requireWindowWith([['document', 'createElement']])
+  const WINDOW = requireWindowWith(['document.createElement'])
 
   if (!WINDOW) {
     return undefined

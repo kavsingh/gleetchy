@@ -74,13 +74,6 @@ export interface SinglePointerDragProps {
   onDragEnd?(state: Partial<SinglePointerDragState>): unknown
 }
 
-type MouseEndEvent = 'mouseup'
-type TouchEndEvent = 'touchend' | 'touchcancel'
-type MouseMoveEvent = 'mousemove'
-type TouchMoveEvent = 'touchmove'
-type MoveEvent = MouseMoveEvent | TouchMoveEvent
-type EndEvent = MouseEndEvent | TouchEndEvent
-
 class SinglePointerDrag extends PureComponent<
   SinglePointerDragProps,
   SinglePointerDragState
@@ -106,12 +99,12 @@ class SinglePointerDrag extends PureComponent<
     y: 0,
   }
 
-  private mouseMoveEvents: MouseMoveEvent[] = []
-  private mouseEndEvents: MouseEndEvent[] = []
-  private touchMoveEvents: TouchMoveEvent[] = []
-  private touchEndEvents: TouchEndEvent[] = []
-  private moveEvents: MoveEvent[] = []
-  private endEvents: EndEvent[] = []
+  private mouseMoveEvents: string[] = []
+  private mouseEndEvents: string[] = []
+  private touchMoveEvents: string[] = []
+  private touchEndEvents: string[] = []
+  private moveEvents: string[] = []
+  private endEvents: string[] = []
   private throttledHandleDragMove: (event: MouseOrTouchEvent) => void
 
   public constructor(props: SinglePointerDragProps, context: unknown) {
@@ -130,7 +123,7 @@ class SinglePointerDrag extends PureComponent<
   }
 
   public componentWillUnmount() {
-    const WINDOW = requireWindowWith([['removeEventListener']])
+    const WINDOW = requireWindowWith(['removeEventListener'])
 
     if (!WINDOW) {
       return
@@ -178,7 +171,7 @@ class SinglePointerDrag extends PureComponent<
     moveEvents: string[],
     endEvents: string[],
   ) {
-    const WINDOW = requireWindowWith([['addEventListener']])
+    const WINDOW = requireWindowWith(['addEventListener'])
 
     if (!WINDOW || this.state.isDragging) {
       return
@@ -252,7 +245,7 @@ class SinglePointerDrag extends PureComponent<
   }
 
   private handleDragEnd = (event: MouseOrTouchEvent) => {
-    const WINDOW = requireWindowWith([['removeEventListener']])
+    const WINDOW = requireWindowWith(['removeEventListener'])
 
     if (!WINDOW) {
       return

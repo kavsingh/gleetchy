@@ -7,7 +7,7 @@ import { configureStore } from '~/state/configureStore'
 
 import Main from './Main'
 
-const WINDOW = requireWindowWith([['document', 'getElementById']])
+const WINDOW = requireWindowWith(['document.getElementById'])
 
 if (!WINDOW) {
   throw new Error('Could not access dom')

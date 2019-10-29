@@ -42,6 +42,6 @@ const offlineInstall = (serviceWorkerUrl: string, scope: string) => {
 
 const shouldInstall =
   process.env.NODE_ENV === 'production' &&
-  !!requireWindowWith([['navigator', 'serviceWorker']])
+  !!requireWindowWith(['navigator.serviceWorker'])
 
 export default shouldInstall ? offlineInstall : noop
