@@ -42,6 +42,7 @@ module.exports = {
   ],
   rules: {
     'no-console': 'off',
+    curly: ['error', 'multi-line', 'consistent'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'import/no-absolute-path': 'warn',
