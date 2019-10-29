@@ -1,18 +1,13 @@
+import { useState, useCallback, useMemo, DragEventHandler } from 'react'
 import { T } from 'ramda'
-import { useState, useCallback } from 'react'
 
 import { noop } from '~/util/function'
 import { cancelReactEvent } from '~/util/event'
 
 export interface UseFileDropRegionProps {
-  fileFilter?(file: File, index: number, array: File[]): boolean
+  fileFilter?(file: File, index?: number, array?: File[]): boolean
   onFiles?(files: File[]): unknown
   onNoFiles?(): unknown
-}
-
-const withCancelEvent = (fn: () => unknown) => (event: React.DragEvent) => {
-  cancelReactEvent(event)
-  fn()
 }
 
 export default function useFileDropRegion({
@@ -22,35 +17,41 @@ export default function useFileDropRegion({
 }: UseFileDropRegionProps) {
   const [isDropActive, setIsDropActive] = useState(false)
 
-  const onDrop = useCallback(
-    (event: React.DragEvent) => {
-      const receivable = Array.from(
-        (event.dataTransfer || {}).files || [],
-      ).filter(fileFilter)
+  const eventSetDropActive = useCallback<DragEventHandler>(event => {
+    cancelReactEvent(event)
+    setIsDropActive(true)
+  }, [])
+
+  const eventSetDropInactive = useCallback<DragEventHandler>(event => {
+    cancelReactEvent(event)
+    setIsDropActive(false)
+  }, [])
+
+  const onDrop = useCallback<DragEventHandler>(
+    event => {
+      const receivable = Array.from(event.dataTransfer.files).filter(fileFilter)
 
       cancelReactEvent(event)
-
-      if (!receivable.length) {
-        onNoFiles()
-      } else {
-        onFiles(receivable)
-      }
-
       setIsDropActive(false)
+
+      if (receivable.length) onFiles(receivable)
+      else onNoFiles()
     },
-    [setIsDropActive, onFiles, onNoFiles, fileFilter],
+    [fileFilter, onFiles, onNoFiles],
   )
 
-  return [
-    isDropActive,
-    {
+  const eventHandlers = useMemo(
+    () => ({
       onDrop,
       onDrag: cancelReactEvent,
       onDragOver: cancelReactEvent,
       onDragStart: cancelReactEvent,
-      onDragEnter: withCancelEvent(() => setIsDropActive(true)),
-      onDragLeave: withCancelEvent(() => setIsDropActive(false)),
-      onDragEnd: withCancelEvent(() => setIsDropActive(false)),
-    },
-  ]
+      onDragEnter: eventSetDropActive,
+      onDragLeave: eventSetDropInactive,
+      onDragEnd: eventSetDropInactive,
+    }),
+    [onDrop, eventSetDropActive, eventSetDropInactive],
+  )
+
+  return { isDropActive, eventHandlers }
 }
