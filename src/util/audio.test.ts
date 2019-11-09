@@ -102,7 +102,10 @@ describe('Audio util', () => {
     })
 
     it('returns false if to node is connected to from node', () => {
-      const connections = [{ from: 'd', to: 'b' }, { from: 'b', to: 'a' }]
+      const connections = [
+        { from: 'd', to: 'b' },
+        { from: 'b', to: 'a' },
+      ]
 
       const canConnectIn = canConnectNodes(connections)
 

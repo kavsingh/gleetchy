@@ -62,7 +62,12 @@ const Add: FunctionComponent = () => {
   const addDelay = useCallback(() => add(delayType), [add])
 
   return (
-    <AddNodeButtons buttons={[['Reverb', addReverb], ['Delay', addDelay]]} />
+    <AddNodeButtons
+      buttons={[
+        ['Reverb', addReverb],
+        ['Delay', addDelay],
+      ]}
+    />
   )
 }
 

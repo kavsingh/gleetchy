@@ -17,7 +17,6 @@ export const uiThemeNameSelector = createSelector(
   ({ currentThemeName }) => currentThemeName,
 )
 
-export const uiThemeSelector = createSelector(
-  uiThemeNameSelector,
-  themeName => getTheme(themeName),
+export const uiThemeSelector = createSelector(uiThemeNameSelector, themeName =>
+  getTheme(themeName),
 )

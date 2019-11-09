@@ -9,11 +9,7 @@ export const requireWindowWith = (propPaths: string[] = []) => {
     return undefined
   }
 
-  const windowHas = pipe(
-    split('.'),
-    path(__, WINDOW),
-    isNotNil,
-  )
+  const windowHas = pipe(split('.'), path(__, WINDOW), isNotNil)
 
   return propPaths.every(windowHas) ? WINDOW : undefined
 }

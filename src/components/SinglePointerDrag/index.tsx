@@ -34,10 +34,7 @@ const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
   }
 }
 
-const cancelAndNormalizeEvent = pipe(
-  tap(cancelEvent),
-  normalizeEvent,
-)
+const cancelAndNormalizeEvent = pipe(tap(cancelEvent), normalizeEvent)
 
 interface ChildRenderProps {
   dragListeners: {
