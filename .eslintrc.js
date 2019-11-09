@@ -77,6 +77,11 @@ module.exports = {
         'no-unused-vars': unusedVarsConfig,
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
+        // Disable to avoid false positives in optional chaining
+        // tsc should catch use of undefined values
+        // https://github.com/typescript-eslint/typescript-eslint/issues/1116
+        'no-undef': 'off',
+        '@typescript-eslint/no-undef': 'off',
       },
     },
     {
