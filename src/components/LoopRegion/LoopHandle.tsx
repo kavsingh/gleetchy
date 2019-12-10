@@ -1,8 +1,8 @@
 import React, { memo, FunctionComponent } from 'react'
 import { css } from '@emotion/core'
+import { withTheme } from 'emotion-theming'
 
 import { UITheme } from '~/style/theme'
-import { withTheme } from 'emotion-theming'
 
 const rootStyle = css({
   height: '100%',

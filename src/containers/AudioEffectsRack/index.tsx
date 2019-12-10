@@ -6,11 +6,11 @@ import { nodeType as delayType } from '~/nodes/audioEffects/delay'
 import { nodeType as reverbType } from '~/nodes/audioEffects/reverb'
 import useAudioNodesMeta from '~/state/hooks/useAudioNodesMeta'
 import useAudioNodes from '~/state/hooks/useAudioNodes'
+import AddNodeButtons from '~/components/AddNodeButtons'
+import ErrorBoundary from '~/components/ErrorBoundary'
 
 import ConnectedDelay from './ConnectedDelay'
 import ConnectedReverb from './ConnectedReverb'
-import AddNodeButtons from '~/components/AddNodeButtons'
-import ErrorBoundary from '~/components/ErrorBoundary'
 
 const rootStyle = css({
   alignItems: 'flex-start',

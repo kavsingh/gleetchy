@@ -1,6 +1,7 @@
 import { promisify } from 'util'
 import path from 'path'
 import { writeFile } from 'fs'
+
 import webpack, { Configuration } from 'webpack'
 import { JSDOM } from 'jsdom'
 

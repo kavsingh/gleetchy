@@ -1,3 +1,4 @@
+import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { AudioNodeState, AudioNodeConnection } from '~/types'
@@ -9,7 +10,6 @@ import {
 import { getConnectionsFor } from '~/util/audio'
 
 import useAudioNodes from './useAudioNodes'
-import { useCallback, useEffect, useState } from 'react'
 import useConnections from './useConnections'
 
 const useAudioNode = <T>(

@@ -1,3 +1,4 @@
+import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import {
@@ -5,7 +6,6 @@ import {
   activeAudioNodeIdsSelector,
 } from '~/state/audioNodes/selectors'
 import { addAudioNodeAction } from '~/state/audioNodes/actions'
-import { useCallback } from 'react'
 
 const useAudioNodes = () => {
   const dispatch = useDispatch()

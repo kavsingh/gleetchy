@@ -1,6 +1,7 @@
+import React, { Component } from 'react'
 import color from 'color'
 import { css } from '@emotion/core'
-import React, { Component } from 'react'
+import { withTheme } from 'emotion-theming'
 
 import { noop } from '~/util/function'
 import { UITheme } from '~/style/theme'
@@ -10,7 +11,6 @@ import SinglePointerDrag, {
 } from '~/components/SinglePointerDrag'
 
 import LoopHandle from './LoopHandle'
-import { withTheme } from 'emotion-theming'
 
 const rootStyle = css({
   height: '100%',

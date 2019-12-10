@@ -51,19 +51,19 @@ module.exports = {
     'import/no-self-import': 'warn',
     'import/no-unused-modules': 'warn',
     'import/no-useless-path-segments': 'warn',
-    // TODO: Enable when regexp-based groups are added
-    // 'import/order': [
-    //   'warn',
-    //   {
-    //     groups: [
-    //       'builtin',
-    //       'external',
-    //       'internal',
-    //       ['parent', 'sibling', 'index'],
-    //     ],
-    //     'newlines-between': 'ignore',
-    //   },
-    // ],
+    'import/order': [
+      'warn',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          ['parent', 'sibling', 'index'],
+        ],
+        pathGroups: [{ pattern: '~/**', group: 'internal' }],
+        'newlines-between': 'always',
+      },
+    ],
     'react/prop-types': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
