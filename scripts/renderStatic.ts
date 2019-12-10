@@ -1,18 +1,14 @@
 import { promisify } from 'util'
 import path from 'path'
-import { readFile as _readFile, writeFile as _writeFile } from 'fs'
-import _webpack, { Configuration } from 'webpack'
-import cheerio from 'cheerio'
+import { writeFile } from 'fs'
+import webpack, { Configuration } from 'webpack'
+import { JSDOM } from 'jsdom'
 
 import { ApplicationState } from '../src/state/configureStore'
 import baseConfig from '../webpack.config'
 import staticConfig from '../webpack.config.static'
 import spawnAsync from './lib/spawnAsync'
 import { resolveFromProjectRoot as fromRoot } from './lib/util'
-
-const webpack = promisify(_webpack)
-const readFile = promisify(_readFile)
-const writeFile = promisify(_writeFile)
 
 const parseBaseConfig = (config: Configuration) => {
   const { output = {} } = config
@@ -54,20 +50,23 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
       : 'gleetchy',
   )
 
-  await webpack([staticConfig])
+  await promisify(webpack)([staticConfig])
   const { default: render } = await import(staticModulePath)
+  const dom = await JSDOM.fromFile(path.resolve(baseDistPath, 'index.html'))
+  const appRoot = dom.window.document.querySelector('#app-root')
 
-  const html = await readFile(path.resolve(baseDistPath, 'index.html'), 'utf-8')
-  const dom = cheerio.load(html)
-  const appRoot = dom('#app-root')
+  if (!appRoot) throw new Error('Container element #app-root not found')
 
-  appRoot.attr('data-initialstate', JSON.stringify(initialState))
-  appRoot.html(render(initialState))
+  appRoot.setAttribute('data-initialstate', JSON.stringify(initialState))
+  appRoot.innerHTML = render(initialState)
 
   await spawnAsync('rm', ['-rf', staticDistPath])
   await spawnAsync('cp', ['-r', baseDistPath, staticDistPath])
 
-  return writeFile(path.resolve(staticDistPath, 'index.html'), dom.html())
+  return promisify(writeFile)(
+    path.resolve(staticDistPath, 'index.html'),
+    dom.serialize(),
+  )
 }
 
 renderStatic({})
