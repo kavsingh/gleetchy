@@ -1,6 +1,6 @@
-import { pick, isNil, pipe, not } from 'ramda'
+import { pick, isNil } from 'ramda'
 
 export const pickObjectKeys = (obj: { [key: string]: unknown }) =>
   pick(Object.keys(obj))
 
-export const isNotNil = pipe(isNil, not)
+export const isNotNil = <T>(value: T): value is NonNullable<T> => !isNil(value)
