@@ -1,13 +1,9 @@
 {
   "editor.formatOnSave": true,
-  "eslint.autoFixOnSave": true,
   "eslint.enable": true,
-  "eslint.validate": [
-    { "language": "javascript", "autoFix": true },
-    { "language": "javascriptreact", "autoFix": true },
-    { "language": "typescript", "autoFix": true },
-    { "language": "typescriptreact", "autoFix": true }
-  ],
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
   "files.watcherExclude": {
     "**/node_modules": true,
     "**/coverage/": true,
