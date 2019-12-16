@@ -1,16 +1,28 @@
-import { always } from 'ramda'
-
 import { connectable } from './connection'
 
-const stubAudioNode = always(new AudioContext().createGain())
+const context = new AudioContext()
+
+const createConnectableFromGainNodes = () => {
+  const inNode = context.createGain()
+  const outNode = context.createGain()
+
+  jest.spyOn(inNode, 'connect')
+  jest.spyOn(outNode, 'connect')
+
+  return {
+    inNode,
+    outNode,
+    node: connectable({
+      getInNode: jest.fn(() => inNode),
+      getOutNode: jest.fn(() => outNode),
+    })({ type: 'node' }),
+  }
+}
 
 describe('util/connection', () => {
   describe('connectable', () => {
     it('creates a connectable node', () => {
-      const node = connectable({
-        getInNode: stubAudioNode,
-        getOutNode: stubAudioNode,
-      })({ type: 'node' })
+      const { node } = createConnectableFromGainNodes()
 
       expect(node).toEqual(
         expect.objectContaining({
@@ -20,6 +32,17 @@ describe('util/connection', () => {
           getOutNode: expect.any(Function),
         }),
       )
+    })
+
+    it('connects', () => {
+      const a = createConnectableFromGainNodes()
+      const b = createConnectableFromGainNodes()
+
+      a.node.connect(b.node)
+
+      expect(a.node.getOutNode).toHaveBeenCalledWith()
+      expect(b.node.getInNode).toHaveBeenCalledWith()
+      expect(a.outNode.connect).toHaveBeenCalledWith(b.inNode)
     })
   })
 })
