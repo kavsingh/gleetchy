@@ -1,4 +1,5 @@
 import { Reducer } from 'redux'
+import produce from 'immer'
 
 import { GlobalPlaybackAction } from './types'
 
@@ -11,15 +12,18 @@ const defaultState: GlobalPlaybackState = { isPlaying: false }
 const globalPlaybackReducer: Reducer<
   GlobalPlaybackState,
   GlobalPlaybackAction
-> = (state = defaultState, action) => {
-  switch (action.type) {
-    case 'GLOBAL_PLAYBACK_START':
-      return state.isPlaying ? state : { isPlaying: true }
-    case 'GLOBAL_PLAYBACK_STOP':
-      return state.isPlaying ? { isPlaying: false } : state
-    default:
-      return state
-  }
-}
+> = (state = defaultState, action) =>
+  produce(state, draftState => {
+    switch (action.type) {
+      case 'GLOBAL_PLAYBACK_START':
+        draftState.isPlaying = true
+        break
+      case 'GLOBAL_PLAYBACK_STOP':
+        draftState.isPlaying = false
+        break
+      default:
+        break
+    }
+  })
 
 export default globalPlaybackReducer

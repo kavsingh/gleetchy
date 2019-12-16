@@ -13,18 +13,15 @@ const defaultState: UIState = {
   currentThemeName: defaultTheme.name,
 }
 
-const UIReducer: Reducer<UIState, UIAction> = (
-  state = defaultState,
-  action,
-): UIState => {
-  switch (action.type) {
-    case 'UI_SET_THEME':
-      return produce<UIState>(state, draftState => {
+const UIReducer: Reducer<UIState, UIAction> = (state = defaultState, action) =>
+  produce(state, draftState => {
+    switch (action.type) {
+      case 'UI_SET_THEME':
         draftState.currentThemeName = action.payload
-      })
-    default:
-      return state
-  }
-}
+        break
+      default:
+        break
+    }
+  })
 
 export default UIReducer
