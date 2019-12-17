@@ -1,8 +1,9 @@
 {
   "editor.formatOnSave": true,
   "eslint.enable": true,
+  "stylelint.enable": true,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll": true
   },
   "files.watcherExclude": {
     "**/node_modules": true,
