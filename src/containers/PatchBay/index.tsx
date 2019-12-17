@@ -71,7 +71,10 @@ const nodeBlockedStyle = (theme: UITheme) =>
   })
 
 const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
-  const { sources, targets, connections, toggleConnection } = useConnections()
+  const [
+    { sources, targets, connections },
+    { toggleConnection },
+  ] = useConnections()
 
   const canConnect = useCallback(canConnectNodes(connections), [connections])
   const getConnection = useCallback(getConnectionBetween(connections), [

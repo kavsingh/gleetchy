@@ -10,7 +10,7 @@ const useAudioNodesMeta = () => {
   const instruments = useSelector(immutableInstrumentsMetaSelector, equals)
   const audioEffects = useSelector(immutableAudioEffectsMetaSelector, equals)
 
-  return { instruments, audioEffects }
+  return [{ instruments, audioEffects }] as const
 }
 
 export default useAudioNodesMeta

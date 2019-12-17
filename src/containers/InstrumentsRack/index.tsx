@@ -29,7 +29,7 @@ export interface InstrumentsRackProps {
 }
 
 const Rack: FunctionComponent = () => {
-  const { instruments } = useAudioNodesMeta()
+  const [{ instruments }] = useAudioNodesMeta()
 
   return (
     <ErrorBoundary>
@@ -52,9 +52,9 @@ const Rack: FunctionComponent = () => {
 }
 
 const Add: FunctionComponent = () => {
-  const { add } = useAudioNodes()
+  const [, { addNode }] = useAudioNodes()
 
-  const addLoop = useCallback(() => add(loopType), [add])
+  const addLoop = useCallback(() => addNode(loopType), [addNode])
 
   return <AddNodeButtons buttons={[['Loop', addLoop]]} />
 }

@@ -22,12 +22,7 @@ const useConnections = () => {
     [dispatch],
   )
 
-  return {
-    connections,
-    sources,
-    targets,
-    toggleConnection,
-  }
+  return [{ connections, sources, targets }, { toggleConnection }] as const
 }
 
 export default useConnections

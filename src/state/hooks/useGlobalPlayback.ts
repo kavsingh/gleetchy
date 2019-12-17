@@ -14,7 +14,7 @@ const useGlobalPlayback = () => {
     [dispatch],
   )
 
-  return { isPlaying, togglePlayback }
+  return [{ isPlaying }, { togglePlayback }] as const
 }
 
 export default useGlobalPlayback

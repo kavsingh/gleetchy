@@ -25,7 +25,7 @@ const audioEffectContainerStyle = css({
 })
 
 const Rack: FunctionComponent = () => {
-  const { audioEffects } = useAudioNodesMeta()
+  const [{ audioEffects }] = useAudioNodesMeta()
 
   return (
     <ErrorBoundary>
@@ -56,10 +56,10 @@ const Rack: FunctionComponent = () => {
 }
 
 const Add: FunctionComponent = () => {
-  const { add } = useAudioNodes()
+  const [, { addNode }] = useAudioNodes()
 
-  const addReverb = useCallback(() => add(reverbType), [add])
-  const addDelay = useCallback(() => add(delayType), [add])
+  const addReverb = useCallback(() => addNode(reverbType), [addNode])
+  const addDelay = useCallback(() => addNode(delayType), [addNode])
 
   return (
     <AddNodeButtons

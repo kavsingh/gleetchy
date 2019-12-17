@@ -10,9 +10,9 @@ import useAudioNodes from '~/state/hooks/useAudioNodes'
 import AudioEngine from './AudioEngine'
 
 const ConnectedAudioEngine: FunctionComponent = () => {
-  const { connections } = useConnections()
-  const { isPlaying } = useGlobalPlayback()
-  const { nodes } = useAudioNodes()
+  const [{ connections }] = useConnections()
+  const [{ isPlaying }] = useGlobalPlayback()
+  const [{ nodes }] = useAudioNodes()
 
   const dispatch = useDispatch()
   const audioEngineEvents = useSelector(audioEngineEventsSelector)

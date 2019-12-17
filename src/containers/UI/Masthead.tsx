@@ -46,8 +46,8 @@ const metaControlStyle = (theme: UITheme) =>
   })
 
 const Masthead: FunctionComponent = () => {
-  const { isPlaying, togglePlayback } = useGlobalPlayback()
-  const { toggleTheme } = useUITheme()
+  const [{ isPlaying }, { togglePlayback }] = useGlobalPlayback()
+  const [, { toggleTheme }] = useUITheme()
 
   return (
     <div css={mastheadStyle}>

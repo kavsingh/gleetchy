@@ -13,12 +13,12 @@ const useAudioNodes = () => {
   const nodes = useSelector(audioNodesSelector)
   const activeIds = useSelector(activeAudioNodeIdsSelector)
 
-  const add = useCallback(
+  const addNode = useCallback(
     (type: string) => dispatch(addAudioNodeAction(type)),
     [dispatch],
   )
 
-  return { nodes, activeIds, add }
+  return [{ nodes, activeIds }, { addNode }] as const
 }
 
 export default useAudioNodes

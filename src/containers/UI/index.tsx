@@ -108,7 +108,7 @@ const UIMain: FunctionComponent = () => (
 const UIMainThemable = withTheme(UIMain)
 
 const UI: FunctionComponent = () => {
-  const { theme } = useUITheme()
+  const [{ theme }] = useUITheme()
 
   return (
     <ThemeProvider theme={theme}>
