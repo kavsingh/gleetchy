@@ -20,27 +20,25 @@ const audioEngineReducer: Reducer<
   | ConnectionsAction
   | GlobalPlaybackAction
   | AudioEngineAction
-> = (state = defaultState, action) => {
-  switch (action.type) {
-    case 'AUDIO_NODE_ADD':
-    case 'AUDIO_NODE_REMOVE':
-    case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
-    case 'CONNECTION_ADD':
-    case 'CONNECTION_REMOVE':
-    case 'AUDIO_FILE_DECODE_COMPLETE':
-    case 'GLOBAL_PLAYBACK_START':
-    case 'GLOBAL_PLAYBACK_STOP': {
-      return produce(state, draftState => {
+> = (state = defaultState, action) =>
+  produce(state, draftState => {
+    switch (action.type) {
+      case 'AUDIO_NODE_ADD':
+      case 'AUDIO_NODE_REMOVE':
+      case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
+      case 'CONNECTION_ADD':
+      case 'CONNECTION_REMOVE':
+      case 'AUDIO_FILE_DECODE_COMPLETE':
+      case 'GLOBAL_PLAYBACK_START':
+      case 'GLOBAL_PLAYBACK_STOP':
         draftState.events.push(action as AudioEngineEvent)
-      })
-    }
-    case 'AUDIO_ENGINE_CLEAR_EVENTS':
-      return produce(state, draftState => {
+        break
+      case 'AUDIO_ENGINE_CLEAR_EVENTS':
         if (draftState.events.length) draftState.events = []
-      })
-    default:
-      return state
-  }
-}
+        break
+      default:
+        break
+    }
+  })
 
 export default audioEngineReducer

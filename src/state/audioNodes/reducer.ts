@@ -1,5 +1,6 @@
 import produce from 'immer'
 import { Reducer } from 'redux'
+import { pick } from 'ramda'
 
 import {
   defaultProps as delayDefaultProps,
@@ -18,7 +19,6 @@ import {
 } from '~/nodes/instruments/loop'
 import initialNodes from '~/state/defaultNodes'
 import { prefixedId } from '~/util/id'
-import { pickObjectKeys } from '~/util/object'
 import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
@@ -129,7 +129,7 @@ const audioNodesReducer: Reducer<
         if (existing) {
           Object.assign(
             existing.audioProps,
-            pickObjectKeys(existing.audioProps)(file),
+            pick(Object.keys(existing.audioProps), file),
           )
         }
       })
