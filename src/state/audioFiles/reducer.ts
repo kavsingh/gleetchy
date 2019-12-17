@@ -61,15 +61,15 @@ const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
 
         break
       case 'AUDIO_FILE_DECODE_START':
-        mutOmit([action.payload.id], state.decodeErrors)
-        mutWithout([action.payload.id], state.decodingIds)
+        mutOmit([action.payload.id], draftState.decodeErrors)
+        mutWithout([action.payload.id], draftState.decodingIds)
 
-        state.decodingIds.push(action.payload.id)
+        draftState.decodingIds.push(action.payload.id)
 
         break
       case 'AUDIO_FILE_DECODE_COMPLETE': {
-        mutOmit([action.payload.id], state.decodeErrors)
-        mutWithout([action.payload.id], state.decodingIds)
+        mutOmit([action.payload.id], draftState.decodeErrors)
+        mutWithout([action.payload.id], draftState.decodingIds)
 
         const currFile = draftState.files[action.payload.id]
 
