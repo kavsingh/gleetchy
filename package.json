@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@emotion/core": "10.0.22",
+    "@emotion/styled": "10.0.23",
     "color": "3.1.2",
     "core-js": "3.5.0",
     "cuid": "2.1.6",

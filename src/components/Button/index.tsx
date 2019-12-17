@@ -1,25 +1,24 @@
 import React, { FunctionComponent, memo } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
 import { UITheme } from '~/style/theme'
 
-const buttonStyle = (theme: UITheme) =>
-  css({
-    cursor: 'pointer',
-    transition: 'color 0.2s ease-out',
+const Container = styled.div`
+  cursor: pointer;
+  transition: color 0.2s ease-out;
 
-    '&:hover, &:active': {
-      color: theme.colorEmphasis,
-    },
-  })
+  &:hover,
+  &:active {
+    color: ${props => (props.theme as UITheme).colorEmphasis};
+  }
+`
 
 const Button: FunctionComponent<{
   label: string
   handler: () => unknown
 }> = ({ label, handler }) => (
-  <div
-    css={buttonStyle}
+  <Container
     role="button"
     tabIndex={0}
     onClick={handler}
@@ -28,7 +27,7 @@ const Button: FunctionComponent<{
     }}
   >
     [ {label} ]
-  </div>
+  </Container>
 )
 
 export default memo(withTheme(Button))

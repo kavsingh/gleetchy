@@ -16,7 +16,7 @@ interface State {
 }
 
 class ErrorBoundary extends PureComponent<ErrorBoundaryProps, State> {
-  public state: State = { error: undefined }
+  public state: State = {}
 
   public componentDidCatch(error: Error) {
     this.setState(() => ({ error }))

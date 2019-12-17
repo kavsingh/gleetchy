@@ -1,5 +1,5 @@
 import React, { memo, FunctionComponent, ReactNode } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
@@ -7,47 +7,48 @@ import { noop } from '~/util/function'
 import TextInput from '../TextInput'
 import Button from '../Button'
 
-const rootStyle = css({
-  fontSize: '0.8em',
-  marginBottom: '0.6em',
-})
+const Container = styled.div`
+  margin-bottom: 0.6em;
+  font-size: 0.8em;
+`
 
-const labelContainerStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'row',
-  justifyContent: 'flex-start',
+const LabelContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 
-  '& input': {
-    appearance: 'none',
-    fontWeight: 500,
-    margin: 0,
-    padding: 0,
-  },
-})
+  input {
+    margin: 0;
+    padding: 0;
+    font-weight: 500;
+    appearance: none;
+  }
+`
 
-const infoContainerStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'row',
-})
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+`
 
-const connectionsStyle = css({
-  display: 'flex',
-  height: '100%',
-})
+const ConnectionsContainer = styled.div`
+  display: flex;
+  height: 100%;
+`
 
-const connectionStyle = css({
-  flexGrow: 0,
-  flexShrink: 0,
-  height: '0.8em',
-  marginRight: '0.3em',
-  width: '0.8em',
-})
+const Connection = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 0.3em;
+  background-color: ${props => props.color};
+`
 
-const typeContainerStyle = css({
-  marginRight: '0.3em',
-})
+const TypeLabel = styled.div`
+  margin-right: 0.3em;
+`
 
 export interface TitleBarProps {
   label: string
@@ -66,25 +67,21 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
   connections = [],
   children = [],
 }) => (
-  <div css={rootStyle}>
-    <div css={labelContainerStyle}>
-      <div css={connectionsStyle}>
+  <Container>
+    <LabelContainer>
+      <ConnectionsContainer>
         {connections.map(({ color, from, to }) => (
-          <div
-            css={connectionStyle}
-            style={{ backgroundColor: color }}
-            key={`${from}${to}`}
-          />
+          <Connection color={color} key={`${from}${to}`} />
         ))}
-      </div>
+      </ConnectionsContainer>
       <TextInput onChange={onLabelChange} value={label} />
-    </div>
-    <div css={infoContainerStyle}>
-      <div css={typeContainerStyle}>{type} /</div>
+    </LabelContainer>
+    <InfoContainer>
+      <TypeLabel>{type} /</TypeLabel>
       {typeof children === 'function' ? children() : children}
       <Button label="Remove" handler={onRemoveClick} />
-    </div>
-  </div>
+    </InfoContainer>
+  </Container>
 )
 
 export default memo(TitleBar)
