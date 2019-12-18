@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 
 import { AudioNodeMeta } from '~/types'
 import useAudioNodes from '~/state/hooks/useAudioNodes'
@@ -11,17 +11,17 @@ import AddNodeButtons from '~/components/AddNodeButtons'
 
 import ConnectedLoop from './ConnectedLoop'
 
-const rootStyle = css({
-  display: 'flex',
-  flexDirection: 'column',
-  width: '100%',
-})
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
 
-const instrumentContainerStyle = css({
-  '&:not(:first-child)': {
-    marginTop: '2em',
-  },
-})
+const InstrumentContainer = styled(AnimIn)`
+  &:not(:first-child) {
+    margin-top: '2em';
+  }
+`
 
 export interface InstrumentsRackProps {
   instruments: AudioNodeMeta[]
@@ -37,11 +37,9 @@ const Rack: FunctionComponent = () => {
         switch (type) {
           case loopType:
             return (
-              <div css={instrumentContainerStyle} key={id}>
-                <AnimIn>
-                  <ConnectedLoop id={id} />
-                </AnimIn>
-              </div>
+              <InstrumentContainer key={id}>
+                <ConnectedLoop id={id} />
+              </InstrumentContainer>
             )
           default:
             return null
@@ -61,10 +59,10 @@ const Add: FunctionComponent = () => {
 
 const InstrumentsRack: FunctionComponent = () => {
   return (
-    <div css={rootStyle}>
+    <Container>
       <Rack />
       <Add />
-    </div>
+    </Container>
   )
 }
 

@@ -20,6 +20,7 @@
     "noStrictGenericChecks": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "plugins": [{ "name": "typescript-styled-plugin" }],
     "pretty": true,
     "rootDir": "./",
     "skipLibCheck": true,

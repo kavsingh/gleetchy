@@ -7,6 +7,7 @@ import { noop } from '~/util/function'
 import { canConnectNodes, getConnectionBetween } from '~/util/audio'
 import useConnections from '~/state/hooks/useConnections'
 import { UITheme } from '~/style/theme'
+import ErrorBoundary from '~/components/ErrorBoundary'
 
 const rootStyle = css({
   width: '100%',
@@ -82,78 +83,80 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
   ])
 
   return (
-    <table css={rootStyle}>
-      <tbody>
-        <tr css={rowStyle} key="titles">
-          <th css={labelStyle}>To / From</th>
-          {sources.map(source => (
-            <th
-              css={labelStyle}
-              title={`From ${source.label} to ...`}
-              key={source.id}
-            >
-              {source.label}
-            </th>
-          ))}
-        </tr>
-        {targets.map(target => (
-          <tr css={rowStyle} key={target.id}>
-            <td
-              css={labelStyle}
-              title={`From ... to ${target.label}`}
-              key="rowLabel"
-            >
-              {target.label}
-            </td>
-            {sources.map(source => {
-              const connection = getConnection(source, target)
-              const blockConnect = !connection && !canConnect(source, target)
-              const title = blockConnect
-                ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
-                : `From ${source.label} to ${target.label}`
-
-              let modClassName: SerializedStyles | undefined
-
-              if (blockConnect) modClassName = nodeBlockedStyle(theme)
-              else if (connection) modClassName = nodeActiveStyle(theme)
-
-              const handleClick = blockConnect
-                ? noop
-                : () => toggleConnection(source, target)
-
-              const connectionColor = connection ? connection.color : ''
-
-              return (
-                <td key={`${source.id}-${target.id}`}>
-                  <div
-                    style={
-                      connectionColor
-                        ? {
-                            backgroundColor: connectionColor,
-                            borderColor: color(connectionColor)
-                              .darken(0.06)
-                              .hex(),
-                          }
-                        : {}
-                    }
-                    css={[nodeStyle(theme, connectionColor), modClassName]}
-                    onClick={handleClick}
-                    role="button"
-                    tabIndex={0}
-                    onKeyUp={e => {
-                      if (e.key === 'Enter') {
-                        handleClick()
-                      }
-                    }}
-                    title={title}
-                  />
-                </td>
-              )
-            })}
+    <ErrorBoundary>
+      <table css={rootStyle}>
+        <tbody>
+          <tr css={rowStyle} key="titles">
+            <th css={labelStyle}>To / From</th>
+            {sources.map(source => (
+              <th
+                css={labelStyle}
+                title={`From ${source.label} to ...`}
+                key={source.id}
+              >
+                {source.label}
+              </th>
+            ))}
           </tr>
-        ))}
-      </tbody>
-    </table>
+          {targets.map(target => (
+            <tr css={rowStyle} key={target.id}>
+              <td
+                css={labelStyle}
+                title={`From ... to ${target.label}`}
+                key="rowLabel"
+              >
+                {target.label}
+              </td>
+              {sources.map(source => {
+                const connection = getConnection(source, target)
+                const blockConnect = !connection && !canConnect(source, target)
+                const title = blockConnect
+                  ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
+                  : `From ${source.label} to ${target.label}`
+
+                let modClassName: SerializedStyles | undefined
+
+                if (blockConnect) modClassName = nodeBlockedStyle(theme)
+                else if (connection) modClassName = nodeActiveStyle(theme)
+
+                const handleClick = blockConnect
+                  ? noop
+                  : () => toggleConnection(source, target)
+
+                const connectionColor = connection ? connection.color : ''
+
+                return (
+                  <td key={`${source.id}-${target.id}`}>
+                    <div
+                      style={
+                        connectionColor
+                          ? {
+                              backgroundColor: connectionColor,
+                              borderColor: color(connectionColor)
+                                .darken(0.06)
+                                .hex(),
+                            }
+                          : {}
+                      }
+                      css={[nodeStyle(theme, connectionColor), modClassName]}
+                      onClick={handleClick}
+                      role="button"
+                      tabIndex={0}
+                      onKeyUp={e => {
+                        if (e.key === 'Enter') {
+                          handleClick()
+                        }
+                      }}
+                      title={title}
+                    />
+                  </td>
+                )
+              })}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </ErrorBoundary>
   )
 }
 

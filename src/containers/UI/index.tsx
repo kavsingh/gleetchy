@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
 import { css, Global } from '@emotion/core'
+import styled from '@emotion/styled'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
 import useUITheme from '~/state/hooks/useUITheme'
@@ -8,101 +9,93 @@ import { UITheme } from '~/style/theme'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
-import ErrorBoundary from '~/components/ErrorBoundary'
 import favicon from '~/assets/icons/48x48.png'
 
 import Masthead from './Masthead'
 
-const globalStyles = (theme: UITheme) =>
-  css({
-    html: {
-      boxSizing: 'border-box',
-      userSelect: 'none',
-      cursor: 'default',
-      fontSize: '14px',
-    },
+const globalStyles = (theme: UITheme) => css`
+  html {
+    box-sizing: border-box;
+    font-size: 14px;
+    cursor: default;
+    user-select: none;
+  }
 
-    '*, *::before, *::after': {
-      boxSizing: 'inherit',
-      userSelect: 'inherit',
-      cursor: 'inherit',
-    },
+  *,
+  *::before,
+  *::after {
+    box-sizing: inherit;
+    cursor: inherit;
+    user-select: inherit;
+  }
 
-    '*:focus, *:active': {
-      outline: 'none',
-    },
+  *:focus,
+  *:active {
+    outline: none;
+  }
 
-    'a, button': {
-      cursor: 'initial',
-    },
+  a,
+  button {
+    cursor: initial;
+  }
 
-    'html, body': {
-      width: '100%',
-      padding: '0',
-      margin: '0',
-      backgroundColor: theme.colorPage,
-      '-webkit-font-smoothing': 'antialiased',
-    },
-  })
+  html,
+  body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: ${theme.colorPage};
+    -webkit-font-smoothing: antialiased;
+  }
+`
 
-const rootStyle = (theme: UITheme) =>
-  css({
-    backgroundColor: theme.colorPage,
-    color: theme.colorBody,
-    fontFamily: theme.fontBody,
-    margin: '0 auto',
-    maxWidth: '92em',
-    padding: '0 2em',
-  })
+const Container = styled.div`
+  max-width: 92em;
+  margin: 0 auto;
+  padding: 0 2em;
+  color: ${props => (props.theme as UITheme).colorBody};
+  font-family: ${props => (props.theme as UITheme).fontBody};
+  background-color: ${props => (props.theme as UITheme).colorPage};
+`
 
-const borderedSectionStyle = (theme: UITheme) =>
-  css({
-    borderBottom: `1px solid ${theme.colorKeyline}`,
-    padding: '1em 0',
-  })
+const BorderedSection = styled.div`
+  padding: 1em 0;
+  border-bottom: 1px solid ${props => (props.theme as UITheme).colorKeyline};
+`
 
-const connectContainerStyle = css({
-  display: 'flex',
-  flexWrap: 'wrap',
-  padding: '2em 0',
-})
+const ModContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2em 0;
+`
 
-const audioEffectsRackContainerStyle = css({
-  flexGrow: 1,
-  flexShrink: 1,
-})
+const AudioEffectsRackContainer = styled.div`
+  flex-grow: 1;
+  flex-shrink: 1;
+`
 
-const patchBayContainerStyle = css({
-  flexGrow: 0,
-  flexShrink: 0,
-})
+const PatchBayContainer = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+`
 
 const UIMain: FunctionComponent = () => (
-  <div css={rootStyle}>
-    <Favicon url={favicon} />
-    <div css={borderedSectionStyle}>
-      <ErrorBoundary>
-        <Masthead />
-      </ErrorBoundary>
-    </div>
-    <div css={borderedSectionStyle}>
-      <ErrorBoundary>
-        <InstrumentsRack />
-      </ErrorBoundary>
-    </div>
-    <div css={connectContainerStyle}>
-      <div css={audioEffectsRackContainerStyle}>
-        <ErrorBoundary>
-          <AudioEffectsRack />
-        </ErrorBoundary>
-      </div>
-      <div css={patchBayContainerStyle}>
-        <ErrorBoundary>
-          <PatchBay />
-        </ErrorBoundary>
-      </div>
-    </div>
-  </div>
+  <Container>
+    <BorderedSection>
+      <Masthead />
+    </BorderedSection>
+    <BorderedSection>
+      <InstrumentsRack />
+    </BorderedSection>
+    <ModContainer>
+      <AudioEffectsRackContainer>
+        <AudioEffectsRack />
+      </AudioEffectsRackContainer>
+      <PatchBayContainer>
+        <PatchBay />
+      </PatchBayContainer>
+    </ModContainer>
+  </Container>
 )
 
 const UIMainThemable = withTheme(UIMain)
@@ -113,6 +106,7 @@ const UI: FunctionComponent = () => {
   return (
     <ThemeProvider theme={theme}>
       <Global styles={globalStyles} />
+      <Favicon url={favicon} />
       <UIMainThemable />
     </ThemeProvider>
   )

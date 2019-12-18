@@ -1,9 +1,9 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 
-const rootStyle = css({
-  cursor: 'pointer',
-})
+const Container = styled.div`
+  cursor: pointer;
+`
 
 export interface PlayPauseButtonProps {
   isPlaying: boolean
@@ -14,9 +14,9 @@ const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
   isPlaying,
   onClick,
 }) => (
-  <div role="button" tabIndex={0} onClick={onClick} css={rootStyle}>
+  <Container role="button" tabIndex={0} onClick={onClick}>
     {isPlaying ? 'Stop' : 'Play'}
-  </div>
+  </Container>
 )
 
 export default memo(PlayPauseButton)

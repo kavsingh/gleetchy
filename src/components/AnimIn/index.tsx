@@ -4,12 +4,10 @@ import { keyframes } from '@emotion/core'
 
 const animation = keyframes`
   from {
-    transform: translate(0, -4%);
     opacity: 0;
   }
 
   to {
-    transform: translate(0, 0);
     opacity: 1;
   }
 `

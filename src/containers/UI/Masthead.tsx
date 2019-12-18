@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react'
 import { GoMarkGithub } from 'react-icons/go'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
 import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
@@ -8,51 +8,52 @@ import useUITheme from '~/state/hooks/useUITheme'
 import { UITheme } from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 
-const mastheadStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  justifyContent: 'space-between',
-  width: '100%',
-})
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`
 
-const metaControlStyle = (theme: UITheme) =>
-  css({
-    display: 'flex',
-    flexFlow: 'row nowrap',
-    alignItems: 'center',
-    alignSelf: 'stretch',
+const SideControlsContainer = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  align-self: stretch;
 
-    '& a, & button': {
-      display: 'block',
-      appearance: 'none',
-      color: theme.colorBody,
-      opacity: 0.4,
-      transition: 'opacity 0.2s ease-out',
-      cursor: 'pointer',
-    },
+  a,
+  button {
+    display: block;
+    color: ${props => (props.theme as UITheme).colorBody};
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.2s ease-out;
+    appearance: none;
+  }
 
-    '& a:hover, & button:hover': {
-      opacity: 1,
-    },
+  button {
+    margin: 0 1em 0 0;
+    padding: 0;
+    border: none;
+    font-size: 0.8em;
+    font-family: ${props => (props.theme as UITheme).fontBody};
+    background-color: transparent;
+  }
 
-    '& button': {
-      backgroundColor: 'transparent',
-      fontFamily: theme.fontBody,
-      fontSize: '0.8em',
-      margin: '0 1em 0 0',
-      padding: 0,
-      border: 'none',
-    },
-  })
+  a:hover,
+  button:hover {
+    opacity: 1;
+  }
+`
 
 const Masthead: FunctionComponent = () => {
   const [{ isPlaying }, { togglePlayback }] = useGlobalPlayback()
   const [, { toggleTheme }] = useUITheme()
 
   return (
-    <div css={mastheadStyle}>
+    <Container>
       <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
-      <div css={metaControlStyle}>
+      <SideControlsContainer>
         <button onClick={toggleTheme}>L/D</button>
         <a
           href="https://www.github.com/kavsingh/gleetchy"
@@ -62,8 +63,8 @@ const Masthead: FunctionComponent = () => {
         >
           <GoMarkGithub />
         </a>
-      </div>
-    </div>
+      </SideControlsContainer>
+    </Container>
   )
 }
 

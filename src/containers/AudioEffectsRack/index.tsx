@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useCallback } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 
 import AnimIn from '~/components/AnimIn'
 import { nodeType as delayType } from '~/nodes/audioEffects/delay'
@@ -12,17 +12,17 @@ import ErrorBoundary from '~/components/ErrorBoundary'
 import ConnectedDelay from './ConnectedDelay'
 import ConnectedReverb from './ConnectedReverb'
 
-const rootStyle = css({
-  alignItems: 'flex-start',
-  display: 'flex',
-  flexWrap: 'wrap',
-  width: '100%',
-})
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 100%;
+`
 
-const audioEffectContainerStyle = css({
-  flex: '1 0 10em',
-  padding: '1em 0',
-})
+const AudioEffectContainer = styled(AnimIn)`
+  flex: 1 0 10em;
+  padding: 1em 0;
+`
 
 const Rack: FunctionComponent = () => {
   const [{ audioEffects }] = useAudioNodesMeta()
@@ -33,19 +33,15 @@ const Rack: FunctionComponent = () => {
         switch (type) {
           case delayType:
             return (
-              <div css={audioEffectContainerStyle} key={id}>
-                <AnimIn>
-                  <ConnectedDelay id={id} />
-                </AnimIn>
-              </div>
+              <AudioEffectContainer key={id}>
+                <ConnectedDelay id={id} />
+              </AudioEffectContainer>
             )
           case reverbType:
             return (
-              <div css={audioEffectContainerStyle} key={id}>
-                <AnimIn>
-                  <ConnectedReverb id={id} />
-                </AnimIn>
-              </div>
+              <AudioEffectContainer key={id}>
+                <ConnectedReverb id={id} />
+              </AudioEffectContainer>
             )
           default:
             return null
@@ -72,10 +68,10 @@ const Add: FunctionComponent = () => {
 }
 
 const AudioEffectsRack: FunctionComponent = () => (
-  <div css={rootStyle}>
+  <Container>
     <Rack />
     <Add />
-  </div>
+  </Container>
 )
 
 export default AudioEffectsRack

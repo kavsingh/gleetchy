@@ -1,32 +1,37 @@
-import React, { PureComponent } from 'react'
+import React, {
+  FunctionComponent,
+  useCallback,
+  ChangeEventHandler,
+} from 'react'
 import AutosizeInput from 'react-input-autosize'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
 import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
 import { UITheme } from '~/style/theme'
 
-const rootStyle = (theme: UITheme) =>
-  css({
-    '& input': {
-      backgroundColor: 'transparent',
-      border: 'none',
-      borderBottom: '1px solid transparent',
-      color: 'currentColor',
-      cursor: 'initial',
-      font: 'inherit',
-      transition: 'color 0.2s ease-out, border-color 0.2s ease-out',
+const Container = styled.div`
+  input {
+    border: none;
+    border-bottom: 1px solid transparent;
+    color: currentColor;
+    font: inherit;
+    background-color: transparent;
+    cursor: initial;
+    transition: color 0.2s ease-out, border-color 0.2s ease-out;
 
-      '&:hover, &:active, &:focus': {
-        color: theme.colorEmphasis,
-      },
+    &:hover,
+    &:active,
+    &:focus {
+      color: ${props => (props.theme as UITheme).colorEmphasis};
+    }
 
-      '&:focus': {
-        borderBottomColor: 'currentColor',
-      },
-    },
-  })
+    &:focus {
+      border-bottom-color: currentColor;
+    }
+  }
+`
 
 export interface TextInputProps {
   value: string | number
@@ -35,28 +40,30 @@ export interface TextInputProps {
   onChange?(value: string | number): unknown
 }
 
-class TextInput extends PureComponent<TextInputProps> {
-  public render() {
-    const { value, placeholder = '', type = 'text' } = this.props
+const TextInput: FunctionComponent<TextInputProps> = ({
+  value,
+  placeholder = '',
+  type = 'text',
+  onChange = noop,
+}) => {
+  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    event => {
+      cancelReactEvent(event)
+      onChange(event.currentTarget.value)
+    },
+    [onChange],
+  )
 
-    return (
-      <div css={rootStyle}>
-        <AutosizeInput
-          value={value}
-          placeholder={placeholder}
-          onChange={this.handleChange}
-          type={type}
-        />
-      </div>
-    )
-  }
-
-  private handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { onChange = noop } = this.props
-
-    cancelReactEvent(event)
-    onChange(event.currentTarget.value)
-  }
+  return (
+    <Container>
+      <AutosizeInput
+        value={value}
+        placeholder={placeholder}
+        onChange={handleChange}
+        type={type}
+      />
+    </Container>
+  )
 }
 
 export default withTheme(TextInput)
