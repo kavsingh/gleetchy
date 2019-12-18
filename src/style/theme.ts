@@ -23,7 +23,7 @@ export interface ThemeProps {
 }
 
 const fonts: Fonts = {
-  body: '-apple-system, BlinkMacSystemFont, sans-serif',
+  body: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
 }
 
 export const themes: UITheme[] = [
