@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
 import useUITheme from '~/state/hooks/useUITheme'
-import { UITheme } from '~/style/theme'
+import { UITheme, ThemeProps } from '~/style/theme'
 import AudioEffectsRack from '~/containers/AudioEffectsRack'
 import InstrumentsRack from '~/containers/InstrumentsRack'
 import PatchBay from '~/containers/PatchBay'
@@ -44,23 +44,23 @@ const globalStyles = (theme: UITheme) => css`
     width: 100%;
     margin: 0;
     padding: 0;
-    background-color: ${theme.colorPage};
+    background-color: ${theme.colors.page};
     -webkit-font-smoothing: antialiased;
   }
 `
 
-const Container = styled.div`
+const Container = styled.div<ThemeProps>`
   max-width: 92em;
   margin: 0 auto;
   padding: 0 2em;
-  color: ${props => (props.theme as UITheme).colorBody};
-  font-family: ${props => (props.theme as UITheme).fontBody};
-  background-color: ${props => (props.theme as UITheme).colorPage};
+  color: ${({ theme }) => theme.colors.body};
+  font-family: ${({ theme }) => theme.fonts.body};
+  background-color: ${({ theme }) => theme.colors.page};
 `
 
-const BorderedSection = styled.div`
+const BorderedSection = styled.div<ThemeProps>`
   padding: 1em 0;
-  border-bottom: 1px solid ${props => (props.theme as UITheme).colorKeyline};
+  border-bottom: 1px solid ${({ theme }) => theme.colors.keyline};
 `
 
 const ModContainer = styled.div`

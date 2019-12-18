@@ -47,7 +47,7 @@ const rowStyle = css({
 const nodeStyle = (theme: UITheme, connectionColor?: string) =>
   css({
     backgroundColor: 'transparent',
-    border: `1px solid ${theme.colorKeyline}`,
+    border: `1px solid ${theme.colors.keyline}`,
     cursor: 'pointer',
     height: '0.8em',
     margin: '0 auto',
@@ -55,18 +55,18 @@ const nodeStyle = (theme: UITheme, connectionColor?: string) =>
     width: '0.8em',
 
     '&:hover': {
-      borderColor: connectionColor || theme.colorBody,
+      borderColor: connectionColor || theme.colors.body,
     },
   })
 
 const nodeActiveStyle = (theme: UITheme) =>
   css({
-    backgroundColor: theme.colorEmphasis,
+    backgroundColor: theme.colors.emphasis,
   })
 
 const nodeBlockedStyle = (theme: UITheme) =>
   css({
-    backgroundColor: theme.colorKeyline,
+    backgroundColor: theme.colors.keyline,
     cursor: 'default',
     transform: 'rotate(45deg) scale(0.5)',
   })

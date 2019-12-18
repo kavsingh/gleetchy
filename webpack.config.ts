@@ -48,7 +48,7 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
     new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new HtmlWebpackPlugin({
       title: 'Gleetchy',
-      themeColor: theme.colorPage,
+      themeColor: theme.colors.page,
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),
@@ -57,8 +57,8 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
       short_name: 'Gleetchy',
       start_url: process.env.PWA_START_URL || '/',
       display: 'fullscreen',
-      theme_color: theme.colorPage,
-      background_color: theme.colorPage,
+      theme_color: theme.colors.page,
+      background_color: theme.colors.page,
       icons: [
         ...[48, 72, 96, 144, 168, 192, 512].map(size => ({
           src: fromRoot(`src/assets/icons/${size}x${size}.png`),

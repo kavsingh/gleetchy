@@ -90,8 +90,8 @@ class Knob extends PureComponent<KnobProps, KnobState> {
                   endRatio={value}
                   strokeWidth={6}
                   backgroundStrokeWidth={3}
-                  strokeColor={theme.colorEmphasis}
-                  backgroundStrokeColor={theme.colorKeyline}
+                  strokeColor={theme.colors.emphasis}
+                  backgroundStrokeColor={theme.colors.keyline}
                 />
               </div>
             </div>

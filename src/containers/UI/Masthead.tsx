@@ -5,7 +5,7 @@ import { withTheme } from 'emotion-theming'
 
 import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
 import useUITheme from '~/state/hooks/useUITheme'
-import { UITheme } from '~/style/theme'
+import { ThemeProps } from '~/style/theme'
 import PlayPauseButton from '~/components/PlayPauseButton'
 
 const Container = styled.div`
@@ -15,7 +15,7 @@ const Container = styled.div`
   width: 100%;
 `
 
-const SideControlsContainer = styled.div`
+const SideControlsContainer = styled.div<ThemeProps>`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
@@ -24,7 +24,7 @@ const SideControlsContainer = styled.div`
   a,
   button {
     display: block;
-    color: ${props => (props.theme as UITheme).colorBody};
+    color: ${({ theme }) => theme.colors.body};
     cursor: pointer;
     opacity: 0.4;
     transition: opacity 0.2s ease-out;
@@ -36,7 +36,7 @@ const SideControlsContainer = styled.div`
     padding: 0;
     border: none;
     font-size: 0.8em;
-    font-family: ${props => (props.theme as UITheme).fontBody};
+    font-family: ${({ theme }) => theme.fonts.body};
     background-color: transparent;
   }
 

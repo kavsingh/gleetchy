@@ -9,9 +9,9 @@ import { withTheme } from 'emotion-theming'
 
 import { cancelReactEvent } from '~/util/event'
 import { noop } from '~/util/function'
-import { UITheme } from '~/style/theme'
+import { ThemeProps } from '~/style/theme'
 
-const Container = styled.div`
+const Container = styled.div<ThemeProps>`
   input {
     border: none;
     border-bottom: 1px solid transparent;
@@ -24,7 +24,7 @@ const Container = styled.div`
     &:hover,
     &:active,
     &:focus {
-      color: ${props => (props.theme as UITheme).colorEmphasis};
+      color: ${({ theme }) => theme.colors.emphasis};
     }
 
     &:focus {

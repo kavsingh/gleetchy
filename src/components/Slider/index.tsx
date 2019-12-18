@@ -74,14 +74,14 @@ const barContainerHorizontalStyle = css({
 
 const trackStyle = (theme: UITheme) =>
   css({
-    backgroundColor: theme.colorKeyline,
+    backgroundColor: theme.colors.keyline,
     position: 'absolute',
     zIndex: 1,
   })
 
 const barStyle = (theme: UITheme) =>
   css({
-    backgroundColor: theme.colorEmphasis,
+    backgroundColor: theme.colors.emphasis,
     position: 'absolute',
     zIndex: 2,
   })

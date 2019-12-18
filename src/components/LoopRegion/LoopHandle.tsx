@@ -17,7 +17,7 @@ const alignRightStyle = css({
 
 const tagStyle = (theme: UITheme) =>
   css({
-    backgroundColor: theme.colorEmphasis,
+    backgroundColor: theme.colors.emphasis,
     height: 1,
     pointerEvents: 'all',
     position: 'absolute',
@@ -43,13 +43,13 @@ const barStyle = css({
 
 const barAlignLeftStyle = (theme: UITheme) =>
   css({
-    borderRight: `1px solid ${theme.colorEmphasis}`,
+    borderRight: `1px solid ${theme.colors.emphasis}`,
     left: '-100%',
   })
 
 const barAlignRightStyle = (theme: UITheme) =>
   css({
-    borderLeft: `1px solid ${theme.colorEmphasis}`,
+    borderLeft: `1px solid ${theme.colors.emphasis}`,
     right: '-100%',
   })
 

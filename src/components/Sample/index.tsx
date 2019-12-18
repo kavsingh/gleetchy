@@ -38,7 +38,7 @@ const loopRegionContainerStyle = css({
 const initLoadButonStyle = (theme: UITheme) =>
   css({
     alignItems: 'center',
-    backgroundColor: color(theme.colorPage)
+    backgroundColor: color(theme.colors.page)
       .alpha(0.96)
       .string(),
     cursor: 'pointer',
@@ -68,8 +68,8 @@ const Sample: FunctionComponent<SampleProps> = ({
   const waveform = useMemo(
     () => (
       <WaveForm
-        color={theme.colorEmphasis}
-        baselineColor={theme.colorKeyline}
+        color={theme.colors.emphasis}
+        baselineColor={theme.colors.keyline}
         buffer={audioBuffer}
       />
     ),

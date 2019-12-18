@@ -36,7 +36,7 @@ const activeRegionStyle = css({
 
 const inactiveRegionStyle = (theme: UITheme) =>
   css({
-    backgroundColor: color(theme.colorPage)
+    backgroundColor: color(theme.colors.page)
       .alpha(0.8)
       .string(),
     bottom: 0,

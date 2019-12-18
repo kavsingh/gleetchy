@@ -3,6 +3,6 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "stuartzhang.stylelint-stzhang",
-    "mf.vscode-styled-components"
+    "jpoissonnier.vscode-styled-components"
   ]
 }

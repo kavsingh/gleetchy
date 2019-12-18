@@ -2,15 +2,15 @@ import React, { FunctionComponent, memo } from 'react'
 import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
-import { UITheme } from '~/style/theme'
+import { ThemeProps } from '~/style/theme'
 
-const Container = styled.div`
+const Container = styled.div<ThemeProps>`
   cursor: pointer;
   transition: color 0.2s ease-out;
 
   &:hover,
   &:active {
-    color: ${props => (props.theme as UITheme).colorEmphasis};
+    color: ${({ theme }) => theme.colors.emphasis};
   }
 `
 
