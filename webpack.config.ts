@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin'
 import WorkboxPlugin from 'workbox-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import PWAManifest from 'webpack-pwa-manifest'
+import color from 'color'
 
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
 import theme from './src/style/theme'
@@ -57,8 +58,8 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
       short_name: 'Gleetchy',
       start_url: process.env.PWA_START_URL || '/',
       display: 'fullscreen',
-      theme_color: theme.colors.page,
-      background_color: theme.colors.page,
+      theme_color: color(theme.colors.page).hex(),
+      background_color: color(theme.colors.page).hex(),
       icons: [
         ...[48, 72, 96, 144, 168, 192, 512].map(size => ({
           src: fromRoot(`src/assets/icons/${size}x${size}.png`),

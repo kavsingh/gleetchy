@@ -1,11 +1,11 @@
 import React, { FunctionComponent, memo, useMemo } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 import color from 'color'
 
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { UITheme } from '~/style/theme'
+import { UITheme, ThemeProps } from '~/style/theme'
 import LoopRegion from '~/components/LoopRegion'
 import WaveForm from '~/components/WaveForm'
 
@@ -21,38 +21,41 @@ export interface SampleProps {
   theme: UITheme
 }
 
-const rootStyle = css({
-  height: '100%',
-  position: 'relative',
-  width: '100%',
-})
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
 
-const waveFormContainerStyle = css({
-  zIndex: 1,
-})
+const WaveFormContainer = styled.div`
+  ${layoutAbsoluteFill}
+  z-index: 1;
+`
 
-const loopRegionContainerStyle = css({
-  zIndex: 2,
-})
+const LoopRegionContainer = styled.div`
+  ${layoutAbsoluteFill}
+  z-index: 2;
+`
 
-const initLoadButonStyle = (theme: UITheme) =>
-  css({
-    alignItems: 'center',
-    backgroundColor: color(theme.colors.page)
+const InitLoadButon = styled.div<ThemeProps>`
+  ${layoutAbsoluteFill}
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 3em;
+  background-color: ${({ theme }) =>
+    color(theme.colors.page)
       .alpha(0.96)
-      .string(),
-    cursor: 'pointer',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-around',
-    padding: '3em',
-    zIndex: 3,
+      .string()};
+  cursor: pointer;
 
-    '& span': {
-      display: 'block',
-      textAlign: 'center',
-    },
-  })
+  span {
+    display: block;
+    text-align: center;
+  }
+`
 
 const Sample: FunctionComponent<SampleProps> = ({
   audioBuffer,
@@ -65,7 +68,7 @@ const Sample: FunctionComponent<SampleProps> = ({
   selectAudioFile = noop,
   theme,
 }) => {
-  const waveform = useMemo(
+  const waveForm = useMemo(
     () => (
       <WaveForm
         color={theme.colors.emphasis}
@@ -89,18 +92,15 @@ const Sample: FunctionComponent<SampleProps> = ({
   )
 
   return (
-    <div css={rootStyle}>
-      <div css={[layoutAbsoluteFill, waveFormContainerStyle]}>{waveform}</div>
+    <Container>
+      <WaveFormContainer>{waveForm}</WaveFormContainer>
       {audioBuffer ? (
-        <div css={[layoutAbsoluteFill, loopRegionContainerStyle]}>
-          {loopRegion}
-        </div>
+        <LoopRegionContainer>{loopRegion}</LoopRegionContainer>
       ) : (
-        <div
+        <InitLoadButon
           role="button"
           tabIndex={0}
           onClick={selectAudioFile}
-          css={[layoutAbsoluteFill, initLoadButonStyle(theme)]}
           onKeyDown={({ key }) => {
             if (key === 'Enter') {
               selectAudioFile()
@@ -117,9 +117,9 @@ const Sample: FunctionComponent<SampleProps> = ({
                 </span>,
               ]
             : 'Click to load audio file or drag it here'}
-        </div>
+        </InitLoadButon>
       )}
-    </div>
+    </Container>
   )
 }
 
