@@ -3,6 +3,7 @@ import { css } from '@emotion/core'
 import { always, clamp } from 'ramda'
 import { withTheme } from 'emotion-theming'
 
+import { PropsWithoutChildren } from '~/types'
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
 import { UITheme } from '~/style/theme'
@@ -48,7 +49,7 @@ interface KnobState {
   axis?: string
 }
 
-class Knob extends PureComponent<KnobProps, KnobState> {
+class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
   public state = { axis: undefined }
 
   private knobNode?: HTMLElement | null

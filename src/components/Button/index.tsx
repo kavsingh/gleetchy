@@ -1,7 +1,8 @@
-import React, { FunctionComponent, memo } from 'react'
+import React, { memo } from 'react'
 import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
+import { FunctionComponentWithoutChildren } from '~/types'
 import { ThemeProps } from '~/style/theme'
 
 const Container = styled.div<ThemeProps>`
@@ -14,7 +15,7 @@ const Container = styled.div<ThemeProps>`
   }
 `
 
-const Button: FunctionComponent<{
+const Button: FunctionComponentWithoutChildren<{
   label: string
   handler: () => unknown
 }> = ({ label, handler }) => (

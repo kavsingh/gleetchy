@@ -1,5 +1,7 @@
-import React, { FunctionComponent, memo } from 'react'
+import React, { memo } from 'react'
 import styled from '@emotion/styled'
+
+import { FunctionComponentWithoutChildren } from '~/types'
 
 import Button from '../Button'
 
@@ -13,7 +15,7 @@ const Container = styled.div`
   font-size: 0.8em;
 `
 
-const AddNodeButtons: FunctionComponent<{
+const AddNodeButtons: FunctionComponentWithoutChildren<{
   buttons: [string, () => unknown][]
 }> = ({ buttons }) => (
   <Container>

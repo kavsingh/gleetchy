@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-
+import { FunctionComponent } from 'react'
 import { Action } from 'redux'
+
+export type PropsWithoutChildren<P> = P & { children?: never }
+
+export type FunctionComponentWithoutChildren<P = {}> = FunctionComponent<
+  PropsWithoutChildren<P>
+>
 
 export interface ImmutableAudioNodeMeta {
   readonly id: string
