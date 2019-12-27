@@ -12,7 +12,8 @@ describe('Array util', () => {
 
     it('returns new array if items to remove', () => {
       const initialArray = [1, 2, 3, 3]
-      const result = stableWithout([1, 3], initialArray)
+      const withoutItems = stableWithout([1, 3, 'q'])
+      const result = withoutItems(initialArray)
 
       expect(result).toEqual([2])
       expect(result).not.toBe(initialArray)

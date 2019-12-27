@@ -8,7 +8,8 @@ export const isNotNil = <T>(value: T): value is NonNullable<T> => !isNil(value)
  */
 export const stableOmit: {
   <T, K extends keyof T>(keys: K[], obj: T): Omit<T, K>
-  <T, K extends keyof T>(keys: K[]): (obj: T) => Omit<T, K>
-} = curry((keys: string[], obj: { [key: string]: unknown }) =>
+  <K extends string>(keys: K[]): <T>(obj: T) => Omit<T, K>
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+} = curry((keys: string[], obj: any) =>
   keys.some(has(__, obj)) ? omit(keys, obj) : obj,
 )
