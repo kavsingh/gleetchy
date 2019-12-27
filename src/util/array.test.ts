@@ -1,18 +1,21 @@
-import { mutWithout } from './array'
+import { stableWithout } from './array'
 
 describe('Array util', () => {
-  describe('mutWithout', () => {
-    it('mutably removes items from passed in array', () => {
-      const without1and3 = mutWithout([1, 3])
-      const arr = [1, 2, 3, 4]
+  describe('stableWithout', () => {
+    it('returns same array if nothing to remove', () => {
+      const initialArray = [1, 2, 3]
+      const result = stableWithout([5, 6], initialArray)
 
-      without1and3(arr)
+      expect(result).toEqual([1, 2, 3])
+      expect(result).toBe(initialArray)
+    })
 
-      expect(arr).toEqual([2, 4])
+    it('returns new array if items to remove', () => {
+      const initialArray = [1, 2, 3, 3]
+      const result = stableWithout([1, 3], initialArray)
 
-      without1and3(arr)
-
-      expect(arr).toEqual([2, 4])
+      expect(result).toEqual([2])
+      expect(result).not.toBe(initialArray)
     })
   })
 })

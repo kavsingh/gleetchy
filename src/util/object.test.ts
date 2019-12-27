@@ -1,4 +1,4 @@
-import { isNotNil, mutOmit } from './object'
+import { isNotNil, stableOmit } from './object'
 
 describe('Object util', () => {
   describe('isNotNil', () => {
@@ -12,18 +12,27 @@ describe('Object util', () => {
     })
   })
 
-  describe('mutOmit', () => {
-    it('mutably omits keys from passed in object', () => {
-      const removeAandC = mutOmit(['a', 'c'])
-      const obj = { a: 1, b: 2, c: 3, d: 4 }
+  describe('stableOmit', () => {
+    it('returns same object if nothing to remove', () => {
+      const initialObject: {
+        a: number
+        b: number
+        c: number
+        d?: never
+        e?: never
+      } = { a: 1, b: 2, c: 3 }
+      const result = stableOmit(['d', 'e'], initialObject)
 
-      removeAandC(obj)
+      expect(result).toEqual({ a: 1, b: 2, c: 3 })
+      expect(result).toBe(initialObject)
+    })
 
-      expect(obj).toEqual({ b: 2, d: 4 })
+    it('returns new object if items to remove', () => {
+      const initialObject = { a: 1, b: 2, c: 3 }
+      const result = stableOmit(['a', 'c'], initialObject)
 
-      removeAandC(obj)
-
-      expect(obj).toEqual({ b: 2, d: 4 })
+      expect(result).toEqual({ b: 2 })
+      expect(result).not.toBe(initialObject)
     })
   })
 })

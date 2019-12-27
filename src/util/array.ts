@@ -1,15 +1,12 @@
-import { curry } from 'ramda'
+import { curry, without, contains, __ } from 'ramda'
 
 /**
- * Removes items from passed in array
- * NOTE: MUTATES PASSED IN OBJECT. Useful in immer produce
+ * Returns new array if there are items to be removed, otherwise
+ * returns original array
  */
-export const mutWithout: {
-  <T, A>(keys: T[], arr: (A | T)[]): void
-  <T, A>(keys: T[]): (arr: (A | T)[]) => void
-} = curry((items: unknown[], arr: unknown[]) => {
-  // TODO: remove all instances
-  items.forEach(item => {
-    if (arr.includes(item)) arr.splice(arr.indexOf(item), 1)
-  })
-})
+export const stableWithout: {
+  <T, A>(keys: T[], arr: (A | T)[]): T[]
+  <T, A>(keys: T[]): (arr: (A | T)[]) => T[]
+} = curry((items: unknown[], arr: unknown[]) =>
+  items.some(contains(__, arr)) ? without(items, arr) : arr,
+)

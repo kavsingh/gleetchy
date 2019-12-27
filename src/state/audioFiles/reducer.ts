@@ -1,10 +1,9 @@
 import { Reducer } from 'redux'
-import produce from 'immer'
-import { omit } from 'ramda'
+import { produce } from 'immer'
 
 import { AudioFileData, DecodedAudioFileData } from '~/types'
-import { mutOmit } from '~/util/object'
-import { mutWithout } from '~/util/array'
+import { stableOmit } from '~/util/object'
+import { stableWithout } from '~/util/array'
 
 import { AudioFilesAction } from './types'
 
@@ -35,55 +34,66 @@ const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
   produce(state, draftState => {
     switch (action.type) {
       case 'AUDIO_FILE_LOAD_START': {
-        mutOmit([action.payload.id], draftState.loadErrors)
-        mutWithout([action.payload.id], draftState.loadingIds)
+        const { id } = action.payload
 
+        draftState.loadErrors = stableOmit([id], draftState.loadErrors)
+        draftState.loadingIds = stableWithout([id], draftState.loadingIds)
         draftState.loadingIds.push(action.payload.id)
 
         break
       }
       case 'AUDIO_FILE_LOAD_COMPLETE': {
-        mutOmit([action.payload.id], draftState.loadErrors)
-        mutWithout([action.payload.id], draftState.loadingIds)
+        const { id, file } = action.payload
 
-        const fileData = omit(['buffer'], action.payload.file)
-        const currFile = draftState.files[action.payload.id]
+        draftState.loadErrors = stableOmit([id], draftState.loadErrors)
+        draftState.loadingIds = stableWithout([id], draftState.loadingIds)
+
+        const fileData = stableOmit(['buffer'], file)
+        const currFile = draftState.files[id]
 
         if (currFile) Object.assign(currFile, fileData)
-        else draftState.files[action.payload.id] = fileData
+        else draftState.files[id] = fileData
 
         break
       }
-      case 'AUDIO_FILE_LOAD_ERROR':
-        mutWithout([action.payload.id], draftState.loadingIds)
+      case 'AUDIO_FILE_LOAD_ERROR': {
+        const { id, error } = action.payload
 
-        draftState.loadErrors[action.payload.id] = action.payload.error
+        draftState.loadingIds = stableWithout([id], draftState.loadingIds)
+        draftState.loadErrors[id] = error
 
         break
-      case 'AUDIO_FILE_DECODE_START':
-        mutOmit([action.payload.id], draftState.decodeErrors)
-        mutWithout([action.payload.id], draftState.decodingIds)
+      }
+      case 'AUDIO_FILE_DECODE_START': {
+        const { id } = action.payload
 
+        draftState.decodeErrors = stableOmit([id], draftState.decodeErrors)
+        draftState.decodingIds = stableWithout([id], draftState.decodingIds)
         draftState.decodingIds.push(action.payload.id)
 
         break
+      }
       case 'AUDIO_FILE_DECODE_COMPLETE': {
-        mutOmit([action.payload.id], draftState.decodeErrors)
-        mutWithout([action.payload.id], draftState.decodingIds)
+        const { id, file } = action.payload
 
-        const currFile = draftState.files[action.payload.id]
+        draftState.decodeErrors = stableOmit([id], draftState.decodeErrors)
+        draftState.decodingIds = stableWithout([id], draftState.decodingIds)
 
-        if (currFile) Object.assign(currFile, action.payload.file)
-        else draftState.files[action.payload.id] = { ...action.payload.file }
+        const currFile = draftState.files[id]
+
+        if (currFile) Object.assign(currFile, file)
+        else draftState.files[id] = { ...file }
 
         break
       }
-      case 'AUDIO_FILE_DECODE_ERROR':
-        mutWithout([action.payload.id], draftState.decodingIds)
+      case 'AUDIO_FILE_DECODE_ERROR': {
+        const { id, error } = action.payload
 
-        draftState.decodeErrors[action.payload.id] = action.payload.error
+        draftState.decodeErrors[id] = error
+        draftState.decodingIds = stableWithout([id], draftState.decodingIds)
 
         break
+      }
       default:
         break
     }
