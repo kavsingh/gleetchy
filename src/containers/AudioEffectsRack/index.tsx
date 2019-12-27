@@ -24,30 +24,36 @@ const AudioEffectContainer = styled(AnimIn)`
   padding: 1em 0;
 `
 
+const RackMount: FunctionComponent = ({ children }) => (
+  <AudioEffectContainer>
+    <ErrorBoundary>{children}</ErrorBoundary>
+  </AudioEffectContainer>
+)
+
 const Rack: FunctionComponent = () => {
   const [{ audioEffects }] = useAudioNodesMeta()
 
   return (
-    <ErrorBoundary>
+    <>
       {audioEffects.map(({ id, type }) => {
         switch (type) {
           case delayType:
             return (
-              <AudioEffectContainer key={id}>
+              <RackMount key={id}>
                 <ConnectedDelay id={id} />
-              </AudioEffectContainer>
+              </RackMount>
             )
           case reverbType:
             return (
-              <AudioEffectContainer key={id}>
+              <RackMount key={id}>
                 <ConnectedReverb id={id} />
-              </AudioEffectContainer>
+              </RackMount>
             )
           default:
             return null
         }
       })}
-    </ErrorBoundary>
+    </>
   )
 }
 

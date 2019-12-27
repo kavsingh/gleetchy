@@ -18,10 +18,16 @@ const Container = styled.div`
 `
 
 const InstrumentContainer = styled(AnimIn)`
-  &:not(:first-child) {
-    margin-top: '2em';
+  &:not(:first-of-type) {
+    margin-top: 2em;
   }
 `
+
+const RackMount: FunctionComponent = ({ children }) => (
+  <InstrumentContainer>
+    <ErrorBoundary>{children}</ErrorBoundary>
+  </InstrumentContainer>
+)
 
 export interface InstrumentsRackProps {
   instruments: AudioNodeMeta[]
@@ -32,20 +38,20 @@ const Rack: FunctionComponent = () => {
   const [{ instruments }] = useAudioNodesMeta()
 
   return (
-    <ErrorBoundary>
+    <>
       {instruments.map(({ id, type }) => {
         switch (type) {
           case loopType:
             return (
-              <InstrumentContainer key={id}>
+              <RackMount key={id}>
                 <ConnectedLoop id={id} />
-              </InstrumentContainer>
+              </RackMount>
             )
           default:
             return null
         }
       })}
-    </ErrorBoundary>
+    </>
   )
 }
 
