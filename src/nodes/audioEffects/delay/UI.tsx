@@ -103,8 +103,8 @@ const Delay: FunctionComponent<DelayProps> = ({
     <Container isActive={isActive}>
       {titleBar}
       <ControlsContainer>
-        <KnobContainer key="delayTime">{timeKnob}</KnobContainer>
-        <KnobContainer key="delayWetDry">{wetDryKnob}</KnobContainer>
+        <KnobContainer key="time">{timeKnob}</KnobContainer>
+        <KnobContainer key="wetDry">{wetDryKnob}</KnobContainer>
       </ControlsContainer>
     </Container>
   )

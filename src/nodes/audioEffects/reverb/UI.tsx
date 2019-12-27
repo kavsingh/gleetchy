@@ -1,5 +1,5 @@
-import React, { memo, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
+import React, { memo, FunctionComponent, useMemo } from 'react'
+import styled from '@emotion/styled'
 import { always } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
@@ -7,24 +7,20 @@ import { noop } from '~/util/function'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
 
-const rootStyle = css({
-  opacity: 1,
-  transition: 'opacity 0.2s ease-out',
-  width: '100%',
-})
+const Container = styled.div<{ isActive: boolean }>`
+  width: 100%;
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
+  transition: opacity 0.2s ease-out;
+`
 
-const inactiveStyle = css({
-  opacity: 0.4,
-})
+const ControlsContainer = styled.div`
+  display: flex;
+  width: 100%;
+`
 
-const controlsStyle = css({
-  display: 'flex',
-  width: '100%',
-})
-
-const knobContainerStyle = css({
-  flex: '0 0 3em',
-})
+const KnobContainer = styled.div`
+  flex: 0 0 3em;
+`
 
 const renderWetDryLabel = always('W / D')
 const renderWetDryTitle = always('Wet / Dry Ratio')
@@ -47,28 +43,42 @@ const Reverb: FunctionComponent<ReverbProps> = ({
   onWetDryRatioChange = noop,
   onLabelChange = noop,
   remove = noop,
-}) => (
-  <div css={[rootStyle, !isActive && inactiveStyle]}>
-    <TitleBar
-      type="Reverb"
-      label={label}
-      connections={connections}
-      onLabelChange={onLabelChange}
-      onRemoveClick={remove}
-    />
-    <div css={controlsStyle}>
-      <div css={knobContainerStyle}>
-        <Knob
-          radius="2.4em"
-          value={wetDryRatio}
-          onChange={onWetDryRatioChange}
-          renderLabel={renderWetDryLabel}
-          renderTitle={renderWetDryTitle}
-          renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
-        />
-      </div>
-    </div>
-  </div>
-)
+}) => {
+  const titleBar = useMemo(
+    () => (
+      <TitleBar
+        type="Reverb"
+        label={label}
+        connections={connections}
+        onLabelChange={onLabelChange}
+        onRemoveClick={remove}
+      />
+    ),
+    [connections, label, onLabelChange, remove],
+  )
+
+  const wetDryKnob = useMemo(
+    () => (
+      <Knob
+        radius="2.4em"
+        value={wetDryRatio}
+        onChange={onWetDryRatioChange}
+        renderLabel={renderWetDryLabel}
+        renderTitle={renderWetDryTitle}
+        renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
+      />
+    ),
+    [onWetDryRatioChange, wetDryRatio],
+  )
+
+  return (
+    <Container isActive={isActive}>
+      {titleBar}
+      <ControlsContainer>
+        <KnobContainer key="wetDry">{wetDryKnob}</KnobContainer>
+      </ControlsContainer>
+    </Container>
+  )
+}
 
 export default memo(Reverb)
