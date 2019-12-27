@@ -39,9 +39,9 @@ export interface KnobProps {
   defaultValue?: number
   radius?: number | string
   onChange?(value: number): unknown
-  renderTitle?(): string
-  renderLabel?(): ReactNode
-  renderValue?(): ReactNode
+  renderTitle?(value: number): string
+  renderLabel?(value: number): ReactNode
+  renderValue?(value: number): ReactNode
   theme: UITheme
 }
 
@@ -76,8 +76,8 @@ class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
         onDragMove={this.handleDragMove}
       >
         {({ dragListeners }) => (
-          <div css={rootStyle} title={renderTitle()}>
-            <div css={labelStyle}>{renderLabel()}</div>
+          <div css={rootStyle} title={renderTitle(value)}>
+            <div css={labelStyle}>{renderLabel(value)}</div>
             <div
               {...dragListeners}
               onDoubleClick={this.handleDoubleClick}
@@ -96,7 +96,7 @@ class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
                 />
               </div>
             </div>
-            <div css={labelStyle}>{renderValue()}</div>
+            <div css={labelStyle}>{renderValue(value)}</div>
           </div>
         )}
       </SinglePointerDrag>

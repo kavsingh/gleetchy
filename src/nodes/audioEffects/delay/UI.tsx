@@ -1,31 +1,27 @@
-import React, { memo, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
+import React, { memo, FunctionComponent, useCallback, useMemo } from 'react'
+import styled from '@emotion/styled'
 import { always } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
+import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { noop } from '~/util/function'
 import Knob from '~/components/Knob'
 import TitleBar from '~/components/TitleBar'
-import { DELAY_UPPER_BOUND } from '~/constants/audio'
 
-const rootStyle = css({
-  opacity: 1,
-  transition: 'opacity 0.2s ease-out',
-  width: '100%',
-})
+const Container = styled.div<{ isActive: boolean }>`
+  width: 100%;
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
+  transition: opacity 0.2s ease-out;
+`
 
-const inactiveStyle = css({
-  opacity: 0.4,
-})
+const ControlsContainer = styled.div`
+  display: flex;
+  width: 100%;
+`
 
-const controlsStyle = css({
-  display: 'flex',
-  width: '100%',
-})
-
-const knobContainerStyle = css({
-  flex: '0 0 3em',
-})
+const KnobContainer = styled.div`
+  flex: 0 0 3em;
+`
 
 export interface DelayProps {
   label: string
@@ -54,38 +50,64 @@ const Delay: FunctionComponent<DelayProps> = ({
   onWetDryRatioChange = noop,
   onLabelChange = noop,
   remove = noop,
-}) => (
-  <div css={[rootStyle, !isActive && inactiveStyle]}>
-    <TitleBar
-      type="Delay"
-      label={label}
-      connections={connections}
-      onLabelChange={onLabelChange}
-      onRemoveClick={remove}
-    />
-    <div css={controlsStyle}>
-      <div css={knobContainerStyle}>
-        <Knob
-          radius="2.4em"
-          value={delayTime / DELAY_UPPER_BOUND}
-          onChange={val => onDelayTimeChange(val * DELAY_UPPER_BOUND)}
-          renderLabel={renderTimeLabel}
-          renderTitle={renderTimeTitle}
-          renderValue={() => delayTime.toFixed(2)}
-        />
-      </div>
-      <div css={knobContainerStyle}>
-        <Knob
-          radius="2.4em"
-          value={wetDryRatio}
-          onChange={onWetDryRatioChange}
-          renderLabel={renderWetDryLabel}
-          renderTitle={renderWetDryTitle}
-          renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
-        />
-      </div>
-    </div>
-  </div>
-)
+}) => {
+  const handleTimeKnobChange = useCallback(
+    (val: number) => {
+      onDelayTimeChange(val * DELAY_UPPER_BOUND)
+    },
+    [onDelayTimeChange],
+  )
+
+  const titleBar = useMemo(
+    () => (
+      <TitleBar
+        type="Delay"
+        label={label}
+        connections={connections}
+        onLabelChange={onLabelChange}
+        onRemoveClick={remove}
+      />
+    ),
+    [connections, label, onLabelChange, remove],
+  )
+
+  const timeKnob = useMemo(
+    () => (
+      <Knob
+        radius="2.4em"
+        value={delayTime / DELAY_UPPER_BOUND}
+        onChange={handleTimeKnobChange}
+        renderLabel={renderTimeLabel}
+        renderTitle={renderTimeTitle}
+        renderValue={() => delayTime.toFixed(2)}
+      />
+    ),
+    [delayTime, handleTimeKnobChange],
+  )
+
+  const wetDryKnob = useMemo(
+    () => (
+      <Knob
+        radius="2.4em"
+        value={wetDryRatio}
+        onChange={onWetDryRatioChange}
+        renderLabel={renderWetDryLabel}
+        renderTitle={renderWetDryTitle}
+        renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
+      />
+    ),
+    [onWetDryRatioChange, wetDryRatio],
+  )
+
+  return (
+    <Container isActive={isActive}>
+      {titleBar}
+      <ControlsContainer>
+        <KnobContainer key="delayTime">{timeKnob}</KnobContainer>
+        <KnobContainer key="delayWetDry">{wetDryKnob}</KnobContainer>
+      </ControlsContainer>
+    </Container>
+  )
+}
 
 export default memo(Delay)
