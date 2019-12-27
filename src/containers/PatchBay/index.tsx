@@ -30,20 +30,20 @@ const Row = styled.tr`
   }
 
   th {
-    padding: 0 0 0.6em;
+    padding: 0 0 0.4em;
   }
 
-  td:first-child,
-  th:first-child {
+  td {
+    padding: 0.4em 0;
+  }
+
+  th:first-child,
+  td:first-child {
     text-align: left;
   }
 
-  td: {
-    padding: '0.6em 0';
-  }
-
   td:not(:first-child) {
-    padding: '0 0.6em';
+    padding: 0 0.4em;
   }
 `
 

@@ -1,8 +1,10 @@
-import { allPass, propEq, without } from 'ramda'
+import { allPass, propEq } from 'ramda'
 import { Reducer } from 'redux'
+import { produce } from 'immer'
 
 import { nodeColorPool } from '~/style/color'
 import { AudioNodeConnection } from '~/types'
+import { stableWithout } from '~/util/array'
 
 import defaultNodes from '../defaultNodes'
 import { AudioNodeRemoveAction } from '../audioNodes/types'
@@ -22,56 +24,46 @@ const defaultState: ConnectionsState = [
 const connectionIs = ({ fromId, toId }: ConnectionDescriptor) =>
   allPass([propEq('from', fromId), propEq('to', toId)])
 
-const addConnection = (
-  state: ConnectionsState,
-  { fromId, toId }: ConnectionDescriptor,
-) => {
-  const existing = state.find(connectionIs({ fromId, toId }))
-
-  return existing
-    ? state
-    : [
-        ...state,
-        {
-          from: fromId,
-          to: toId,
-          color: nodeColorPool[state.length % nodeColorPool.length],
-        },
-      ]
-}
-
-const removeConnection = (
-  state: ConnectionsState,
-  { fromId, toId }: ConnectionDescriptor,
-) => {
-  const existing = state.find(connectionIs({ fromId, toId }))
-
-  return existing ? without([existing], state) : state
-}
-
-const removeAllConnectionsForId = (
-  state: ConnectionsState,
-  { id }: { id: string },
-) => {
-  const toRemove = state.filter(({ from, to }) => from === id || to === id)
-
-  return toRemove.length ? without(toRemove, state) : state
-}
-
 const connectionsReducer: Reducer<
   ConnectionsState,
   ConnectionsAction | AudioNodeRemoveAction
-> = (state = defaultState, action) => {
-  switch (action.type) {
-    case 'CONNECTION_ADD':
-      return addConnection(state, action.payload)
-    case 'CONNECTION_REMOVE':
-      return removeConnection(state, action.payload)
-    case 'AUDIO_NODE_REMOVE':
-      return removeAllConnectionsForId(state, action.payload)
-    default:
-      return state
-  }
-}
+> = (state = defaultState, action) =>
+  produce(state, draftState => {
+    switch (action.type) {
+      case 'CONNECTION_ADD': {
+        const { fromId, toId } = action.payload
+
+        if (!draftState.find(connectionIs({ fromId, toId }))) {
+          draftState.push({
+            from: fromId,
+            to: toId,
+            color: nodeColorPool[draftState.length % nodeColorPool.length],
+          })
+        }
+
+        break
+      }
+      case 'CONNECTION_REMOVE': {
+        const { fromId, toId } = action.payload
+        const idx = draftState.findIndex(connectionIs({ fromId, toId }))
+
+        if (idx !== -1) draftState.splice(idx, 1)
+
+        break
+      }
+      case 'AUDIO_NODE_REMOVE': {
+        const { id } = action.payload
+
+        draftState = stableWithout(
+          draftState.filter(({ from, to }) => from === id || to === id),
+          draftState,
+        )
+
+        break
+      }
+      default:
+        break
+    }
+  })
 
 export default connectionsReducer
