@@ -92,7 +92,7 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
   ].filter(Boolean) as webpack.Plugin[],
   resolve: {
     alias: isProduction
-      ? { react: 'preact/compat', 'react-dom': 'preact/compat' }
+      ? { 'react': 'preact/compat', 'react-dom': 'preact/compat' }
       : {},
     extensions: ['.ts', '.tsx', '.js'],
   },

@@ -24,7 +24,7 @@ module.exports = {
     jsx: true,
   },
   settings: {
-    react: { version: 'detect' },
+    'react': { version: 'detect' },
     'import/resolver': 'babel-module',
   },
   env: { node: true, browser: false, es6: true },
@@ -41,8 +41,8 @@ module.exports = {
     'prettier/@typescript-eslint',
   ],
   rules: {
+    'curly': ['error', 'multi-line', 'consistent'],
     'no-console': 'off',
-    curly: ['error', 'multi-line', 'consistent'],
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     'import/no-absolute-path': 'warn',
@@ -54,13 +54,13 @@ module.exports = {
     'import/order': [
       'warn',
       {
-        groups: [
+        'groups': [
           'builtin',
           'external',
           'internal',
           ['parent', 'sibling', 'index'],
         ],
-        pathGroups: [{ pattern: '~/**', group: 'internal' }],
+        'pathGroups': [{ pattern: '~/**', group: 'internal' }],
         'newlines-between': 'always',
       },
     ],
@@ -73,7 +73,7 @@ module.exports = {
     {
       files: ['*.js'],
       rules: {
-        camelcase: camelcaseConfig,
+        'camelcase': camelcaseConfig,
         'no-unused-vars': unusedVarsConfig,
         '@typescript-eslint/camelcase': 'off',
         '@typescript-eslint/no-unused-vars': 'off',
@@ -82,7 +82,7 @@ module.exports = {
     {
       files: ['*.ts', '*.tsx'],
       rules: {
-        camelcase: 'off',
+        'camelcase': 'off',
         'no-unused-vars': 'off',
         '@typescript-eslint/camelcase': camelcaseConfig,
         '@typescript-eslint/no-unused-vars': unusedVarsConfig,
@@ -90,7 +90,7 @@ module.exports = {
     },
     {
       files: ['*.test.*', '**/__test*/*'],
-      env: { node: true, 'jest/globals': true },
+      env: { 'node': true, 'jest/globals': true },
       plugins: ['jest'],
       extends: ['plugin:jest/recommended', 'plugin:jest/style'],
       rules: {

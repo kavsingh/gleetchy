@@ -1,17 +1,17 @@
 import React, { memo, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 import { always } from 'ramda'
 
 import { noop } from '~/util/function'
 import Knob from '~/components/Knob'
 
-const rootStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-  justifyContent: 'space-between',
-})
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+`
 
 export interface PlaybackControlsProps {
   gain: number
@@ -31,7 +31,7 @@ const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
   onGainChange = noop,
   onPlaybackRateChange = noop,
 }) => (
-  <div css={rootStyle}>
+  <Container>
     <div>
       <Knob
         value={gain}
@@ -50,7 +50,7 @@ const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
         onChange={val => onPlaybackRateChange(val * 2)}
       />
     </div>
-  </div>
+  </Container>
 )
 
 export default memo(PlaybackControls)

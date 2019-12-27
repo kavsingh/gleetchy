@@ -1,4 +1,5 @@
 import React, { memo, FunctionComponent, useCallback } from 'react'
+import styled from '@emotion/styled'
 import { css, SerializedStyles } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 import color from 'color'
@@ -9,67 +10,69 @@ import useConnections from '~/state/hooks/useConnections'
 import { UITheme } from '~/style/theme'
 import ErrorBoundary from '~/components/ErrorBoundary'
 
-const rootStyle = css({
-  width: '100%',
-})
+const Container = styled.table`
+  width: 100%;
+`
 
-const labelStyle = css({
-  fontSize: '0.68em',
-  fontWeight: 400,
-  maxWidth: '5.4em',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
-  whiteSpace: 'nowrap',
-})
+const labelStyle = css`
+  max-width: 5.4em;
+  overflow: hidden;
+  font-weight: 400;
+  font-size: 0.68em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
 
-const rowStyle = css({
-  'td, th': {
-    textAlign: 'center',
-  },
+const Row = styled.tr`
+  th,
+  td {
+    text-align: center;
+  }
 
-  'td:first-child, th:first-child': {
-    textAlign: 'left',
-  },
+  th {
+    padding: 0 0 0.6em;
+  }
 
-  th: {
-    padding: '0 0 0.6em',
-  },
+  td:first-child,
+  th:first-child {
+    text-align: left;
+  }
 
   td: {
-    padding: '0.6em 0',
-  },
+    padding: '0.6em 0';
+  }
 
-  'td:not(:first-child)': {
-    padding: '0 0.6em',
-  },
-})
+  td:not(:first-child) {
+    padding: '0 0.6em';
+  }
+`
 
 const nodeStyle = (theme: UITheme, connectionColor?: string) =>
-  css({
-    backgroundColor: 'transparent',
-    border: `1px solid ${theme.colors.keyline}`,
-    cursor: 'pointer',
-    height: '0.8em',
-    margin: '0 auto',
-    transition: 'all 0.2s ease-out',
-    width: '0.8em',
+  css`
+    width: 0.8em;
+    height: 0.8em;
+    margin: 0 auto;
+    border: 1px solid ${theme.colors.keyline};
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.2s ease-out;
 
-    '&:hover': {
-      borderColor: connectionColor || theme.colors.body,
-    },
-  })
+    &:hover {
+      border-color: ${connectionColor || theme.colors.body};
+    }
+  `
 
 const nodeActiveStyle = (theme: UITheme) =>
-  css({
-    backgroundColor: theme.colors.emphasis,
-  })
+  css`
+    background-color: ${theme.colors.emphasis};
+  `
 
 const nodeBlockedStyle = (theme: UITheme) =>
-  css({
-    backgroundColor: theme.colors.keyline,
-    cursor: 'default',
-    transform: 'rotate(45deg) scale(0.5)',
-  })
+  css`
+    background-color: ${theme.colors.keyline};
+    transform: rotate(45deg) scale(0.5);
+    cursor: default;
+  `
 
 const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
   const [
@@ -84,9 +87,9 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
 
   return (
     <ErrorBoundary>
-      <table css={rootStyle}>
+      <Container>
         <tbody>
-          <tr css={rowStyle} key="titles">
+          <Row key="titles">
             <th css={labelStyle}>To / From</th>
             {sources.map(source => (
               <th
@@ -97,9 +100,9 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
                 {source.label}
               </th>
             ))}
-          </tr>
+          </Row>
           {targets.map(target => (
-            <tr css={rowStyle} key={target.id}>
+            <Row key={target.id}>
               <td
                 css={labelStyle}
                 title={`From ... to ${target.label}`}
@@ -152,10 +155,10 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
                   </td>
                 )
               })}
-            </tr>
+            </Row>
           ))}
         </tbody>
-      </table>
+      </Container>
     </ErrorBoundary>
   )
 }

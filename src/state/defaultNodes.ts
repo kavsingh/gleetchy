@@ -14,13 +14,13 @@ const defaultNodes: AudioNodeState<
     type: 'AUDIO_CONTEXT',
   },
   {
-    id: 'looper-default0',
+    id: 'loop-default0',
     label: 'L0',
     audioProps: { ...loop.defaultProps },
     type: loop.nodeType,
   },
   {
-    id: 'looper-default1',
+    id: 'loop-default1',
     label: 'L1',
     audioProps: { ...loop.defaultProps },
     type: loop.nodeType,

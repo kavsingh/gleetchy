@@ -1,6 +1,6 @@
 import React, { PureComponent, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
 import { clamp } from 'ramda'
+import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
@@ -12,52 +12,49 @@ import Button from '~/components/Button'
 
 import PlaybackControls from './PlaybackControls'
 
-const rootStyle = css({
-  height: '12em',
-  transition: 'opacity 0.2s ease-out',
-  width: '100%',
-})
+const Container = styled.div<{ isActive: boolean }>`
+  width: 100%;
+  height: 12em;
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
+  transition: opacity 0.2s ease-out;
+`
 
-const inactiveStyle = css({
-  opacity: 0.4,
-})
+const TitleBarContainer = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+`
 
-const wrapStyle = css({
-  alignItems: 'stretch',
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-  justifyContent: 'stretch',
-  width: '100%',
-})
+const FileDropWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  width: 100%;
+  height: 100%;
+`
 
-const titleContainerStyle = css({
-  flexGrow: 0,
-  flexShrink: 0,
-  width: '100%',
-})
+const MainContainer = styled.div`
+  display: flex;
+  flex: 1 0 10em;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding-left: 0.2em;
+`
 
-const mainContainerStyle = css({
-  display: 'flex',
-  flex: '1 0 10em',
-  flexWrap: 'nowrap',
-  paddingLeft: '0.2em',
-  width: '100%',
-})
+const ControlsContainer = styled.div`
+  display: flex;
+  height: 100%;
+  margin-left: 1.2em;
+`
 
-const controlsContainerStyle = css({
-  display: 'flex',
-  height: '100%',
-  marginLeft: '1.2em',
-})
+const Title = styled.div`
+  display: flex;
 
-const titleStyle = css({
-  display: 'flex',
-
-  '& span': {
-    marginRight: '0.3em',
-  },
-})
+  & span {
+    margin-right: 0.3em;
+  }
+`
 
 const AudioFileDropRegion: FunctionComponent<{
   onFiles(files: File[]): unknown
@@ -67,11 +64,7 @@ const AudioFileDropRegion: FunctionComponent<{
     fileFilter: ({ type }) => type.startsWith('audio'),
   })
 
-  return (
-    <div css={wrapStyle} {...eventHandlers}>
-      {children}
-    </div>
-  )
+  return <FileDropWrapper {...eventHandlers}>{children}</FileDropWrapper>
 }
 
 export interface LoopProps {
@@ -102,14 +95,14 @@ const renderTitle = (
   selectAudioFile: () => void,
   audioBuffer?: AudioBuffer,
 ) => (
-  <div css={titleStyle}>
+  <Title>
     {fileName ? <span>{fileName}</span> : null}
     {fileName && audioBuffer ? (
       <span> - {audioBuffer.duration.toFixed(2)}s</span>
     ) : null}
     {fileName ? <span>/</span> : null}
     <Button handler={selectAudioFile} label="Load audio file" />
-  </div>
+  </Title>
 )
 
 class Loop extends PureComponent<LoopProps> {
@@ -137,9 +130,9 @@ class Loop extends PureComponent<LoopProps> {
     } = this.props
 
     return (
-      <div css={[rootStyle, !isActive && inactiveStyle]}>
+      <Container isActive={isActive}>
         <AudioFileDropRegion onFiles={files => receiveAudioFile(files[0])}>
-          <div css={titleContainerStyle}>
+          <TitleBarContainer>
             <TitleBar
               type="Loop"
               label={label}
@@ -149,8 +142,8 @@ class Loop extends PureComponent<LoopProps> {
             >
               {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
             </TitleBar>
-          </div>
-          <div css={mainContainerStyle}>
+          </TitleBarContainer>
+          <MainContainer>
             <Sample
               fromSaved={!!(fileName && !audioBuffer)}
               audioBuffer={audioBuffer}
@@ -161,7 +154,7 @@ class Loop extends PureComponent<LoopProps> {
               onLoopRegionDrag={this.handleLoopRegionDrag}
               selectAudioFile={selectAudioFile}
             />
-            <div css={controlsContainerStyle}>
+            <ControlsContainer>
               <PlaybackControls
                 gain={gain}
                 playbackRate={playbackRate}
@@ -174,10 +167,10 @@ class Loop extends PureComponent<LoopProps> {
                 highGain={highGain}
                 onChange={onEqChange}
               />
-            </div>
-          </div>
+            </ControlsContainer>
+          </MainContainer>
         </AudioFileDropRegion>
-      </div>
+      </Container>
     )
   }
 

@@ -16,9 +16,7 @@ const isUnserializable = anyPass([
 ])
 
 const unsetUnserializable = (struct: unknown): unknown => {
-  if (isUnserializable(struct)) {
-    return undefined
-  }
+  if (isUnserializable(struct)) return undefined
 
   if (Array.isArray(struct)) {
     return (struct as unknown[]).map(unsetUnserializable)

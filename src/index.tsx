@@ -9,15 +9,11 @@ import Main from './Main'
 
 const WINDOW = requireWindowWith(['document.getElementById'])
 
-if (!WINDOW) {
-  throw new Error('Could not access dom')
-}
+if (!WINDOW) throw new Error('Could not access dom')
 
 const appRoot = WINDOW.document.getElementById('app-root')
 
-if (!appRoot) {
-  throw new Error('Could not find app mount at app-root')
-}
+if (!appRoot) throw new Error('Could not find app mount at #app-root')
 
 const ssrState = appRoot.getAttribute('data-initialstate')
 
