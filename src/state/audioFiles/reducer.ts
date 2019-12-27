@@ -3,7 +3,7 @@ import { produce } from 'immer'
 
 import { AudioFileData, DecodedAudioFileData } from '~/types'
 import { stableOmit } from '~/util/object'
-import { stableWithout } from '~/util/array'
+import { stableWithout, stableAppendUnique } from '~/util/array'
 
 import { AudioFilesAction } from './types'
 
@@ -37,8 +37,7 @@ const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
         const { id } = action.payload
 
         draftState.loadErrors = stableOmit([id], draftState.loadErrors)
-        draftState.loadingIds = stableWithout([id], draftState.loadingIds)
-        draftState.loadingIds.push(action.payload.id)
+        draftState.loadingIds = stableAppendUnique([id], draftState.loadingIds)
 
         break
       }
@@ -68,8 +67,10 @@ const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
         const { id } = action.payload
 
         draftState.decodeErrors = stableOmit([id], draftState.decodeErrors)
-        draftState.decodingIds = stableWithout([id], draftState.decodingIds)
-        draftState.decodingIds.push(action.payload.id)
+        draftState.decodingIds = stableAppendUnique(
+          [id],
+          draftState.decodingIds,
+        )
 
         break
       }
