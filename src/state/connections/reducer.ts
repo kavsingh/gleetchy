@@ -1,6 +1,6 @@
-import { allPass, propEq } from 'ramda'
 import { Reducer } from 'redux'
 import { produce } from 'immer'
+import { allPass, propEq } from 'ramda'
 
 import { nodeColorPool } from '~/style/color'
 import { AudioNodeConnection } from '~/types'

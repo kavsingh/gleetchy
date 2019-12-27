@@ -1,5 +1,5 @@
-import produce from 'immer'
 import { Reducer } from 'redux'
+import { produce } from 'immer'
 
 import defaultTheme, { ThemeName } from '~/style/theme'
 

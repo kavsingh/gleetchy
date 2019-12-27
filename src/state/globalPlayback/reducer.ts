@@ -1,5 +1,5 @@
 import { Reducer } from 'redux'
-import produce from 'immer'
+import { produce } from 'immer'
 
 import { GlobalPlaybackAction } from './types'
 

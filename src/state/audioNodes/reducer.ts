@@ -1,5 +1,5 @@
-import produce from 'immer'
 import { Reducer } from 'redux'
+import { produce } from 'immer'
 import { pick } from 'ramda'
 
 import {
@@ -19,6 +19,8 @@ import {
 } from '~/nodes/instruments/loop'
 import initialNodes from '~/state/defaultNodes'
 import { prefixedId } from '~/util/id'
+import { stableOmit } from '~/util/object'
+import { stableFilter } from '~/util/array'
 import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
@@ -72,57 +74,53 @@ const getNewNodeState = (type: string): AudioNodeState | null => {
   }
 }
 
-const addNode = (state: AudioNodesState, { type }: { type: string }) => {
-  const newNodeState = getNewNodeState(type)
-
-  if (!newNodeState) return state
-
-  return produce<AudioNodesState>(state, draftState => {
-    draftState.byId[newNodeState.id] = newNodeState
-    draftState.orderedMeta.push({
-      id: newNodeState.id,
-      type: newNodeState.type,
-    })
-  })
-}
-
 const audioNodesReducer: Reducer<
   AudioNodesState,
   AudioNodesAction | AudioFileDecodeCompleteAction
-> = (state = defaultState, action) => {
-  switch (action.type) {
-    case 'AUDIO_NODE_ADD':
-      return addNode(state, action.payload)
-    case 'AUDIO_NODE_REMOVE':
-      return produce(state, draftState => {
+> = (state = defaultState, action) =>
+  produce(state, draftState => {
+    switch (action.type) {
+      case 'AUDIO_NODE_ADD': {
+        const newNodeState = getNewNodeState(action.payload.type)
+
+        if (newNodeState) {
+          draftState.byId[newNodeState.id] = newNodeState
+          draftState.orderedMeta.push({
+            id: newNodeState.id,
+            type: newNodeState.type,
+          })
+        }
+
+        break
+      }
+      case 'AUDIO_NODE_REMOVE': {
         const { id } = action.payload
 
-        if (draftState.byId[id]) delete draftState.byId[id]
-
-        const orderedMetaIndex = draftState.orderedMeta.findIndex(
-          meta => meta.id === id,
+        draftState.byId = stableOmit([id], draftState.byId)
+        draftState.orderedMeta = stableFilter(
+          meta => meta.id !== id,
+          draftState.orderedMeta,
         )
 
-        if (orderedMetaIndex > -1) {
-          draftState.orderedMeta.splice(orderedMetaIndex, 1)
-        }
-      })
-    case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
-      return produce(state, draftState => {
-        const existing = draftState.byId[action.payload.id]
+        break
+      }
+      case 'AUDIO_NODE_UPDATE_AUDIO_PROPS': {
+        const { id, audioProps } = action.payload
+        const existing = draftState.byId[id]
 
-        if (existing) {
-          Object.assign(existing.audioProps, action.payload.audioProps)
-        }
-      })
-    case 'AUDIO_NODE_UPDATE_LABEL':
-      return produce(state, draftState => {
-        const existing = draftState.byId[action.payload.id]
+        if (existing) Object.assign(existing.audioProps, audioProps)
 
-        if (existing) existing.label = action.payload.label
-      })
-    case 'AUDIO_FILE_DECODE_COMPLETE':
-      return produce(state, draftState => {
+        break
+      }
+      case 'AUDIO_NODE_UPDATE_LABEL': {
+        const { id, label } = action.payload
+        const existing = draftState.byId[id]
+
+        if (existing) existing.label = label
+
+        break
+      }
+      case 'AUDIO_FILE_DECODE_COMPLETE': {
         const { id, file } = action.payload
         const existing = draftState.byId[id]
 
@@ -132,10 +130,12 @@ const audioNodesReducer: Reducer<
             pick(Object.keys(existing.audioProps), file),
           )
         }
-      })
-    default:
-      return state
-  }
-}
+
+        break
+      }
+      default:
+        break
+    }
+  })
 
 export default audioNodesReducer
