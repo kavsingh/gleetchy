@@ -1,20 +1,20 @@
-import React, { memo, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
+import React, { memo, FunctionComponent, useCallback, useMemo } from 'react'
+import styled from '@emotion/styled'
 import { always } from 'ramda'
 
 import { noop } from '~/util/function'
 import Slider from '~/components/Slider'
 
-const rootStyle = css({
-  display: 'flex',
-  height: '100%',
-  marginLeft: '0.6em',
-})
+const Container = styled.div`
+  display: flex;
+  height: 100%;
+  margin-left: 0.6em;
+`
 
-const sliderContainerStyle = css({
-  height: '100%',
-  width: '2em',
-})
+const SliderContainer = styled.div`
+  width: 2em;
+  height: 100%;
+`
 
 export interface Eq3Props {
   lowGain: number
@@ -35,36 +35,68 @@ const Eq3: FunctionComponent<Eq3Props> = ({
   midGain = 0,
   highGain = 0,
   onChange = noop,
-}) => (
-  <div css={rootStyle}>
-    <div css={sliderContainerStyle}>
+}) => {
+  const handleLowGainChange = useCallback(
+    (val: number) => onChange({ lowGain: val * 2 - 1 }),
+    [onChange],
+  )
+
+  const handleMidGainChange = useCallback(
+    (val: number) => onChange({ midGain: val * 2 - 1 }),
+    [onChange],
+  )
+
+  const handleHighGainChange = useCallback(
+    (val: number) => onChange({ highGain: val * 2 - 1 }),
+    [onChange],
+  )
+
+  const lowGainSlider = useMemo(
+    () => (
       <Slider
         value={lowGain * 0.5 + 0.5}
         renderTitle={renderLowGainTitle}
         renderLabel={renderLowGainLabel}
         renderValue={() => lowGain.toFixed(1)}
-        onChange={val => onChange({ lowGain: val * 2 - 1 })}
+        onChange={handleLowGainChange}
       />
-    </div>
-    <div css={sliderContainerStyle}>
+    ),
+    [handleLowGainChange, lowGain],
+  )
+
+  const midGainSlider = useMemo(
+    () => (
       <Slider
         value={midGain * 0.5 + 0.5}
         renderTitle={renderMidGainTitle}
         renderLabel={renderMidGainLabel}
         renderValue={() => midGain.toFixed(1)}
-        onChange={val => onChange({ midGain: val * 2 - 1 })}
+        onChange={handleMidGainChange}
       />
-    </div>
-    <div css={sliderContainerStyle}>
+    ),
+    [handleMidGainChange, midGain],
+  )
+
+  const highGainSlider = useMemo(
+    () => (
       <Slider
         value={highGain * 0.5 + 0.5}
         renderTitle={renderHighGainTitle}
         renderLabel={renderHighGainLabel}
         renderValue={() => highGain.toFixed(1)}
-        onChange={val => onChange({ highGain: val * 2 - 1 })}
+        onChange={handleHighGainChange}
       />
-    </div>
-  </div>
-)
+    ),
+    [handleHighGainChange, highGain],
+  )
+
+  return (
+    <Container>
+      <SliderContainer key="lowGain">{lowGainSlider}</SliderContainer>
+      <SliderContainer key="midGain">{midGainSlider}</SliderContainer>
+      <SliderContainer key="highGain">{highGainSlider}</SliderContainer>
+    </Container>
+  )
+}
 
 export default memo(Eq3)
