@@ -1,9 +1,9 @@
-import React, { PureComponent, ReactNode } from 'react'
+import React, { PureComponent } from 'react'
 import { css } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
-import { noop, stubEmptyString } from '~/util/function'
+import { noop } from '~/util/function'
 import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
@@ -118,10 +118,10 @@ export interface SliderProps {
   value: number
   defaultValue?: number
   orient?: 'vertical' | 'horizontal'
+  label?: string
+  valueLabel?: string
+  title?: string
   onChange?(value: number): unknown
-  renderLabel?(value: number): ReactNode
-  renderValue?(value: number): ReactNode
-  renderTitle?(value: number): string
   theme: UITheme
 }
 
@@ -132,9 +132,9 @@ class Slider extends PureComponent<SliderProps> {
     const {
       value,
       orient = 'vertical',
-      renderLabel = stubEmptyString,
-      renderValue = String,
-      renderTitle = String,
+      label = '',
+      valueLabel = '',
+      title = '',
       theme,
     } = this.props
     const isVert = orient === 'vertical'
@@ -143,7 +143,7 @@ class Slider extends PureComponent<SliderProps> {
     return (
       <div
         css={[rootStyle, isVert && verticalStyle, !isVert && horizontalStyle]}
-        title={renderTitle(value)}
+        title={title}
       >
         <div
           css={[
@@ -152,7 +152,7 @@ class Slider extends PureComponent<SliderProps> {
             !isVert && labelHorizontalStyle,
           ]}
         >
-          {renderLabel(value)}
+          {label}
         </div>
         <SinglePointerDrag
           onDragMove={this.handleDragMove}
@@ -195,7 +195,7 @@ class Slider extends PureComponent<SliderProps> {
             !isVert && valueHorizontalStyle,
           ]}
         >
-          {renderValue(value)}
+          {valueLabel}
         </div>
       </div>
     )
