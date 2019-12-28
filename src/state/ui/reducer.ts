@@ -1,6 +1,7 @@
 import { Reducer } from 'redux'
 import { produce } from 'immer'
 
+import { getPreferredColorScheme } from '~/apis/color-scheme'
 import defaultTheme, { ThemeName } from '~/style/theme'
 
 import { UIAction } from './types'
@@ -9,8 +10,16 @@ export interface UIState {
   currentThemeName: ThemeName
 }
 
+const getInitialTheme = (): ThemeName => {
+  const preferred = getPreferredColorScheme()
+
+  if (preferred === 'no-preference') return defaultTheme.name
+
+  return preferred === 'light' ? 'light' : 'dark'
+}
+
 const defaultState: UIState = {
-  currentThemeName: defaultTheme.name,
+  currentThemeName: getInitialTheme(),
 }
 
 const UIReducer: Reducer<UIState, UIAction> = (state = defaultState, action) =>
