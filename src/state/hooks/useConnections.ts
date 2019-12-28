@@ -1,5 +1,6 @@
 import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import { equals } from 'ramda'
 
 import { AudioNodeMeta } from '~/types'
 import {
@@ -12,9 +13,9 @@ import { toggleConnectionAction } from '~/state/connections/actions'
 const useConnections = () => {
   const dispatch = useDispatch()
 
-  const sources = useSelector(connectableSourcesSelector)
-  const targets = useSelector(connectableTargetsSelector)
-  const connections = useSelector(connectionsSelector)
+  const sources = useSelector(connectableSourcesSelector, equals)
+  const targets = useSelector(connectableTargetsSelector, equals)
+  const connections = useSelector(connectionsSelector, equals)
 
   const toggleConnection = useCallback(
     ({ id: from }: AudioNodeMeta, { id: to }: AudioNodeMeta) =>

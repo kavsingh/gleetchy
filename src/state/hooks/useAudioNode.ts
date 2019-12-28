@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { equals } from 'ramda'
 
 import { AudioNodeState, AudioNodeConnection } from '~/types'
 import {
@@ -49,7 +50,8 @@ const useAudioNode = <T>(
     if (!node) throw new Error(`Audio node not found at id ${id}`)
     if (!isValid(node)) throw new Error(`Audio node is invalid for ${id}`)
 
-    setAudioProps(node.audioProps as any) // eslint-disable-line
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    setAudioProps(node.audioProps as any)
     setLabel(node.label)
   }, [id, nodes, isValid])
 
@@ -58,7 +60,11 @@ const useAudioNode = <T>(
   }, [id, activeIds])
 
   useEffect(() => {
-    setConnections(getConnectionsFor(id, allConnections))
+    setConnections(current => {
+      const next = getConnectionsFor(id, allConnections)
+
+      return equals(current, next) ? current : next
+    })
   }, [id, allConnections])
 
   return {
