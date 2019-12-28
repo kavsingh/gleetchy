@@ -49,7 +49,6 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
     new webpack.EnvironmentPlugin({ NODE_ENV: 'development' }),
     new HtmlWebpackPlugin({
       title: 'Gleetchy',
-      themeColor: theme.colors.page,
       template: fromRoot('src/index.html'),
       inject: 'body',
     }),
