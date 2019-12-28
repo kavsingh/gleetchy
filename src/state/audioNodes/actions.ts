@@ -4,6 +4,7 @@ import { nodeType as reverbType } from '~/nodes/audioEffects/reverb'
 
 import {
   AudioNodeAddAction,
+  AudioNodeDuplicateAction,
   AudioNodeRemoveAction,
   AudioNodeUpdateLabelAction,
   AudioNodeUpdateAudioPropsAction,
@@ -12,6 +13,13 @@ import {
 export const addAudioNodeAction = (type: string): AudioNodeAddAction => ({
   payload: { type },
   type: 'AUDIO_NODE_ADD',
+})
+
+export const duplicateAudioNodeAction = (
+  id: string,
+): AudioNodeDuplicateAction => ({
+  payload: { id },
+  type: 'AUDIO_NODE_DUPLICATE',
 })
 
 export const addDelayAction = () => addAudioNodeAction(delayType)

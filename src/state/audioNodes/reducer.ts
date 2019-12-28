@@ -93,6 +93,34 @@ const audioNodesReducer: Reducer<
 
         break
       }
+      case 'AUDIO_NODE_DUPLICATE': {
+        const exisiting = draftState.byId[action.payload.id]
+
+        if (!exisiting) break
+
+        const duplicate = {
+          ...exisiting,
+          id: prefixedId(exisiting.type),
+          label: `${exisiting.label} Copy`,
+        }
+
+        draftState.byId[duplicate.id] = duplicate
+
+        const existingMetaIndex = draftState.orderedMeta.findIndex(
+          ({ id }) => id === exisiting.id,
+        )
+
+        if (existingMetaIndex === -1) {
+          draftState.orderedMeta.push({
+            id: duplicate.id,
+            type: duplicate.type,
+          })
+        } else {
+          draftState.orderedMeta.splice(existingMetaIndex + 1, 0, duplicate)
+        }
+
+        break
+      }
       case 'AUDIO_NODE_REMOVE': {
         const { id } = action.payload
 

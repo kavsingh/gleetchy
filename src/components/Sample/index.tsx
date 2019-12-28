@@ -10,8 +10,8 @@ import LoopRegion from '~/components/LoopRegion'
 import WaveForm from '~/components/WaveForm'
 
 export interface SampleProps {
+  audioBuffer: Nullable<AudioBuffer>
   fromSaved?: boolean
-  audioBuffer?: AudioBuffer
   loopStart?: number
   loopEnd?: number
   onLoopStartDrag?(movement: number): unknown

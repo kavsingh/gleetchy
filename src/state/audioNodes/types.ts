@@ -5,6 +5,11 @@ export type AudioNodeAddAction = ActionWithPayload<
   { type: string }
 >
 
+export type AudioNodeDuplicateAction = ActionWithPayload<
+  'AUDIO_NODE_DUPLICATE',
+  { id: string }
+>
+
 export type AudioNodeRemoveAction = ActionWithPayload<
   'AUDIO_NODE_REMOVE',
   { id: string }
@@ -22,6 +27,7 @@ export type AudioNodeUpdateAudioPropsAction = ActionWithPayload<
 
 export type AudioNodesAction =
   | AudioNodeAddAction
+  | AudioNodeDuplicateAction
   | AudioNodeRemoveAction
   | AudioNodeUpdateLabelAction
   | AudioNodeUpdateAudioPropsAction

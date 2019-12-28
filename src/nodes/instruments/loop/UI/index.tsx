@@ -9,7 +9,7 @@ import Sample from '~/components/Sample'
 
 import PlaybackControls from './PlaybackControls'
 import LoopTitleBar from './LoopTitleBar'
-import { LoopProps } from './types'
+import { LoopUIProps } from './types'
 
 const Container = styled.div<{ isActive: boolean }>`
   width: 100%;
@@ -58,7 +58,7 @@ const AudioFileDropRegion: FunctionComponent<{
   return <FileDropWrapper {...eventHandlers}>{children}</FileDropWrapper>
 }
 
-class Loop extends PureComponent<LoopProps> {
+class Loop extends PureComponent<LoopUIProps> {
   public render() {
     const {
       audioBuffer,
@@ -79,6 +79,7 @@ class Loop extends PureComponent<LoopProps> {
       selectAudioFile = noop,
       receiveAudioFile = noop,
       onLabelChange = noop,
+      duplicate = noop,
       remove = noop,
     } = this.props
 
@@ -89,8 +90,10 @@ class Loop extends PureComponent<LoopProps> {
             <LoopTitleBar
               label={label}
               fileName={fileName}
+              audioBuffer={audioBuffer}
               connections={connections}
               onLabelChange={onLabelChange}
+              duplicate={duplicate}
               remove={remove}
               selectAudioFile={selectAudioFile}
             />

@@ -6,6 +6,7 @@ import { AudioNodeState, AudioNodeConnection } from '~/types'
 import {
   updateAudioNodeAudioPropsAction,
   updateAudioNodeLabelAction,
+  duplicateAudioNodeAction,
   removeAudioNodeAction,
 } from '~/state/audioNodes/actions'
 import { getConnectionsFor } from '~/util/audio'
@@ -27,6 +28,11 @@ const useAudioNode = <T>(
   const [audioProps, setAudioProps] = useState<T>(defaultAudioProps)
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
   const [isActive, setIsActive] = useState(false)
+
+  const duplicate = useCallback(() => dispatch(duplicateAudioNodeAction(id)), [
+    id,
+    dispatch,
+  ])
 
   const remove = useCallback(() => dispatch(removeAudioNodeAction(id)), [
     id,
@@ -67,15 +73,10 @@ const useAudioNode = <T>(
     })
   }, [id, allConnections])
 
-  return {
-    label,
-    audioProps,
-    updateAudioProps,
-    updateLabel,
-    connections,
-    isActive,
-    remove,
-  }
+  return [
+    { label, audioProps, connections, isActive },
+    { updateAudioProps, updateLabel, duplicate, remove },
+  ] as const
 }
 
 export default useAudioNode

@@ -4,20 +4,22 @@ import styled from '@emotion/styled'
 import TitleBar from '~/components/TitleBar'
 import Button from '~/components/Button'
 
-import { LoopProps } from './types'
+import { LoopUIProps } from './types'
 
 const LoopTitleBar: FunctionComponent<Pick<
-  LoopProps,
+  LoopUIProps,
   | 'fileName'
   | 'selectAudioFile'
   | 'audioBuffer'
   | 'label'
   | 'onLabelChange'
+  | 'duplicate'
   | 'remove'
   | 'connections'
 >> = ({
   label,
   onLabelChange,
+  duplicate,
   remove,
   connections,
   fileName,
@@ -37,6 +39,16 @@ const LoopTitleBar: FunctionComponent<Pick<
     [audioBuffer, fileName],
   )
 
+  const loadButton = useMemo(
+    () => (
+      <Button
+        handler={selectAudioFile}
+        label={`${audioBuffer ? 'Replace' : 'Load'} audio file`}
+      />
+    ),
+    [audioBuffer, selectAudioFile],
+  )
+
   return (
     <TitleBar
       type="Loop"
@@ -47,7 +59,8 @@ const LoopTitleBar: FunctionComponent<Pick<
     >
       <Title>
         {title}
-        <Button handler={selectAudioFile} label="Load audio file" />
+        {loadButton}
+        <Button handler={duplicate} label="Copy" />
       </Title>
     </TitleBar>
   )

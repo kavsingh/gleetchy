@@ -1,6 +1,6 @@
 import { AudioNodeConnection } from '~/types'
 
-export interface LoopProps {
+export interface LoopUIProps {
   loopStart: number
   loopEnd: number
   label: string
@@ -12,7 +12,7 @@ export interface LoopProps {
   lowGain: number
   playbackRate: number
   gain: number
-  audioBuffer?: AudioBuffer
+  audioBuffer: Nullable<AudioBuffer>
   onGainChange(gain: number): unknown
   onPlaybackRateChange(playbackRate: number): unknown
   onEqChange(props: { [key: string]: number }): unknown
@@ -20,5 +20,6 @@ export interface LoopProps {
   receiveAudioFile(file: File): unknown
   onLoopRegionChange(start: number, end: number): unknown
   onLabelChange(label: string): unknown
+  duplicate(): unknown
   remove(): unknown
 }

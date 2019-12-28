@@ -9,15 +9,10 @@ import {
 import useAudioNode from '~/state/hooks/useAudioNode'
 
 const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
-  const {
-    label,
-    connections,
-    audioProps,
-    isActive,
-    updateAudioProps,
-    updateLabel,
-    remove,
-  } = useAudioNode<NodeProps>(id, node => node.type === nodeType, defaultProps)
+  const [
+    { label, connections, audioProps, isActive },
+    { updateAudioProps, updateLabel, duplicate, remove },
+  ] = useAudioNode<NodeProps>(id, node => node.type === nodeType, defaultProps)
 
   const dispatch = useDispatch()
 
@@ -71,6 +66,7 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
       receiveAudioFile={receiveAudioFile}
       onLoopRegionChange={handleLoopRegionChange}
       onLabelChange={updateLabel}
+      duplicate={duplicate}
       remove={remove}
     />
   )

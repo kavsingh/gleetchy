@@ -24,6 +24,7 @@ const audioEngineReducer: Reducer<
   produce(state, draftState => {
     switch (action.type) {
       case 'AUDIO_NODE_ADD':
+      case 'AUDIO_NODE_DUPLICATE':
       case 'AUDIO_NODE_REMOVE':
       case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
       case 'CONNECTION_ADD':

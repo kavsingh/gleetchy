@@ -196,6 +196,7 @@ class AudioEngine extends Component<AudioEngineProps> {
         this.updateAudioGraph()
         break
       case 'AUDIO_NODE_ADD':
+      case 'AUDIO_NODE_DUPLICATE':
         this.updateAudioNodes()
         this.updateAudioGraph()
         break

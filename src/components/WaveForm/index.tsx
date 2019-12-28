@@ -21,8 +21,8 @@ const canvasStyle = css({
 export interface WaveformProps {
   color: string
   baselineColor: string
+  buffer: Nullable<AudioBuffer>
   timeRegions?: number
-  buffer?: AudioBuffer
 }
 
 const drawTempWaveform = (
