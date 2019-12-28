@@ -1,6 +1,5 @@
 import React, { memo, FunctionComponent, useCallback, useMemo } from 'react'
 import styled from '@emotion/styled'
-import { always } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
@@ -34,11 +33,6 @@ export interface DelayProps {
   onLabelChange(label: string): unknown
   remove(): unknown
 }
-
-const renderTimeLabel = always('T')
-const renderTimeTitle = always('Delay Time')
-const renderWetDryLabel = always('W / D')
-const renderWetDryTitle = always('Wet / Dry Ratio')
 
 const Delay: FunctionComponent<DelayProps> = ({
   label = 'Delay',
@@ -77,9 +71,9 @@ const Delay: FunctionComponent<DelayProps> = ({
         radius="2.4em"
         value={delayTime / DELAY_UPPER_BOUND}
         onChange={handleTimeKnobChange}
-        renderLabel={renderTimeLabel}
-        renderTitle={renderTimeTitle}
-        renderValue={() => delayTime.toFixed(2)}
+        label="T"
+        title="Delay Time"
+        valueLabel={delayTime.toFixed(2)}
       />
     ),
     [delayTime, handleTimeKnobChange],
@@ -91,9 +85,9 @@ const Delay: FunctionComponent<DelayProps> = ({
         radius="2.4em"
         value={wetDryRatio}
         onChange={onWetDryRatioChange}
-        renderLabel={renderWetDryLabel}
-        renderTitle={renderWetDryTitle}
-        renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
+        label="W / D"
+        title="Wet / Dry Ratio"
+        valueLabel={`${(wetDryRatio * 100).toFixed(1)}%`}
       />
     ),
     [onWetDryRatioChange, wetDryRatio],

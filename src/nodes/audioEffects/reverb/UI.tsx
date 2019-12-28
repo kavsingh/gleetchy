@@ -1,6 +1,5 @@
 import React, { memo, FunctionComponent, useMemo } from 'react'
 import styled from '@emotion/styled'
-import { always } from 'ramda'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
@@ -21,9 +20,6 @@ const ControlsContainer = styled.div`
 const KnobContainer = styled.div`
   flex: 0 0 3em;
 `
-
-const renderWetDryLabel = always('W / D')
-const renderWetDryTitle = always('Wet / Dry Ratio')
 
 export interface ReverbProps {
   label: string
@@ -63,9 +59,9 @@ const Reverb: FunctionComponent<ReverbProps> = ({
         radius="2.4em"
         value={wetDryRatio}
         onChange={onWetDryRatioChange}
-        renderLabel={renderWetDryLabel}
-        renderTitle={renderWetDryTitle}
-        renderValue={() => `${(wetDryRatio * 100).toFixed(1)}%`}
+        label="W / D"
+        title="Wet / Dry Ratio"
+        valueLabel={`${(wetDryRatio * 100).toFixed(1)}%`}
       />
     ),
     [onWetDryRatioChange, wetDryRatio],

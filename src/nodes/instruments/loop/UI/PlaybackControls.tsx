@@ -1,6 +1,5 @@
-import React, { memo, FunctionComponent } from 'react'
+import React, { memo, FunctionComponent, useMemo, useCallback } from 'react'
 import styled from '@emotion/styled'
-import { always } from 'ramda'
 
 import { noop } from '~/util/function'
 import Knob from '~/components/Knob'
@@ -20,37 +19,49 @@ export interface PlaybackControlsProps {
   onPlaybackRateChange(playbackRate: number): unknown
 }
 
-const renderGainTitle = always('Gain')
-const renderGainLabel = always('G')
-const renderSpeedTitle = always('Speed')
-const renderSpeedLabel = always('S')
-
 const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
   gain = 1,
   playbackRate = 1,
   onGainChange = noop,
   onPlaybackRateChange = noop,
-}) => (
-  <Container>
-    <div>
+}) => {
+  const handlePlaybackRateChange = useCallback(
+    (val: number) => onPlaybackRateChange(val * 2),
+    [onPlaybackRateChange],
+  )
+
+  const gainKnob = useMemo(
+    () => (
       <Knob
         value={gain}
-        renderTitle={renderGainTitle}
-        renderLabel={renderGainLabel}
-        renderValue={() => gain.toFixed(2)}
+        title="Gain"
+        label="G"
+        valueLabel={gain.toFixed(2)}
         onChange={onGainChange}
       />
-    </div>
-    <div>
+    ),
+    [gain, onGainChange],
+  )
+
+  const speedKnob = useMemo(
+    () => (
       <Knob
         value={playbackRate * 0.5}
-        renderTitle={renderSpeedTitle}
-        renderLabel={renderSpeedLabel}
-        renderValue={() => playbackRate.toFixed(2)}
-        onChange={val => onPlaybackRateChange(val * 2)}
+        title="Speed"
+        label="S"
+        valueLabel={playbackRate.toFixed(2)}
+        onChange={handlePlaybackRateChange}
       />
-    </div>
-  </Container>
-)
+    ),
+    [handlePlaybackRateChange, playbackRate],
+  )
+
+  return (
+    <Container>
+      <div key="gain">{gainKnob}</div>
+      <div key="speed">{speedKnob}</div>
+    </Container>
+  )
+}
 
 export default memo(PlaybackControls)

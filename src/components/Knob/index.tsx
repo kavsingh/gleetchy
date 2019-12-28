@@ -1,6 +1,6 @@
-import React, { PureComponent, ReactNode } from 'react'
+import React, { PureComponent } from 'react'
 import { css } from '@emotion/core'
-import { always, clamp } from 'ramda'
+import { clamp } from 'ramda'
 import { withTheme } from 'emotion-theming'
 
 import { PropsWithoutChildren } from '~/types'
@@ -11,8 +11,6 @@ import SinglePointerDrag, {
   SinglePointerDragState,
 } from '~/components/SinglePointerDrag'
 import SVGArc from '~/components/SVGArc'
-
-const renderEmptyString = always('')
 
 const labelStyle = css({
   flex: '0 0 auto',
@@ -38,10 +36,10 @@ export interface KnobProps {
   value: number
   defaultValue?: number
   radius?: number | string
+  title?: string
+  label?: string
+  valueLabel?: string
   onChange?(value: number): unknown
-  renderTitle?(value: number): string
-  renderLabel?(value: number): ReactNode
-  renderValue?(value: number): ReactNode
   theme: UITheme
 }
 
@@ -59,9 +57,9 @@ class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
     const {
       value = 0.5,
       radius = '2.4em',
-      renderTitle = renderEmptyString,
-      renderLabel = renderEmptyString,
-      renderValue = renderEmptyString,
+      title = '',
+      label = '',
+      valueLabel = '',
       theme,
     } = this.props
 
@@ -76,8 +74,8 @@ class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
         onDragMove={this.handleDragMove}
       >
         {({ dragListeners }) => (
-          <div css={rootStyle} title={renderTitle(value)}>
-            <div css={labelStyle}>{renderLabel(value)}</div>
+          <div css={rootStyle} title={title}>
+            <div css={labelStyle}>{label}</div>
             <div
               {...dragListeners}
               onDoubleClick={this.handleDoubleClick}
@@ -96,7 +94,7 @@ class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
                 />
               </div>
             </div>
-            <div css={labelStyle}>{renderValue(value)}</div>
+            <div css={labelStyle}>{valueLabel}</div>
           </div>
         )}
       </SinglePointerDrag>
