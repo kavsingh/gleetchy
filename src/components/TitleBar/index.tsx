@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent, ReactNode } from 'react'
+import React, { memo, FunctionComponent, ReactNode, useMemo } from 'react'
 import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
@@ -66,22 +66,31 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
   onRemoveClick = noop,
   connections = [],
   children = [],
-}) => (
-  <Container>
-    <LabelContainer>
-      <ConnectionsContainer>
+}) => {
+  const connectionIndicators = useMemo(
+    () => (
+      <>
         {connections.map(({ color, from, to }) => (
           <Connection color={color} key={`${from}${to}`} />
         ))}
-      </ConnectionsContainer>
-      <TextInput onChange={onLabelChange} value={label} />
-    </LabelContainer>
-    <InfoContainer>
-      <TypeLabel>{type} /</TypeLabel>
-      {typeof children === 'function' ? children() : children}
-      <Button label="Remove" handler={onRemoveClick} />
-    </InfoContainer>
-  </Container>
-)
+      </>
+    ),
+    [connections],
+  )
+
+  return (
+    <Container>
+      <LabelContainer>
+        <ConnectionsContainer>{connectionIndicators}</ConnectionsContainer>
+        <TextInput onChange={onLabelChange} value={label} />
+      </LabelContainer>
+      <InfoContainer>
+        <TypeLabel>{type} /</TypeLabel>
+        {typeof children === 'function' ? children() : children}
+        <Button label="Remove" handler={onRemoveClick} />
+      </InfoContainer>
+    </Container>
+  )
+}
 
 export default memo(TitleBar)

@@ -2,15 +2,14 @@ import React, { PureComponent, FunctionComponent } from 'react'
 import { clamp } from 'ramda'
 import styled from '@emotion/styled'
 
-import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
 import useFileDropRegion from '~/components/hooks/useFileDropRegion'
 import Sample from '~/components/Sample'
-import TitleBar from '~/components/TitleBar'
-import Button from '~/components/Button'
 
 import PlaybackControls from './PlaybackControls'
+import LoopTitleBar from './LoopTitleBar'
+import { LoopProps } from './types'
 
 const Container = styled.div<{ isActive: boolean }>`
   width: 100%;
@@ -48,14 +47,6 @@ const ControlsContainer = styled.div`
   margin-left: 1.2em;
 `
 
-const Title = styled.div`
-  display: flex;
-
-  & span {
-    margin-right: 0.3em;
-  }
-`
-
 const AudioFileDropRegion: FunctionComponent<{
   onFiles(files: File[]): unknown
 }> = ({ children, onFiles }) => {
@@ -66,44 +57,6 @@ const AudioFileDropRegion: FunctionComponent<{
 
   return <FileDropWrapper {...eventHandlers}>{children}</FileDropWrapper>
 }
-
-export interface LoopProps {
-  loopStart: number
-  loopEnd: number
-  label: string
-  fileName: string
-  connections: AudioNodeConnection[]
-  isActive: boolean
-  highGain: number
-  midGain: number
-  lowGain: number
-  playbackRate: number
-  gain: number
-  audioBuffer?: AudioBuffer
-  onGainChange(gain: number): unknown
-  onPlaybackRateChange(playbackRate: number): unknown
-  onEqChange(props: { [key: string]: number }): unknown
-  selectAudioFile(): unknown
-  receiveAudioFile(file: File): unknown
-  onLoopRegionChange(start: number, end: number): unknown
-  onLabelChange(label: string): unknown
-  remove(): unknown
-}
-
-const renderTitle = (
-  fileName: string,
-  selectAudioFile: () => void,
-  audioBuffer?: AudioBuffer,
-) => (
-  <Title>
-    {fileName ? <span>{fileName}</span> : null}
-    {fileName && audioBuffer ? (
-      <span> - {audioBuffer.duration.toFixed(2)}s</span>
-    ) : null}
-    {fileName ? <span>/</span> : null}
-    <Button handler={selectAudioFile} label="Load audio file" />
-  </Title>
-)
 
 class Loop extends PureComponent<LoopProps> {
   public render() {
@@ -133,15 +86,14 @@ class Loop extends PureComponent<LoopProps> {
       <Container isActive={isActive}>
         <AudioFileDropRegion onFiles={files => receiveAudioFile(files[0])}>
           <TitleBarContainer>
-            <TitleBar
-              type="Loop"
+            <LoopTitleBar
               label={label}
-              onLabelChange={onLabelChange}
-              onRemoveClick={remove}
+              fileName={fileName}
               connections={connections}
-            >
-              {() => renderTitle(fileName, selectAudioFile, audioBuffer)}
-            </TitleBar>
+              onLabelChange={onLabelChange}
+              remove={remove}
+              selectAudioFile={selectAudioFile}
+            />
           </TitleBarContainer>
           <MainContainer>
             <Sample
