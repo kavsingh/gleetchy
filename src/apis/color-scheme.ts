@@ -1,17 +1,15 @@
-import { requireWindowWith } from '~/util/env'
+export type ColorSchemePreference = 'no-preference' | 'light' | 'dark'
 
-type ColorSchemePreference = 'no-preference' | 'light' | 'dark'
+export const darkSchemeQuery: MediaQueryList | undefined =
+  window?.matchMedia?.('(prefers-color-scheme: dark)') || undefined
+
+export const lightSchemeQuery: MediaQueryList | undefined =
+  window?.matchMedia?.('(prefers-color-scheme: light)') || undefined
 
 export const getPreferredColorScheme = (): ColorSchemePreference => {
-  const WINDOW = requireWindowWith(['matchMedia'])
+  if (darkSchemeQuery.matches) return 'dark'
 
-  if (WINDOW && WINDOW.matchMedia('(prefers-color-scheme: dark)').matches) {
-    return 'dark'
-  }
-
-  if (WINDOW && WINDOW.matchMedia('(prefers-color-scheme: light)').matches) {
-    return 'light'
-  }
+  if (lightSchemeQuery.matches) return 'light'
 
   return 'no-preference'
 }

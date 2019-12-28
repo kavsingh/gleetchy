@@ -1,10 +1,21 @@
+import { ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 
 import { ApplicationState } from '../configureStore'
 import { UISetThemeAction } from './types'
 import { uiThemeNameSelector } from './selectors'
 
-export const toggleDarkLightUIThemes = (): ThunkAction<
+export const setDarkThemeAction: ActionCreator<UISetThemeAction> = () => ({
+  payload: 'dark',
+  type: 'UI_SET_THEME',
+})
+
+export const setLightThemeAction: ActionCreator<UISetThemeAction> = () => ({
+  payload: 'light',
+  type: 'UI_SET_THEME',
+})
+
+export const toggleDarkLightUIThemesAction = (): ThunkAction<
   void,
   ApplicationState,
   undefined,
@@ -12,9 +23,6 @@ export const toggleDarkLightUIThemes = (): ThunkAction<
 > => (dispatch, getState) => {
   const themeName = uiThemeNameSelector(getState())
 
-  if (themeName === 'dark') {
-    dispatch<UISetThemeAction>({ payload: 'light', type: 'UI_SET_THEME' })
-  } else {
-    dispatch<UISetThemeAction>({ payload: 'dark', type: 'UI_SET_THEME' })
-  }
+  if (themeName === 'dark') dispatch(setLightThemeAction())
+  else dispatch(setDarkThemeAction())
 }
