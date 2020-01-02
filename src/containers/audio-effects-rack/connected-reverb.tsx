@@ -5,7 +5,7 @@ import {
   defaultProps,
   NodeProps,
   UI,
-} from '~/nodes/audioEffects/reverb'
+} from '~/nodes/audio-effects/reverb'
 import useAudioNode from '~/state/hooks/use-audio-node'
 
 const ConnectedReverb: FunctionComponent<{ id: string }> = ({ id }) => {

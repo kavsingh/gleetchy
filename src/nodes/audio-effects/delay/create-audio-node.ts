@@ -5,7 +5,7 @@ import { GAudioNode } from '~/types'
 import { connectable } from '~/util/connection'
 
 import { defaultProps, Props } from './nodeProps'
-import nodeType from './nodeType'
+import nodeType from './node-type'
 
 const updateWetDry = (
   wetDryRatio: number,

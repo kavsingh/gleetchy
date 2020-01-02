@@ -5,7 +5,7 @@ import {
   defaultProps,
   NodeProps,
   UI,
-} from '~/nodes/audioEffects/delay'
+} from '~/nodes/audio-effects/delay'
 import useAudioNode from '~/state/hooks/use-audio-node'
 
 const ConnectedReverb: FunctionComponent<{ id: string }> = ({ id }) => {

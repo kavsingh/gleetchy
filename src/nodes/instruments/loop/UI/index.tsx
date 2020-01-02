@@ -3,12 +3,12 @@ import { clamp } from 'ramda'
 import styled from '@emotion/styled'
 
 import { noop } from '~/util/function'
-import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
+import { UI as Eq3 } from '~/nodes/audio-effects/eq3'
 import useFileDropRegion from '~/components/hooks/use-file-drop-region'
 import Sample from '~/components/sample'
 
-import PlaybackControls from './PlaybackControls'
-import LoopTitleBar from './LoopTitleBar'
+import PlaybackControls from './playback-controls'
+import LoopTitleBar from './loop-title-bar'
 import { LoopUIProps } from './types'
 
 const Container = styled.div<{ isActive: boolean }>`

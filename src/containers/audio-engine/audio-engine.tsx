@@ -8,11 +8,11 @@ import { MAIN_OUT_ID } from '~/constants/audio'
 import {
   createAudioNode as createDelayNode,
   nodeType as delayType,
-} from '~/nodes/audioEffects/delay'
+} from '~/nodes/audio-effects/delay'
 import {
   createAudioNode as createReverbNode,
   nodeType as reverbType,
-} from '~/nodes/audioEffects/reverb'
+} from '~/nodes/audio-effects/reverb'
 import {
   createAudioNode as createLoopNode,
   nodeType as loopType,

@@ -1,11 +1,11 @@
 import { always, curry } from 'ramda'
 
-import createEq3Node from '~/nodes/audioEffects/eq3/createAudioNode'
+import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
 import { InstrumentNode } from '~/types'
 import { connectable } from '~/util/connection'
 
-import { defaultProps, Props } from './nodeProps'
-import nodeType from './nodeType'
+import { defaultProps, Props } from './node-props'
+import nodeType from './node-type'
 
 export default curry(
   (audioContext: AudioContext, initProps: Partial<Props>): InstrumentNode => {

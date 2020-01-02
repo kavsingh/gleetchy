@@ -1,4 +1,4 @@
-import { defaultProps as eq3DefaultProps } from '~/nodes/audioEffects/eq3/nodeProps'
+import { defaultProps as eq3DefaultProps } from '~/nodes/audio-effects/eq3/node-props'
 
 export const defaultProps = Object.freeze({
   ...eq3DefaultProps,

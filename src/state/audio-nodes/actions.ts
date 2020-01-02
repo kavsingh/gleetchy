@@ -1,6 +1,6 @@
 import { nodeType as loopType } from '~/nodes/instruments/loop'
-import { nodeType as delayType } from '~/nodes/audioEffects/delay'
-import { nodeType as reverbType } from '~/nodes/audioEffects/reverb'
+import { nodeType as delayType } from '~/nodes/audio-effects/delay'
+import { nodeType as reverbType } from '~/nodes/audio-effects/reverb'
 
 import {
   AudioNodeAddAction,

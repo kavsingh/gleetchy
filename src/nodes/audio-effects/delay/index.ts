@@ -1,6 +1,6 @@
-import createAudioNode from './createAudioNode'
+import createAudioNode from './create-audio-node'
 import { defaultProps, Props } from './nodeProps'
-import nodeType from './nodeType'
+import nodeType from './node-type'
 import UI from './UI'
 
 export type NodeProps = Props

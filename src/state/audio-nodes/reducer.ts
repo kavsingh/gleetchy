@@ -6,12 +6,12 @@ import {
   defaultProps as delayDefaultProps,
   nodeType as delayNodeType,
   NodeProps as DelayNodeProps,
-} from '~/nodes/audioEffects/delay'
+} from '~/nodes/audio-effects/delay'
 import {
   defaultProps as reverbDefaultProps,
   nodeType as reverbNodeType,
   NodeProps as ReverbNodeProps,
-} from '~/nodes/audioEffects/reverb'
+} from '~/nodes/audio-effects/reverb'
 import {
   defaultProps as loopDefaultProps,
   nodeType as loopNodeType,
