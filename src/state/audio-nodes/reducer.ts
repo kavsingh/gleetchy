@@ -18,9 +18,8 @@ import {
   NodeProps as LoopNodeProps,
 } from '~/nodes/instruments/loop'
 import initialNodes from '~/state/default-nodes'
-import { prefixedId } from '~/util/id'
-import { stableOmit } from '~/util/object'
-import { stableFilter } from '~/util/array'
+import { prefixedId } from '~/lib/id'
+import { stableOmit, stableFilter } from '~/lib/util'
 import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audio-files/types'

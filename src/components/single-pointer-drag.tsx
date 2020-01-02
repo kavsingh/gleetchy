@@ -2,9 +2,8 @@ import { PureComponent, ReactNode } from 'react'
 import rafThrottle from 'raf-throttle'
 import { pipe, tap } from 'ramda'
 
-import { filterSupportedEvents, requireWindowWith } from '~/util/env'
-import { cancelEvent } from '~/util/event'
-import { noop } from '~/util/function'
+import { cancelEvent, noop } from '~/lib/util'
+import { filterSupportedEvents, requireWindowWith } from '~/lib/env'
 
 type MouseOrTouchEvent =
   | Event

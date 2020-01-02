@@ -1,7 +1,7 @@
 import { always, curry } from 'ramda'
 
 import { GAudioNode } from '~/types'
-import { connectable } from '~/util/connection'
+import { makeConnectable } from '~/lib/connection'
 
 import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
@@ -34,7 +34,7 @@ export default curry(
 
     transferProps()
 
-    return connectable({
+    return makeConnectable({
       getInNode: always(highNode),
       getOutNode: always(lowNode),
     })({

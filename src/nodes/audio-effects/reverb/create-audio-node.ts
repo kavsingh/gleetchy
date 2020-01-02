@@ -2,7 +2,7 @@ import { always, curry } from 'ramda'
 
 import { decodeAudioData } from '~/apis/audio'
 import { GAudioNode } from '~/types'
-import { connectable } from '~/util/connection'
+import { makeConnectable } from '~/lib/connection'
 import reverbImpulse from '~/assets/media/impulse-reverb.wav'
 
 import { defaultProps, Props } from './node-props'
@@ -45,7 +45,7 @@ export default curry(
       reverbNode.buffer = buffer
     })
 
-    return connectable({
+    return makeConnectable({
       getInNode: always(inNode),
       getOutNode: always(outNode),
     })({

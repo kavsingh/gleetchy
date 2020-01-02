@@ -9,7 +9,7 @@ import {
   duplicateAudioNodeAction,
   removeAudioNodeAction,
 } from '~/state/audio-nodes/actions'
-import { getConnectionsFor } from '~/util/audio'
+import { getConnectionsFor } from '~/lib/audio'
 
 import useAudioNodes from './use-audio-nodes'
 import useConnections from './use-connections'

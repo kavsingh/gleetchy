@@ -2,7 +2,7 @@ import React, { PureComponent, FunctionComponent } from 'react'
 import { clamp } from 'ramda'
 import styled from '@emotion/styled'
 
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import { UI as Eq3 } from '~/nodes/audio-effects/eq3'
 import useFileDropRegion from '~/components/hooks/use-file-drop-region'
 import Sample from '~/components/sample'

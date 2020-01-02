@@ -2,8 +2,7 @@ import { Reducer } from 'redux'
 import { produce } from 'immer'
 
 import { AudioFileData, DecodedAudioFileData } from '~/types'
-import { stableOmit } from '~/util/object'
-import { stableWithout, stableAppendUnique } from '~/util/array'
+import { stableOmit, stableWithout, stableAppendUnique } from '~/lib/util'
 
 import { AudioFilesAction } from './types'
 

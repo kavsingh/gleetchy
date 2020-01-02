@@ -1,6 +1,6 @@
 import { isNotNil, stableOmit } from './object'
 
-describe('Object util', () => {
+describe('util/Object', () => {
   describe('isNotNil', () => {
     it('determines if value is not nil', () => {
       expect(isNotNil(undefined)).toBe(false)

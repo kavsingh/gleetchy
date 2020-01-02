@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
 

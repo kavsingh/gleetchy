@@ -8,7 +8,7 @@ import {
   getConnectionBetween,
 } from './audio'
 
-describe('Audio util', () => {
+describe('lib/audio', () => {
   describe('isAudioEffect', () => {
     it('determines if node is an audio effect', () => {
       expect(isAudioEffect({})).toBe(false)

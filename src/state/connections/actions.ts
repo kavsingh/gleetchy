@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 
 import { ApplicationState } from '~/state/configure-store'
-import { isSameConnection } from '~/util/audio'
+import { isSameConnection } from '~/lib/audio'
 
 import { connectionsSelector } from './selectors'
 import { ConnectionAddAction, ConnectionRemoveAction } from './types'

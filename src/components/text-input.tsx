@@ -7,8 +7,7 @@ import AutosizeInput from 'react-input-autosize'
 import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
-import { cancelReactEvent } from '~/util/event'
-import { noop } from '~/util/function'
+import { cancelReactEvent, noop } from '~/lib/util'
 import { ThemeProps } from '~/style/theme'
 
 const Container = styled.div<ThemeProps>`

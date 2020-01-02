@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 import color from 'color'
 
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
 import { UITheme, ThemeProps } from '~/style/theme'
 import LoopRegion from '~/components/loop-region'

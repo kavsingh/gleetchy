@@ -4,7 +4,7 @@ import { allPass, propEq } from 'ramda'
 
 import { nodeColorPool } from '~/style/color'
 import { AudioNodeConnection } from '~/types'
-import { stableWithout } from '~/util/array'
+import { stableWithout } from '~/lib/util'
 
 import defaultNodes from '../default-nodes'
 import { AudioNodeRemoveAction } from '../audio-nodes/types'

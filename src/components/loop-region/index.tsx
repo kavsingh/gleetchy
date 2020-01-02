@@ -3,7 +3,7 @@ import color from 'color'
 import { css } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import { UITheme } from '~/style/theme'
 import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag, {

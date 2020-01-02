@@ -2,7 +2,7 @@ import { always, curry } from 'ramda'
 
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { GAudioNode } from '~/types'
-import { connectable } from '~/util/connection'
+import { makeConnectable } from '~/lib/connection'
 
 import { defaultProps, Props } from './nodeProps'
 import nodeType from './node-type'
@@ -35,7 +35,7 @@ export default curry(
 
     delayNode.delayTime.value = props.delayTime
 
-    return connectable({
+    return makeConnectable({
       getInNode: always(inNode),
       getOutNode: always(outNode),
     })({

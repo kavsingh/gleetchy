@@ -1,7 +1,7 @@
 import React from 'react'
 import { render, hydrate } from 'react-dom'
 
-import { requireWindowWith } from '~/util/env'
+import { requireWindowWith } from '~/lib/env'
 import offlineInstall from '~/lib/offline-install'
 import { configureStore } from '~/state/configure-store'
 

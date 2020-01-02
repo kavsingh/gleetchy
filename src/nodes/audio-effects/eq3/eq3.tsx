@@ -1,7 +1,7 @@
 import React, { memo, FunctionComponent, useCallback, useMemo } from 'react'
 import styled from '@emotion/styled'
 
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import Slider from '~/components/slider'
 
 const Container = styled.div`

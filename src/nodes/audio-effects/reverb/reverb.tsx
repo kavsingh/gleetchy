@@ -2,7 +2,7 @@ import React, { memo, FunctionComponent, useMemo } from 'react'
 import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
 

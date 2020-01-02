@@ -4,7 +4,7 @@ import { clamp } from 'ramda'
 import { withTheme } from 'emotion-theming'
 
 import { PropsWithoutChildren } from '~/types'
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
 import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {

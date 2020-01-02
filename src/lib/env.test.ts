@@ -2,7 +2,7 @@ import { requireWindowWith, filterSupportedEvents } from './env'
 
 // Note: this suite assumes window object as provided by jest / jsdom
 
-describe('util/env', () => {
+describe('lib/env', () => {
   describe('requireWindowWith', () => {
     it('returns the window object only if all path specs exist', () => {
       expect(

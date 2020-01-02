@@ -28,7 +28,7 @@ const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
-export const connectable = <
+export const makeConnectable = <
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   P extends object = any,
   N extends GAudioNode = GAudioNode<P, string>

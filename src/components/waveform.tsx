@@ -3,7 +3,7 @@ import { css } from '@emotion/core'
 import colorFn from 'color'
 import { map } from 'ramda'
 
-import { requireWindowWith } from '~/util/env'
+import { requireWindowWith } from '~/lib/env'
 
 const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
 

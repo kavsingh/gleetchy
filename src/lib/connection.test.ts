@@ -1,4 +1,4 @@
-import { connectable } from './connection'
+import { makeConnectable } from './connection'
 
 const context = new AudioContext()
 
@@ -12,15 +12,15 @@ const createConnectableFromGainNodes = () => {
   return {
     inNode,
     outNode,
-    node: connectable({
+    node: makeConnectable({
       getInNode: jest.fn(() => inNode),
       getOutNode: jest.fn(() => outNode),
     })({ type: 'node' }),
   }
 }
 
-describe('util/connection', () => {
-  describe('connectable', () => {
+describe('lib/connection', () => {
+  describe('makeConnectable', () => {
     it('creates a connectable node', () => {
       const { node } = createConnectableFromGainNodes()
 

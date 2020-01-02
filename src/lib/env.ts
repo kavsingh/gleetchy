@@ -1,6 +1,6 @@
 import { path, pipe, split, uniq, __ } from 'ramda'
 
-import { isNotNil } from './object'
+import { isNotNil } from './util/object'
 
 export const requireWindowWith = (propPaths: string[] = []) => {
   const WINDOW = typeof window !== 'undefined' ? window : undefined

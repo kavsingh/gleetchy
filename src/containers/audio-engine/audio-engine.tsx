@@ -1,8 +1,8 @@
 import { always, cond, equals, pick, pipe, tryCatch } from 'ramda'
 import { Component } from 'react'
 
-import { warn } from '~/util/dev'
-import { isInstrument } from '~/util/audio'
+import { warn } from '~/lib/dev'
+import { isInstrument } from '~/lib/audio'
 import { getAudioContext } from '~/apis/audio'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {

@@ -1,6 +1,6 @@
 import { stableWithout, stableFilter, stableAppendUnique } from './array'
 
-describe('Array util', () => {
+describe('util/array', () => {
   describe('stableWithout', () => {
     it('returns same array if nothing to remove', () => {
       const initialArray = [1, 2, 3]

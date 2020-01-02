@@ -1,10 +1,11 @@
-/* eslint-disable no-console */
-import { noop } from './function'
+import { noop } from './util/function'
 
+/* eslint-disable no-console */
 const isDev = process.env.NODE_ENV !== 'production'
 const cLog = console.log.bind(console)
 const cWarn = console.warn.bind(console)
 const cError = console.error.bind(console)
+/* eslint-enable */
 
 export const log = isDev ? cLog : noop
 export const warn = isDev ? cWarn : noop

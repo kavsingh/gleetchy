@@ -4,7 +4,7 @@ import { css } from '@emotion/core'
 import { withTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
-import { noop } from '~/util/function'
+import { noop } from '~/lib/util'
 import { ThemeProps } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
