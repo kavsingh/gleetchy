@@ -9,7 +9,7 @@ import AnimIn from '~/components/anim-in'
 import ErrorBoundary from '~/components/error-boundary'
 import AddNodeButtons from '~/components/add-node-buttons'
 
-import ConnectedLoop from './ConnectedLoop'
+import ConnectedLoop from './connected-loop'
 
 const Container = styled.div`
   display: flex;

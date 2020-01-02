@@ -7,9 +7,9 @@ import useConnections from '~/state/hooks/useConnections'
 import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
 import useAudioNodes from '~/state/hooks/useAudioNodes'
 
-import AudioEngine from './AudioEngine'
+import BaseAudioEngine from './audio-engine'
 
-const ConnectedAudioEngine: FunctionComponent = () => {
+const AudioEngine: FunctionComponent = () => {
   const [{ connections }] = useConnections()
   const [{ isPlaying }] = useGlobalPlayback()
   const [{ nodes }] = useAudioNodes()
@@ -23,7 +23,7 @@ const ConnectedAudioEngine: FunctionComponent = () => {
   )
 
   return (
-    <AudioEngine
+    <BaseAudioEngine
       isPlaying={isPlaying}
       nodes={nodes}
       connections={connections}
@@ -33,4 +33,4 @@ const ConnectedAudioEngine: FunctionComponent = () => {
   )
 }
 
-export default ConnectedAudioEngine
+export default AudioEngine

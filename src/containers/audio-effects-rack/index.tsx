@@ -9,8 +9,8 @@ import useAudioNodes from '~/state/hooks/useAudioNodes'
 import AddNodeButtons from '~/components/add-node-buttons'
 import ErrorBoundary from '~/components/error-boundary'
 
-import ConnectedDelay from './ConnectedDelay'
-import ConnectedReverb from './ConnectedReverb'
+import ConnectedDelay from './connected-delay'
+import ConnectedReverb from './connected-reverb'
 
 const Container = styled.div`
   display: flex;

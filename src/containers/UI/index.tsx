@@ -1,17 +1,17 @@
-import React, { FunctionComponent } from 'react'
 import Favicon from 'react-favicon'
+import React, { FunctionComponent } from 'react'
 import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
 import useUITheme from '~/state/hooks/useUITheme'
 import { UITheme, ThemeProps } from '~/style/theme'
-import AudioEffectsRack from '~/containers/AudioEffectsRack'
-import InstrumentsRack from '~/containers/InstrumentsRack'
-import PatchBay from '~/containers/PatchBay'
+import AudioEffectsRack from '~/containers/audio-effects-rack'
+import InstrumentsRack from '~/containers/instruments-rack'
+import PatchBay from '~/containers/patch-bay'
 import favicon from '~/assets/icons/48x48.png'
 
-import Masthead from './Masthead'
+import Masthead from './masthead'
 
 const globalStyles = (theme: UITheme) => css`
   html {
