@@ -5,8 +5,8 @@ import { equals } from 'ramda'
 import {
   audioNodesSelector,
   activeAudioNodeIdsSelector,
-} from '~/state/audioNodes/selectors'
-import { addAudioNodeAction } from '~/state/audioNodes/actions'
+} from '~/state/audio-nodes/selectors'
+import { addAudioNodeAction } from '~/state/audio-nodes/actions'
 
 const useAudioNodes = () => {
   const dispatch = useDispatch()

@@ -3,7 +3,7 @@ import { createSelector } from 'reselect'
 import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import { hasConnectionTo, isInstrument, isAudioEffect } from '~/util/audio'
-import { ApplicationState } from '~/state/configureStore'
+import { ApplicationState } from '~/state/configure-store'
 import { connectionsSelector } from '~/state/connections/selectors'
 
 const audioNodesStateSelector = (state: ApplicationState) => state.audioNodes

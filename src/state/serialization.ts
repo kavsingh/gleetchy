@@ -1,6 +1,6 @@
 import { anyPass, curry, pick, pipe } from 'ramda'
 
-import { ApplicationState } from '~/state/configureStore'
+import { ApplicationState } from '~/state/configure-store'
 
 const isObjectLike = (value: unknown): value is { [key: string]: unknown } =>
   typeof value === 'object'

@@ -3,8 +3,8 @@ import { GoMarkGithub } from 'react-icons/go'
 import styled from '@emotion/styled'
 import { withTheme } from 'emotion-theming'
 
-import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
-import useUITheme from '~/state/hooks/useUITheme'
+import useGlobalPlayback from '~/state/hooks/use-global-playback'
+import useUITheme from '~/state/hooks/use-ui-theme'
 import { ThemeProps } from '~/style/theme'
 import PlayPauseButton from '~/components/play-pause-button'
 

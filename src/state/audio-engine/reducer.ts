@@ -1,10 +1,10 @@
 import { Reducer } from 'redux'
 import produce from 'immer'
 
-import { AudioFilesAction } from '../audioFiles/types'
+import { AudioFilesAction } from '../audio-files/types'
 import { ConnectionsAction } from '../connections/types'
-import { GlobalPlaybackAction } from '../globalPlayback/types'
-import { AudioNodesAction } from '../audioNodes/types'
+import { GlobalPlaybackAction } from '../global-playback/types'
+import { AudioNodesAction } from '../audio-nodes/types'
 import { AudioEngineAction, AudioEngineEvent } from './types'
 
 export interface AudioEngineState {
@@ -13,7 +13,7 @@ export interface AudioEngineState {
 
 const defaultState = { events: [] }
 
-const audioEngineReducer: Reducer<
+export const audioEngineReducer: Reducer<
   AudioEngineState,
   | AudioNodesAction
   | AudioFilesAction
@@ -41,5 +41,3 @@ const audioEngineReducer: Reducer<
         break
     }
   })
-
-export default audioEngineReducer

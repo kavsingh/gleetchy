@@ -1,7 +1,7 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 
-import { ApplicationState, configureStore } from '~/state/configureStore'
+import { ApplicationState, configureStore } from '~/state/configure-store'
 
 import Main from './Main'
 

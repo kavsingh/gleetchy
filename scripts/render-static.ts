@@ -5,7 +5,7 @@ import { writeFile } from 'fs'
 import webpack, { Configuration } from 'webpack'
 import { JSDOM } from 'jsdom'
 
-import { ApplicationState } from '../src/state/configureStore'
+import { ApplicationState } from '../src/state/configure-store'
 import baseConfig from '../webpack.config'
 import staticConfig from '../webpack.config.static'
 import spawnAsync from './lib/spawn-async'

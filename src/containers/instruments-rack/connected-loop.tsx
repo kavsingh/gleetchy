@@ -5,8 +5,8 @@ import { nodeType, NodeProps, defaultProps, UI } from '~/nodes/instruments/loop'
 import {
   receiveAudioFileAction,
   selectAudioFileAction,
-} from '~/state/audioFiles/actions'
-import useAudioNode from '~/state/hooks/useAudioNode'
+} from '~/state/audio-files/actions'
+import useAudioNode from '~/state/hooks/use-audio-node'
 
 const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
   const [

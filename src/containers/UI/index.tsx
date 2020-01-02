@@ -4,7 +4,7 @@ import { css, Global } from '@emotion/core'
 import styled from '@emotion/styled'
 import { withTheme, ThemeProvider } from 'emotion-theming'
 
-import useUITheme from '~/state/hooks/useUITheme'
+import useUITheme from '~/state/hooks/use-ui-theme'
 import { UITheme, ThemeProps } from '~/style/theme'
 import AudioEffectsRack from '~/containers/audio-effects-rack'
 import InstrumentsRack from '~/containers/instruments-rack'

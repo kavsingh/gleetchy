@@ -9,7 +9,7 @@ export interface GlobalPlaybackState {
 
 const defaultState: GlobalPlaybackState = { isPlaying: false }
 
-const globalPlaybackReducer: Reducer<
+export const globalPlaybackReducer: Reducer<
   GlobalPlaybackState,
   GlobalPlaybackAction
 > = (state = defaultState, action) =>
@@ -25,5 +25,3 @@ const globalPlaybackReducer: Reducer<
         break
     }
   })
-
-export default globalPlaybackReducer

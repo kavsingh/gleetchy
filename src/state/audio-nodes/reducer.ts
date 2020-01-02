@@ -17,13 +17,13 @@ import {
   nodeType as loopNodeType,
   NodeProps as LoopNodeProps,
 } from '~/nodes/instruments/loop'
-import initialNodes from '~/state/defaultNodes'
+import initialNodes from '~/state/default-nodes'
 import { prefixedId } from '~/util/id'
 import { stableOmit } from '~/util/object'
 import { stableFilter } from '~/util/array'
 import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
 
-import { AudioFileDecodeCompleteAction } from '../audioFiles/types'
+import { AudioFileDecodeCompleteAction } from '../audio-files/types'
 import { AudioNodesAction } from './types'
 
 type NodeState = AudioNodeState<
@@ -74,7 +74,7 @@ const getNewNodeState = (type: string): AudioNodeState | null => {
   }
 }
 
-const audioNodesReducer: Reducer<
+export const audioNodesReducer: Reducer<
   AudioNodesState,
   AudioNodesAction | AudioFileDecodeCompleteAction
 > = (state = defaultState, action) =>
@@ -165,5 +165,3 @@ const audioNodesReducer: Reducer<
         break
     }
   })
-
-export default audioNodesReducer

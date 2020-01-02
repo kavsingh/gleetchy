@@ -4,7 +4,7 @@ import { equals } from 'ramda'
 import {
   immutableInstrumentsMetaSelector,
   immutableAudioEffectsMetaSelector,
-} from '~/state/audioNodes/selectors'
+} from '~/state/audio-nodes/selectors'
 
 const useAudioNodesMeta = () => {
   const instruments = useSelector(immutableInstrumentsMetaSelector, equals)

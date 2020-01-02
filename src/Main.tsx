@@ -1,7 +1,7 @@
 import React, { FunctionComponent, memo } from 'react'
 import { Provider } from 'react-redux'
 
-import { ApplicationStore } from '~/state/configureStore'
+import { ApplicationStore } from '~/state/configure-store'
 import AudioEngine from '~/containers/audio-engine'
 import UI from '~/containers/ui'
 

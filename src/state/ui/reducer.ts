@@ -22,7 +22,10 @@ const defaultState: UIState = {
   currentThemeName: getInitialTheme(),
 }
 
-const UIReducer: Reducer<UIState, UIAction> = (state = defaultState, action) =>
+export const uiReducer: Reducer<UIState, UIAction> = (
+  state = defaultState,
+  action,
+) =>
   produce(state, draftState => {
     switch (action.type) {
       case 'UI_SET_THEME':
@@ -32,5 +35,3 @@ const UIReducer: Reducer<UIState, UIAction> = (state = defaultState, action) =>
         break
     }
   })
-
-export default UIReducer

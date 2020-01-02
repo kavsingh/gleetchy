@@ -6,8 +6,8 @@ import { nodeColorPool } from '~/style/color'
 import { AudioNodeConnection } from '~/types'
 import { stableWithout } from '~/util/array'
 
-import defaultNodes from '../defaultNodes'
-import { AudioNodeRemoveAction } from '../audioNodes/types'
+import defaultNodes from '../default-nodes'
+import { AudioNodeRemoveAction } from '../audio-nodes/types'
 import { ConnectionDescriptor, ConnectionsAction } from './types'
 
 export type ConnectionsState = AudioNodeConnection[]
@@ -24,7 +24,7 @@ const defaultState: ConnectionsState = [
 const connectionIs = ({ fromId, toId }: ConnectionDescriptor) =>
   allPass([propEq('from', fromId), propEq('to', toId)])
 
-const connectionsReducer: Reducer<
+export const connectionsReducer: Reducer<
   ConnectionsState,
   ConnectionsAction | AudioNodeRemoveAction
 > = (state = defaultState, action) =>
@@ -65,5 +65,3 @@ const connectionsReducer: Reducer<
         break
     }
   })
-
-export default connectionsReducer

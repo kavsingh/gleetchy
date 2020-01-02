@@ -6,7 +6,7 @@ import color from 'color'
 
 import { noop } from '~/util/function'
 import { canConnectNodes, getConnectionBetween } from '~/util/audio'
-import useConnections from '~/state/hooks/useConnections'
+import useConnections from '~/state/hooks/use-connections'
 import { UITheme } from '~/style/theme'
 import ErrorBoundary from '~/components/error-boundary'
 

@@ -6,7 +6,7 @@ import { AudioNodeMeta } from '~/types'
 import {
   connectableSourcesSelector,
   connectableTargetsSelector,
-} from '~/state/audioNodes/selectors'
+} from '~/state/audio-nodes/selectors'
 import { connectionsSelector } from '~/state/connections/selectors'
 import { toggleConnectionAction } from '~/state/connections/actions'
 

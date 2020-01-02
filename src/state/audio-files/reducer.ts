@@ -27,7 +27,7 @@ const defaultState: AudioFilesState = {
   loadingIds: [],
 }
 
-const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
+export const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
   state = defaultState,
   action,
 ) =>
@@ -99,5 +99,3 @@ const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
         break
     }
   })
-
-export default audioFilesReducer

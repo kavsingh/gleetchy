@@ -17,7 +17,7 @@ import {
   createAudioNode as createLoopNode,
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
-import { AudioEngineEvent } from '~/state/audioEngine/types'
+import { AudioEngineEvent } from '~/state/audio-engine/types'
 import {
   AudioNodeConnection,
   AudioNodeState,

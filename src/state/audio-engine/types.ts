@@ -1,8 +1,8 @@
 import { Action } from 'redux'
 
-import { AudioNodesAction } from '~/state/audioNodes/types'
-import { AudioFilesAction } from '~/state/audioFiles/types'
-import { GlobalPlaybackAction } from '~/state/globalPlayback/types'
+import { AudioNodesAction } from '~/state/audio-nodes/types'
+import { AudioFilesAction } from '~/state/audio-files/types'
+import { GlobalPlaybackAction } from '~/state/global-playback/types'
 
 import { ConnectionsAction } from '../connections/types'
 

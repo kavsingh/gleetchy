@@ -1,7 +1,7 @@
 import { ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 
-import { ApplicationState } from '../configureStore'
+import { ApplicationState } from '../configure-store'
 import { UISetThemeAction } from './types'
 import { uiThemeNameSelector } from './selectors'
 

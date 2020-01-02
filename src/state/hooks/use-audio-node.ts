@@ -8,11 +8,11 @@ import {
   updateAudioNodeLabelAction,
   duplicateAudioNodeAction,
   removeAudioNodeAction,
-} from '~/state/audioNodes/actions'
+} from '~/state/audio-nodes/actions'
 import { getConnectionsFor } from '~/util/audio'
 
-import useAudioNodes from './useAudioNodes'
-import useConnections from './useConnections'
+import useAudioNodes from './use-audio-nodes'
+import useConnections from './use-connections'
 
 const useAudioNode = <T>(
   id: string,

@@ -2,17 +2,20 @@ import { applyMiddleware, combineReducers, createStore, Store } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
 
-import audioEngine, { AudioEngineState } from './audioEngine/reducer'
-import { AudioEngineAction } from './audioEngine/types'
-import audioFiles, { AudioFilesState } from './audioFiles/reducer'
-import { AudioFilesAction } from './audioFiles/types'
-import connections, { ConnectionsState } from './connections/reducer'
+import { audioEngineReducer, AudioEngineState } from './audio-engine/reducer'
+import { AudioEngineAction } from './audio-engine/types'
+import { audioFilesReducer, AudioFilesState } from './audio-files/reducer'
+import { AudioFilesAction } from './audio-files/types'
+import { connectionsReducer, ConnectionsState } from './connections/reducer'
 import { ConnectionsAction } from './connections/types'
-import globalPlayback, { GlobalPlaybackState } from './globalPlayback/reducer'
-import { GlobalPlaybackAction } from './globalPlayback/types'
-import audioNodes, { AudioNodesState } from './audioNodes/reducer'
-import { AudioNodesAction } from './audioNodes/types'
-import ui, { UIState } from './ui/reducer'
+import {
+  globalPlaybackReducer,
+  GlobalPlaybackState,
+} from './global-playback/reducer'
+import { GlobalPlaybackAction } from './global-playback/types'
+import { audioNodesReducer, AudioNodesState } from './audio-nodes/reducer'
+import { AudioNodesAction } from './audio-nodes/types'
+import { uiReducer, UIState } from './ui/reducer'
 import { UIAction } from './ui/types'
 
 const middlewares = [thunk]
@@ -42,12 +45,12 @@ export const configureStore = (
 ): ApplicationStore =>
   createStore(
     combineReducers({
-      audioEngine,
-      audioFiles,
-      audioNodes,
-      connections,
-      globalPlayback,
-      ui,
+      audioEngine: audioEngineReducer,
+      audioFiles: audioFilesReducer,
+      audioNodes: audioNodesReducer,
+      connections: connectionsReducer,
+      globalPlayback: globalPlaybackReducer,
+      ui: uiReducer,
     }),
     initialState,
     composeEnhancers(applyMiddleware(...middlewares)),
