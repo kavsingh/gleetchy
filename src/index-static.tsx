@@ -3,7 +3,7 @@ import { renderToString } from 'react-dom/server'
 
 import { ApplicationState, configureStore } from '~/state/configure-store'
 
-import Main from './Main'
+import App from './app'
 
 export default (initialState: Partial<ApplicationState> = {}) =>
-  renderToString(<Main store={configureStore(initialState)} />)
+  renderToString(<App store={configureStore(initialState)} />)

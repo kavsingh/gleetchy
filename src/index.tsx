@@ -5,7 +5,7 @@ import { requireWindowWith } from '~/util/env'
 import offlineInstall from '~/lib/offline-install'
 import { configureStore } from '~/state/configure-store'
 
-import Main from './Main'
+import App from './app'
 
 const WINDOW = requireWindowWith(['document.getElementById'])
 
@@ -21,7 +21,7 @@ offlineInstall('gleetchy-sw.js', '')
 
 if (ssrState) {
   appRoot.removeAttribute('data-initialstate')
-  hydrate(<Main store={configureStore(JSON.parse(ssrState))} />, appRoot)
+  hydrate(<App store={configureStore(JSON.parse(ssrState))} />, appRoot)
 } else {
-  render(<Main store={configureStore()} />, appRoot)
+  render(<App store={configureStore()} />, appRoot)
 }

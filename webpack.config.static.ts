@@ -8,7 +8,7 @@ const config: Configuration = {
   resolve: { ...baseConfig.resolve, alias: {} },
   mode: 'production',
   entry: {
-    gleetchy: ['./src/indexStatic.tsx'],
+    gleetchy: ['./src/index-static.tsx'],
   },
   target: 'node',
   output: {
@@ -16,7 +16,7 @@ const config: Configuration = {
     library: 'gleetchy',
     libraryTarget: 'commonjs2',
     filename: 'gleetchy.js',
-    path: fromRoot('distStatic'),
+    path: fromRoot('dist-static'),
   },
   plugins: [new webpack.EnvironmentPlugin({ NODE_ENV: 'production' })],
 }

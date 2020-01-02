@@ -7,7 +7,7 @@ import UI from '~/containers/ui'
 
 import ErrorBoundary from './components/error-boundary'
 
-const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
+const App: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
   <Provider store={store}>
     <ErrorBoundary>
       <AudioEngine />
@@ -18,4 +18,4 @@ const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
   </Provider>
 )
 
-export default memo(Main)
+export default memo(App)
