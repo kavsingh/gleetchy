@@ -5,9 +5,9 @@ import { AudioNodeMeta } from '~/types'
 import useAudioNodes from '~/state/hooks/useAudioNodes'
 import useAudioNodesMeta from '~/state/hooks/useAudioNodesMeta'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
-import AnimIn from '~/components/AnimIn'
-import ErrorBoundary from '~/components/ErrorBoundary'
-import AddNodeButtons from '~/components/AddNodeButtons'
+import AnimIn from '~/components/anim-in'
+import ErrorBoundary from '~/components/error-boundary'
+import AddNodeButtons from '~/components/add-node-buttons'
 
 import ConnectedLoop from './ConnectedLoop'
 

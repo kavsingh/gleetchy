@@ -2,7 +2,7 @@ import React, { memo, FunctionComponent, useMemo, useCallback } from 'react'
 import styled from '@emotion/styled'
 
 import { noop } from '~/util/function'
-import Knob from '~/components/Knob'
+import Knob from '~/components/knob'
 
 const Container = styled.div`
   display: flex;

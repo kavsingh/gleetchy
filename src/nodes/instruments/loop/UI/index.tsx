@@ -4,8 +4,8 @@ import styled from '@emotion/styled'
 
 import { noop } from '~/util/function'
 import { UI as Eq3 } from '~/nodes/audioEffects/eq3'
-import useFileDropRegion from '~/components/hooks/useFileDropRegion'
-import Sample from '~/components/Sample'
+import useFileDropRegion from '~/components/hooks/use-file-drop-region'
+import Sample from '~/components/sample'
 
 import PlaybackControls from './PlaybackControls'
 import LoopTitleBar from './LoopTitleBar'

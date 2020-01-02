@@ -3,8 +3,8 @@ import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
-import Knob from '~/components/Knob'
-import TitleBar from '~/components/TitleBar'
+import Knob from '~/components/knob'
+import TitleBar from '~/components/title-bar'
 
 const Container = styled.div<{ isActive: boolean }>`
   width: 100%;

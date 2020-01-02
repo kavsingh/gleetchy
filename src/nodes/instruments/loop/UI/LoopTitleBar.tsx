@@ -1,8 +1,8 @@
 import React, { FunctionComponent, useMemo, memo } from 'react'
 import styled from '@emotion/styled'
 
-import TitleBar from '~/components/TitleBar'
-import Button from '~/components/Button'
+import TitleBar from '~/components/title-bar'
+import Button from '~/components/button'
 
 import { LoopUIProps } from './types'
 

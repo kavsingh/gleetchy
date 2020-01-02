@@ -4,8 +4,8 @@ import styled from '@emotion/styled'
 import { AudioNodeConnection } from '~/types'
 import { noop } from '~/util/function'
 
-import TextInput from '../TextInput'
-import Button from '../Button'
+import TextInput from './text-input'
+import Button from './button'
 
 const Container = styled.div`
   margin-bottom: 0.6em;

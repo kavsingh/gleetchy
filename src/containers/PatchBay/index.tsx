@@ -8,7 +8,7 @@ import { noop } from '~/util/function'
 import { canConnectNodes, getConnectionBetween } from '~/util/audio'
 import useConnections from '~/state/hooks/useConnections'
 import { UITheme } from '~/style/theme'
-import ErrorBoundary from '~/components/ErrorBoundary'
+import ErrorBoundary from '~/components/error-boundary'
 
 const Container = styled.table`
   width: 100%;

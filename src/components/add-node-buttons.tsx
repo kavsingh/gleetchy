@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 
 import { FunctionComponentWithoutChildren } from '~/types'
 
-import Button from '../Button'
+import Button from './button'
 
 const Container = styled.div`
   display: flex;

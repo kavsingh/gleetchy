@@ -8,9 +8,9 @@ import { UITheme } from '~/style/theme'
 import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag, {
   SinglePointerDragState,
-} from '~/components/SinglePointerDrag'
+} from '~/components/single-pointer-drag'
 
-import LoopHandle from './LoopHandle'
+import LoopHandle from './loop-handle'
 
 const rootStyle = css({
   height: '100%',

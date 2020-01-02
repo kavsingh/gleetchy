@@ -6,7 +6,7 @@ import { withTheme } from 'emotion-theming'
 import useGlobalPlayback from '~/state/hooks/useGlobalPlayback'
 import useUITheme from '~/state/hooks/useUITheme'
 import { ThemeProps } from '~/style/theme'
-import PlayPauseButton from '~/components/PlayPauseButton'
+import PlayPauseButton from '~/components/play-pause-button'
 
 const Container = styled.div`
   display: flex;

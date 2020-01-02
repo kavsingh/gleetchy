@@ -20,9 +20,9 @@
     "tdd": "npm run jest -- --watch",
     "bundle:inspect": "BUNDLE_ANALYZE=true yarn build",
     "build": "rimraf dist && NODE_ENV=production TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' webpack --progress --colors",
-    "static": "rimraf distStatic && NODE_ENV=production TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node scripts/renderStatic",
+    "static": "rimraf dist-static && NODE_ENV=production TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' ts-node scripts/render-static",
     "export": "npm run build && npm run static",
-    "servestatic": "cd distStatic && ws --spa"
+    "servestatic": "cd dist-static && ws --spa"
   },
   "dependencies": {
     "@emotion/core": "10.0.27",
@@ -86,6 +86,7 @@
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.9.0",
     "eslint-import-resolver-babel-module": "5.1.0",
+    "eslint-plugin-filenames": "1.3.2",
     "eslint-plugin-import": "2.19.1",
     "eslint-plugin-jest": "23.2.0",
     "eslint-plugin-prettier": "3.1.2",

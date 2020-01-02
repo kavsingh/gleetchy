@@ -6,8 +6,8 @@ import color from 'color'
 import { noop } from '~/util/function'
 import { layoutAbsoluteFill } from '~/style/layout'
 import { UITheme, ThemeProps } from '~/style/theme'
-import LoopRegion from '~/components/LoopRegion'
-import WaveForm from '~/components/WaveForm'
+import LoopRegion from '~/components/loop-region'
+import Waveform from '~/components/waveform'
 
 export interface SampleProps {
   audioBuffer: Nullable<AudioBuffer>
@@ -27,7 +27,7 @@ const Container = styled.div`
   height: 100%;
 `
 
-const WaveFormContainer = styled.div`
+const WaveformContainer = styled.div`
   ${layoutAbsoluteFill}
   z-index: 1;
 `
@@ -70,7 +70,7 @@ const Sample: FunctionComponent<SampleProps> = ({
 }) => {
   const waveForm = useMemo(
     () => (
-      <WaveForm
+      <Waveform
         color={theme.colors.emphasis}
         baselineColor={theme.colors.keyline}
         buffer={audioBuffer}
@@ -93,7 +93,7 @@ const Sample: FunctionComponent<SampleProps> = ({
 
   return (
     <Container>
-      <WaveFormContainer>{waveForm}</WaveFormContainer>
+      <WaveformContainer>{waveForm}</WaveformContainer>
       {audioBuffer ? (
         <LoopRegionContainer>{loopRegion}</LoopRegionContainer>
       ) : (

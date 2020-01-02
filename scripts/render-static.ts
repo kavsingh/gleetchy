@@ -8,7 +8,7 @@ import { JSDOM } from 'jsdom'
 import { ApplicationState } from '../src/state/configureStore'
 import baseConfig from '../webpack.config'
 import staticConfig from '../webpack.config.static'
-import spawnAsync from './lib/spawnAsync'
+import spawnAsync from './lib/spawn-async'
 import { resolveFromProjectRoot as fromRoot } from './lib/util'
 
 const parseBaseConfig = (config: Configuration) => {

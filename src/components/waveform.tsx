@@ -49,7 +49,7 @@ const drawTimeRegions = (
   context.stroke()
 }
 
-const drawWaveForm = (
+const drawWaveform = (
   context: CanvasRenderingContext2D,
   width: number,
   height: number,
@@ -72,7 +72,7 @@ const drawWaveForm = (
   }
 }
 
-const updateWaveForm = (
+const updateWaveform = (
   canvasNode: HTMLCanvasElement,
   {
     color,
@@ -101,13 +101,13 @@ const updateWaveForm = (
 
   if (buffer) {
     drawTimeRegions(context, width, height, timeRegions)
-    drawWaveForm(context, width, height, buffer)
+    drawWaveform(context, width, height, buffer)
   } else {
     drawTempWaveform(context, width, height)
   }
 }
 
-const WaveForm: FunctionComponent<WaveformProps> = ({
+const Waveform: FunctionComponent<WaveformProps> = ({
   color,
   baselineColor,
   timeRegions,
@@ -122,7 +122,7 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
 
     const handleResize = () => {
       if (canvasNodeRef.current) {
-        updateWaveForm(canvasNodeRef.current, {
+        updateWaveform(canvasNodeRef.current, {
           color,
           baselineColor,
           timeRegions,
@@ -145,4 +145,4 @@ const WaveForm: FunctionComponent<WaveformProps> = ({
   )
 }
 
-export default memo(WaveForm)
+export default memo(Waveform)

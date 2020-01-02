@@ -1,5 +1,5 @@
 module.exports = {
-  setupFiles: ['<rootDir>/__testSetup__/index.js'],
+  setupFiles: ['<rootDir>/__test-setup__/index.js'],
   testRegex: '^.+\\.test\\.[jt]sx?$',
   transform: {
     '^.+\\.[jt]sx?$': '<rootDir>/node_modules/babel-jest',
@@ -17,6 +17,6 @@ module.exports = {
   moduleNameMapper: {
     '^~/(.*)': '<rootDir>/src/$1',
     '^.+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$':
-      '<rootDir>/__testMocks__/fileMock.js',
+      '<rootDir>/__testMocks__/file-mock.js',
   },
 }

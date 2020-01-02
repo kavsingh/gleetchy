@@ -28,7 +28,14 @@ module.exports = {
     'import/resolver': 'babel-module',
   },
   env: { node: true, browser: false, es6: true },
-  plugins: ['@typescript-eslint', 'import', 'react', 'react-hooks', 'prettier'],
+  plugins: [
+    '@typescript-eslint',
+    'filenames',
+    'import',
+    'react',
+    'react-hooks',
+    'prettier',
+  ],
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/eslint-recommended',
@@ -45,6 +52,8 @@ module.exports = {
     'no-console': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
+    'filenames/match-regex': ['error', '^[a-z-.]+$', true],
+    'filenames/match-exported': ['error', 'kebab'],
     'import/no-absolute-path': 'warn',
     'import/no-cycle': 'warn',
     'import/no-extraneous-dependencies': ['error', devDependencies],
@@ -70,6 +79,12 @@ module.exports = {
     'prettier/prettier': 'warn',
   },
   overrides: [
+    {
+      files: ['*.config.*'],
+      rules: {
+        'filenames/match-exported': 'off',
+      },
+    },
     {
       files: ['*.js'],
       rules: {

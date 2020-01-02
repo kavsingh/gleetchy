@@ -8,7 +8,7 @@ import { noop } from '~/util/function'
 import { ThemeProps } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
-} from '~/components/SinglePointerDrag'
+} from '~/components/single-pointer-drag'
 
 type Orientation = 'vertical' | 'horizontal'
 type OrientationProps = { orientation: Orientation }

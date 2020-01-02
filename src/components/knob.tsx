@@ -9,8 +9,8 @@ import { layoutAbsoluteFill } from '~/style/layout'
 import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {
   SinglePointerDragState,
-} from '~/components/SinglePointerDrag'
-import SVGArc from '~/components/SVGArc'
+} from '~/components/single-pointer-drag'
+import SVGArc from '~/components/svg-arc'
 
 const labelStyle = css({
   flex: '0 0 auto',

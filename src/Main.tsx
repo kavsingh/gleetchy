@@ -5,7 +5,7 @@ import { ApplicationStore } from '~/state/configureStore'
 import AudioEngine from '~/containers/AudioEngine'
 import UI from '~/containers/UI'
 
-import ErrorBoundary from './components/ErrorBoundary'
+import ErrorBoundary from './components/error-boundary'
 
 const Main: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
   <Provider store={store}>
