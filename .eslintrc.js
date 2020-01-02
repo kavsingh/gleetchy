@@ -52,7 +52,7 @@ module.exports = {
     'no-console': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-var-requires': 'off',
-    'filenames/match-regex': ['error', '^[a-z-.]+$', true],
+    'filenames/match-regex': ['error', '^[a-z0-9-.]+$', true],
     'filenames/match-exported': ['error', 'kebab'],
     'import/no-absolute-path': 'warn',
     'import/no-cycle': 'warn',
