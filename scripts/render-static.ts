@@ -54,11 +54,11 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
   await promisify(webpack)([staticConfig])
   const { default: render } = await import(staticModulePath)
   const dom = await JSDOM.fromFile(path.resolve(baseDistPath, 'index.html'))
-  const appRoot = dom.window.document.querySelector('#app-root')
+  const appRoot = dom.window.document.querySelector<HTMLElement>('#app-root')
 
   if (!appRoot) throw new Error('Container element #app-root not found')
 
-  appRoot.setAttribute('data-initialstate', JSON.stringify(initialState))
+  appRoot.dataset.ssrInitialState = JSON.stringify(initialState)
   appRoot.innerHTML = render(initialState)
 
   await spawnAsync('rm', ['-rf', staticDistPath])

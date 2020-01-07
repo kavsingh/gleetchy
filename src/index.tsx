@@ -15,13 +15,13 @@ const appRoot = WINDOW.document.getElementById('app-root')
 
 if (!appRoot) throw new Error('Could not find app mount at #app-root')
 
-const ssrState = appRoot.getAttribute('data-initialstate')
+const { ssrInitialState } = appRoot.dataset
 
 offlineInstall('gleetchy-sw.js', '')
 
-if (ssrState) {
-  appRoot.removeAttribute('data-initialstate')
-  hydrate(<App store={configureStore(JSON.parse(ssrState))} />, appRoot)
+if (ssrInitialState) {
+  delete appRoot.dataset.ssrInitialState
+  hydrate(<App store={configureStore(JSON.parse(ssrInitialState))} />, appRoot)
 } else {
   render(<App store={configureStore()} />, appRoot)
 }
