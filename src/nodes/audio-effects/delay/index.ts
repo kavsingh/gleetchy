@@ -1,5 +1,5 @@
 import createAudioNode from './create-audio-node'
-import { defaultProps, Props } from './nodeProps'
+import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
 import UI from './delay'
 

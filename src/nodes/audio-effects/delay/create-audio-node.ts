@@ -4,7 +4,7 @@ import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { GAudioNode } from '~/types'
 import { makeConnectable } from '~/lib/connection'
 
-import { defaultProps, Props } from './nodeProps'
+import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
 
 const updateWetDry = (

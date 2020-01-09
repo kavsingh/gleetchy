@@ -8,7 +8,7 @@ module.exports = {
   collectCoverageFrom: [
     'src/apis/**/*.ts',
     'src/constants/**/*.ts',
-    'src/nodes/**/createAudioNode.ts',
+    'src/nodes/**/create-audio-node.ts',
     'src/state/**/*.ts',
     'src/util/**/*.ts',
   ],
