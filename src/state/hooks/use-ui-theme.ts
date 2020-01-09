@@ -1,17 +1,18 @@
 import { useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
+import { usePreferredColorScheme } from '~/apis/color-scheme'
 import { uiThemeSelector } from '~/state/ui/selectors'
 import {
   toggleDarkLightUIThemesAction,
   setDarkThemeAction,
   setLightThemeAction,
 } from '~/state/ui/actions'
-import { darkSchemeQuery, lightSchemeQuery } from '~/apis/color-scheme'
 
 const useUITheme = () => {
   const dispatch = useDispatch()
 
+  const preferredColorScheme = usePreferredColorScheme()
   const theme = useSelector(uiThemeSelector)
 
   const toggleTheme = useCallback(
@@ -19,35 +20,18 @@ const useUITheme = () => {
     [dispatch],
   )
 
-  const handleDarkSchemeQueryChange = useCallback(
-    (event: MediaQueryListEvent) => {
-      if (event.matches) dispatch(setDarkThemeAction())
-    },
-    [dispatch],
-  )
-
-  const handleLightSchemeQueryChange = useCallback(
-    (event: MediaQueryListEvent) => {
-      if (event.matches) dispatch(setLightThemeAction())
-    },
-    [dispatch],
-  )
-
   useEffect(() => {
-    darkSchemeQuery?.addEventListener('change', handleDarkSchemeQueryChange)
-    lightSchemeQuery?.addEventListener('change', handleLightSchemeQueryChange)
-
-    return () => {
-      darkSchemeQuery?.removeEventListener(
-        'change',
-        handleDarkSchemeQueryChange,
-      )
-      lightSchemeQuery?.removeEventListener(
-        'change',
-        handleLightSchemeQueryChange,
-      )
+    switch (preferredColorScheme) {
+      case 'dark':
+        dispatch(setDarkThemeAction())
+        break
+      case 'light':
+        dispatch(setLightThemeAction())
+        break
+      default:
+        break
     }
-  }, [handleDarkSchemeQueryChange, handleLightSchemeQueryChange])
+  }, [dispatch, preferredColorScheme])
 
   return [{ theme }, { toggleTheme }] as const
 }
