@@ -15,18 +15,18 @@ export const audioNodesSelector = createSelector(
 
 // TODO: Better naming
 
-export const immutableNodesMetaSelector = createSelector(
+export const nodesIdentifierMetaSelector = createSelector(
   audioNodesStateSelector,
-  state => state.orderedMeta,
+  state => state.orderedIndentifierMeta,
 )
 
-export const immutableInstrumentsMetaSelector = createSelector(
-  immutableNodesMetaSelector,
+export const instrumentsIdentifierMetaSelector = createSelector(
+  nodesIdentifierMetaSelector,
   meta => meta.filter(isInstrument),
 )
 
-export const immutableAudioEffectsMetaSelector = createSelector(
-  immutableNodesMetaSelector,
+export const audioEffectsIdentifierMetaSelector = createSelector(
+  nodesIdentifierMetaSelector,
   meta => meta.filter(isAudioEffect),
 )
 
@@ -41,7 +41,7 @@ export const mainOutMetaSelector = createSelector(
 )
 
 export const activeAudioNodeIdsSelector = createSelector(
-  immutableNodesMetaSelector,
+  nodesIdentifierMetaSelector,
   connectionsSelector,
   mainOutNodeSelector,
   (meta, connections, mainOut) => {
@@ -53,8 +53,8 @@ export const activeAudioNodeIdsSelector = createSelector(
 
 export const connectableSourcesSelector = createSelector(
   audioNodesSelector,
-  immutableInstrumentsMetaSelector,
-  immutableAudioEffectsMetaSelector,
+  instrumentsIdentifierMetaSelector,
+  audioEffectsIdentifierMetaSelector,
   (nodes, instruments, effects) => [
     ...instruments.map(meta => ({ ...meta, label: nodes[meta.id].label })),
     ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
@@ -63,7 +63,7 @@ export const connectableSourcesSelector = createSelector(
 
 export const connectableTargetsSelector = createSelector(
   audioNodesSelector,
-  immutableAudioEffectsMetaSelector,
+  audioEffectsIdentifierMetaSelector,
   mainOutMetaSelector,
   (nodes, effects, out) => [
     ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),

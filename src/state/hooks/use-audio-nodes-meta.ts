@@ -2,13 +2,13 @@ import { useSelector } from 'react-redux'
 import { equals } from 'ramda'
 
 import {
-  immutableInstrumentsMetaSelector,
-  immutableAudioEffectsMetaSelector,
+  instrumentsIdentifierMetaSelector,
+  audioEffectsIdentifierMetaSelector,
 } from '~/state/audio-nodes/selectors'
 
 const useAudioNodesMeta = () => {
-  const instruments = useSelector(immutableInstrumentsMetaSelector, equals)
-  const audioEffects = useSelector(immutableAudioEffectsMetaSelector, equals)
+  const instruments = useSelector(instrumentsIdentifierMetaSelector, equals)
+  const audioEffects = useSelector(audioEffectsIdentifierMetaSelector, equals)
 
   return [{ instruments, audioEffects }] as const
 }

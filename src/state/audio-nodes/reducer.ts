@@ -20,7 +20,7 @@ import {
 import initialNodes from '~/state/default-nodes'
 import { prefixedId } from '~/lib/id'
 import { stableOmit, stableFilter } from '~/lib/util'
-import { AudioNodeState, ImmutableAudioNodeMeta } from '~/types'
+import { AudioNodeState, AudioNodeIdentifierMeta } from '~/types'
 
 import { AudioFileDecodeCompleteAction } from '../audio-files/types'
 import { AudioNodesAction } from './types'
@@ -31,16 +31,19 @@ type NodeState = AudioNodeState<
 
 export interface AudioNodesState {
   byId: { [key: string]: NodeState }
-  orderedMeta: ImmutableAudioNodeMeta[]
+  orderedIndentifierMeta: AudioNodeIdentifierMeta[]
 }
 
 const defaultState: AudioNodesState = initialNodes.reduce(
   (acc: AudioNodesState, instrument) => {
     acc.byId[instrument.id] = instrument
-    acc.orderedMeta.push({ id: instrument.id, type: instrument.type })
+    acc.orderedIndentifierMeta.push({
+      id: instrument.id,
+      type: instrument.type,
+    })
     return acc
   },
-  { byId: {}, orderedMeta: [] },
+  { byId: {}, orderedIndentifierMeta: [] },
 )
 
 const getNewNodeState = (type: string): AudioNodeState | null => {
@@ -84,7 +87,7 @@ export const audioNodesReducer: Reducer<
 
         if (newNodeState) {
           draftState.byId[newNodeState.id] = newNodeState
-          draftState.orderedMeta.push({
+          draftState.orderedIndentifierMeta.push({
             id: newNodeState.id,
             type: newNodeState.type,
           })
@@ -105,17 +108,21 @@ export const audioNodesReducer: Reducer<
 
         draftState.byId[duplicate.id] = duplicate
 
-        const existingMetaIndex = draftState.orderedMeta.findIndex(
+        const existingMetaIndex = draftState.orderedIndentifierMeta.findIndex(
           ({ id }) => id === exisiting.id,
         )
 
         if (existingMetaIndex === -1) {
-          draftState.orderedMeta.push({
+          draftState.orderedIndentifierMeta.push({
             id: duplicate.id,
             type: duplicate.type,
           })
         } else {
-          draftState.orderedMeta.splice(existingMetaIndex + 1, 0, duplicate)
+          draftState.orderedIndentifierMeta.splice(
+            existingMetaIndex + 1,
+            0,
+            duplicate,
+          )
         }
 
         break
@@ -124,9 +131,9 @@ export const audioNodesReducer: Reducer<
         const { id } = action.payload
 
         draftState.byId = stableOmit([id], draftState.byId)
-        draftState.orderedMeta = stableFilter(
+        draftState.orderedIndentifierMeta = stableFilter(
           meta => meta.id !== id,
-          draftState.orderedMeta,
+          draftState.orderedIndentifierMeta,
         )
 
         break

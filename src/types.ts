@@ -8,12 +8,12 @@ export type FunctionComponentWithoutChildren<P = {}> = FunctionComponent<
   PropsWithoutChildren<P>
 >
 
-export interface ImmutableAudioNodeMeta {
+export interface AudioNodeIdentifierMeta {
   readonly id: string
   readonly type: string
 }
 
-export interface AudioNodeMeta extends ImmutableAudioNodeMeta {
+export interface AudioNodeMeta extends AudioNodeIdentifierMeta {
   label: string
 }
 
