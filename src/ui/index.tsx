@@ -6,9 +6,9 @@ import { withTheme, ThemeProvider } from 'emotion-theming'
 
 import useUITheme from '~/state/hooks/use-ui-theme'
 import { UITheme, ThemeProps } from '~/style/theme'
-import AudioEffectsRack from '~/containers/audio-effects-rack'
-import InstrumentsRack from '~/containers/instruments-rack'
-import PatchBay from '~/containers/patch-bay'
+import AudioEffectsRack from '~/ui/audio-effects-rack'
+import InstrumentsRack from '~/ui/instruments-rack'
+import PatchBay from '~/ui/patch-bay'
 import favicon from '~/assets/icons/48x48.png'
 
 import Masthead from './masthead'

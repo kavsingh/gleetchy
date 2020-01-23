@@ -2,8 +2,8 @@ import React, { FunctionComponent, memo } from 'react'
 import { Provider } from 'react-redux'
 
 import { ApplicationStore } from '~/state/configure-store'
-import AudioEngine from '~/containers/audio-engine'
-import UI from '~/containers/ui'
+import AudioEngine from '~/audio-engine'
+import UI from '~/ui'
 
 import ErrorBoundary from './components/error-boundary'
 
