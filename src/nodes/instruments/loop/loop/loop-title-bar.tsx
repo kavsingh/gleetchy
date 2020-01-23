@@ -41,10 +41,9 @@ const LoopTitleBar: FunctionComponent<Pick<
 
   const loadButton = useMemo(
     () => (
-      <Button
-        handler={selectAudioFile}
-        label={`${audioBuffer ? 'Replace' : 'Load'} audio file`}
-      />
+      <Button handler={selectAudioFile}>
+        {`${audioBuffer ? 'Replace' : 'Load'}`} audio file
+      </Button>
     ),
     [audioBuffer, selectAudioFile],
   )
@@ -60,7 +59,7 @@ const LoopTitleBar: FunctionComponent<Pick<
       <Title>
         {title}
         {loadButton}
-        <Button handler={duplicate} label="Copy" />
+        {audioBuffer ? <Button handler={duplicate}>Copy</Button> : null}
       </Title>
     </TitleBar>
   )

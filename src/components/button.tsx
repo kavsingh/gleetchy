@@ -1,14 +1,9 @@
-import React, { memo } from 'react'
+import React, { FunctionComponent, memo } from 'react'
 import styled from '@emotion/styled'
-import { withTheme } from 'emotion-theming'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import { ThemeProps } from '~/style/theme'
 
-const Button: FunctionComponentWithoutChildren<ButtonProps> = ({
-  label,
-  handler,
-}) => (
+const Button: FunctionComponent<ButtonProps> = ({ handler, children }) => (
   <Container
     role="button"
     tabIndex={0}
@@ -17,18 +12,19 @@ const Button: FunctionComponentWithoutChildren<ButtonProps> = ({
       if (event.key === 'Enter') handler()
     }}
   >
-    [ {label} ]
+    [ {children} ]
   </Container>
 )
 
-export default memo(withTheme(Button))
+export default memo(Button)
 
 export interface ButtonProps {
-  label: string
   handler: () => unknown
+  children: string | string[]
 }
 
 const Container = styled.div<ThemeProps>`
+  font-size: 0.8rem;
   cursor: pointer;
   transition: color 0.2s ease-out;
 

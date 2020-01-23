@@ -50,7 +50,7 @@ const AddInstrumentButtons: FunctionComponentWithoutChildren = () => {
 
   return (
     <ButtonSet>
-      <Button label="Add Loop" handler={addLoop} />
+      <Button handler={addLoop}>Add Loop</Button>
     </ButtonSet>
   )
 }

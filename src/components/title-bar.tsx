@@ -1,4 +1,4 @@
-import React, { memo, FunctionComponent, ReactNode, useMemo } from 'react'
+import React, { FunctionComponent, useMemo } from 'react'
 import styled from '@emotion/styled'
 
 import { AudioNodeConnection } from '~/types'
@@ -6,6 +6,50 @@ import { noop } from '~/lib/util'
 
 import TextInput from './text-input'
 import Button from './button'
+
+const TitleBar: FunctionComponent<TitleBarProps> = ({
+  label,
+  type,
+  onLabelChange = noop,
+  onRemoveClick = noop,
+  connections = [],
+  children,
+}) => {
+  const connectionIndicators = useMemo(
+    () => (
+      <>
+        {connections.map(({ color, from, to }) => (
+          <Connection color={color} key={`${from}${to}`} />
+        ))}
+      </>
+    ),
+    [connections],
+  )
+
+  return (
+    <Container>
+      <LabelContainer>
+        <ConnectionsContainer>{connectionIndicators}</ConnectionsContainer>
+        <TextInput onChange={onLabelChange} value={label} />
+      </LabelContainer>
+      <InfoContainer>
+        <TypeLabel>{type} /</TypeLabel>
+        {children}
+        <Button handler={onRemoveClick}>Remove</Button>
+      </InfoContainer>
+    </Container>
+  )
+}
+
+export default TitleBar
+
+export interface TitleBarProps {
+  label: string
+  type: string
+  connections?: AudioNodeConnection[]
+  onLabelChange?(label: string): unknown
+  onRemoveClick?(): unknown
+}
 
 const Container = styled.div`
   margin-bottom: 0.6em;
@@ -49,48 +93,3 @@ const Connection = styled.div`
 const TypeLabel = styled.div`
   margin-right: 0.3em;
 `
-
-export interface TitleBarProps {
-  label: string
-  type: string
-  connections?: AudioNodeConnection[]
-  children?: ReactNode | (() => ReactNode)
-  onLabelChange?(label: string): unknown
-  onRemoveClick?(): unknown
-}
-
-const TitleBar: FunctionComponent<TitleBarProps> = ({
-  label,
-  type,
-  onLabelChange = noop,
-  onRemoveClick = noop,
-  connections = [],
-  children = [],
-}) => {
-  const connectionIndicators = useMemo(
-    () => (
-      <>
-        {connections.map(({ color, from, to }) => (
-          <Connection color={color} key={`${from}${to}`} />
-        ))}
-      </>
-    ),
-    [connections],
-  )
-
-  return (
-    <Container>
-      <LabelContainer>
-        <ConnectionsContainer>{connectionIndicators}</ConnectionsContainer>
-        <TextInput onChange={onLabelChange} value={label} />
-      </LabelContainer>
-      <InfoContainer>
-        <TypeLabel>{type} /</TypeLabel>
-        {typeof children === 'function' ? children() : children}
-        <Button label="Remove" handler={onRemoveClick} />
-      </InfoContainer>
-    </Container>
-  )
-}
-
-export default memo(TitleBar)

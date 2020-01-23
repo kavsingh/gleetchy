@@ -57,8 +57,8 @@ const AddAudioEffectButtons: FunctionComponentWithoutChildren = () => {
 
   return (
     <ButtonSet>
-      <Button label="Add Reverb" handler={addReverb} />
-      <Button label="Add Delay" handler={addDelay} />
+      <Button handler={addReverb}>Add Reverb</Button>
+      <Button handler={addDelay}>Add Delay</Button>
     </ButtonSet>
   )
 }

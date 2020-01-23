@@ -11,8 +11,7 @@ const ButtonSet = styled.div<{
   justify-content: center;
   width: 100%;
   min-height: 5em;
-  padding: 1em 0;
-  font-size: 0.8em;
+  padding: 0.8rem 0;
 `
 
 export { Button }
