@@ -1,40 +1,28 @@
-import React, { FunctionComponent, useCallback } from 'react'
+import React, { useCallback, FunctionComponent } from 'react'
 import styled from '@emotion/styled'
 
-import { AudioNodeMeta } from '~/types'
+import { FunctionComponentWithoutChildren } from '~/types'
 import useAudioNodes from '~/state/hooks/use-audio-nodes'
 import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
 import AnimIn from '~/components/anim-in'
 import ErrorBoundary from '~/components/error-boundary'
-import AddNodeButtons from '~/components/add-node-buttons'
+import ButtonSet, { Button } from '~/components/button-set'
 
 import ConnectedLoop from './connected-loop'
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-`
-
-const InstrumentContainer = styled(AnimIn)`
-  &:not(:first-of-type) {
-    margin-top: 2em;
-  }
-`
-
-const RackMount: FunctionComponent = ({ children }) => (
-  <InstrumentContainer>
-    <ErrorBoundary>{children}</ErrorBoundary>
-  </InstrumentContainer>
-)
-
-export interface InstrumentsRackProps {
-  instruments: AudioNodeMeta[]
-  addLoop(): unknown
+const InstrumentsRack: FunctionComponentWithoutChildren = () => {
+  return (
+    <Container>
+      <Rack />
+      <AddInstrumentButtons />
+    </Container>
+  )
 }
 
-const Rack: FunctionComponent = () => {
+export default InstrumentsRack
+
+const Rack: FunctionComponentWithoutChildren = () => {
   const [{ instruments }] = useAudioNodesMeta()
 
   return (
@@ -55,21 +43,32 @@ const Rack: FunctionComponent = () => {
   )
 }
 
-const Add: FunctionComponent = () => {
+const AddInstrumentButtons: FunctionComponentWithoutChildren = () => {
   const [, { addNode }] = useAudioNodes()
 
   const addLoop = useCallback(() => addNode(loopType), [addNode])
 
-  return <AddNodeButtons buttons={[['Loop', addLoop]]} />
-}
-
-const InstrumentsRack: FunctionComponent = () => {
   return (
-    <Container>
-      <Rack />
-      <Add />
-    </Container>
+    <ButtonSet>
+      <Button label="Add Loop" handler={addLoop} />
+    </ButtonSet>
   )
 }
 
-export default InstrumentsRack
+const RackMount: FunctionComponent = ({ children }) => (
+  <InstrumentContainer>
+    <ErrorBoundary>{children}</ErrorBoundary>
+  </InstrumentContainer>
+)
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+`
+
+const InstrumentContainer = styled(AnimIn)`
+  &:not(:first-of-type) {
+    margin-top: 2em;
+  }
+`

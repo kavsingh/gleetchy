@@ -5,20 +5,10 @@ import { withTheme } from 'emotion-theming'
 import { FunctionComponentWithoutChildren } from '~/types'
 import { ThemeProps } from '~/style/theme'
 
-const Container = styled.div<ThemeProps>`
-  cursor: pointer;
-  transition: color 0.2s ease-out;
-
-  &:hover,
-  &:active {
-    color: ${({ theme }) => theme.colors.emphasis};
-  }
-`
-
-const Button: FunctionComponentWithoutChildren<{
-  label: string
-  handler: () => unknown
-}> = ({ label, handler }) => (
+const Button: FunctionComponentWithoutChildren<ButtonProps> = ({
+  label,
+  handler,
+}) => (
   <Container
     role="button"
     tabIndex={0}
@@ -32,3 +22,18 @@ const Button: FunctionComponentWithoutChildren<{
 )
 
 export default memo(withTheme(Button))
+
+export interface ButtonProps {
+  label: string
+  handler: () => unknown
+}
+
+const Container = styled.div<ThemeProps>`
+  cursor: pointer;
+  transition: color 0.2s ease-out;
+
+  &:hover,
+  &:active {
+    color: ${({ theme }) => theme.colors.emphasis};
+  }
+`

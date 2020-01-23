@@ -1,36 +1,28 @@
 import React, { FunctionComponent, useCallback } from 'react'
 import styled from '@emotion/styled'
 
+import { FunctionComponentWithoutChildren } from '~/types'
 import AnimIn from '~/components/anim-in'
 import { nodeType as delayType } from '~/nodes/audio-effects/delay'
 import { nodeType as reverbType } from '~/nodes/audio-effects/reverb'
 import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
 import useAudioNodes from '~/state/hooks/use-audio-nodes'
-import AddNodeButtons from '~/components/add-node-buttons'
+import ButtonSet, { Button } from '~/components/button-set'
 import ErrorBoundary from '~/components/error-boundary'
 
 import ConnectedDelay from './connected-delay'
 import ConnectedReverb from './connected-reverb'
 
-const Container = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  align-items: flex-start;
-  width: 100%;
-`
-
-const AudioEffectContainer = styled(AnimIn)`
-  flex: 1 0 10em;
-  padding: 1em 0;
-`
-
-const RackMount: FunctionComponent = ({ children }) => (
-  <AudioEffectContainer>
-    <ErrorBoundary>{children}</ErrorBoundary>
-  </AudioEffectContainer>
+const AudioEffectsRack: FunctionComponentWithoutChildren = () => (
+  <Container>
+    <Rack />
+    <AddAudioEffectButtons />
+  </Container>
 )
 
-const Rack: FunctionComponent = () => {
+export default AudioEffectsRack
+
+const Rack: FunctionComponentWithoutChildren = () => {
   const [{ audioEffects }] = useAudioNodesMeta()
 
   return (
@@ -57,27 +49,34 @@ const Rack: FunctionComponent = () => {
   )
 }
 
-const Add: FunctionComponent = () => {
+const AddAudioEffectButtons: FunctionComponentWithoutChildren = () => {
   const [, { addNode }] = useAudioNodes()
 
   const addReverb = useCallback(() => addNode(reverbType), [addNode])
   const addDelay = useCallback(() => addNode(delayType), [addNode])
 
   return (
-    <AddNodeButtons
-      buttons={[
-        ['Reverb', addReverb],
-        ['Delay', addDelay],
-      ]}
-    />
+    <ButtonSet>
+      <Button label="Add Reverb" handler={addReverb} />
+      <Button label="Add Delay" handler={addDelay} />
+    </ButtonSet>
   )
 }
 
-const AudioEffectsRack: FunctionComponent = () => (
-  <Container>
-    <Rack />
-    <Add />
-  </Container>
+const RackMount: FunctionComponent = ({ children }) => (
+  <AudioEffectContainer>
+    <ErrorBoundary>{children}</ErrorBoundary>
+  </AudioEffectContainer>
 )
 
-export default AudioEffectsRack
+const Container = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  width: 100%;
+`
+
+const AudioEffectContainer = styled(AnimIn)`
+  flex: 1 0 10em;
+  padding: 1em 0;
+`
