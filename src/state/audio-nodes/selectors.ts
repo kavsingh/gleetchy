@@ -6,6 +6,8 @@ import { hasConnectionTo, isInstrument, isAudioEffect } from '~/lib/audio'
 import { ApplicationState } from '~/state/configure-store'
 import { connectionsSelector } from '~/state/connections/selectors'
 
+import { createValueEqSelector } from '../lib/selector'
+
 const audioNodesStateSelector = (state: ApplicationState) => state.audioNodes
 
 export const audioNodesSelector = createSelector(
@@ -20,12 +22,12 @@ export const nodesIdentifierMetaSelector = createSelector(
   state => state.orderedIndentifierMeta,
 )
 
-export const instrumentsIdentifierMetaSelector = createSelector(
+export const instrumentsIdentifierMetaSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
   meta => meta.filter(isInstrument),
 )
 
-export const audioEffectsIdentifierMetaSelector = createSelector(
+export const audioEffectsIdentifierMetaSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
   meta => meta.filter(isAudioEffect),
 )
@@ -35,12 +37,12 @@ export const mainOutNodeSelector = createSelector(
   nodes => nodes[MAIN_OUT_ID],
 )
 
-export const mainOutMetaSelector = createSelector(
+export const mainOutMetaSelector = createValueEqSelector(
   mainOutNodeSelector,
   ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 )
 
-export const activeAudioNodeIdsSelector = createSelector(
+export const activeAudioNodeIdsSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
   connectionsSelector,
   mainOutNodeSelector,
@@ -51,7 +53,7 @@ export const activeAudioNodeIdsSelector = createSelector(
   },
 )
 
-export const connectableSourcesSelector = createSelector(
+export const connectableSourcesSelector = createValueEqSelector(
   audioNodesSelector,
   instrumentsIdentifierMetaSelector,
   audioEffectsIdentifierMetaSelector,
@@ -61,7 +63,7 @@ export const connectableSourcesSelector = createSelector(
   ],
 )
 
-export const connectableTargetsSelector = createSelector(
+export const connectableTargetsSelector = createValueEqSelector(
   audioNodesSelector,
   audioEffectsIdentifierMetaSelector,
   mainOutMetaSelector,
