@@ -1,18 +1,18 @@
 import React, { FunctionComponent, useCallback, memo } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { nodeType, NodeProps, defaultProps, UI } from '~/nodes/instruments/loop'
+import { nodeType, NodeProps, UI } from '~/nodes/instruments/loop'
 import {
   receiveAudioFileAction,
   selectAudioFileAction,
 } from '~/state/audio-files/actions'
-import useAudioNode from '~/state/hooks/use-audio-node'
+import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 
 const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
   const [
     { label, connections, audioProps, isActive },
     { updateAudioProps, updateLabel, duplicate, remove },
-  ] = useAudioNode<NodeProps>(id, node => node.type === nodeType, defaultProps)
+  ] = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
   const dispatch = useDispatch()
 

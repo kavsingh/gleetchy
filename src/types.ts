@@ -17,8 +17,7 @@ export interface AudioNodeMeta extends AudioNodeIdentifierMeta {
   label: string
 }
 
-export interface AudioNodeState<PROPS extends object = {}>
-  extends AudioNodeMeta {
+export interface AudioNodeState<PROPS extends object> extends AudioNodeMeta {
   audioProps: PROPS
 }
 

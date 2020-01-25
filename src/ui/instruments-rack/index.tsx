@@ -2,8 +2,8 @@ import React, { useCallback, FunctionComponent } from 'react'
 import styled from '@emotion/styled'
 
 import { FunctionComponentWithoutChildren } from '~/types'
-import useAudioNodes from '~/state/hooks/use-audio-nodes'
 import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
+import useAddNode from '~/state/hooks/use-add-node'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
 import AnimIn from '~/components/anim-in'
 import ErrorBoundary from '~/components/error-boundary'
@@ -44,8 +44,7 @@ const Rack: FunctionComponentWithoutChildren = () => {
 }
 
 const AddInstrumentButtons: FunctionComponentWithoutChildren = () => {
-  const [, { addNode }] = useAudioNodes()
-
+  const addNode = useAddNode()
   const addLoop = useCallback(() => addNode(loopType), [addNode])
 
   return (

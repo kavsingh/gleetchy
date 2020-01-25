@@ -6,7 +6,7 @@ import AnimIn from '~/components/anim-in'
 import { nodeType as delayType } from '~/nodes/audio-effects/delay'
 import { nodeType as reverbType } from '~/nodes/audio-effects/reverb'
 import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
-import useAudioNodes from '~/state/hooks/use-audio-nodes'
+import useAddNode from '~/state/hooks/use-add-node'
 import ButtonSet, { Button } from '~/components/button-set'
 import ErrorBoundary from '~/components/error-boundary'
 
@@ -50,8 +50,7 @@ const Rack: FunctionComponentWithoutChildren = () => {
 }
 
 const AddAudioEffectButtons: FunctionComponentWithoutChildren = () => {
-  const [, { addNode }] = useAudioNodes()
-
+  const addNode = useAddNode()
   const addReverb = useCallback(() => addNode(reverbType), [addNode])
   const addDelay = useCallback(() => addNode(delayType), [addNode])
 

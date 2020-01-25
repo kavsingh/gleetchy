@@ -10,43 +10,6 @@ import useConnections from '~/state/hooks/use-connections'
 import { UITheme } from '~/style/theme'
 import ErrorBoundary from '~/components/error-boundary'
 
-const Container = styled.table`
-  width: 100%;
-`
-
-const labelStyle = css`
-  max-width: 5.4em;
-  overflow: hidden;
-  font-weight: 400;
-  font-size: 0.68em;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-`
-
-const Row = styled.tr`
-  th,
-  td {
-    text-align: center;
-  }
-
-  th {
-    padding: 0 0 0.4em;
-  }
-
-  td {
-    padding: 0.4em 0;
-  }
-
-  th:first-child,
-  td:first-child {
-    text-align: left;
-  }
-
-  td:not(:first-child) {
-    padding: 0 0.4em;
-  }
-`
-
 const nodeStyle = (theme: UITheme, connectionColor?: string) =>
   css`
     width: 0.8em;
@@ -90,26 +53,24 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
       <Container>
         <tbody>
           <Row key="titles">
-            <th css={labelStyle}>To / From</th>
+            <SourceLabel>To / From</SourceLabel>
             {sources.map(source => (
-              <th
-                css={labelStyle}
+              <SourceLabel
                 title={`From ${source.label} to ...`}
                 key={source.id}
               >
                 {source.label}
-              </th>
+              </SourceLabel>
             ))}
           </Row>
           {targets.map(target => (
             <Row key={target.id}>
-              <td
-                css={labelStyle}
+              <DestinationLabel
                 title={`From ... to ${target.label}`}
                 key="rowLabel"
               >
                 {target.label}
-              </td>
+              </DestinationLabel>
               {sources.map(source => {
                 const connection = getConnection(source, target)
                 const blockConnect = !connection && !canConnect(source, target)
@@ -164,3 +125,48 @@ const PatchBay: FunctionComponent<{ theme: UITheme }> = ({ theme }) => {
 }
 
 export default memo(withTheme(PatchBay))
+
+const Container = styled.table`
+  width: 100%;
+`
+
+const labelStyle = css`
+  max-width: 5.4em;
+  overflow: hidden;
+  font-weight: 400;
+  font-size: 0.68em;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+`
+
+const Row = styled.tr`
+  th,
+  td {
+    text-align: center;
+  }
+
+  th {
+    padding: 0 0 0.4em;
+  }
+
+  td {
+    padding: 0.4em 0;
+  }
+
+  th:first-child,
+  td:first-child {
+    text-align: left;
+  }
+
+  td:not(:first-child) {
+    padding: 0 0.4em;
+  }
+`
+
+const SourceLabel = styled.th`
+  ${labelStyle}
+`
+
+const DestinationLabel = styled.td`
+  ${labelStyle}
+`

@@ -25,12 +25,12 @@ import { AudioNodeState, AudioNodeIdentifierMeta } from '~/types'
 import { AudioFileDecodeCompleteAction } from '../audio-files/types'
 import { AudioNodesAction } from './types'
 
-type NodeState = AudioNodeState<
-  LoopNodeProps | DelayNodeProps | ReverbNodeProps | {}
->
+type KnownProps = DelayNodeProps | ReverbNodeProps | LoopNodeProps | {}
 
 export interface AudioNodesState {
-  byId: { [key: string]: NodeState }
+  byId: {
+    [key: string]: AudioNodeState<KnownProps>
+  }
   orderedIndentifierMeta: AudioNodeIdentifierMeta[]
 }
 
@@ -46,7 +46,7 @@ const defaultState: AudioNodesState = initialNodes.reduce(
   { byId: {}, orderedIndentifierMeta: [] },
 )
 
-const getNewNodeState = (type: string): AudioNodeState | null => {
+const getNewNodeState = (type: string) => {
   switch (type) {
     case delayNodeType:
       return {
@@ -54,14 +54,14 @@ const getNewNodeState = (type: string): AudioNodeState | null => {
         id: prefixedId(delayNodeType),
         label: 'DX',
         audioProps: { ...delayDefaultProps },
-      }
+      } as AudioNodeState<DelayNodeProps>
     case reverbNodeType: {
       return {
         type,
         id: prefixedId(reverbNodeType),
         label: `RX`,
         audioProps: { ...reverbDefaultProps },
-      }
+      } as AudioNodeState<ReverbNodeProps>
     }
     case loopNodeType: {
       return {
@@ -69,7 +69,7 @@ const getNewNodeState = (type: string): AudioNodeState | null => {
         id: prefixedId(loopNodeType),
         label: 'LX',
         audioProps: { ...loopDefaultProps },
-      }
+      } as AudioNodeState<LoopNodeProps>
     }
     default:
       return null

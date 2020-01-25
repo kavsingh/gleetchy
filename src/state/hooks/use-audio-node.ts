@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { equals } from 'ramda'
 
 import { AudioNodeState, AudioNodeConnection } from '~/types'
@@ -11,23 +11,29 @@ import {
 } from '~/state/audio-nodes/actions'
 import { getConnectionsFor } from '~/lib/audio'
 
-import useAudioNodes from './use-audio-nodes'
+import {
+  audioNodesSelector,
+  activeAudioNodeIdsSelector,
+} from '../audio-nodes/selectors'
+import { ApplicationState } from '../configure-store'
 import useConnections from './use-connections'
 
-const useAudioNode = <T>(
+const useAudioNode = <T extends object>(
   id: string,
-  isValid: (node: AudioNodeState) => boolean,
-  defaultAudioProps: T,
+  isValid: AudioNodeStateValidator,
 ) => {
+  const node = useSelector<ApplicationState, AudioNodeState<T>>(
+    state => audioNodesSelector(state)[id] as AudioNodeState<T>,
+    equals,
+  )
+  const isActive = useSelector<ApplicationState, boolean>(state =>
+    activeAudioNodeIdsSelector(state).includes(node.id),
+  )
   const dispatch = useDispatch()
 
-  const [{ nodes, activeIds }] = useAudioNodes()
   const [{ connections: allConnections }] = useConnections()
 
-  const [label, setLabel] = useState('')
-  const [audioProps, setAudioProps] = useState<T>(defaultAudioProps)
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
-  const [isActive, setIsActive] = useState(false)
 
   const duplicate = useCallback(() => dispatch(duplicateAudioNodeAction(id)), [
     id,
@@ -51,19 +57,9 @@ const useAudioNode = <T>(
   )
 
   useEffect(() => {
-    const node = nodes[id]
-
     if (!node) throw new Error(`Audio node not found at id ${id}`)
     if (!isValid(node)) throw new Error(`Audio node is invalid for ${id}`)
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setAudioProps(node.audioProps as any)
-    setLabel(node.label)
-  }, [id, nodes, isValid])
-
-  useEffect(() => {
-    setIsActive(activeIds.includes(id))
-  }, [id, activeIds])
+  }, [id, isValid, node])
 
   useEffect(() => {
     setConnections(current => {
@@ -74,9 +70,15 @@ const useAudioNode = <T>(
   }, [id, allConnections])
 
   return [
-    { label, audioProps, connections, isActive },
+    { connections, isActive, label: node.label, audioProps: node.audioProps },
     { updateAudioProps, updateLabel, duplicate, remove },
   ] as const
 }
 
 export default useAudioNode
+
+export type AudioNodeStateValidator = (node: AudioNodeState<{}>) => boolean
+
+export const validateNodeType = (
+  type: AudioNodeState<{}>['type'],
+): AudioNodeStateValidator => (node: AudioNodeState<{}>) => node.type === type

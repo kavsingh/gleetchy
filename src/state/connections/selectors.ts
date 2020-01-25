@@ -1,11 +1,12 @@
 import { identity } from 'ramda'
-import { createSelector } from 'reselect'
 
 import { ApplicationState } from '~/state/configure-store'
 
+import { createValueEqSelector } from '../lib/selector'
+
 const connectionsStateSelector = (state: ApplicationState) => state.connections
 
-export const connectionsSelector = createSelector(
+export const connectionsSelector = createValueEqSelector(
   connectionsStateSelector,
   identity,
 )

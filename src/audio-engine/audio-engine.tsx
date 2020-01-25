@@ -1,5 +1,5 @@
-import { always, cond, equals, pick, pipe, tryCatch } from 'ramda'
 import { Component } from 'react'
+import { pick, tryCatch } from 'ramda'
 
 import { warn } from '~/lib/dev'
 import { isInstrument } from '~/lib/audio'
@@ -8,14 +8,17 @@ import { MAIN_OUT_ID } from '~/constants/audio'
 import {
   createAudioNode as createDelayNode,
   nodeType as delayType,
+  NodeProps as DelayProps,
 } from '~/nodes/audio-effects/delay'
 import {
   createAudioNode as createReverbNode,
   nodeType as reverbType,
+  NodeProps as ReverbProps,
 } from '~/nodes/audio-effects/reverb'
 import {
   createAudioNode as createLoopNode,
   nodeType as loopType,
+  NodeProps as LoopProps,
 } from '~/nodes/instruments/loop'
 import { AudioEngineEvent } from '~/state/audio-engine/types'
 import {
@@ -35,22 +38,26 @@ const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
   if (typeof target.set === 'function') target.set(audioProps)
 }, warn)
 
-type NodeCreator = (...args: unknown[]) => AudioEngineNode
-const getNodeCreator: (state: AudioNodeState) => NodeCreator = pipe(
-  ({ type }: AudioNodeState) => type,
-  cond([
-    [equals(delayType), always(createDelayNode)],
-    [equals(reverbType), always(createReverbNode)],
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    [equals(loopType), always(createLoopNode) as any],
-  ]),
-)
+const createNewNode = (context: AudioContext, state: AudioNodeState<{}>) => {
+  switch (state.type) {
+    case delayType:
+      return createDelayNode(context, state.audioProps)
+    case reverbType:
+      return createReverbNode(context, state.audioProps)
+    case loopType:
+      return createLoopNode(context, state.audioProps)
+    default:
+      return
+  }
+}
 
 export interface AudioEngineProps {
   audioEngineEvents: AudioEngineEvent[]
   connections: AudioNodeConnection[]
   isPlaying: boolean
-  nodes: { [key: string]: AudioNodeState }
+  nodes: {
+    [key: string]: AudioNodeState<DelayProps | ReverbProps | LoopProps | {}>
+  }
   clearAudioEngineEvents(): unknown
 }
 
@@ -122,15 +129,13 @@ class AudioEngine extends Component<AudioEngineProps> {
     nextNodeIds
       .filter(id => !this.audioNodes[id])
       .forEach(id => {
+        // TS doesn't follow through on defined check above
+        if (!this.audioContext) return
+
         const node = nextNodes[id]
-        const nodeCreator = getNodeCreator(node)
+        const newNode = createNewNode(this.audioContext, node)
 
-        if (!nodeCreator) return
-
-        const newNode: AudioEngineNode = nodeCreator(
-          this.audioContext,
-          node.audioProps,
-        )
+        if (!newNode) return
 
         this.audioNodes[node.id] = newNode
 
