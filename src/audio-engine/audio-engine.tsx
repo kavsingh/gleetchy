@@ -27,10 +27,12 @@ import {
   GAudioNode,
   InstrumentNode,
 } from '~/types'
+import { noop } from '~/lib/util'
 
 type AudioEngineNode = AudioNode | GAudioNode | InstrumentNode
 type InstrumentNodeProcessor = (node: InstrumentNode) => void
 type TrySet = (args: { node: AudioEngineNode; audioProps: object }) => void
+type AudioNodeEffect = (node: AudioNode | GAudioNode) => void
 
 const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
   const target = node as GAudioNode
@@ -113,7 +115,10 @@ class AudioEngine extends Component<AudioEngineProps> {
       return
     }
 
-    Object.values(this.audioNodes).forEach(node => node.disconnect())
+    Object.values(this.audioNodes).forEach(
+      // Safari crashes if node not connected
+      tryCatch<AudioNodeEffect>(node => node.disconnect(), noop),
+    )
   }
 
   private updateAudioNodes() {

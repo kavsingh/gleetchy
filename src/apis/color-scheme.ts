@@ -2,21 +2,11 @@ import { useState, useCallback, useEffect } from 'react'
 
 export type ColorSchemePreference = 'no-preference' | 'light' | 'dark'
 
-export const darkSchemeQuery = (() => {
-  try {
-    return window?.matchMedia?.('(prefers-color-scheme: dark)')
-  } catch {
-    return undefined
-  }
-})()
+export const darkSchemeQuery =
+  globalThis?.matchMedia?.('(prefers-color-scheme: dark)') ?? undefined
 
-export const lightSchemeQuery = (() => {
-  try {
-    return window?.matchMedia?.('(prefers-color-scheme: light)')
-  } catch {
-    return undefined
-  }
-})()
+export const lightSchemeQuery =
+  globalThis?.matchMedia?.('(prefers-color-scheme: light)') ?? undefined
 
 export const getPreferredColorScheme = (): ColorSchemePreference => {
   if (darkSchemeQuery?.matches) return 'dark'
