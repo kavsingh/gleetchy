@@ -15,8 +15,8 @@ import {
   audioNodesSelector,
   activeAudioNodeIdsSelector,
 } from '../audio-nodes/selectors'
+import { connectionsSelector } from '../connections/selectors'
 import { ApplicationState } from '../configure-store'
-import useConnections from './use-connections'
 
 const useAudioNode = <T extends object>(
   id: string,
@@ -29,9 +29,8 @@ const useAudioNode = <T extends object>(
   const isActive = useSelector<ApplicationState, boolean>(state =>
     activeAudioNodeIdsSelector(state).includes(node.id),
   )
+  const allConnections = useSelector(connectionsSelector)
   const dispatch = useDispatch()
-
-  const [{ connections: allConnections }] = useConnections()
 
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
 
