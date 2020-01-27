@@ -1,4 +1,4 @@
-import React, { useMemo, memo } from 'react'
+import React, { memo } from 'react'
 import styled from '@emotion/styled'
 import { memoizeWith, identity } from 'ramda'
 import color from 'color'
@@ -15,20 +15,15 @@ const PatchBayNode: FunctionComponentWithoutChildren<{
     source,
     target,
   )
-  const activeColor = useMemo(() => connection?.color, [connection])
-  const title = useMemo(
-    () =>
-      blocked
-        ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
-        : `From ${source.label} to ${target.label}`,
-    [blocked, source.label, target.label],
-  )
+  const title = blocked
+    ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
+    : `From ${source.label} to ${target.label}`
 
   return (
     <Container
       role="button"
       title={title}
-      activeColor={activeColor}
+      activeColor={connection?.color}
       blocked={!!blocked}
       onClick={toggleConnection}
       tabIndex={0}
