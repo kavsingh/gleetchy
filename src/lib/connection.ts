@@ -1,7 +1,15 @@
-import { AudioNodeConnectableProxy, AudioNodeReturn, GAudioNode } from '~/types'
+import {
+  GAudioNodeConnectors,
+  GAudioNodeConnectApi,
+  AudioNodeReturn,
+  GAudioNode,
+  GInstrumentNode,
+  GAudioNodeApi,
+  GInstrumentNodeApi,
+} from '~/types'
 
 const createConnect = (getOutNode: AudioNodeReturn) =>
-  function connect(node: AudioNode | AudioNodeConnectableProxy) {
+  function connect(node: AudioNode | GAudioNodeConnectApi) {
     const outNode = getOutNode()
 
     if (node instanceof AudioNode) {
@@ -14,7 +22,7 @@ const createConnect = (getOutNode: AudioNodeReturn) =>
   }
 
 const createDisconnect = (getOutNode: AudioNodeReturn) =>
-  function disconnect(node: AudioNode | AudioNodeConnectableProxy) {
+  function disconnect(node?: AudioNode | GAudioNodeConnectApi) {
     const outNode = getOutNode()
 
     if (!node) {
@@ -28,18 +36,21 @@ const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export const makeConnectable = <
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  P extends object = any,
-  N extends GAudioNode = GAudioNode<P, string>
+  N extends GAudioNode<any, any> | GInstrumentNode<any, any>
 >({
   getInNode,
   getOutNode,
-}: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-AudioNodeConnectableProxy) => (api: any): N =>
-  Object.assign(api, {
+}: GAudioNodeConnectors) => (
+  api: N extends GInstrumentNode<any, any>
+    ? GInstrumentNodeApi<any, any>
+    : GAudioNodeApi<any, any>,
+): N =>
+  Object.assign(api as any, {
     connect: createConnect(getOutNode),
     disconnect: createDisconnect(getOutNode),
     getInNode,
     getOutNode,
   })
+/* eslint-enable */

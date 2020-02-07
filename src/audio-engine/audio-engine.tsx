@@ -25,12 +25,12 @@ import {
   AudioNodeConnection,
   AudioNodeState,
   GAudioNode,
-  InstrumentNode,
+  GInstrumentNode,
 } from '~/types'
 import { noop } from '~/lib/util'
 
-type AudioEngineNode = AudioNode | GAudioNode | InstrumentNode
-type InstrumentNodeProcessor = (node: InstrumentNode) => void
+type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode
+type InstrumentNodeProcessor = (node: GInstrumentNode) => void
 type TrySet = (args: { node: AudioEngineNode; audioProps: object }) => void
 type AudioNodeEffect = (node: AudioNode | GAudioNode) => void
 
@@ -66,7 +66,7 @@ export interface AudioEngineProps {
 class AudioEngine extends Component<AudioEngineProps> {
   private audioContext?: AudioContext
   private audioNodes: {
-    [key: string]: GAudioNode | InstrumentNode | AudioNode
+    [key: string]: GAudioNode | GInstrumentNode | AudioNode
   } = {}
 
   public componentDidMount() {
@@ -96,10 +96,10 @@ class AudioEngine extends Component<AudioEngineProps> {
     return null
   }
 
-  private getInstrumentNodes(): InstrumentNode[] {
+  private getInstrumentNodes(): GInstrumentNode[] {
     return Object.values(this.audioNodes).filter(
       isInstrument,
-    ) as InstrumentNode[]
+    ) as GInstrumentNode[]
   }
 
   private forEachInstrument(fn: InstrumentNodeProcessor) {
@@ -145,7 +145,7 @@ class AudioEngine extends Component<AudioEngineProps> {
         this.audioNodes[node.id] = newNode
 
         if (isPlaying && isInstrument(newNode)) {
-          ;(newNode as InstrumentNode).play()
+          ;(newNode as GInstrumentNode).play()
         }
       })
   }
@@ -161,9 +161,7 @@ class AudioEngine extends Component<AudioEngineProps> {
       const fromNode = this.audioNodes[from]
       const toNode = this.audioNodes[to]
 
-      if (fromNode && toNode) {
-        fromNode.connect(toNode)
-      }
+      if (fromNode && toNode) (fromNode as GAudioNode).connect(toNode)
     })
   }
 

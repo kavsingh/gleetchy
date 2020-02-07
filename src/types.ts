@@ -23,23 +23,36 @@ export interface AudioNodeState<PROPS extends object> extends AudioNodeMeta {
 
 export type AudioNodeReturn = () => AudioNode
 
-export interface AudioNodeConnectableProxy {
+export interface GAudioNodeConnectors {
   getInNode: AudioNodeReturn
   getOutNode: AudioNodeReturn
 }
 
-export interface GAudioNode<P extends object = any, T extends string = any>
-  extends AudioNode,
-    AudioNodeConnectableProxy {
-  type: T
-  set(props: P): void
+export interface GAudioNodeConnectApi extends GAudioNodeConnectors {
+  connect(node: AudioNode | GAudioNodeConnectors): void
+  disconnect(node?: AudioNode | GAudioNodeConnectors): void
 }
 
-export interface InstrumentNode<P extends object = any, T extends string = any>
-  extends GAudioNode<P, T> {
+export interface GAudioNodeApi<P extends object, T extends string> {
+  type: T
+  set(props: Partial<P>): void
+}
+
+export type GAudioNode<
+  P extends object = any,
+  T extends string = any
+> = GAudioNodeConnectApi & GAudioNodeApi<P, T>
+
+export interface GInstrumentNodeApi<P extends object, T extends string>
+  extends GAudioNodeApi<P, T> {
   play(): void
   stop(): void
 }
+
+export type GInstrumentNode<
+  P extends object = any,
+  T extends string = any
+> = GAudioNodeConnectApi & GInstrumentNodeApi<P, T>
 
 export interface AudioNodeConnection {
   from: string

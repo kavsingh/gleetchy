@@ -1,7 +1,7 @@
 import { always, curry } from 'ramda'
 
-import { decodeAudioData } from '~/apis/audio'
 import { GAudioNode } from '~/types'
+import { decodeAudioData } from '~/apis/audio'
 import { makeConnectable } from '~/lib/connection'
 import reverbImpulse from '~/assets/media/impulse-reverb.wav'
 
@@ -25,7 +25,7 @@ const loadImpulse = async (audioContext: AudioContext, url: string) => {
 }
 
 export default curry(
-  (audioContext: AudioContext, initProps: Partial<Props>): GAudioNode => {
+  (audioContext: AudioContext, initProps: Partial<Props>) => {
     const props: Props = { ...defaultProps, ...initProps }
     const reverbNode = audioContext.createConvolver()
     const inNode = audioContext.createGain()
@@ -45,7 +45,7 @@ export default curry(
       reverbNode.buffer = buffer
     })
 
-    return makeConnectable({
+    return makeConnectable<GAudioNode<Props, typeof nodeType>>({
       getInNode: always(inNode),
       getOutNode: always(outNode),
     })({

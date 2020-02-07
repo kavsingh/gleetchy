@@ -1,14 +1,14 @@
 import { always, curry } from 'ramda'
 
-import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
-import { InstrumentNode } from '~/types'
+import { GInstrumentNode } from '~/types'
 import { makeConnectable } from '~/lib/connection'
+import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
 
 import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
 
 export default curry(
-  (audioContext: AudioContext, initProps: Partial<Props>): InstrumentNode => {
+  (audioContext: AudioContext, initProps: Partial<Props>) => {
     const props = { ...defaultProps, ...initProps }
     const eq3Node = createEq3Node(audioContext, {
       lowGain: props.lowGain,
@@ -25,15 +25,11 @@ export default curry(
     gainNode.gain.value = props.gain
 
     const transferPropsToBufferSourceNode = () => {
-      if (!bufferSourceNode) {
-        return
-      }
+      if (!bufferSourceNode) return
 
       const { audioBuffer } = props
 
-      if (!audioBuffer) {
-        return
-      }
+      if (!audioBuffer) return
 
       const { duration } = audioBuffer
 
@@ -43,9 +39,7 @@ export default curry(
     }
 
     const removeBufferSourceNode = () => {
-      if (!bufferSourceNode) {
-        return
-      }
+      if (!bufferSourceNode) return
 
       bufferSourceNode.disconnect(eq3Node.getInNode())
       bufferSourceNode = null
@@ -56,9 +50,7 @@ export default curry(
 
       const { loopStart, audioBuffer } = props
 
-      if (!audioBuffer) {
-        return
-      }
+      if (!audioBuffer) return
 
       bufferSourceNode = audioContext.createBufferSource()
       bufferSourceNode.buffer = audioBuffer
@@ -73,25 +65,21 @@ export default curry(
       }
     }
 
-    return makeConnectable<Props, InstrumentNode>({
+    return makeConnectable<GInstrumentNode<Props, typeof nodeType>>({
       getInNode: getGainNode,
       getOutNode: getGainNode,
     })({
       type: nodeType,
 
       play() {
-        if (isPlaying) {
-          return
-        }
+        if (isPlaying) return
 
         isPlaying = true
         replaceBufferSourceNode()
       },
 
       stop() {
-        if (!isPlaying) {
-          return
-        }
+        if (!isPlaying) return
 
         isPlaying = false
         removeBufferSourceNode()

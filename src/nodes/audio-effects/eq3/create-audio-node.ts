@@ -7,7 +7,7 @@ import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
 
 export default curry(
-  (audioContext: AudioContext, initProps: Partial<Props>): GAudioNode => {
+  (audioContext: AudioContext, initProps: Partial<Props>) => {
     const props: Props = { ...defaultProps, ...initProps }
     const lowNode = audioContext.createBiquadFilter()
     const midNode = audioContext.createBiquadFilter()
@@ -34,7 +34,7 @@ export default curry(
 
     transferProps()
 
-    return makeConnectable({
+    return makeConnectable<GAudioNode<Props, typeof nodeType>>({
       getInNode: always(highNode),
       getOutNode: always(lowNode),
     })({
