@@ -1,4 +1,4 @@
-import { curry, equals, without, __ } from 'ramda'
+import { curry, equals, without } from 'ramda'
 
 const origIfEqual = <T>(next: T[], orig: T[]) =>
   equals(next, orig) ? orig : next
