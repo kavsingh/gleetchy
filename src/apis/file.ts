@@ -49,44 +49,10 @@ export const loadAudioFiles = () => {
   })
 }
 
-export const readFileToArrayBuffer = (file: File) => {
-  let fileReader: FileReader | null = new FileReader()
-
-  return new Promise<AudioFileData>((resolve, reject) => {
-    if (!fileReader) {
-      reject(new Error('Could not create FileReader'))
-      return
-    }
-
-    fileReader.onerror = error => {
-      reject(error)
-      fileReader = null
-    }
-
-    fileReader.onloadend = () => {
-      if (!fileReader) {
-        reject(new Error('FileReader instance disposed'))
-        return
-      }
-
-      if (!(fileReader.result instanceof ArrayBuffer)) {
-        reject(new Error('Error reading file to ArrayBuffer'))
-        fileReader = null
-        return
-      }
-
-      resolve({
-        buffer: fileReader.result,
-        fileName: file.name,
-        fileType: file.type,
-      })
-
-      fileReader = null
-    }
-
-    fileReader.readAsArrayBuffer(file)
-  })
-}
+export const readFileToArrayBuffer = (file: File): Promise<AudioFileData> =>
+  file
+    .arrayBuffer()
+    .then(buffer => ({ buffer, fileName: file.name, fileType: file.type }))
 
 export const readFilesToArrayBuffer = (files: File[]) =>
   Promise.all(files.map(readFileToArrayBuffer))
