@@ -2,7 +2,7 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "stuartzhang.stylelint-stzhang",
+    "stylelint.vscode-stylelint",
     "jpoissonnier.vscode-styled-components"
   ]
 }
