@@ -4,40 +4,40 @@ import { createValueEqSelector } from './selector'
 
 describe('custom state selectors', () => {
   // Check assumptions for default createSelector
-  describe('default createSelector sanity check', () => {
+  describe('default createSelector assumptions check', () => {
     it('results in new value on ref changes despite equal values', () => {
-      let baseState = { a: { b: [1, 2] } }
-      const aSelector = (state: typeof baseState) => state.a
+      let state = { a: { b: [1, 2] } }
+      const aSelector = (s: typeof state) => s.a
 
-      const defaultBSelector = createSelector(aSelector, a => a.b)
-      const defaultVal1 = defaultBSelector(baseState)
+      const bSelector = createSelector(aSelector, a => a.b)
+      const b = bSelector(state)
 
-      expect(defaultVal1).toEqual([1, 2])
+      expect(b).toEqual([1, 2])
 
-      baseState = { a: { b: [1, 2] } }
+      state = { a: { b: [1, 2] } }
 
-      expect(defaultBSelector(baseState)).not.toBe(defaultVal1)
-      expect(defaultBSelector(baseState)).toEqual(defaultVal1)
+      expect(bSelector(state)).not.toBe(b)
+      expect(bSelector(state)).toEqual(b)
     })
   })
 
   describe('createValueEqSelector', () => {
     it('only results in new value if state value has changed', () => {
-      let baseState = { a: { b: [1, 2] } }
-      const aSelector = (state: typeof baseState) => state.a
+      let state = { a: { b: [1, 2] } }
+      const aSelector = (s: typeof state) => s.a
 
-      const defaultBSelector = createValueEqSelector(aSelector, a => a.b)
-      const defaultVal1 = defaultBSelector(baseState)
+      const bSelector = createValueEqSelector(aSelector, a => a.b)
+      const b = bSelector(state)
 
-      expect(defaultVal1).toEqual([1, 2])
+      expect(b).toEqual([1, 2])
 
-      baseState = { a: { b: [1, 2] } }
+      state = { a: { b: [1, 2] } }
 
-      expect(defaultBSelector(baseState)).toBe(defaultVal1)
+      expect(bSelector(state)).toBe(b)
 
-      baseState = { a: { b: [2, 1] } }
+      state = { a: { b: [2, 1] } }
 
-      expect(defaultBSelector(baseState)).not.toBe(defaultVal1)
+      expect(bSelector(state)).not.toBe(b)
     })
   })
 })
