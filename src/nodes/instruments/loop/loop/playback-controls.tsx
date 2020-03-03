@@ -4,21 +4,6 @@ import styled from '@emotion/styled'
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  height: 100%;
-`
-
-export interface PlaybackControlsProps {
-  gain: number
-  playbackRate: number
-  onGainChange(gain: number): unknown
-  onPlaybackRateChange(playbackRate: number): unknown
-}
-
 const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
   gain = 1,
   playbackRate = 1,
@@ -65,3 +50,18 @@ const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
 }
 
 export default memo(PlaybackControls)
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+`
+
+export interface PlaybackControlsProps {
+  gain: number
+  playbackRate: number
+  onGainChange(gain: number): unknown
+  onPlaybackRateChange(playbackRate: number): unknown
+}

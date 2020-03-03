@@ -43,16 +43,21 @@ export type GAudioNode<
   T extends string = any
 > = GAudioNodeConnectApi & GAudioNodeApi<P, T>
 
-export interface GInstrumentNodeApi<P extends object, T extends string>
-  extends GAudioNodeApi<P, T> {
+export interface GInstrumentNodeApi<
+  P extends object,
+  T extends string,
+  S extends (data: any) => unknown
+> extends GAudioNodeApi<P, T> {
   play(): void
   stop(): void
+  subscribe?(subscriber: S): () => void
 }
 
 export type GInstrumentNode<
   P extends object = any,
-  T extends string = any
-> = GAudioNodeConnectApi & GInstrumentNodeApi<P, T>
+  T extends string = any,
+  S extends (data: any) => unknown = any
+> = GAudioNodeConnectApi & GInstrumentNodeApi<P, T, S>
 
 export interface AudioNodeConnection {
   from: string

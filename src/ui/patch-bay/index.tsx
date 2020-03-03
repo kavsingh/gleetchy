@@ -82,12 +82,12 @@ const Row = styled.tr`
     padding: 0.4em 0;
   }
 
-  th:first-child,
-  td:first-child {
+  th:first-of-type,
+  td:first-of-type {
     text-align: left;
   }
 
-  td:not(:first-child) {
+  td:not(:first-of-type) {
     padding: 0 0.4em;
   }
 `

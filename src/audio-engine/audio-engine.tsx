@@ -2,7 +2,7 @@ import { Component } from 'react'
 import { pick, tryCatch } from 'ramda'
 
 import { warn } from '~/lib/dev'
-import { isInstrument } from '~/lib/audio'
+import { isInstrumentNode } from '~/lib/audio'
 import { getAudioContext } from '~/apis/audio'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {
@@ -61,6 +61,7 @@ export interface AudioEngineProps {
     [key: string]: AudioNodeState<DelayProps | ReverbProps | LoopProps | {}>
   }
   clearAudioEngineEvents(): unknown
+  dispatchSubscriptionEvent(nodeId: string, payload: unknown): unknown
 }
 
 class AudioEngine extends Component<AudioEngineProps> {
@@ -98,22 +99,18 @@ class AudioEngine extends Component<AudioEngineProps> {
 
   private getInstrumentNodes(): GInstrumentNode[] {
     return Object.values(this.audioNodes).filter(
-      isInstrument,
+      isInstrumentNode,
     ) as GInstrumentNode[]
   }
 
   private forEachInstrument(fn: InstrumentNodeProcessor) {
-    if (!this.audioNodes) {
-      return
-    }
+    if (!this.audioNodes) return
 
     this.getInstrumentNodes().forEach(fn)
   }
 
   private disconnectAllNodes() {
-    if (!this.audioNodes) {
-      return
-    }
+    if (!this.audioNodes) return
 
     Object.values(this.audioNodes).forEach(
       // Safari crashes if node not connected
@@ -134,7 +131,6 @@ class AudioEngine extends Component<AudioEngineProps> {
     nextNodeIds
       .filter((id) => !this.audioNodes[id])
       .forEach((id) => {
-        // TS doesn't follow through on defined check above
         if (!this.audioContext) return
 
         const node = nextNodes[id]
@@ -144,9 +140,15 @@ class AudioEngine extends Component<AudioEngineProps> {
 
         this.audioNodes[node.id] = newNode
 
-        if (isPlaying && isInstrument(newNode)) {
-          ;(newNode as GInstrumentNode).play()
+        if (!isInstrumentNode(newNode)) return
+
+        if (typeof newNode.subscribe === 'function') {
+          newNode.subscribe((payload: unknown) =>
+            this.props.dispatchSubscriptionEvent(id, payload),
+          )
         }
+
+        if (isPlaying) newNode.play()
       })
   }
 

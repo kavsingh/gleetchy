@@ -26,7 +26,7 @@ const LoopTitleBar: FunctionComponent<Pick<
   audioBuffer,
   selectAudioFile,
 }) => {
-  const title = useMemo(
+  const fileInfo = useMemo(
     () => (
       <>
         {fileName ? <span>{fileName}</span> : null}
@@ -57,7 +57,7 @@ const LoopTitleBar: FunctionComponent<Pick<
       connections={connections}
     >
       <Title>
-        {title}
+        {fileInfo}
         {loadButton}
         {audioBuffer ? <Button handler={duplicate}>Copy</Button> : null}
       </Title>

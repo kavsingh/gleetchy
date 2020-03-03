@@ -1,6 +1,7 @@
 import { AudioNodeConnection } from '~/types'
 
 export interface LoopUIProps {
+  nodeId: string
   loopStart: number
   loopEnd: number
   label: string

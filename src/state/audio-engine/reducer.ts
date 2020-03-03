@@ -9,9 +9,10 @@ import { AudioEngineAction, AudioEngineEvent } from './types'
 
 export interface AudioEngineState {
   events: AudioEngineEvent[]
+  subscriptionData: { [nodeId: string]: { [key: string]: unknown } }
 }
 
-const defaultState = { events: [] }
+const defaultState = { events: [], subscriptionData: {} }
 
 export const audioEngineReducer: Reducer<
   AudioEngineState,
@@ -37,6 +38,16 @@ export const audioEngineReducer: Reducer<
       case 'AUDIO_ENGINE_CLEAR_EVENTS':
         if (draftState.events.length) draftState.events = []
         break
+      case 'AUDIO_ENGINE_SUBSCRIPTION_EVENT': {
+        const { nodeId, subscriptionPayload } = action.payload
+
+        draftState.subscriptionData[nodeId] = Object.assign(
+          draftState.subscriptionData[nodeId] || {},
+          subscriptionPayload,
+        )
+
+        break
+      }
       default:
         break
     }

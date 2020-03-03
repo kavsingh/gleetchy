@@ -2,7 +2,11 @@ import { createSelector } from 'reselect'
 
 import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
-import { hasConnectionTo, isInstrument, isAudioEffect } from '~/lib/audio'
+import {
+  hasConnectionTo,
+  hasInstrumentType,
+  hasAudioEffectType,
+} from '~/lib/audio'
 import { ApplicationState } from '~/state/configure-store'
 import { connectionsSelector } from '~/state/connections/selectors'
 
@@ -24,12 +28,12 @@ export const nodesIdentifierMetaSelector = createSelector(
 
 export const instrumentsIdentifierMetaSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
-  (meta) => meta.filter(isInstrument),
+  (meta) => meta.filter(hasInstrumentType),
 )
 
 export const audioEffectsIdentifierMetaSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
-  (meta) => meta.filter(isAudioEffect),
+  (meta) => meta.filter(hasAudioEffectType),
 )
 
 export const mainOutNodeSelector = createSelector(

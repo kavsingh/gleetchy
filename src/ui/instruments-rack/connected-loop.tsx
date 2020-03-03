@@ -47,6 +47,7 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
 
   return (
     <UI
+      nodeId={id}
       loopStart={audioProps.loopStart}
       loopEnd={audioProps.loopEnd}
       label={label}

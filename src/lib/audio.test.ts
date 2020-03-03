@@ -1,6 +1,6 @@
 import {
-  isAudioEffect,
-  isInstrument,
+  hasAudioEffectType,
+  hasInstrumentType,
   isSameConnection,
   getConnectionsFor,
   hasConnectionTo,
@@ -11,27 +11,27 @@ import {
 describe('lib/audio', () => {
   describe('isAudioEffect', () => {
     it('determines if node is an audio effect', () => {
-      expect(isAudioEffect({})).toBe(false)
-      expect(isAudioEffect({ type: 'not_effect' })).toBe(false)
-      expect(isAudioEffect({ type: 'audio_effect' })).toBe(false)
-      expect(isAudioEffect({ type: 'AUDIO_EFFECT' })).toBe(false)
-      expect(isAudioEffect({ type: 'audio_effect_' })).toBe(true)
-      expect(isAudioEffect({ type: 'AUDIO_EFFECT_' })).toBe(true)
-      expect(isAudioEffect({ type: 'audio-effect_' })).toBe(false)
-      expect(isAudioEffect({ type: 'AUDIO_EFFECT-' })).toBe(false)
+      expect(hasAudioEffectType({})).toBe(false)
+      expect(hasAudioEffectType({ type: 'not_effect' })).toBe(false)
+      expect(hasAudioEffectType({ type: 'audio_effect' })).toBe(false)
+      expect(hasAudioEffectType({ type: 'AUDIO_EFFECT' })).toBe(false)
+      expect(hasAudioEffectType({ type: 'audio_effect_' })).toBe(true)
+      expect(hasAudioEffectType({ type: 'AUDIO_EFFECT_' })).toBe(true)
+      expect(hasAudioEffectType({ type: 'audio-effect_' })).toBe(false)
+      expect(hasAudioEffectType({ type: 'AUDIO_EFFECT-' })).toBe(false)
     })
   })
 
   describe('isInstrument', () => {
     it('determines if node is an instrument', () => {
-      expect(isInstrument({})).toBe(false)
-      expect(isInstrument({ type: 'not_instrument' })).toBe(false)
-      expect(isInstrument({ type: 'instrument' })).toBe(false)
-      expect(isInstrument({ type: 'INSTRUMENT' })).toBe(false)
-      expect(isInstrument({ type: 'instrument_' })).toBe(true)
-      expect(isInstrument({ type: 'INSTRUMENT_' })).toBe(true)
-      expect(isInstrument({ type: 'instrument-' })).toBe(false)
-      expect(isInstrument({ type: 'INSTRUMENT-' })).toBe(false)
+      expect(hasInstrumentType({})).toBe(false)
+      expect(hasInstrumentType({ type: 'not_instrument' })).toBe(false)
+      expect(hasInstrumentType({ type: 'instrument' })).toBe(false)
+      expect(hasInstrumentType({ type: 'INSTRUMENT' })).toBe(false)
+      expect(hasInstrumentType({ type: 'instrument_' })).toBe(true)
+      expect(hasInstrumentType({ type: 'INSTRUMENT_' })).toBe(true)
+      expect(hasInstrumentType({ type: 'instrument-' })).toBe(false)
+      expect(hasInstrumentType({ type: 'INSTRUMENT-' })).toBe(false)
     })
   })
 

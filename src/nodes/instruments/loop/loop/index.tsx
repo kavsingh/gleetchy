@@ -5,62 +5,16 @@ import styled from '@emotion/styled'
 import { noop } from '~/lib/util'
 import { UI as Eq3 } from '~/nodes/audio-effects/eq3'
 import useFileDropRegion from '~/components/hooks/use-file-drop-region'
-import Sample from '~/components/sample'
 
+import LoopSample from './loop-sample'
 import PlaybackControls from './playback-controls'
 import LoopTitleBar from './loop-title-bar'
 import { LoopUIProps } from './types'
 
-const Container = styled.div<{ isActive: boolean }>`
-  width: 100%;
-  height: 12em;
-  opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
-  transition: opacity 0.2s ease-out;
-`
-
-const TitleBarContainer = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 100%;
-`
-
-const FileDropWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  justify-content: stretch;
-  width: 100%;
-  height: 100%;
-`
-
-const MainContainer = styled.div`
-  display: flex;
-  flex: 1 0 10em;
-  flex-wrap: nowrap;
-  width: 100%;
-  padding-left: 0.2em;
-`
-
-const ControlsContainer = styled.div`
-  display: flex;
-  height: 100%;
-  margin-left: 1.2em;
-`
-
-const AudioFileDropRegion: FunctionComponent<{
-  onFiles(files: File[]): unknown
-}> = ({ children, onFiles }) => {
-  const [, eventHandlers] = useFileDropRegion({
-    onFiles,
-    fileFilter: ({ type }) => type.startsWith('audio'),
-  })
-
-  return <FileDropWrapper {...eventHandlers}>{children}</FileDropWrapper>
-}
-
 class Loop extends PureComponent<LoopUIProps> {
   public render() {
     const {
+      nodeId,
       audioBuffer,
       loopStart = 0,
       loopEnd = 1,
@@ -99,7 +53,8 @@ class Loop extends PureComponent<LoopUIProps> {
             />
           </TitleBarContainer>
           <MainContainer>
-            <Sample
+            <LoopSample
+              nodeId={nodeId}
               fromSaved={!!(fileName && !audioBuffer)}
               audioBuffer={audioBuffer}
               loopStart={loopStart}
@@ -167,3 +122,50 @@ class Loop extends PureComponent<LoopUIProps> {
 }
 
 export default Loop
+
+const Container = styled.div<{ isActive: boolean }>`
+  width: 100%;
+  height: 12em;
+  opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
+  transition: opacity 0.2s ease-out;
+`
+
+const TitleBarContainer = styled.div`
+  flex-grow: 0;
+  flex-shrink: 0;
+  width: 100%;
+`
+
+const MainContainer = styled.div`
+  display: flex;
+  flex: 1 0 10em;
+  flex-wrap: nowrap;
+  width: 100%;
+  padding-left: 0.2em;
+`
+
+const ControlsContainer = styled.div`
+  display: flex;
+  height: 100%;
+  margin-left: 1.2em;
+`
+
+const AudioFileDropRegion: FunctionComponent<{
+  onFiles(files: File[]): unknown
+}> = ({ children, onFiles }) => {
+  const [, eventHandlers] = useFileDropRegion({
+    onFiles,
+    fileFilter: ({ type }) => type.startsWith('audio'),
+  })
+
+  return <FileDropWrapper {...eventHandlers}>{children}</FileDropWrapper>
+}
+
+const FileDropWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+  width: 100%;
+  height: 100%;
+`

@@ -1,13 +1,25 @@
-import { curry, F, propEq, propSatisfies, test, tryCatch } from 'ramda'
+import { curry, propEq, test } from 'ramda'
 
-import { AudioNodeConnection, AudioNodeMeta } from '~/types'
+import {
+  AudioNodeConnection,
+  AudioNodeMeta,
+  GAudioNode,
+  GInstrumentNode,
+} from '~/types'
 
-const typeSatisfies = (pred: (type: string) => boolean) =>
-  tryCatch(propSatisfies<string>(pred, 'type'), F)
+export const hasAudioEffectType = <T extends { type?: string }>(item: T) =>
+  test(/^audio_effect_/i, item.type || '')
 
-export const isAudioEffect = typeSatisfies(test(/^audio_effect_/i))
+export const hasInstrumentType = <T extends { type?: string }>(item: T) =>
+  test(/^instrument_/i, item.type || '')
 
-export const isInstrument = typeSatisfies(test(/^instrument_/i))
+export const isAudioEffectNode = (
+  node: GAudioNode | GInstrumentNode | AudioNode,
+): node is GAudioNode => hasAudioEffectType(node as GAudioNode)
+
+export const isInstrumentNode = (
+  node: GAudioNode | GInstrumentNode | AudioNode,
+): node is GInstrumentNode => hasInstrumentType(node as GAudioNode)
 
 type Connection = Omit<AudioNodeConnection, 'color'>
 

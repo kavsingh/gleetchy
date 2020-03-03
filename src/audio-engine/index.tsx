@@ -4,7 +4,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { audioNodesSelector } from '~/state/audio-nodes/selectors'
 import { connectionsSelector } from '~/state/connections/selectors'
 import { audioEngineEventsSelector } from '~/state/audio-engine/selectors'
-import { clearAudioEngineEventsAction } from '~/state/audio-engine/actions'
+import {
+  clearAudioEngineEventsAction,
+  dispatchAudioEngineSubscriptionAction,
+} from '~/state/audio-engine/actions'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 
 import BaseAudioEngine from './audio-engine'
@@ -22,6 +25,14 @@ const AudioEngine: FunctionComponent = () => {
     [dispatch],
   )
 
+  const dispatchSubscriptionEvent = useCallback<
+    typeof dispatchAudioEngineSubscriptionAction
+  >(
+    (nodeId, eventPayload) =>
+      dispatch(dispatchAudioEngineSubscriptionAction(nodeId, eventPayload)),
+    [dispatch],
+  )
+
   return (
     <BaseAudioEngine
       isPlaying={isPlaying}
@@ -29,6 +40,7 @@ const AudioEngine: FunctionComponent = () => {
       connections={connections}
       audioEngineEvents={audioEngineEvents}
       clearAudioEngineEvents={clearAudioEngineEvents}
+      dispatchSubscriptionEvent={dispatchSubscriptionEvent}
     />
   )
 }

@@ -1,62 +1,17 @@
 import React, { FunctionComponent, memo, useMemo } from 'react'
 import styled from '@emotion/styled'
-import { withTheme } from 'emotion-theming'
+import { useTheme } from 'emotion-theming'
 import color from 'color'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { UITheme, ThemeProps } from '~/style/theme'
+import { ThemeProps, UITheme } from '~/style/theme'
 import LoopRegion from '~/components/loop-region'
 import Waveform from '~/components/waveform'
 
-export interface SampleProps {
-  audioBuffer: Nullable<AudioBuffer>
-  fromSaved?: boolean
-  loopStart?: number
-  loopEnd?: number
-  onLoopStartDrag?(movement: number): unknown
-  onLoopEndDrag?(movement: number): unknown
-  onLoopRegionDrag?(movement: number): unknown
-  selectAudioFile?(): unknown
-  theme: UITheme
-}
-
-const Container = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-`
-
-const WaveformContainer = styled.div`
-  ${layoutAbsoluteFill}
-  z-index: 1;
-`
-
-const LoopRegionContainer = styled.div`
-  ${layoutAbsoluteFill}
-  z-index: 2;
-`
-
-const InitLoadButon = styled.div<ThemeProps>`
-  ${layoutAbsoluteFill}
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  padding: 3em;
-  background-color: ${({ theme }) =>
-    color(theme.colors.page).alpha(0.96).string()};
-  cursor: pointer;
-
-  span {
-    display: block;
-    text-align: center;
-  }
-`
-
 const Sample: FunctionComponent<SampleProps> = ({
   audioBuffer,
+  positionRatio = 0,
   loopStart = 0,
   loopEnd = 1,
   fromSaved = false,
@@ -64,8 +19,9 @@ const Sample: FunctionComponent<SampleProps> = ({
   onLoopEndDrag = noop,
   onLoopRegionDrag = noop,
   selectAudioFile = noop,
-  theme,
 }) => {
+  const theme = useTheme<UITheme>()
+
   const waveForm = useMemo(
     () => (
       <Waveform
@@ -74,7 +30,7 @@ const Sample: FunctionComponent<SampleProps> = ({
         buffer={audioBuffer}
       />
     ),
-    [audioBuffer, theme],
+    [audioBuffer, theme.colors.emphasis, theme.colors.keyline],
   )
   const loopRegion = useMemo(
     () => (
@@ -93,7 +49,10 @@ const Sample: FunctionComponent<SampleProps> = ({
     <Container>
       <WaveformContainer>{waveForm}</WaveformContainer>
       {audioBuffer ? (
-        <LoopRegionContainer>{loopRegion}</LoopRegionContainer>
+        <>
+          <Playhead position={positionRatio} />
+          <LoopRegionContainer>{loopRegion}</LoopRegionContainer>
+        </>
       ) : (
         <InitLoadButon
           role="button"
@@ -121,17 +80,70 @@ const Sample: FunctionComponent<SampleProps> = ({
   )
 }
 
-type SampleProp = keyof SampleProps
+export default memo(Sample)
 
-const updateProps: SampleProp[] = [
-  'fromSaved',
-  'audioBuffer',
-  'loopStart',
-  'loopEnd',
-]
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
 
-export default memo(
-  withTheme(Sample),
-  (prevProps, nextProps) =>
-    !updateProps.some((prop) => prevProps[prop] !== nextProps[prop]),
-)
+const WaveformContainer = styled.div`
+  ${layoutAbsoluteFill}
+  z-index: 1;
+`
+
+const Playhead = styled.div<ThemeProps & { position: number }>`
+  ${layoutAbsoluteFill}
+  z-index: 2;
+  transform: translateX(${({ position }) => position * 100}%);
+  pointer-events: none;
+
+  &::before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    display: block;
+    width: 1px;
+    background-color: ${({ theme }) => theme.colors.emphasis};
+    content: ' ';
+  }
+`
+
+const LoopRegionContainer = styled.div`
+  ${layoutAbsoluteFill}
+  z-index: 3;
+`
+
+const InitLoadButon = styled.div<ThemeProps>`
+  ${layoutAbsoluteFill}
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  padding: 3em;
+  background-color: ${({ theme }) =>
+    color(theme.colors.page)
+      .alpha(0.96)
+      .string()};
+  cursor: pointer;
+
+  span {
+    display: block;
+    text-align: center;
+  }
+`
+
+export interface SampleProps {
+  audioBuffer: Nullable<AudioBuffer>
+  positionRatio?: number
+  fromSaved?: boolean
+  loopStart?: number
+  loopEnd?: number
+  onLoopStartDrag?(movement: number): unknown
+  onLoopEndDrag?(movement: number): unknown
+  onLoopRegionDrag?(movement: number): unknown
+  selectAudioFile?(): unknown
+}

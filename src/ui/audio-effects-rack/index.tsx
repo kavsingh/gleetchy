@@ -23,7 +23,7 @@ const AudioEffectsRack: FunctionComponentWithoutChildren = () => (
 export default AudioEffectsRack
 
 const Rack: FunctionComponentWithoutChildren = () => {
-  const [{ audioEffects }] = useAudioNodesMeta()
+  const { audioEffects } = useAudioNodesMeta()
 
   return (
     <>
