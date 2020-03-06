@@ -2,20 +2,14 @@ import React, { PureComponent, ReactNode } from 'react'
 
 import ErrorMessage from '~/components/error-message'
 
-const defaultRenderError = (error: Error): ReactNode => (
+const defaultRenderError: ErrorRenderer = error => (
   <ErrorMessage>{error.toString()}</ErrorMessage>
 )
 
-export interface ErrorBoundaryProps {
-  silent?: boolean
-  renderError?(error: Error): ReactNode
-}
-
-interface State {
-  error?: Error
-}
-
-class ErrorBoundary extends PureComponent<ErrorBoundaryProps, State> {
+class ErrorBoundary extends PureComponent<
+  { silent?: boolean; renderError?: ErrorRenderer },
+  State
+> {
   public state: State = {}
 
   public componentDidCatch(error: Error) {
@@ -35,3 +29,9 @@ class ErrorBoundary extends PureComponent<ErrorBoundaryProps, State> {
 }
 
 export default ErrorBoundary
+
+export type ErrorRenderer = <E extends Error>(error: E) => ReactNode
+
+interface State {
+  error?: Error
+}
