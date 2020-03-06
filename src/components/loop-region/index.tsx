@@ -1,10 +1,11 @@
-import React, { Component } from 'react'
+import React, { useCallback, useRef, memo } from 'react'
+import styled from '@emotion/styled'
+import { memoizeWith, identity } from 'ramda'
 import color from 'color'
-import { css } from '@emotion/core'
-import { withTheme } from 'emotion-theming'
 
+import { FunctionComponentWithoutChildren } from '~/types'
 import { noop } from '~/lib/util'
-import { UITheme } from '~/style/theme'
+import { ThemeProps } from '~/style/theme'
 import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag, {
   SinglePointerDragState,
@@ -12,147 +13,146 @@ import SinglePointerDrag, {
 
 import LoopHandle from './loop-handle'
 
-const rootStyle = css({
-  height: '100%',
-  position: 'relative',
-  width: '100%',
-})
-
-const handleContainerStyle = css({
-  cursor: 'ew-resize',
-  height: '100%',
-  position: 'absolute',
-  top: 0,
-  width: 10,
-  zIndex: 1,
-})
-
-const activeRegionStyle = css({
-  bottom: 0,
-  cursor: 'move',
-  position: 'absolute',
-  top: 0,
-})
-
-const inactiveRegionStyle = (theme: UITheme) =>
-  css({
-    backgroundColor: color(theme.colors.page).alpha(0.8).string(),
-    bottom: 0,
-    position: 'absolute',
-    top: 0,
-    zIndex: 0,
-  })
-
-export interface LoopRegionProps {
+const LoopRegion: FunctionComponentWithoutChildren<{
   loopStart: number
   loopEnd: number
   onLoopStartDrag?(movement: number): unknown
   onLoopEndDrag?(movement: number): unknown
   onLoopRegionDrag?(movement: number): unknown
+}> = ({
+  loopStart,
+  loopEnd,
+  onLoopStartDrag = noop,
+  onLoopEndDrag = noop,
+  onLoopRegionDrag = noop,
+}) => {
+  const containerRef = useRef<HTMLDivElement | null>(null)
+
+  const handleStartHandleDrag = useCallback(
+    ({ movementX }: SinglePointerDragState) => {
+      if (containerRef.current) {
+        onLoopStartDrag(movementX / containerRef.current.offsetWidth)
+      }
+    },
+    [onLoopStartDrag],
+  )
+
+  const handleEndHandleDrag = useCallback(
+    ({ movementX }: SinglePointerDragState) => {
+      if (containerRef.current) {
+        onLoopEndDrag(movementX / containerRef.current.offsetWidth)
+      }
+    },
+    [onLoopEndDrag],
+  )
+
+  const handleLoopRegionDrag = useCallback(
+    ({ movementX }: SinglePointerDragState) => {
+      if (containerRef.current) {
+        onLoopRegionDrag(movementX / containerRef.current.offsetWidth)
+      }
+    },
+    [onLoopRegionDrag],
+  )
+
+  const regionRatio = loopEnd - loopStart
+  const preferRegionDrag = containerRef.current
+    ? regionRatio * containerRef.current.offsetWidth < 30
+    : false
+
+  return (
+    <Container ref={containerRef}>
+      <SinglePointerDrag onDragMove={handleStartHandleDrag}>
+        {({ dragListeners }) => (
+          <HandleContainer
+            {...dragListeners}
+            role="presentation"
+            offset={loopStart}
+          >
+            <LoopHandle align="left" />
+          </HandleContainer>
+        )}
+      </SinglePointerDrag>
+      <SinglePointerDrag onDragMove={handleEndHandleDrag}>
+        {({ dragListeners }) => (
+          <HandleContainer
+            {...dragListeners}
+            role="presentation"
+            offset={loopEnd}
+          >
+            <LoopHandle align="right" />
+          </HandleContainer>
+        )}
+      </SinglePointerDrag>
+      <RegionsContainer>
+        <InactiveRegion start={0} end={loopStart} />
+        {regionRatio < 1 ? (
+          <SinglePointerDrag onDragMove={handleLoopRegionDrag}>
+            {({ dragListeners }) => (
+              <ActiveRegion
+                {...dragListeners}
+                start={loopStart}
+                end={loopEnd}
+                preferred={preferRegionDrag}
+              />
+            )}
+          </SinglePointerDrag>
+        ) : null}
+        <InactiveRegion start={loopEnd} end={1} />
+      </RegionsContainer>
+    </Container>
+  )
 }
 
-class LoopRegion extends Component<LoopRegionProps> {
-  private rootNode?: HTMLDivElement | null
+const Container = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+`
 
-  public shouldComponentUpdate(props: LoopRegionProps) {
-    return (
-      this.props.loopStart !== props.loopStart ||
-      this.props.loopEnd !== props.loopEnd
-    )
-  }
+const HandleContainer = styled.div<{ offset: number }>`
+  position: absolute;
+  top: 0;
+  left: ${({ offset }) => offset * 100}%;
+  z-index: 1;
+  width: 10px;
+  height: 100%;
+  cursor: ew-resize;
+`
 
-  public render() {
-    const { loopStart = 0, loopEnd = 1 } = this.props
-    const regionRatio = loopEnd - loopStart
-    const preferRegionDrag = this.rootNode
-      ? regionRatio * this.rootNode.offsetWidth < 30
-      : false
+const RegionsContainer = styled.div`
+  ${layoutAbsoluteFill}
+`
 
-    return (
-      <div css={rootStyle} ref={(c) => (this.rootNode = c)}>
-        <SinglePointerDrag onDragMove={this.handleStartHandleDrag}>
-          {({ dragListeners }) => (
-            <div
-              {...dragListeners}
-              role="presentation"
-              css={handleContainerStyle}
-              style={{ left: `${loopStart * 100}%` }}
-            >
-              <LoopHandle align="left" />
-            </div>
-          )}
-        </SinglePointerDrag>
-        <SinglePointerDrag onDragMove={this.handleEndHandleDrag}>
-          {({ dragListeners }) => (
-            <div
-              {...dragListeners}
-              role="presentation"
-              css={handleContainerStyle}
-              style={{ left: `${loopEnd * 100}%` }}
-            >
-              <LoopHandle align="right" />
-            </div>
-          )}
-        </SinglePointerDrag>
-        <div css={layoutAbsoluteFill}>
-          <div
-            css={inactiveRegionStyle}
-            style={{ left: 0, right: `${(1 - loopStart) * 100}%` }}
-          />
-          {regionRatio < 1 ? (
-            <SinglePointerDrag onDragMove={this.handleLoopRegionDrag}>
-              {({ dragListeners }) => (
-                <div
-                  {...dragListeners}
-                  role="presentation"
-                  css={activeRegionStyle}
-                  style={{
-                    left: `${loopStart * 100}%`,
-                    right: `${(1 - loopEnd) * 100}%`,
-                    zIndex: preferRegionDrag ? 2 : 0,
-                  }}
-                />
-              )}
-            </SinglePointerDrag>
-          ) : null}
-          <div
-            css={inactiveRegionStyle}
-            style={{ left: `${loopEnd * 100}%`, right: 0 }}
-          />
-        </div>
-      </div>
-    )
-  }
+const Region = styled.div<{ start: number; end: number }>`
+  position: absolute;
+  top: 0;
+  right: ${({ end }) => `${(1 - end) * 100}%`};
+  bottom: 0;
+  left: ${({ start }) => `${start * 100}%`};
+`
 
-  private handleStartHandleDrag = ({ movementX }: SinglePointerDragState) => {
-    if (!this.rootNode) {
-      return
-    }
+const ActiveRegion = styled(Region)<{
+  preferred: boolean
+}>`
+  z-index: ${({ preferred }) => (preferred ? 2 : 0)};
+  cursor: move;
+`
 
-    const { onLoopStartDrag = noop } = this.props
+const inactiveOverlayColor = memoizeWith(identity, (baseColor: string) =>
+  color(baseColor)
+    .alpha(0.8)
+    .string(),
+)
 
-    onLoopStartDrag(movementX / this.rootNode.offsetWidth)
-  }
+const InactiveRegion = styled(Region)<ThemeProps>`
+  z-index: 0;
+  background-color: ${({ theme }) => inactiveOverlayColor(theme.colors.page)};
+`
 
-  private handleEndHandleDrag = ({ movementX }: SinglePointerDragState) => {
-    if (!this.rootNode) {
-      return
-    }
-
-    const { onLoopEndDrag = noop } = this.props
-
-    onLoopEndDrag(movementX / this.rootNode.offsetWidth)
-  }
-
-  private handleLoopRegionDrag = ({ movementX }: SinglePointerDragState) => {
-    if (!this.rootNode) {
-      return
-    }
-
-    const { onLoopRegionDrag = noop } = this.props
-
-    onLoopRegionDrag(movementX / this.rootNode.offsetWidth)
-  }
-}
-
-export default withTheme(LoopRegion)
+export default memo(
+  LoopRegion,
+  (prevProps, nextProps) =>
+    prevProps.loopStart === nextProps.loopStart &&
+    prevProps.loopEnd === nextProps.loopEnd,
+)

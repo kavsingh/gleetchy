@@ -1,83 +1,57 @@
-import React, { memo, FunctionComponent } from 'react'
-import { css } from '@emotion/core'
-import { withTheme } from 'emotion-theming'
+import React, { memo } from 'react'
+import styled from '@emotion/styled'
 
-import { UITheme } from '~/style/theme'
+import { FunctionComponentWithoutChildren } from '~/types'
+import { ThemeProps } from '~/style/theme'
 
-const rootStyle = css({
-  height: '100%',
-  pointerEvents: 'none',
-  position: 'relative',
-  width: '100%',
-})
-
-const alignRightStyle = css({
-  transform: 'translateX(-100%)',
-})
-
-const tagStyle = (theme: UITheme) =>
-  css({
-    backgroundColor: theme.colors.emphasis,
-    height: 1,
-    pointerEvents: 'all',
-    position: 'absolute',
-    top: 0,
-    width: '60%',
-  })
-
-const tagAlignLeftStyle = css({
-  left: 0,
-})
-
-const tagAlignRightStyle = css({
-  right: 0,
-})
-
-const barStyle = css({
-  height: '100%',
-  pointerEvents: 'all',
-  position: 'absolute',
-  top: 0,
-  width: '100%',
-})
-
-const barAlignLeftStyle = (theme: UITheme) =>
-  css({
-    borderRight: `1px solid ${theme.colors.emphasis}`,
-    left: '-100%',
-  })
-
-const barAlignRightStyle = (theme: UITheme) =>
-  css({
-    borderLeft: `1px solid ${theme.colors.emphasis}`,
-    right: '-100%',
-  })
-
-export interface LoopHandleProps {
-  align: 'left' | 'right'
-  theme: UITheme
-}
-
-const LoopHandle: FunctionComponent<LoopHandleProps> = ({
-  align = 'left',
-  theme,
-}) => (
-  <div css={[rootStyle, align === 'right' && alignRightStyle]}>
-    <div
-      css={[
-        tagStyle(theme),
-        align === 'left' && tagAlignLeftStyle,
-        align === 'right' && tagAlignRightStyle,
-      ]}
-    />
-    <div
-      css={[
-        barStyle,
-        align === 'left' && barAlignLeftStyle(theme),
-        align === 'right' && barAlignRightStyle(theme),
-      ]}
-    />
-  </div>
+const LoopHandle: FunctionComponentWithoutChildren<{
+  align: Alignment
+}> = ({ align = 'left' }) => (
+  <Container align={align}>
+    <Tag align={align} />
+    <Bar align={align} />
+  </Container>
 )
 
-export default memo(withTheme(LoopHandle))
+export default memo(LoopHandle)
+
+const Container = styled.div<{ align: Alignment }>`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: ${({ align }) =>
+    align === 'right' ? 'translateX(-100%)' : 'initial'};
+  pointer-events: none;
+`
+
+const Tag = styled.div<
+  { align: Alignment; verticalPosition?: 'top' | 'bottom' } & ThemeProps
+>`
+  position: absolute;
+  top: ${({ verticalPosition = 'top' }) =>
+    verticalPosition === 'top' ? 0 : 'initial'};
+  right: ${({ align }) => (align === 'right' ? 0 : 'initial')};
+  bottom: ${({ verticalPosition = 'top' }) =>
+    verticalPosition === 'bottom' ? 0 : 'initial'};
+  left: ${({ align }) => (align === 'left' ? 0 : 'initial')};
+  width: 60%;
+  height: 1px;
+  background-color: ${({ theme }) => theme.colors.emphasis};
+  pointer-events: all;
+`
+
+const Bar = styled.div<{ align: Alignment } & ThemeProps>`
+  position: absolute;
+  top: 0;
+  right: ${({ align }) => (align === 'right' ? '-100%' : 'initial')};
+  left: ${({ align }) => (align === 'left' ? '-100%' : 'initial')};
+  width: 100%;
+  height: 100%;
+  border-right: ${({ align, theme }) =>
+    align === 'left' ? `1px solid ${theme.colors.emphasis}` : 'none'};
+  border-left: ${({ align, theme }) =>
+    align === 'right' ? `1px solid ${theme.colors.emphasis}` : 'none'};
+  pointer-events: all;
+`
+
+type Alignment = 'left' | 'right'
