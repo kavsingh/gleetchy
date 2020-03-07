@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { memo } from 'react'
+import Favicon from 'react-favicon'
 import styled from '@emotion/styled'
 import { ThemeProvider } from 'emotion-theming'
-import Favicon from 'react-favicon'
 
 import { FunctionComponentWithoutChildren } from '~/types'
 import useUITheme from '~/state/hooks/use-ui-theme'
@@ -41,7 +41,7 @@ const UI: FunctionComponentWithoutChildren = () => {
   )
 }
 
-export default UI
+export default memo(UI)
 
 const Container = styled.div<ThemeProps>`
   max-width: 92em;

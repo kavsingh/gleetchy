@@ -1,29 +1,11 @@
 import React, { FunctionComponent, useRef, useEffect, memo } from 'react'
-import { css } from '@emotion/core'
+import styled from '@emotion/styled'
 import colorFn from 'color'
 import { map } from 'ramda'
 
 import { requireWindowWith } from '~/lib/env'
 
 const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
-
-const rootStyle = css({
-  height: '100%',
-  overflow: 'hidden',
-  width: '100%',
-})
-
-const canvasStyle = css({
-  height: '100%',
-  width: '100%',
-})
-
-export interface WaveformProps {
-  color: string
-  baselineColor: string
-  buffer: Nullable<AudioBuffer>
-  timeRegions?: number
-}
 
 const drawTempWaveform = (
   context: CanvasRenderingContext2D,
@@ -111,7 +93,7 @@ const Waveform: FunctionComponent<WaveformProps> = ({
   timeRegions,
   buffer,
 }) => {
-  const canvasNodeRef = useRef<HTMLCanvasElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const WINDOW = requireWindowWith()
@@ -119,8 +101,8 @@ const Waveform: FunctionComponent<WaveformProps> = ({
     if (!WINDOW) return
 
     const handleResize = () => {
-      if (canvasNodeRef.current) {
-        updateWaveform(canvasNodeRef.current, {
+      if (canvasRef.current) {
+        updateWaveform(canvasRef.current, {
           color,
           baselineColor,
           timeRegions,
@@ -137,10 +119,28 @@ const Waveform: FunctionComponent<WaveformProps> = ({
   }, [color, baselineColor, timeRegions, buffer])
 
   return (
-    <div css={rootStyle}>
-      <canvas css={canvasStyle} ref={canvasNodeRef} />
-    </div>
+    <Container>
+      <Canvas ref={canvasRef} />
+    </Container>
   )
 }
 
 export default memo(Waveform)
+
+const Container = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`
+
+const Canvas = styled.canvas`
+  width: 100%;
+  height: 100%;
+`
+
+export interface WaveformProps {
+  color: string
+  baselineColor: string
+  buffer: Nullable<AudioBuffer>
+  timeRegions?: number
+}

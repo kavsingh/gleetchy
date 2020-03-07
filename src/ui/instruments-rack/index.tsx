@@ -1,4 +1,4 @@
-import React, { useCallback, FunctionComponent } from 'react'
+import React, { useCallback, FunctionComponent, memo } from 'react'
 import styled from '@emotion/styled'
 
 import { FunctionComponentWithoutChildren } from '~/types'
@@ -20,7 +20,7 @@ const InstrumentsRack: FunctionComponentWithoutChildren = () => {
   )
 }
 
-export default InstrumentsRack
+export default memo(InstrumentsRack)
 
 const Rack: FunctionComponentWithoutChildren = () => {
   const { instruments } = useAudioNodesMeta()

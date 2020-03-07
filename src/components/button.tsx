@@ -18,11 +18,6 @@ const Button: FunctionComponent<ButtonProps> = ({ handler, children }) => (
 
 export default memo(Button)
 
-export interface ButtonProps {
-  handler: () => unknown
-  children: string | string[]
-}
-
 const Container = styled.div<ThemeProps>`
   font-size: 0.8rem;
   cursor: pointer;
@@ -33,3 +28,8 @@ const Container = styled.div<ThemeProps>`
     color: ${({ theme }) => theme.colors.emphasis};
   }
 `
+
+export interface ButtonProps {
+  handler: () => unknown
+  children: string | string[]
+}

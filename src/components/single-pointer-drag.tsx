@@ -5,20 +5,6 @@ import { pipe, tap } from 'ramda'
 import { cancelEvent, noop } from '~/lib/util'
 import { filterSupportedEvents, requireWindowWith } from '~/lib/env'
 
-type MouseOrTouchEvent =
-  | Event
-  | MouseEvent
-  | TouchEvent
-  | React.MouseEvent
-  | React.TouchEvent
-
-interface NormalizedEvent {
-  currentTarget: HTMLElement
-  clientX: number
-  clientY: number
-  timeStamp: number
-}
-
 const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
   const { currentTarget, timeStamp } = event
   const { clientX = 0, clientY = 0 } = (event as TouchEvent).touches
@@ -35,54 +21,7 @@ const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
 
 const cancelAndNormalizeEvent = pipe(tap(cancelEvent), normalizeEvent)
 
-interface ChildRenderProps {
-  dragListeners: {
-    onMouseDown(event: React.MouseEvent): unknown
-    onTouchStart(event: React.TouchEvent): unknown
-  }
-}
-
-export interface SinglePointerDragState {
-  displacementX: number
-  displacementY: number
-  duration: number
-  isDragging: boolean
-  movementX: number
-  movementY: number
-  startTime: number
-  startX: number
-  startY: number
-  target: HTMLElement | null
-  targetRect: ClientRect | DOMRect | null
-  targetStartX: number
-  targetStartY: number
-  targetX: number
-  targetY: number
-  timeStamp: number
-  x: number
-  y: number
-}
-
-export type SinglePointerDragStartHandler = (
-  state: SinglePointerDragState,
-) => unknown
-
-export type SinglePointerDragMoveHandler = (
-  state: SinglePointerDragState,
-) => unknown
-
-export type SinglePointerDragEndHandler = (
-  state: SinglePointerDragState,
-) => unknown
-
-export interface SinglePointerDragProps {
-  children(props: ChildRenderProps): ReactNode
-  onDragStart?: SinglePointerDragStartHandler
-  onDragMove?: SinglePointerDragMoveHandler
-  onDragEnd?: SinglePointerDragEndHandler
-}
-
-class SinglePointerDrag extends PureComponent<
+export default class SinglePointerDrag extends PureComponent<
   SinglePointerDragProps,
   SinglePointerDragState
 > {
@@ -297,4 +236,63 @@ class SinglePointerDrag extends PureComponent<
   }
 }
 
-export default SinglePointerDrag
+export interface SinglePointerDragState {
+  displacementX: number
+  displacementY: number
+  duration: number
+  isDragging: boolean
+  movementX: number
+  movementY: number
+  startTime: number
+  startX: number
+  startY: number
+  target: HTMLElement | null
+  targetRect: ClientRect | DOMRect | null
+  targetStartX: number
+  targetStartY: number
+  targetX: number
+  targetY: number
+  timeStamp: number
+  x: number
+  y: number
+}
+
+export type SinglePointerDragStartHandler = (
+  state: SinglePointerDragState,
+) => unknown
+
+export type SinglePointerDragMoveHandler = (
+  state: SinglePointerDragState,
+) => unknown
+
+export type SinglePointerDragEndHandler = (
+  state: SinglePointerDragState,
+) => unknown
+
+export interface SinglePointerDragProps {
+  children(props: ChildRenderProps): ReactNode
+  onDragStart?: SinglePointerDragStartHandler
+  onDragMove?: SinglePointerDragMoveHandler
+  onDragEnd?: SinglePointerDragEndHandler
+}
+
+type MouseOrTouchEvent =
+  | Event
+  | MouseEvent
+  | TouchEvent
+  | React.MouseEvent
+  | React.TouchEvent
+
+interface NormalizedEvent {
+  currentTarget: HTMLElement
+  clientX: number
+  clientY: number
+  timeStamp: number
+}
+
+interface ChildRenderProps {
+  dragListeners: {
+    onMouseDown(event: React.MouseEvent): unknown
+    onTouchStart(event: React.TouchEvent): unknown
+  }
+}

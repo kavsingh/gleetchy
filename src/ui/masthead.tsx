@@ -1,12 +1,36 @@
-import React, { FunctionComponent } from 'react'
+import React, { memo } from 'react'
 import { GoMarkGithub } from 'react-icons/go'
 import styled from '@emotion/styled'
-import { withTheme } from 'emotion-theming'
 
+import { FunctionComponentWithoutChildren } from '~/types'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import useUITheme from '~/state/hooks/use-ui-theme'
 import { ThemeProps } from '~/style/theme'
 import PlayPauseButton from '~/components/play-pause-button'
+
+const Masthead: FunctionComponentWithoutChildren = () => {
+  const [{ isPlaying }, { togglePlayback }] = useGlobalPlayback()
+  const [, { toggleTheme }] = useUITheme()
+
+  return (
+    <Container>
+      <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
+      <SideControlsContainer>
+        <button onClick={toggleTheme}>L/D</button>
+        <a
+          href="https://www.github.com/kavsingh/gleetchy"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="view on github"
+        >
+          <GoMarkGithub />
+        </a>
+      </SideControlsContainer>
+    </Container>
+  )
+}
+
+export default memo(Masthead)
 
 const Container = styled.div`
   display: flex;
@@ -45,27 +69,3 @@ const SideControlsContainer = styled.div<ThemeProps>`
     opacity: 1;
   }
 `
-
-const Masthead: FunctionComponent = () => {
-  const [{ isPlaying }, { togglePlayback }] = useGlobalPlayback()
-  const [, { toggleTheme }] = useUITheme()
-
-  return (
-    <Container>
-      <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
-      <SideControlsContainer>
-        <button onClick={toggleTheme}>L/D</button>
-        <a
-          href="https://www.github.com/kavsingh/gleetchy"
-          target="_blank"
-          rel="noopener noreferrer"
-          title="view on github"
-        >
-          <GoMarkGithub />
-        </a>
-      </SideControlsContainer>
-    </Container>
-  )
-}
-
-export default withTheme(Masthead)

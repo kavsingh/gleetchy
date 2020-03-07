@@ -7,7 +7,13 @@ import { noop } from '~/lib/util'
 import TextInput from './text-input'
 import Button from './button'
 
-const TitleBar: FunctionComponent<TitleBarProps> = ({
+const TitleBar: FunctionComponent<{
+  label: string
+  type: string
+  connections?: AudioNodeConnection[]
+  onLabelChange?(label: string): unknown
+  onRemoveClick?(): unknown
+}> = ({
   label,
   type,
   onLabelChange = noop,
@@ -28,10 +34,10 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
 
   return (
     <Container>
-      <LabelContainer>
+      <ConnectionsAndLabelContainer>
         <ConnectionsContainer>{connectionIndicators}</ConnectionsContainer>
         <TextInput onChange={onLabelChange} value={label} />
-      </LabelContainer>
+      </ConnectionsAndLabelContainer>
       <InfoContainer>
         <TypeLabel>{type} /</TypeLabel>
         {children}
@@ -43,20 +49,12 @@ const TitleBar: FunctionComponent<TitleBarProps> = ({
 
 export default TitleBar
 
-export interface TitleBarProps {
-  label: string
-  type: string
-  connections?: AudioNodeConnection[]
-  onLabelChange?(label: string): unknown
-  onRemoveClick?(): unknown
-}
-
 const Container = styled.div`
   margin-bottom: 0.6em;
   font-size: 0.8em;
 `
 
-const LabelContainer = styled.div`
+const ConnectionsAndLabelContainer = styled.div`
   display: flex;
   flex-direction: row;
   align-items: center;

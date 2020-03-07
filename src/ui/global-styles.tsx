@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { css, Global } from '@emotion/core'
 
 import { FunctionComponentWithoutChildren } from '~/types'
@@ -44,4 +44,4 @@ const GlobalStyles: FunctionComponentWithoutChildren = () => (
   <Global styles={globalStyles} />
 )
 
-export default GlobalStyles
+export default memo(GlobalStyles)

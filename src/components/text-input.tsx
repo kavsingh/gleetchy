@@ -1,14 +1,38 @@
-import React, {
-  FunctionComponent,
-  useCallback,
-  ChangeEventHandler,
-} from 'react'
+import React, { useCallback, ChangeEventHandler, memo } from 'react'
 import AutosizeInput from 'react-input-autosize'
 import styled from '@emotion/styled'
-import { withTheme } from 'emotion-theming'
 
+import { FunctionComponentWithoutChildren } from '~/types'
 import { cancelReactEvent, noop } from '~/lib/util'
 import { ThemeProps } from '~/style/theme'
+
+const TextInput: FunctionComponentWithoutChildren<{
+  value: string | number
+  placeholder?: string
+  type?: 'text' | 'number'
+  onChange?(value: string | number): unknown
+}> = ({ value, placeholder = '', type = 'text', onChange = noop }) => {
+  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
+    (event) => {
+      cancelReactEvent(event)
+      onChange(event.currentTarget.value)
+    },
+    [onChange],
+  )
+
+  return (
+    <Container>
+      <AutosizeInput
+        value={value}
+        placeholder={placeholder}
+        onChange={handleChange}
+        type={type}
+      />
+    </Container>
+  )
+}
+
+export default memo(TextInput)
 
 const Container = styled.div<ThemeProps>`
   input {
@@ -31,38 +55,3 @@ const Container = styled.div<ThemeProps>`
     }
   }
 `
-
-export interface TextInputProps {
-  value: string | number
-  placeholder?: string
-  type?: 'text' | 'number'
-  onChange?(value: string | number): unknown
-}
-
-const TextInput: FunctionComponent<TextInputProps> = ({
-  value,
-  placeholder = '',
-  type = 'text',
-  onChange = noop,
-}) => {
-  const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (event) => {
-      cancelReactEvent(event)
-      onChange(event.currentTarget.value)
-    },
-    [onChange],
-  )
-
-  return (
-    <Container>
-      <AutosizeInput
-        value={value}
-        placeholder={placeholder}
-        onChange={handleChange}
-        type={type}
-      />
-    </Container>
-  )
-}
-
-export default withTheme(TextInput)
