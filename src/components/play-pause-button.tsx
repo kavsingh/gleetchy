@@ -1,22 +1,19 @@
-import React, { memo, FunctionComponent } from 'react'
+import React, { memo } from 'react'
 import styled from '@emotion/styled'
 
-const Container = styled.div`
-  cursor: pointer;
-`
+import { FunctionComponentWithoutChildren } from '~/types'
 
-export interface PlayPauseButtonProps {
+const PlayPauseButton: FunctionComponentWithoutChildren<{
   isPlaying: boolean
   onClick(): unknown
-}
-
-const PlayPauseButton: FunctionComponent<PlayPauseButtonProps> = ({
-  isPlaying,
-  onClick,
-}) => (
+}> = ({ isPlaying, onClick }) => (
   <Container role="button" tabIndex={0} onClick={onClick}>
     {isPlaying ? 'Stop' : 'Play'}
   </Container>
 )
 
 export default memo(PlayPauseButton)
+
+const Container = styled.div`
+  cursor: pointer;
+`

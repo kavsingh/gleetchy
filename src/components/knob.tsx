@@ -1,38 +1,20 @@
-import React, { PureComponent } from 'react'
-import { css } from '@emotion/core'
+import React, { memo, useState, useRef, useCallback, useEffect } from 'react'
+import styled from '@emotion/styled'
+import { useTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
-import { withTheme } from 'emotion-theming'
 
-import { PropsWithoutChildren } from '~/types'
+import { FunctionComponentWithoutChildren } from '~/types'
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
 import { UITheme } from '~/style/theme'
 import SinglePointerDrag, {
-  SinglePointerDragState,
+  SinglePointerDragMoveHandler,
 } from '~/components/single-pointer-drag'
 import SVGArc from '~/components/svg-arc'
 
-const labelStyle = css({
-  flex: '0 0 auto',
-  fontSize: '0.8em',
-})
+const clampMove = clamp(0, 1)
 
-const rootStyle = css({
-  alignItems: 'center',
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-  width: '100%',
-})
-
-const knobContainerStyle = css({
-  cursor: 'move',
-  flex: '0 0 auto',
-  margin: '0.4em auto 0.3em',
-  position: 'relative',
-})
-
-export interface KnobProps {
+const Knob: FunctionComponentWithoutChildren<{
   value: number
   defaultValue?: number
   radius?: number | string
@@ -40,103 +22,116 @@ export interface KnobProps {
   label?: string
   valueLabel?: string
   onChange?(value: number): unknown
-  theme: UITheme
-}
+}> = ({
+  value,
+  defaultValue = 0.5,
+  radius = '2.4em',
+  title = '',
+  label = '',
+  valueLabel = '',
+  onChange = noop,
+}) => {
+  const theme = useTheme<UITheme>()
+  const knobRef = useRef<HTMLDivElement | null>(null)
+  const valueRef = useRef<number>(value)
+  const [axis, setAxis] = useState<MovementAxis | undefined>()
 
-interface KnobState {
-  axis?: string
-}
+  const resetAxis = useCallback(() => setAxis(undefined), [])
 
-class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
-  public state = { axis: undefined }
-
-  private knobNode?: HTMLElement | null
-
-  public render() {
-    const { axis } = this.state
-    const {
-      value = 0.5,
-      radius = '2.4em',
-      title = '',
-      label = '',
-      valueLabel = '',
-      theme,
-    } = this.props
-
-    const cursorStyles = axis
-      ? { cursor: axis === 'x' ? 'ew-resize' : 'ns-resize' }
-      : {}
-
-    return (
-      <SinglePointerDrag
-        onDragStart={this.resetAxis}
-        onDragEnd={this.resetAxis}
-        onDragMove={this.handleDragMove}
-      >
-        {({ dragListeners }) => (
-          <div css={rootStyle} title={title}>
-            <div css={labelStyle}>{label}</div>
-            <div
-              {...dragListeners}
-              onDoubleClick={this.handleDoubleClick}
-              role="presentation"
-              css={knobContainerStyle}
-              style={{ height: radius, width: radius, ...cursorStyles }}
-              ref={(el) => (this.knobNode = el)}
-            >
-              <div css={layoutAbsoluteFill}>
-                <SVGArc
-                  endRatio={value}
-                  strokeWidth={6}
-                  backgroundStrokeWidth={3}
-                  strokeColor={theme.colors.emphasis}
-                  backgroundStrokeColor={theme.colors.keyline}
-                />
-              </div>
-            </div>
-            <div css={labelStyle}>{valueLabel}</div>
-          </div>
-        )}
-      </SinglePointerDrag>
-    )
-  }
-
-  private resetAxis = () => {
-    this.setState(() => ({ axis: undefined }))
-  }
-
-  private handleDragMove = ({
-    movementX,
-    movementY,
-  }: SinglePointerDragState) => {
-    const { onChange = noop, value } = this.props
-    const { axis } = this.state
-    const { knobNode } = this
-
-    if (!knobNode) {
-      return
-    }
-
-    const moveAxis =
-      axis || (Math.abs(movementX) > Math.abs(movementY) ? 'x' : 'y')
-
-    const move =
-      moveAxis === 'x'
-        ? movementX / knobNode.offsetWidth
-        : -movementY / knobNode.offsetHeight
-
-    onChange(clamp(0, 1, value + move))
-
-    if (!axis) {
-      this.setState(() => ({ axis: moveAxis }))
-    }
-  }
-
-  private handleDoubleClick = () => {
-    const { onChange = noop, defaultValue = 0.5 } = this.props
-
+  const handleDoubleClick = useCallback(() => {
     onChange(defaultValue)
-  }
+  }, [onChange, defaultValue])
+
+  const handleDragMove = useCallback<SinglePointerDragMoveHandler>(
+    ({ movementX, movementY }) => {
+      const { current: knob } = knobRef
+
+      if (!knob) return
+
+      const moveAxis =
+        axis ||
+        (Math.abs(movementX) > Math.abs(movementY) ? 'horizontal' : 'vertical')
+
+      const move =
+        moveAxis === 'horizontal'
+          ? movementX / knob.offsetWidth
+          : -movementY / knob.offsetHeight
+
+      onChange(clampMove(valueRef.current + move))
+
+      if (!axis) setAxis(moveAxis)
+    },
+    [axis, onChange],
+  )
+
+  useEffect(() => {
+    valueRef.current = value
+  }, [value])
+
+  return (
+    <SinglePointerDrag
+      onDragStart={resetAxis}
+      onDragEnd={resetAxis}
+      onDragMove={handleDragMove}
+    >
+      {({ dragListeners }) => (
+        <Container title={title}>
+          <Label>{label}</Label>
+          <KnobContainer
+            {...dragListeners}
+            radius={radius}
+            axis={axis}
+            onDoubleClick={handleDoubleClick}
+            role="presentation"
+            ref={knobRef}
+          >
+            <KnobSVGContainer>
+              <SVGArc
+                endRatio={value}
+                strokeWidth={6}
+                backgroundStrokeWidth={3}
+                strokeColor={theme.colors.emphasis}
+                backgroundStrokeColor={theme.colors.keyline}
+              />
+            </KnobSVGContainer>
+          </KnobContainer>
+          <Label>{valueLabel}</Label>
+        </Container>
+      )}
+    </SinglePointerDrag>
+  )
 }
 
-export default withTheme(Knob)
+export default memo(Knob)
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+`
+
+const Label = styled.div`
+  flex: 0 0 auto;
+  font-size: 0.8em;
+`
+
+const KnobContainer = styled.div<{
+  radius: number | string
+  axis?: MovementAxis
+}>`
+  position: relative;
+  flex: 0 0 auto;
+  width: ${({ radius }) => radius};
+  height: ${({ radius }) => radius};
+  margin: 0.4em auto 0.3em;
+  cursor: ${({ axis }) =>
+    !axis ? 'move' : axis === 'vertical' ? 'ns-resize' : 'ew-resize'};
+`
+
+const KnobSVGContainer = styled.div`
+  ${layoutAbsoluteFill}
+`
+
+type MovementAxis = 'vertical' | 'horizontal'

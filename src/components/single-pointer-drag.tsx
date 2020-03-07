@@ -63,11 +63,23 @@ export interface SinglePointerDragState {
   y: number
 }
 
+export type SinglePointerDragStartHandler = (
+  state: SinglePointerDragState,
+) => unknown
+
+export type SinglePointerDragMoveHandler = (
+  state: SinglePointerDragState,
+) => unknown
+
+export type SinglePointerDragEndHandler = (
+  state: SinglePointerDragState,
+) => unknown
+
 export interface SinglePointerDragProps {
   children(props: ChildRenderProps): ReactNode
-  onDragStart?(state: Partial<SinglePointerDragState>): unknown
-  onDragMove?(state: Partial<SinglePointerDragState>): unknown
-  onDragEnd?(state: Partial<SinglePointerDragState>): unknown
+  onDragStart?: SinglePointerDragStartHandler
+  onDragMove?: SinglePointerDragMoveHandler
+  onDragEnd?: SinglePointerDragEndHandler
 }
 
 class SinglePointerDrag extends PureComponent<
