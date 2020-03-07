@@ -1,19 +1,19 @@
-import React, { PureComponent } from 'react'
+import React, { memo, useRef, useEffect, useCallback } from 'react'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
-import { withTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
 import { noop } from '~/lib/util'
 import { ThemeProps } from '~/style/theme'
 import SinglePointerDrag, {
-  SinglePointerDragState,
+  SinglePointerDragMoveHandler,
+  SinglePointerDragEndHandler,
 } from '~/components/single-pointer-drag'
+import { FunctionComponentWithoutChildren } from '~/types'
 
-type Orientation = 'vertical' | 'horizontal'
-type OrientationProps = { orientation: Orientation }
+const clampValue = clamp(0, 1)
 
-export interface SliderProps {
+const Slider: FunctionComponentWithoutChildren<{
   value: number
   defaultValue?: number
   orientation?: Orientation
@@ -21,100 +21,92 @@ export interface SliderProps {
   valueLabel?: string
   title?: string
   onChange?(value: number): unknown
-}
+}> = ({
+  value,
+  defaultValue = 0.5,
+  orientation = 'vertical',
+  label = '',
+  valueLabel = '',
+  title = '',
+  onChange = noop,
+}) => {
+  const barRef = useRef<HTMLDivElement | null>(null)
+  const valueRef = useRef<number>(value)
 
-class Slider extends PureComponent<SliderProps> {
-  private barContainer?: HTMLElement | null
-
-  public render() {
-    const {
-      value,
-      orientation = 'vertical',
-      label = '',
-      valueLabel = '',
-      title = '',
-    } = this.props
-    const offVal = `${(1 - value) * 100}%`
-
-    return (
-      <Container orientation={orientation} title={title}>
-        <Label orientation={orientation}>{label}</Label>
-        <SinglePointerDrag
-          onDragMove={this.handleDragMove}
-          onDragEnd={this.handleDragEnd}
-        >
-          {({ dragListeners }) => (
-            <BarContainer
-              {...dragListeners}
-              orientation={orientation}
-              role="presentation"
-              onDoubleClick={this.handleDoubleClick}
-              ref={(el) => (this.barContainer = el)}
-            >
-              <Track orientation={orientation} />
-              <Bar
-                orientation={orientation}
-                style={
-                  orientation === 'horizontal'
-                    ? { right: offVal }
-                    : { top: offVal }
-                }
-              />
-            </BarContainer>
-          )}
-        </SinglePointerDrag>
-        <ValueLabel orientation={orientation}>{valueLabel}</ValueLabel>
-      </Container>
-    )
-  }
-
-  private handleDragMove = ({
-    movementX,
-    movementY,
-  }: SinglePointerDragState) => {
-    if (!this.barContainer) return
-
-    const { orientation = 'vertical', value, onChange = noop } = this.props
-    const isVert = orientation === 'vertical'
-    const movement = isVert ? movementY : movementX
-    const dim = isVert
-      ? this.barContainer.offsetHeight * -1
-      : this.barContainer.offsetWidth
-
-    onChange(clamp(0, 1, movement / dim + value))
-  }
-
-  private handleDragEnd = ({
-    movementX,
-    movementY,
-    duration,
-    targetX,
-    targetY,
-  }: SinglePointerDragState) => {
-    if (!this.barContainer) return
-
-    const { orientation = 'vertical', onChange = noop } = this.props
-    const isVert = orientation === 'vertical'
-    const movement = isVert ? movementY : movementX
-
-    if (duration > 300 || movement > 4) {
-      return
-    }
-
-    const offset = isVert ? targetY : targetX
-    const dim = isVert
-      ? this.barContainer.offsetHeight
-      : this.barContainer.offsetWidth
-
-    onChange(clamp(0, 1, isVert ? 1 - offset / dim : offset / dim))
-  }
-
-  private handleDoubleClick = () => {
-    const { onChange = noop, defaultValue = 0.5 } = this.props
-
+  const handleDoubleClick = useCallback(() => {
     onChange(defaultValue)
-  }
+  }, [onChange, defaultValue])
+
+  const handleDragMove = useCallback<SinglePointerDragMoveHandler>(
+    ({ movementX, movementY }) => {
+      const { current: bar } = barRef
+
+      if (!bar) return
+
+      const isVert = orientation === 'vertical'
+      const movement = isVert ? movementY : movementX
+      const dim = isVert ? bar.offsetHeight * -1 : bar.offsetWidth
+
+      onChange(clampValue(movement / dim + valueRef.current))
+    },
+    [orientation, onChange],
+  )
+
+  const handleDragEnd = useCallback<SinglePointerDragEndHandler>(
+    ({ duration, movementX, movementY, targetX, targetY }) => {
+      const { current: bar } = barRef
+
+      if (!bar) return
+
+      const isVert = orientation === 'vertical'
+      const movement = isVert ? movementY : movementX
+
+      if (duration > 300 || movement > 4) return
+
+      const offset = isVert ? targetY : targetX
+      const dim = isVert ? bar.offsetHeight : bar.offsetWidth
+
+      onChange(clampValue(isVert ? 1 - offset / dim : offset / dim))
+    },
+    [orientation, onChange],
+  )
+
+  useEffect(() => {
+    valueRef.current = value
+  }, [value])
+
+  const offVal = `${(1 - value) * 100}%`
+
+  return (
+    <Container orientation={orientation} title={title}>
+      <Label orientation={orientation}>{label}</Label>
+      <SinglePointerDrag onDragMove={handleDragMove} onDragEnd={handleDragEnd}>
+        {({ dragListeners }) => (
+          <BarContainer
+            {...dragListeners}
+            orientation={orientation}
+            role="presentation"
+            onDoubleClick={handleDoubleClick}
+            ref={barRef}
+          >
+            <Track orientation={orientation} />
+            <Bar
+              orientation={orientation}
+              style={
+                orientation === 'horizontal'
+                  ? { right: offVal }
+                  : { top: offVal }
+              }
+            />
+          </BarContainer>
+        )}
+      </SinglePointerDrag>
+      <ValueLabel orientation={orientation}>{valueLabel}</ValueLabel>
+    </Container>
+  )
 }
+
+export default memo(Slider)
 
 const Container = styled.div<OrientationProps>`
   display: flex;
@@ -183,7 +175,7 @@ const BarContainer = styled.div<OrientationProps>`
         `}
 `
 
-const Track = withTheme(styled.div<ThemeProps & OrientationProps>`
+const Track = styled.div<ThemeProps & OrientationProps>`
   position: absolute;
   z-index: 1;
   background-color: ${({ theme }) => theme.colors.keyline};
@@ -201,9 +193,9 @@ const Track = withTheme(styled.div<ThemeProps & OrientationProps>`
           left: 50%;
           width: 1px;
         `};
-`)
+`
 
-const Bar = withTheme(styled.div<ThemeProps & OrientationProps>`
+const Bar = styled.div<ThemeProps & OrientationProps>`
   position: absolute;
   z-index: 2;
   background-color: ${({ theme }) => theme.colors.emphasis};
@@ -221,6 +213,7 @@ const Bar = withTheme(styled.div<ThemeProps & OrientationProps>`
           left: calc(50% - 1px);
           width: 3px;
         `};
-`)
+`
 
-export default withTheme(Slider)
+type Orientation = 'vertical' | 'horizontal'
+type OrientationProps = { orientation: Orientation }
