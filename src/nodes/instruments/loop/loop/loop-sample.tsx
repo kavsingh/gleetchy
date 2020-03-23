@@ -1,7 +1,7 @@
 import React from 'react'
 
 import { FunctionComponentWithoutChildren } from '~/types'
-import { isFiniteNumber } from '~/lib/util/predicates'
+import { isFiniteNumber } from '~/lib/util/predicate'
 import useAudioNodeSubscriptionData from '~/state/hooks/use-audio-node-subscription-data'
 import Sample, { SampleProps } from '~/components/sample'
 

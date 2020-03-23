@@ -3,7 +3,7 @@ import { always, curry } from 'ramda'
 import { GInstrumentNode } from '~/types'
 import { makeConnectable } from '~/lib/connection'
 import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
-import { isFiniteNumber } from '~/lib/util/predicates'
+import { isFiniteNumber } from '~/lib/util/predicate'
 
 import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
