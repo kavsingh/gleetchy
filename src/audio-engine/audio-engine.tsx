@@ -69,6 +69,9 @@ class AudioEngine extends Component<AudioEngineProps> {
   private audioNodes: {
     [key: string]: GAudioNode | GInstrumentNode | AudioNode
   } = {}
+  private subscriptions: {
+    [key: string]: () => void
+  } = {}
 
   public componentDidMount() {
     this.audioContext = getAudioContext()
@@ -104,14 +107,10 @@ class AudioEngine extends Component<AudioEngineProps> {
   }
 
   private forEachInstrument(fn: InstrumentNodeProcessor) {
-    if (!this.audioNodes) return
-
     this.getInstrumentNodes().forEach(fn)
   }
 
   private disconnectAllNodes() {
-    if (!this.audioNodes) return
-
     Object.values(this.audioNodes).forEach(
       // Safari crashes if node not connected
       tryCatch<AudioNodeEffect>((node) => node.disconnect(), noop),
@@ -142,8 +141,10 @@ class AudioEngine extends Component<AudioEngineProps> {
 
         if (!isInstrumentNode(newNode)) return
 
+        if (this.subscriptions[node.id]) this.subscriptions[node.id]()
+
         if (typeof newNode.subscribe === 'function') {
-          newNode.subscribe((payload: unknown) =>
+          this.subscriptions[node.id] = newNode.subscribe((payload: unknown) =>
             this.props.dispatchSubscriptionEvent(id, payload),
           )
         }
