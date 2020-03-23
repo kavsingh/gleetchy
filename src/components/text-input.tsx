@@ -9,9 +9,8 @@ import { ThemeProps } from '~/style/theme'
 const TextInput: FunctionComponentWithoutChildren<{
   value: string | number
   placeholder?: string
-  type?: 'text' | 'number'
-  onChange?(value: string | number): unknown
-}> = ({ value, placeholder = '', type = 'text', onChange = noop }) => {
+  onChange?(value: string): unknown
+}> = ({ value, placeholder = '', onChange = noop }) => {
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
       cancelReactEvent(event)
@@ -26,7 +25,6 @@ const TextInput: FunctionComponentWithoutChildren<{
         value={value}
         placeholder={placeholder}
         onChange={handleChange}
-        type={type}
       />
     </Container>
   )

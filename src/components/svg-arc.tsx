@@ -6,14 +6,14 @@ import { FunctionComponentWithoutChildren } from '~/types'
 const SVGArc: FunctionComponentWithoutChildren<{
   endRatio: number
   strokeColor: string
-  backgroundStrokeColor: string
   strokeWidth?: number
+  backgroundStrokeColor?: string
   backgroundStrokeWidth?: number
 }> = ({
   endRatio,
   strokeColor,
-  backgroundStrokeColor,
   strokeWidth = 4,
+  backgroundStrokeColor = 'transparent',
   backgroundStrokeWidth = 1,
 }) => {
   const radius = 50 - strokeWidth / 2

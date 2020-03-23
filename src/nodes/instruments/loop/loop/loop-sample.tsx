@@ -6,9 +6,7 @@ import useAudioNodeSubscriptionData from '~/state/hooks/use-audio-node-subscript
 import Sample, { SampleProps } from '~/components/sample'
 
 const LoopSample: FunctionComponentWithoutChildren<
-  SampleProps & {
-    nodeId: string
-  }
+  SampleProps & { nodeId: string }
 > = ({ nodeId, ...props }) => {
   const { positionRatio } = useAudioNodeSubscriptionData(nodeId)
 
