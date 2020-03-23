@@ -7,7 +7,7 @@ import { ApplicationState } from '../configure-store'
 
 const useAudioNodeSubscriptionData = (id: string) =>
   useSelector<ApplicationState, { [key: string]: unknown }>(
-    state => state.audioEngine.subscriptionData[id] || {},
+    (state) => state.audioEngine.subscriptionData[id] || {},
     equals,
   )
 

@@ -140,9 +140,7 @@ const ActiveRegion = styled(Region)<{
 `
 
 const inactiveOverlayColor = memoizeWith(identity, (baseColor: string) =>
-  color(baseColor)
-    .alpha(0.8)
-    .string(),
+  color(baseColor).alpha(0.8).string(),
 )
 
 const InactiveRegion = styled(Region)<ThemeProps>`

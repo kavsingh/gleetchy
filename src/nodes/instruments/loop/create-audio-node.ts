@@ -70,7 +70,7 @@ export default curry(
         playbackState.position / props.audioBuffer.duration
       playbackState.ctxTimestamp = current
 
-      subscribers.forEach(subscriber => {
+      subscribers.forEach((subscriber) => {
         subscriber({ ...playbackState })
       })
     }
