@@ -7,7 +7,7 @@ import { themes, ThemeName } from '~/style/theme'
 const getTheme = memoizeWith(
   identity,
   (themeName: ThemeName) =>
-    themes.find(theme => theme.name === themeName) || themes[0],
+    themes.find((theme) => theme.name === themeName) || themes[0],
 )
 
 const uiStateSelector = (state: ApplicationState) => state.ui
@@ -17,6 +17,7 @@ export const uiThemeNameSelector = createSelector(
   ({ currentThemeName }) => currentThemeName,
 )
 
-export const uiThemeSelector = createSelector(uiThemeNameSelector, themeName =>
-  getTheme(themeName),
+export const uiThemeSelector = createSelector(
+  uiThemeNameSelector,
+  (themeName) => getTheme(themeName),
 )

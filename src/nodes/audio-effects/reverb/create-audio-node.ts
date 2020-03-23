@@ -41,7 +41,7 @@ export default curry(
 
     updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
 
-    loadImpulse(audioContext, reverbImpulse).then(buffer => {
+    loadImpulse(audioContext, reverbImpulse).then((buffer) => {
       reverbNode.buffer = buffer
     })
 

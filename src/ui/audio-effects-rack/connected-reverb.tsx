@@ -10,7 +10,7 @@ const ConnectedReverb: FunctionComponent<{ id: string }> = ({ id }) => {
   ] = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
   const handleWetDryRatioChange = useCallback(
-    wetDryRatio => updateAudioProps({ wetDryRatio }),
+    (wetDryRatio) => updateAudioProps({ wetDryRatio }),
     [updateAudioProps],
   )
 

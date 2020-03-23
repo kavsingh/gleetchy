@@ -21,7 +21,7 @@ export const audioEngineReducer: Reducer<
   | GlobalPlaybackAction
   | AudioEngineAction
 > = (state = defaultState, action) =>
-  produce(state, draftState => {
+  produce(state, (draftState) => {
     switch (action.type) {
       case 'AUDIO_NODE_ADD':
       case 'AUDIO_NODE_DUPLICATE':

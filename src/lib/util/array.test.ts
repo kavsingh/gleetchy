@@ -23,7 +23,7 @@ describe('util/array', () => {
   describe('stableFilter', () => {
     it('returns same array if nothing to remove', () => {
       const initialArray = [1, 2, 3]
-      const result = stableFilter(item => item !== 5, initialArray)
+      const result = stableFilter((item) => item !== 5, initialArray)
 
       expect(result).toEqual([1, 2, 3])
       expect(result).toBe(initialArray)
@@ -31,7 +31,7 @@ describe('util/array', () => {
 
     it('returns new array if items to remove', () => {
       const initialArray = [1, 2, 3, 3]
-      const withoutItems = stableFilter(item => item !== 3 && item !== 1)
+      const withoutItems = stableFilter((item) => item !== 3 && item !== 1)
       const result = withoutItems(initialArray)
 
       expect(result).toEqual([2])

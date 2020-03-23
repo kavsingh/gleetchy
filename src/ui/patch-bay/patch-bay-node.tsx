@@ -27,7 +27,7 @@ const PatchBayNode: FunctionComponentWithoutChildren<{
       blocked={!!blocked}
       onClick={toggleConnection}
       tabIndex={0}
-      onKeyUp={e => {
+      onKeyUp={(e) => {
         if (e.key === 'Enter') toggleConnection()
       }}
     />
@@ -37,9 +37,7 @@ const PatchBayNode: FunctionComponentWithoutChildren<{
 export default memo(PatchBayNode)
 
 const getActiveBorderColor = memoizeWith(identity, (activeColor: string) =>
-  color(activeColor)
-    .darken(0.06)
-    .hex(),
+  color(activeColor).darken(0.06).hex(),
 )
 
 const Container = styled.div<

@@ -46,9 +46,7 @@ const InitLoadButon = styled.div<ThemeProps>`
   justify-content: space-around;
   padding: 3em;
   background-color: ${({ theme }) =>
-    color(theme.colors.page)
-      .alpha(0.96)
-      .string()};
+    color(theme.colors.page).alpha(0.96).string()};
   cursor: pointer;
 
   span {
@@ -135,5 +133,5 @@ const updateProps: SampleProp[] = [
 export default memo(
   withTheme(Sample),
   (prevProps, nextProps) =>
-    !updateProps.some(prop => prevProps[prop] !== nextProps[prop]),
+    !updateProps.some((prop) => prevProps[prop] !== nextProps[prop]),
 )

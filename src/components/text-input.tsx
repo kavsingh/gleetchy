@@ -46,7 +46,7 @@ const TextInput: FunctionComponent<TextInputProps> = ({
   onChange = noop,
 }) => {
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    event => {
+    (event) => {
       cancelReactEvent(event)
       onChange(event.currentTarget.value)
     },

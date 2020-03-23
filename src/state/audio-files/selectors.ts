@@ -17,5 +17,5 @@ export const audioFilesLoadingSelector = createSelector(
 
 export const audioFilesErrorSelector = createSelector(
   audioFilesStateSelector,
-  state => ({ ...state.loadErrors, ...state.decodeErrors }),
+  (state) => ({ ...state.loadErrors, ...state.decodeErrors }),
 )

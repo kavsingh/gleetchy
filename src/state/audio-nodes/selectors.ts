@@ -12,29 +12,29 @@ const audioNodesStateSelector = (state: ApplicationState) => state.audioNodes
 
 export const audioNodesSelector = createSelector(
   audioNodesStateSelector,
-  state => state.byId,
+  (state) => state.byId,
 )
 
 // TODO: Better naming
 
 export const nodesIdentifierMetaSelector = createSelector(
   audioNodesStateSelector,
-  state => state.orderedIndentifierMeta,
+  (state) => state.orderedIndentifierMeta,
 )
 
 export const instrumentsIdentifierMetaSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
-  meta => meta.filter(isInstrument),
+  (meta) => meta.filter(isInstrument),
 )
 
 export const audioEffectsIdentifierMetaSelector = createValueEqSelector(
   nodesIdentifierMetaSelector,
-  meta => meta.filter(isAudioEffect),
+  (meta) => meta.filter(isAudioEffect),
 )
 
 export const mainOutNodeSelector = createSelector(
   audioNodesSelector,
-  nodes => nodes[MAIN_OUT_ID],
+  (nodes) => nodes[MAIN_OUT_ID],
 )
 
 export const mainOutMetaSelector = createValueEqSelector(
@@ -58,8 +58,8 @@ export const connectableSourcesSelector = createValueEqSelector(
   instrumentsIdentifierMetaSelector,
   audioEffectsIdentifierMetaSelector,
   (nodes, instruments, effects): AudioNodeMeta[] => [
-    ...instruments.map(meta => ({ ...meta, label: nodes[meta.id].label })),
-    ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+    ...instruments.map((meta) => ({ ...meta, label: nodes[meta.id].label })),
+    ...effects.map((meta) => ({ ...meta, label: nodes[meta.id].label })),
   ],
 )
 
@@ -68,7 +68,7 @@ export const connectableTargetsSelector = createValueEqSelector(
   audioEffectsIdentifierMetaSelector,
   mainOutMetaSelector,
   (nodes, effects, out): AudioNodeMeta[] => [
-    ...effects.map(meta => ({ ...meta, label: nodes[meta.id].label })),
+    ...effects.map((meta) => ({ ...meta, label: nodes[meta.id].label })),
     out,
   ],
 )

@@ -125,11 +125,11 @@ class SinglePointerDrag extends PureComponent<
       return
     }
 
-    this.moveEvents.forEach(eventName =>
+    this.moveEvents.forEach((eventName) =>
       WINDOW.removeEventListener(eventName, this.handleDragMove),
     )
 
-    this.endEvents.forEach(eventName =>
+    this.endEvents.forEach((eventName) =>
       WINDOW.removeEventListener(eventName, this.handleDragEnd),
     )
   }
@@ -180,13 +180,13 @@ class SinglePointerDrag extends PureComponent<
     const targetStartX = clientX - targetRect.top
     const targetStartY = clientY - targetRect.left
 
-    moveEvents.forEach(eventName =>
+    moveEvents.forEach((eventName) =>
       WINDOW.addEventListener(eventName, this.throttledHandleDragMove, {
         passive: false,
       }),
     )
 
-    endEvents.forEach(eventName =>
+    endEvents.forEach((eventName) =>
       WINDOW.addEventListener(eventName, this.handleDragEnd, {
         passive: false,
       }),
@@ -258,11 +258,11 @@ class SinglePointerDrag extends PureComponent<
       clientY = this.state.y
     }
 
-    this.moveEvents.forEach(eventName =>
+    this.moveEvents.forEach((eventName) =>
       WINDOW.removeEventListener(eventName, this.throttledHandleDragMove),
     )
 
-    this.endEvents.forEach(eventName =>
+    this.endEvents.forEach((eventName) =>
       WINDOW.removeEventListener(eventName, this.handleDragEnd),
     )
 

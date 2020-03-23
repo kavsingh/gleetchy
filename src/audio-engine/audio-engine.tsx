@@ -117,7 +117,7 @@ class AudioEngine extends Component<AudioEngineProps> {
 
     Object.values(this.audioNodes).forEach(
       // Safari crashes if node not connected
-      tryCatch<AudioNodeEffect>(node => node.disconnect(), noop),
+      tryCatch<AudioNodeEffect>((node) => node.disconnect(), noop),
     )
   }
 
@@ -132,8 +132,8 @@ class AudioEngine extends Component<AudioEngineProps> {
       : { [MAIN_OUT_ID]: this.audioContext.destination }
 
     nextNodeIds
-      .filter(id => !this.audioNodes[id])
-      .forEach(id => {
+      .filter((id) => !this.audioNodes[id])
+      .forEach((id) => {
         // TS doesn't follow through on defined check above
         if (!this.audioContext) return
 
@@ -185,10 +185,10 @@ class AudioEngine extends Component<AudioEngineProps> {
   private processAudioEngineEvent = (event: AudioEngineEvent) => {
     switch (event.type) {
       case 'GLOBAL_PLAYBACK_START':
-        this.forEachInstrument(node => node.play())
+        this.forEachInstrument((node) => node.play())
         break
       case 'GLOBAL_PLAYBACK_STOP':
-        this.forEachInstrument(node => node.stop())
+        this.forEachInstrument((node) => node.stop())
         break
       case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
         this.updateNode(event.payload)

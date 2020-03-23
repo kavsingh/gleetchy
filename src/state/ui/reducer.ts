@@ -26,7 +26,7 @@ export const uiReducer: Reducer<UIState, UIAction> = (
   state = defaultState,
   action,
 ) =>
-  produce(state, draftState => {
+  produce(state, (draftState) => {
     switch (action.type) {
       case 'UI_SET_THEME':
         draftState.currentThemeName = action.payload

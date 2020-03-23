@@ -16,18 +16,18 @@ export default function useFileDropRegion({
 }: UseFileDropRegionProps) {
   const [isDropActive, setIsDropActive] = useState(false)
 
-  const eventSetDropActive = useCallback<DragEventHandler>(event => {
+  const eventSetDropActive = useCallback<DragEventHandler>((event) => {
     cancelReactEvent(event)
     setIsDropActive(true)
   }, [])
 
-  const eventSetDropInactive = useCallback<DragEventHandler>(event => {
+  const eventSetDropInactive = useCallback<DragEventHandler>((event) => {
     cancelReactEvent(event)
     setIsDropActive(false)
   }, [])
 
   const onDrop = useCallback<DragEventHandler>(
-    event => {
+    (event) => {
       const receivable = Array.from(event.dataTransfer.files).filter(fileFilter)
 
       cancelReactEvent(event)

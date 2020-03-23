@@ -49,7 +49,7 @@ class Slider extends PureComponent<SliderProps> {
               orientation={orientation}
               role="presentation"
               onDoubleClick={this.handleDoubleClick}
-              ref={el => (this.barContainer = el)}
+              ref={(el) => (this.barContainer = el)}
             >
               <Track orientation={orientation} />
               <Bar

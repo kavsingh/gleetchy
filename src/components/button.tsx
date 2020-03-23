@@ -8,7 +8,7 @@ const Button: FunctionComponent<ButtonProps> = ({ handler, children }) => (
     role="button"
     tabIndex={0}
     onClick={handler}
-    onKeyDown={event => {
+    onKeyDown={(event) => {
       if (event.key === 'Enter') handler()
     }}
   >

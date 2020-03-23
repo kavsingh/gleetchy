@@ -23,10 +23,10 @@ const useAudioNode = <T extends object>(
   isValid: AudioNodeStateValidator,
 ) => {
   const node = useSelector<ApplicationState, AudioNodeState<T>>(
-    state => audioNodesSelector(state)[id] as AudioNodeState<T>,
+    (state) => audioNodesSelector(state)[id] as AudioNodeState<T>,
     equals,
   )
-  const isActive = useSelector<ApplicationState, boolean>(state =>
+  const isActive = useSelector<ApplicationState, boolean>((state) =>
     activeAudioNodeIdsSelector(state).includes(node.id),
   )
   const allConnections = useSelector(connectionsSelector)
@@ -61,7 +61,7 @@ const useAudioNode = <T extends object>(
   }, [id, isValid, node])
 
   useEffect(() => {
-    setConnections(current => {
+    setConnections((current) => {
       const next = getConnectionsFor(id, allConnections)
 
       return equals(current, next) ? current : next

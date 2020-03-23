@@ -29,7 +29,7 @@ module.exports = ({ env }) => ({
       {
         ramda: {
           preventFullImport: true,
-          transform: name => `ramda/es/${name}`,
+          transform: (name) => `ramda/es/${name}`,
         },
       },
     ],

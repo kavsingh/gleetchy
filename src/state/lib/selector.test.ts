@@ -9,7 +9,7 @@ describe('custom state selectors', () => {
       let state = { a: { b: [1, 2] } }
       const aSelector = (s: typeof state) => s.a
 
-      const bSelector = createSelector(aSelector, a => a.b)
+      const bSelector = createSelector(aSelector, (a) => a.b)
       const b = bSelector(state)
 
       expect(b).toEqual([1, 2])
@@ -26,7 +26,7 @@ describe('custom state selectors', () => {
       let state = { a: { b: [1, 2] } }
       const aSelector = (s: typeof state) => s.a
 
-      const bSelector = createValueEqSelector(aSelector, a => a.b)
+      const bSelector = createValueEqSelector(aSelector, (a) => a.b)
       const b = bSelector(state)
 
       expect(b).toEqual([1, 2])

@@ -1,4 +1,4 @@
-module.exports = config => {
+module.exports = (config) => {
   config.set({
     mutate: ['src/**/*.ts', '!src/**/*@(.test|.spec|Spec).ts'],
     mutator: 'typescript',

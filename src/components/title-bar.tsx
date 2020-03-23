@@ -87,7 +87,7 @@ const Connection = styled.div`
   width: 0.8em;
   height: 0.8em;
   margin-right: 0.3em;
-  background-color: ${props => props.color};
+  background-color: ${(props) => props.color};
 `
 
 const TypeLabel = styled.div`

@@ -36,9 +36,7 @@ const activeRegionStyle = css({
 
 const inactiveRegionStyle = (theme: UITheme) =>
   css({
-    backgroundColor: color(theme.colors.page)
-      .alpha(0.8)
-      .string(),
+    backgroundColor: color(theme.colors.page).alpha(0.8).string(),
     bottom: 0,
     position: 'absolute',
     top: 0,
@@ -71,7 +69,7 @@ class LoopRegion extends Component<LoopRegionProps> {
       : false
 
     return (
-      <div css={rootStyle} ref={c => (this.rootNode = c)}>
+      <div css={rootStyle} ref={(c) => (this.rootNode = c)}>
         <SinglePointerDrag onDragMove={this.handleStartHandleDrag}>
           {({ dragListeners }) => (
             <div

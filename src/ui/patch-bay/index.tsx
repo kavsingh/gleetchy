@@ -20,7 +20,7 @@ const PatchBay: FunctionComponentWithoutChildren = () => {
     () => (
       <Row key="source-labels">
         <SourceLabel>To / From</SourceLabel>
-        {sources.map(source => (
+        {sources.map((source) => (
           <SourceLabel title={`From ${source.label} to ...`} key={source.id}>
             {source.label}
           </SourceLabel>
@@ -35,12 +35,12 @@ const PatchBay: FunctionComponentWithoutChildren = () => {
       <Container>
         <tbody>
           {sourceLabels}
-          {targets.map(target => (
+          {targets.map((target) => (
             <Row key={target.id}>
               <TargetLabel title={`From ... to ${target.label}`} key="rowLabel">
                 {target.label}
               </TargetLabel>
-              {sources.map(source => (
+              {sources.map((source) => (
                 <td key={`${source.id}-${target.id}`}>
                   <PatchBayNode source={source} target={target} />
                 </td>

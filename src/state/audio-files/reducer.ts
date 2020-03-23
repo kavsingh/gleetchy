@@ -30,7 +30,7 @@ export const audioFilesReducer: Reducer<AudioFilesState, AudioFilesAction> = (
   state = defaultState,
   action,
 ) =>
-  produce(state, draftState => {
+  produce(state, (draftState) => {
     switch (action.type) {
       case 'AUDIO_FILE_LOAD_START': {
         const { id } = action.payload

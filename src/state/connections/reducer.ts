@@ -28,7 +28,7 @@ export const connectionsReducer: Reducer<
   ConnectionsState,
   ConnectionsAction | AudioNodeRemoveAction
 > = (state = defaultState, action) =>
-  produce(state, draftState => {
+  produce(state, (draftState) => {
     switch (action.type) {
       case 'CONNECTION_ADD': {
         const { fromId, toId } = action.payload

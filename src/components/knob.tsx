@@ -82,7 +82,7 @@ class Knob extends PureComponent<PropsWithoutChildren<KnobProps>, KnobState> {
               role="presentation"
               css={knobContainerStyle}
               style={{ height: radius, width: radius, ...cursorStyles }}
-              ref={el => (this.knobNode = el)}
+              ref={(el) => (this.knobNode = el)}
             >
               <div css={layoutAbsoluteFill}>
                 <SVGArc

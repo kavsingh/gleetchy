@@ -85,7 +85,7 @@ class Loop extends PureComponent<LoopUIProps> {
 
     return (
       <Container isActive={isActive}>
-        <AudioFileDropRegion onFiles={files => receiveAudioFile(files[0])}>
+        <AudioFileDropRegion onFiles={(files) => receiveAudioFile(files[0])}>
           <TitleBarContainer>
             <LoopTitleBar
               label={label}

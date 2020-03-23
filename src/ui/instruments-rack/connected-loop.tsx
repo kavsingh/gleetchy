@@ -36,7 +36,7 @@ const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
     [updateAudioProps],
   )
 
-  const handleEqChange = useCallback(eqProps => updateAudioProps(eqProps), [
+  const handleEqChange = useCallback((eqProps) => updateAudioProps(eqProps), [
     updateAudioProps,
   ])
 

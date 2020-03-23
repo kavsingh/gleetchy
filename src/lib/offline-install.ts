@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === 'production') {
 
     navigator.serviceWorker
       .register(serviceWorkerUrl, { scope })
-      .then(registration => {
+      .then((registration) => {
         registration.onupdatefound = function regOnUpdateFound() {
           const installingWorker = registration.installing
 
@@ -37,7 +37,7 @@ if (process.env.NODE_ENV === 'production') {
           }
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Error during service worker registration:', error)
       })
   }

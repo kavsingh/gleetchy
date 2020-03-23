@@ -39,7 +39,7 @@ export const loadAudioFiles = () => {
       input.value = ''
     }
 
-    input.onerror = error => {
+    input.onerror = (error) => {
       reject(error)
 
       input.value = ''
@@ -52,7 +52,7 @@ export const loadAudioFiles = () => {
 export const readFileToArrayBuffer = (file: File): Promise<AudioFileData> =>
   file
     .arrayBuffer()
-    .then(buffer => ({ buffer, fileName: file.name, fileType: file.type }))
+    .then((buffer) => ({ buffer, fileName: file.name, fileType: file.type }))
 
 export const readFilesToArrayBuffer = (files: File[]) =>
   Promise.all(files.map(readFileToArrayBuffer))

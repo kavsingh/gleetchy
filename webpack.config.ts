@@ -60,7 +60,7 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
       theme_color: color(theme.colors.page).hex(),
       background_color: color(theme.colors.page).hex(),
       icons: [
-        ...[48, 72, 96, 144, 168, 192, 512].map(size => ({
+        ...[48, 72, 96, 144, 168, 192, 512].map((size) => ({
           src: fromRoot(`src/assets/icons/${size}x${size}.png`),
           sizes: [size],
         })),

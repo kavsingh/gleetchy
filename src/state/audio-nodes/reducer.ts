@@ -80,7 +80,7 @@ export const audioNodesReducer: Reducer<
   AudioNodesState,
   AudioNodesAction | AudioFileDecodeCompleteAction
 > = (state = defaultState, action) =>
-  produce(state, draftState => {
+  produce(state, (draftState) => {
     switch (action.type) {
       case 'AUDIO_NODE_ADD': {
         const newNodeState = getNewNodeState(action.payload.type)
@@ -132,7 +132,7 @@ export const audioNodesReducer: Reducer<
 
         draftState.byId = stableOmit([id], draftState.byId)
         draftState.orderedIndentifierMeta = stableFilter(
-          meta => meta.id !== id,
+          (meta) => meta.id !== id,
           draftState.orderedIndentifierMeta,
         )
 
