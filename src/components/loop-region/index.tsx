@@ -3,13 +3,12 @@ import styled from '@emotion/styled'
 import { memoizeWith, identity } from 'ramda'
 import color from 'color'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import { noop } from '~/lib/util'
-import { ThemeProps } from '~/style/theme'
 import { layoutAbsoluteFill } from '~/style/layout'
-import SinglePointerDrag, {
-  SinglePointerDragState,
-} from '~/components/single-pointer-drag'
+import SinglePointerDrag from '~/components/single-pointer-drag'
+import type { FunctionComponentWithoutChildren } from '~/types'
+import type { ThemeProps } from '~/style/theme'
+import type { SinglePointerDragState } from '~/components/single-pointer-drag'
 
 import LoopHandle from './loop-handle'
 

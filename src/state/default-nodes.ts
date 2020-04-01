@@ -2,7 +2,7 @@ import { MAIN_OUT_ID } from '~/constants/audio'
 import * as delay from '~/nodes/audio-effects/delay'
 import * as reverb from '~/nodes/audio-effects/reverb'
 import * as loop from '~/nodes/instruments/loop'
-import { AudioNodeState } from '~/types'
+import type { AudioNodeState } from '~/types'
 
 const defaultNodes: AudioNodeState<
   delay.NodeProps | reverb.NodeProps | loop.NodeProps | {}

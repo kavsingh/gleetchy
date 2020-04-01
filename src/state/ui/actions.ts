@@ -1,9 +1,9 @@
-import { ActionCreator } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import type { ActionCreator } from 'redux'
+import type { ThunkAction } from 'redux-thunk'
 
-import { ApplicationState } from '../configure-store'
-import { UISetThemeAction } from './types'
 import { uiThemeNameSelector } from './selectors'
+import type { ApplicationState } from '../configure-store'
+import type { UISetThemeAction } from './types'
 
 export const setDarkThemeAction: ActionCreator<UISetThemeAction> = () => ({
   payload: 'dark',

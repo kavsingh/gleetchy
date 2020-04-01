@@ -2,7 +2,6 @@ import { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { equals } from 'ramda'
 
-import { AudioNodeState, AudioNodeConnection } from '~/types'
 import {
   updateAudioNodeAudioPropsAction,
   updateAudioNodeLabelAction,
@@ -10,13 +9,14 @@ import {
   removeAudioNodeAction,
 } from '~/state/audio-nodes/actions'
 import { getConnectionsFor } from '~/lib/audio'
+import type { AudioNodeState, AudioNodeConnection } from '~/types'
 
 import {
   audioNodesSelector,
   activeAudioNodeIdsSelector,
 } from '../audio-nodes/selectors'
 import { connectionsSelector } from '../connections/selectors'
-import { ApplicationState } from '../configure-store'
+import type { ApplicationState } from '../configure-store'
 
 const useAudioNode = <T extends object>(
   id: string,

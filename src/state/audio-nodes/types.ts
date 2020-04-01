@@ -1,4 +1,4 @@
-import { ActionWithPayload } from '~/types'
+import type { ActionWithPayload } from '~/types'
 
 export type AudioNodeAddAction = ActionWithPayload<
   'AUDIO_NODE_ADD',

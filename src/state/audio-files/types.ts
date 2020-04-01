@@ -1,4 +1,8 @@
-import { ActionWithPayload, AudioFileData, DecodedAudioFileData } from '~/types'
+import type {
+  ActionWithPayload,
+  AudioFileData,
+  DecodedAudioFileData,
+} from '~/types'
 
 export type AudioFileLoadStartAction = ActionWithPayload<
   'AUDIO_FILE_LOAD_START',

@@ -1,4 +1,4 @@
-import { Dispatch } from 'redux'
+import type { Dispatch } from 'redux'
 
 import { isSameConnection } from '~/lib/audio'
 import type { ApplicationState } from '~/state/configure-store'

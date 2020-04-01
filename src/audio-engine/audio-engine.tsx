@@ -2,32 +2,32 @@ import { Component } from 'react'
 import { pick, tryCatch } from 'ramda'
 
 import { warn } from '~/lib/dev'
+import { noop } from '~/lib/util'
 import { isInstrumentNode } from '~/lib/audio'
 import { getAudioContext } from '~/apis/audio'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {
   createAudioNode as createDelayNode,
   nodeType as delayType,
-  NodeProps as DelayProps,
 } from '~/nodes/audio-effects/delay'
 import {
   createAudioNode as createReverbNode,
   nodeType as reverbType,
-  NodeProps as ReverbProps,
 } from '~/nodes/audio-effects/reverb'
 import {
   createAudioNode as createLoopNode,
   nodeType as loopType,
-  NodeProps as LoopProps,
 } from '~/nodes/instruments/loop'
-import { AudioEngineEvent } from '~/state/audio-engine/types'
-import {
+import type { AudioEngineEvent } from '~/state/audio-engine/types'
+import type { NodeProps as DelayProps } from '~/nodes/audio-effects/delay'
+import type { NodeProps as ReverbProps } from '~/nodes/audio-effects/reverb'
+import type { NodeProps as LoopProps } from '~/nodes/instruments/loop'
+import type {
   AudioNodeConnection,
   AudioNodeState,
   GAudioNode,
   GInstrumentNode,
 } from '~/types'
-import { noop } from '~/lib/util'
 
 type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode
 type InstrumentNodeProcessor = (node: GInstrumentNode) => void

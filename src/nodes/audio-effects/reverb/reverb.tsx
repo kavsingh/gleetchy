@@ -1,10 +1,11 @@
-import React, { memo, FunctionComponent, useMemo } from 'react'
+import React, { memo, useMemo } from 'react'
 import styled from '@emotion/styled'
+import type { FunctionComponent } from 'react'
 
-import { AudioNodeConnection } from '~/types'
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
+import type { AudioNodeConnection } from '~/types'
 
 const Container = styled.div<{ isActive: boolean }>`
   width: 100%;

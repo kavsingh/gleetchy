@@ -1,5 +1,5 @@
-import { ActionWithPayload } from '~/types'
-import { ThemeName } from '~/style/theme'
+import type { ActionWithPayload } from '~/types'
+import type { ThemeName } from '~/style/theme'
 
 export type UISetThemeAction = ActionWithPayload<'UI_SET_THEME', ThemeName>
 

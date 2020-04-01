@@ -1,14 +1,14 @@
 import { createSelector } from 'reselect'
 
-import { AudioNodeMeta } from '~/types'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {
   hasConnectionTo,
   hasInstrumentType,
   hasAudioEffectType,
 } from '~/lib/audio'
-import { ApplicationState } from '~/state/configure-store'
 import { connectionsSelector } from '~/state/connections/selectors'
+import type { ApplicationState } from '~/state/configure-store'
+import type { AudioNodeMeta } from '~/types'
 
 import { createValueEqSelector } from '../lib/selector'
 

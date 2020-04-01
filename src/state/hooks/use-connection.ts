@@ -1,8 +1,8 @@
 import { useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-import { AudioNodeMeta } from '~/types'
 import { getConnectionBetween, canConnectNodes } from '~/lib/audio'
+import type { AudioNodeMeta } from '~/types'
 
 import { connectionsSelector } from '../connections/selectors'
 import { toggleConnectionAction } from '../connections/actions'

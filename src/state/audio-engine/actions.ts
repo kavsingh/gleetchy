@@ -1,4 +1,4 @@
-import {
+import type {
   AudioEngineClearEventsAction,
   AudioEngineSubscriptionEventAction,
 } from './types'

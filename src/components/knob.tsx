@@ -3,14 +3,13 @@ import styled from '@emotion/styled'
 import { useTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { UITheme } from '~/style/theme'
-import SinglePointerDrag, {
-  SinglePointerDragMoveHandler,
-} from '~/components/single-pointer-drag'
+import SinglePointerDrag from '~/components/single-pointer-drag'
 import SVGArc from '~/components/svg-arc'
+import type { UITheme } from '~/style/theme'
+import type { SinglePointerDragMoveHandler } from '~/components/single-pointer-drag'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 const clampMove = clamp(0, 1)
 

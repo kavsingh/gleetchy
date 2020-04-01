@@ -1,6 +1,6 @@
 import { curry, propEq, test } from 'ramda'
 
-import {
+import type {
   AudioNodeConnection,
   AudioNodeMeta,
   GAudioNode,

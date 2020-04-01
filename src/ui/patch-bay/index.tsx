@@ -3,12 +3,12 @@ import { useSelector } from 'react-redux'
 import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import {
   connectableSourcesSelector,
   connectableTargetsSelector,
 } from '~/state/audio-nodes/selectors'
 import ErrorBoundary from '~/components/error-boundary'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 import PatchBayNode from './patch-bay-node'
 

@@ -1,22 +1,26 @@
-import { applyMiddleware, combineReducers, createStore, Store } from 'redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension'
 import thunk from 'redux-thunk'
+import type { Store } from 'redux'
 
-import { audioEngineReducer, AudioEngineState } from './audio-engine/reducer'
-import { AudioEngineAction } from './audio-engine/types'
-import { audioFilesReducer, AudioFilesState } from './audio-files/reducer'
-import { AudioFilesAction } from './audio-files/types'
-import { connectionsReducer, ConnectionsState } from './connections/reducer'
-import { ConnectionsAction } from './connections/types'
-import {
-  globalPlaybackReducer,
-  GlobalPlaybackState,
-} from './global-playback/reducer'
-import { GlobalPlaybackAction } from './global-playback/types'
-import { audioNodesReducer, AudioNodesState } from './audio-nodes/reducer'
-import { AudioNodesAction } from './audio-nodes/types'
-import { uiReducer, UIState } from './ui/reducer'
-import { UIAction } from './ui/types'
+import { audioEngineReducer } from './audio-engine/reducer'
+import { audioFilesReducer } from './audio-files/reducer'
+import { connectionsReducer } from './connections/reducer'
+import { globalPlaybackReducer } from './global-playback/reducer'
+import { audioNodesReducer } from './audio-nodes/reducer'
+import { uiReducer } from './ui/reducer'
+import type { AudioEngineState } from './audio-engine/reducer'
+import type { AudioEngineAction } from './audio-engine/types'
+import type { AudioFilesState } from './audio-files/reducer'
+import type { AudioFilesAction } from './audio-files/types'
+import type { ConnectionsState } from './connections/reducer'
+import type { ConnectionsAction } from './connections/types'
+import type { GlobalPlaybackState } from './global-playback/reducer'
+import type { GlobalPlaybackAction } from './global-playback/types'
+import type { AudioNodesState } from './audio-nodes/reducer'
+import type { AudioNodesAction } from './audio-nodes/types'
+import type { UIState } from './ui/reducer'
+import type { UIAction } from './ui/types'
 
 const middlewares = [thunk]
 const composeEnhancers = composeWithDevTools({})

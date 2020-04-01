@@ -1,12 +1,13 @@
 import { always, curry } from 'ramda'
 
-import { GAudioNode } from '~/types'
 import { decodeAudioData } from '~/apis/audio'
 import { makeConnectable } from '~/lib/connection'
 import reverbImpulse from '~/assets/media/impulse-reverb.wav'
+import type { GAudioNode } from '~/types'
 
-import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
+import { defaultProps } from './node-props'
+import type { Props } from './node-props'
 
 const updateWetDry = (
   wetDryRatio: number,

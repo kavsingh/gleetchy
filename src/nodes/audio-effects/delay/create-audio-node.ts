@@ -1,11 +1,12 @@
 import { always, curry } from 'ramda'
 
-import { GAudioNode } from '~/types'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { makeConnectable } from '~/lib/connection'
+import type { GAudioNode } from '~/types'
 
-import { defaultProps, Props } from './node-props'
+import { defaultProps } from './node-props'
 import nodeType from './node-type'
+import type { Props } from './node-props'
 
 const updateWetDry = (
   wetDryRatio: number,

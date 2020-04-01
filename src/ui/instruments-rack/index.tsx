@@ -1,13 +1,14 @@
-import React, { useCallback, FunctionComponent, memo } from 'react'
+import React, { useCallback, memo } from 'react'
 import styled from '@emotion/styled'
+import type { FunctionComponent } from 'react'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
 import useAddNode from '~/state/hooks/use-add-node'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
 import AnimIn from '~/components/anim-in'
 import ErrorBoundary from '~/components/error-boundary'
 import ButtonSet, { Button } from '~/components/button-set'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 import ConnectedLoop from './connected-loop'
 

@@ -1,10 +1,11 @@
-import React, { FunctionComponent, useMemo, memo } from 'react'
+import React, { useMemo, memo } from 'react'
 import styled from '@emotion/styled'
+import type { FunctionComponent } from 'react'
 
 import TitleBar from '~/components/title-bar'
 import Button from '~/components/button'
 
-import { LoopUIProps } from './types'
+import type { LoopUIProps } from './types'
 
 const LoopTitleBar: FunctionComponent<Pick<
   LoopUIProps,

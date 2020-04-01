@@ -1,12 +1,13 @@
 import { always, curry } from 'ramda'
 
-import { GInstrumentNode } from '~/types'
 import { makeConnectable } from '~/lib/connection'
 import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
 import { isFiniteNumber } from '~/lib/util/predicate'
+import type { GInstrumentNode } from '~/types'
 
-import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
+import { defaultProps } from './node-props'
+import type { Props } from './node-props'
 
 export default curry(
   (audioContext: AudioContext, initProps: Partial<Props>) => {

@@ -1,10 +1,11 @@
-import { Reducer } from 'redux'
 import { produce } from 'immer'
+import type { Reducer } from 'redux'
 
 import { getPreferredColorScheme } from '~/apis/color-scheme'
-import defaultTheme, { ThemeName } from '~/style/theme'
+import defaultTheme from '~/style/theme'
+import type { ThemeName } from '~/style/theme'
 
-import { UIAction } from './types'
+import type { UIAction } from './types'
 
 export interface UIState {
   currentThemeName: ThemeName

@@ -2,11 +2,11 @@ import React, { memo } from 'react'
 import { GoMarkGithub } from 'react-icons/go'
 import styled from '@emotion/styled'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import useUITheme from '~/state/hooks/use-ui-theme'
-import { ThemeProps } from '~/style/theme'
 import PlayPauseButton from '~/components/play-pause-button'
+import type { FunctionComponentWithoutChildren } from '~/types'
+import type { ThemeProps } from '~/style/theme'
 
 const Masthead: FunctionComponentWithoutChildren = () => {
   const [{ isPlaying }, { togglePlayback }] = useGlobalPlayback()

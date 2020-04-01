@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 
-import { FunctionComponentWithoutChildren } from '~/types'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 // Adapted from https://codepen.io/JMChristensen/pen/Ablch
 const SVGArc: FunctionComponentWithoutChildren<{

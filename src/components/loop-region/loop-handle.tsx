@@ -1,8 +1,8 @@
 import React, { memo } from 'react'
 import styled from '@emotion/styled'
 
-import { FunctionComponentWithoutChildren } from '~/types'
-import { ThemeProps } from '~/style/theme'
+import type { FunctionComponentWithoutChildren } from '~/types'
+import type { ThemeProps } from '~/style/theme'
 
 const LoopHandle: FunctionComponentWithoutChildren<{
   align: Alignment

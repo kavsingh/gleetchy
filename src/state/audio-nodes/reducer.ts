@@ -1,29 +1,29 @@
-import { Reducer } from 'redux'
 import { produce } from 'immer'
 import { pick } from 'ramda'
+import type { Reducer } from 'redux'
 
 import {
   defaultProps as delayDefaultProps,
   nodeType as delayNodeType,
-  NodeProps as DelayNodeProps,
 } from '~/nodes/audio-effects/delay'
 import {
   defaultProps as reverbDefaultProps,
   nodeType as reverbNodeType,
-  NodeProps as ReverbNodeProps,
 } from '~/nodes/audio-effects/reverb'
 import {
   defaultProps as loopDefaultProps,
   nodeType as loopNodeType,
-  NodeProps as LoopNodeProps,
 } from '~/nodes/instruments/loop'
 import initialNodes from '~/state/default-nodes'
 import { prefixedId } from '~/lib/id'
 import { stableOmit, stableFilter } from '~/lib/util'
-import { AudioNodeState, AudioNodeIdentifierMeta } from '~/types'
+import type { NodeProps as DelayNodeProps } from '~/nodes/audio-effects/delay'
+import type { NodeProps as ReverbNodeProps } from '~/nodes/audio-effects/reverb'
+import type { NodeProps as LoopNodeProps } from '~/nodes/instruments/loop'
+import type { AudioNodeState, AudioNodeIdentifierMeta } from '~/types'
 
-import { AudioFileDecodeCompleteAction } from '../audio-files/types'
-import { AudioNodesAction } from './types'
+import type { AudioFileDecodeCompleteAction } from '../audio-files/types'
+import type { AudioNodesAction } from './types'
 
 type KnownProps = DelayNodeProps | ReverbNodeProps | LoopNodeProps | {}
 

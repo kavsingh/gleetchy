@@ -1,5 +1,5 @@
-import { AudioFileData } from '~/types'
 import { requireWindowWith } from '~/lib/env'
+import type { AudioFileData } from '~/types'
 
 let fileInput: HTMLInputElement
 

@@ -1,11 +1,11 @@
-import { Reducer } from 'redux'
 import produce from 'immer'
+import type { Reducer } from 'redux'
 
-import { AudioFilesAction } from '../audio-files/types'
-import { ConnectionsAction } from '../connections/types'
-import { GlobalPlaybackAction } from '../global-playback/types'
-import { AudioNodesAction } from '../audio-nodes/types'
-import { AudioEngineAction, AudioEngineEvent } from './types'
+import type { AudioFilesAction } from '../audio-files/types'
+import type { ConnectionsAction } from '../connections/types'
+import type { GlobalPlaybackAction } from '../global-playback/types'
+import type { AudioNodesAction } from '../audio-nodes/types'
+import type { AudioEngineAction, AudioEngineEvent } from './types'
 
 export interface AudioEngineState {
   events: AudioEngineEvent[]

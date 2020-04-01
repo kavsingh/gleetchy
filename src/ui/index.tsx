@@ -3,10 +3,10 @@ import Favicon from 'react-favicon'
 import styled from '@emotion/styled'
 import { ThemeProvider } from 'emotion-theming'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import useUITheme from '~/state/hooks/use-ui-theme'
-import { ThemeProps } from '~/style/theme'
 import favicon from '~/assets/icons/48x48.png'
+import type { ThemeProps } from '~/style/theme'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 import GlobalStyles from './global-styles'
 import AudioEffectsRack from './audio-effects-rack'

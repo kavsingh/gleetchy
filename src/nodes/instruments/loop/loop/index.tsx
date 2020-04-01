@@ -1,6 +1,7 @@
-import React, { PureComponent, FunctionComponent } from 'react'
+import React, { PureComponent } from 'react'
 import { clamp } from 'ramda'
 import styled from '@emotion/styled'
+import type { FunctionComponent } from 'react'
 
 import { noop } from '~/lib/util'
 import { UI as Eq3 } from '~/nodes/audio-effects/eq3'
@@ -9,7 +10,7 @@ import useFileDropRegion from '~/components/hooks/use-file-drop-region'
 import LoopSample from './loop-sample'
 import PlaybackControls from './playback-controls'
 import LoopTitleBar from './loop-title-bar'
-import { LoopUIProps } from './types'
+import type { LoopUIProps } from './types'
 
 class Loop extends PureComponent<LoopUIProps> {
   public render() {

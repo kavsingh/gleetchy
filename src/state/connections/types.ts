@@ -1,4 +1,4 @@
-import { ActionWithPayload } from '~/types'
+import type { ActionWithPayload } from '~/types'
 
 export interface ConnectionDescriptor {
   fromId: string

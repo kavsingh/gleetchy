@@ -1,10 +1,10 @@
-import { Reducer } from 'redux'
 import { produce } from 'immer'
+import type { Reducer } from 'redux'
 
-import { AudioFileData, DecodedAudioFileData } from '~/types'
 import { stableOmit, stableWithout, stableAppendUnique } from '~/lib/util'
+import type { AudioFileData, DecodedAudioFileData } from '~/types'
 
-import { AudioFilesAction } from './types'
+import type { AudioFilesAction } from './types'
 
 interface StoredAudioFileData extends Omit<AudioFileData, 'buffer'> {
   buffer?: DecodedAudioFileData['audioBuffer']

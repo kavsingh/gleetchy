@@ -1,10 +1,11 @@
 import { always, curry } from 'ramda'
 
-import { GAudioNode } from '~/types'
 import { makeConnectable } from '~/lib/connection'
+import type { GAudioNode } from '~/types'
 
-import { defaultProps, Props } from './node-props'
 import nodeType from './node-type'
+import { defaultProps } from './node-props'
+import type { Props } from './node-props'
 
 export default curry(
   (audioContext: AudioContext, initProps: Partial<Props>) => {

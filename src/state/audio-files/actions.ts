@@ -1,14 +1,14 @@
 import { head, pick } from 'ramda'
-import { Dispatch } from 'redux'
+import type { Dispatch } from 'redux'
 
 import { decodeAudioData } from '~/apis/audio'
 import {
   loadAudioFilesToArrayBuffers,
   readFileToArrayBuffer,
 } from '~/apis/file'
-import { AudioFileData } from '~/types'
+import type { AudioFileData } from '~/types'
 
-import {
+import type {
   AudioFileDecodeCompleteAction,
   AudioFileDecodeErrorAction,
   AudioFileDecodeStartAction,

@@ -1,8 +1,8 @@
 import React, { memo } from 'react'
 import { css, Global } from '@emotion/core'
 
-import { FunctionComponentWithoutChildren } from '~/types'
-import { UITheme } from '~/style/theme'
+import type { FunctionComponentWithoutChildren } from '~/types'
+import type { UITheme } from '~/style/theme'
 
 const globalStyles = (theme: UITheme) => css`
   html {

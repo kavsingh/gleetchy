@@ -1,11 +1,11 @@
 import React, { memo, FunctionComponent, useCallback, useMemo } from 'react'
 import styled from '@emotion/styled'
 
-import { AudioNodeConnection } from '~/types'
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
+import type { AudioNodeConnection } from '~/types'
 
 const Container = styled.div<{ isActive: boolean }>`
   width: 100%;

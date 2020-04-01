@@ -1,10 +1,13 @@
-import { ActionCreator } from 'redux'
-import { ThunkAction } from 'redux-thunk'
+import type { ActionCreator } from 'redux'
+import type { ThunkAction } from 'redux-thunk'
 
 import type { ApplicationState } from '~/state/configure-store'
 
 import { isPlayingSelector } from './selectors'
-import { GlobalPlaybackStartAction, GlobalPlaybackStopAction } from './types'
+import type {
+  GlobalPlaybackStartAction,
+  GlobalPlaybackStopAction,
+} from './types'
 
 export const startGlobalPlaybackAction: ActionCreator<GlobalPlaybackStartAction> = () => ({
   type: 'GLOBAL_PLAYBACK_START',

@@ -3,9 +3,9 @@ import styled from '@emotion/styled'
 import { memoizeWith, identity } from 'ramda'
 import color from 'color'
 
-import { FunctionComponentWithoutChildren, AudioNodeMeta } from '~/types'
-import { ThemeProps } from '~/style/theme'
 import useConnection from '~/state/hooks/use-connection'
+import type { ThemeProps } from '~/style/theme'
+import type { FunctionComponentWithoutChildren, AudioNodeMeta } from '~/types'
 
 const PatchBayNode: FunctionComponentWithoutChildren<{
   source: AudioNodeMeta

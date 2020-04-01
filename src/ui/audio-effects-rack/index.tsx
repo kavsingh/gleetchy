@@ -1,7 +1,7 @@
-import React, { FunctionComponent, useCallback, memo } from 'react'
+import React, { useCallback, memo } from 'react'
 import styled from '@emotion/styled'
+import type { FunctionComponent } from 'react'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import AnimIn from '~/components/anim-in'
 import { nodeType as delayType } from '~/nodes/audio-effects/delay'
 import { nodeType as reverbType } from '~/nodes/audio-effects/reverb'
@@ -9,6 +9,7 @@ import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
 import useAddNode from '~/state/hooks/use-add-node'
 import ButtonSet, { Button } from '~/components/button-set'
 import ErrorBoundary from '~/components/error-boundary'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 import ConnectedDelay from './connected-delay'
 import ConnectedReverb from './connected-reverb'

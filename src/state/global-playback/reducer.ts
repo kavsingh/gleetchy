@@ -1,7 +1,7 @@
-import { Reducer } from 'redux'
 import { produce } from 'immer'
+import type { Reducer } from 'redux'
 
-import { GlobalPlaybackAction } from './types'
+import type { GlobalPlaybackAction } from './types'
 
 export interface GlobalPlaybackState {
   isPlaying: boolean

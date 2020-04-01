@@ -3,13 +3,14 @@ import styled from '@emotion/styled'
 import { css } from '@emotion/core'
 import { clamp } from 'ramda'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import { noop } from '~/lib/util'
 import { ThemeProps } from '~/style/theme'
-import SinglePointerDrag, {
+import SinglePointerDrag from '~/components/single-pointer-drag'
+import type {
   SinglePointerDragMoveHandler,
   SinglePointerDragEndHandler,
 } from '~/components/single-pointer-drag'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 const clampValue = clamp(0, 1)
 

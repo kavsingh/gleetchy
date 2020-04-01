@@ -1,7 +1,7 @@
 import React, { memo } from 'react'
 import styled from '@emotion/styled'
 
-import { FunctionComponentWithoutChildren } from '~/types'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 const PlayPauseButton: FunctionComponentWithoutChildren<{
   isPlaying: boolean

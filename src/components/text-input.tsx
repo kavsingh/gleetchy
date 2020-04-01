@@ -1,10 +1,11 @@
-import React, { useCallback, ChangeEventHandler, memo } from 'react'
+import React, { useCallback, memo } from 'react'
 import AutosizeInput from 'react-input-autosize'
 import styled from '@emotion/styled'
+import type { ChangeEventHandler } from 'react'
 
-import { FunctionComponentWithoutChildren } from '~/types'
 import { cancelReactEvent, noop } from '~/lib/util'
-import { ThemeProps } from '~/style/theme'
+import type { ThemeProps } from '~/style/theme'
+import type { FunctionComponentWithoutChildren } from '~/types'
 
 const TextInput: FunctionComponentWithoutChildren<{
   value: string | number
