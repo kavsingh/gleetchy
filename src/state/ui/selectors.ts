@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect'
 import { memoizeWith, identity } from 'ramda'
 
-import { ApplicationState } from '~/state/configure-store'
-import { themes, ThemeName } from '~/style/theme'
+import { themes } from '~/style/theme'
+import type { ApplicationState } from '~/state/configure-store'
+import type { ThemeName } from '~/style/theme'
 
 const getTheme = memoizeWith(
   identity,

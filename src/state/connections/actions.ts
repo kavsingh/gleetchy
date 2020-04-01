@@ -1,10 +1,10 @@
 import { Dispatch } from 'redux'
 
-import { ApplicationState } from '~/state/configure-store'
 import { isSameConnection } from '~/lib/audio'
+import type { ApplicationState } from '~/state/configure-store'
 
 import { connectionsSelector } from './selectors'
-import { ConnectionAddAction, ConnectionRemoveAction } from './types'
+import type { ConnectionAddAction, ConnectionRemoveAction } from './types'
 
 export const addConnectionAction = (
   fromId: string,

@@ -1,7 +1,7 @@
 import { prop } from 'ramda'
 import { createSelector } from 'reselect'
 
-import { ApplicationState } from '~/state/configure-store'
+import type { ApplicationState } from '~/state/configure-store'
 
 const audioFilesStateSelector = (state: ApplicationState) => state.audioFiles
 

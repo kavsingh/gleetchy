@@ -1,6 +1,6 @@
 import { identity } from 'ramda'
 
-import { ApplicationState } from '~/state/configure-store'
+import type { ApplicationState } from '~/state/configure-store'
 
 import { createValueEqSelector } from '../lib/selector'
 

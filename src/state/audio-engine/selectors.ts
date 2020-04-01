@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect'
 
-import { ApplicationState } from '~/state/configure-store'
+import type { ApplicationState } from '~/state/configure-store'
 
 const audioEngineStateSelector = (state: ApplicationState) => state.audioEngine
 

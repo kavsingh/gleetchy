@@ -1,7 +1,7 @@
 import { ActionCreator } from 'redux'
 import { ThunkAction } from 'redux-thunk'
 
-import { ApplicationState } from '~/state/configure-store'
+import type { ApplicationState } from '~/state/configure-store'
 
 import { isPlayingSelector } from './selectors'
 import { GlobalPlaybackStartAction, GlobalPlaybackStopAction } from './types'
