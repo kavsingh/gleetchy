@@ -9,10 +9,16 @@ import {
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 
 const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
-  const [
-    { label, connections, audioProps, isActive },
-    { updateAudioProps, updateLabel, duplicate, remove },
-  ] = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
+  const {
+    label,
+    connections,
+    audioProps,
+    isActive,
+    updateAudioProps,
+    updateLabel,
+    duplicate,
+    remove,
+  } = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
   const dispatch = useDispatch()
 

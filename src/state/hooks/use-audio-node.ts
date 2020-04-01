@@ -16,12 +16,18 @@ import {
   activeAudioNodeIdsSelector,
 } from '../audio-nodes/selectors'
 import { connectionsSelector } from '../connections/selectors'
+import type {
+  AudioNodeUpdateAudioPropsAction,
+  AudioNodeUpdateLabelAction,
+  AudioNodeDuplicateAction,
+  AudioNodeRemoveAction,
+} from '../audio-nodes/types'
 import type { ApplicationState } from '../configure-store'
 
 const useAudioNode = <T extends object>(
   id: string,
   isValid: AudioNodeStateValidator,
-) => {
+): UseAudioNodeReturn<T> => {
   const node = useSelector<ApplicationState, AudioNodeState<T>>(
     (state) => audioNodesSelector(state)[id] as AudioNodeState<T>,
     equals,
@@ -68,13 +74,30 @@ const useAudioNode = <T extends object>(
     })
   }, [id, allConnections])
 
-  return [
-    { connections, isActive, label: node.label, audioProps: node.audioProps },
-    { updateAudioProps, updateLabel, duplicate, remove },
-  ] as const
+  return {
+    label: node.label,
+    audioProps: node.audioProps,
+    connections,
+    isActive,
+    updateAudioProps,
+    updateLabel,
+    duplicate,
+    remove,
+  }
 }
 
 export default useAudioNode
+
+export interface UseAudioNodeReturn<T extends object> {
+  label: string
+  audioProps: T
+  connections: AudioNodeConnection[]
+  isActive: boolean
+  updateAudioProps: (audioProps: Partial<T>) => AudioNodeUpdateAudioPropsAction
+  updateLabel: (label: string) => AudioNodeUpdateLabelAction
+  duplicate: () => AudioNodeDuplicateAction
+  remove: () => AudioNodeRemoveAction
+}
 
 export type AudioNodeStateValidator = (node: AudioNodeState<{}>) => boolean
 

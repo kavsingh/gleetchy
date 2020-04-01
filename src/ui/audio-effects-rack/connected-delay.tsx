@@ -4,10 +4,15 @@ import { nodeType, NodeProps, UI } from '~/nodes/audio-effects/delay'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 
 const ConnectedReverb: FunctionComponent<{ id: string }> = ({ id }) => {
-  const [
-    { connections, isActive, label, audioProps },
-    { updateLabel, updateAudioProps, remove },
-  ] = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
+  const {
+    connections,
+    isActive,
+    label,
+    audioProps,
+    updateLabel,
+    updateAudioProps,
+    remove,
+  } = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
   const handleDelayTimeChange = useCallback(
     (delayTime) => updateAudioProps({ delayTime }),
