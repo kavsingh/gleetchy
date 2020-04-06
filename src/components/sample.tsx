@@ -50,7 +50,9 @@ const Sample: FunctionComponent<SampleProps> = ({
       <WaveformContainer>{waveForm}</WaveformContainer>
       {audioBuffer ? (
         <>
-          <Playhead position={positionRatio} />
+          <PlayheadContainer>
+            <Playhead position={positionRatio} />
+          </PlayheadContainer>
           <LoopRegionContainer>{loopRegion}</LoopRegionContainer>
         </>
       ) : (
@@ -91,6 +93,12 @@ const Container = styled.div`
 const WaveformContainer = styled.div`
   ${layoutAbsoluteFill}
   z-index: 1;
+`
+
+const PlayheadContainer = styled.div`
+  ${layoutAbsoluteFill}
+  overflow: hidden;
+  pointer-events: none;
 `
 
 const Playhead = styled.div<ThemeProps & { position: number }>`

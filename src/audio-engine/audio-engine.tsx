@@ -77,6 +77,8 @@ class AudioEngine extends Component<AudioEngineProps> {
     this.audioContext = getAudioContext()
     this.updateAudioNodes()
     this.updateAudioGraph()
+
+    window.SUBS = this.subscriptions
   }
 
   public shouldComponentUpdate(props: AudioEngineProps) {
@@ -100,14 +102,46 @@ class AudioEngine extends Component<AudioEngineProps> {
     return null
   }
 
-  private getInstrumentNodes(): GInstrumentNode[] {
+  private getInstrumentNodes = (): GInstrumentNode[] => {
     return Object.values(this.audioNodes).filter(
       isInstrumentNode,
     ) as GInstrumentNode[]
   }
 
-  private forEachInstrument(fn: InstrumentNodeProcessor) {
+  private forEachInstrument = (fn: InstrumentNodeProcessor) => {
     this.getInstrumentNodes().forEach(fn)
+  }
+
+  private getNodeId = (node: GAudioNode | GInstrumentNode | AudioNode) =>
+    Object.entries(this.audioNodes).find(
+      ([, registeredNode]) => registeredNode === node,
+    )?.[0]
+
+  private playAndSubscribeInstrument = (node: GInstrumentNode) => {
+    const nodeId = this.getNodeId(node)
+
+    if (nodeId) {
+      this.subscriptions[nodeId]?.()
+
+      if (typeof node.subscribe === 'function') {
+        this.subscriptions[nodeId] = node.subscribe((payload: unknown) =>
+          this.props.dispatchSubscriptionEvent(nodeId, payload),
+        )
+      }
+    }
+
+    node.play()
+  }
+
+  private stopAndUnsubscribeInstrument = (node: GInstrumentNode) => {
+    const nodeId = this.getNodeId(node)
+
+    if (nodeId && this.subscriptions[nodeId]) {
+      this.subscriptions[nodeId]()
+      delete this.subscriptions[nodeId]
+    }
+
+    node.stop()
   }
 
   private disconnectAllNodes() {
@@ -139,17 +173,9 @@ class AudioEngine extends Component<AudioEngineProps> {
 
         this.audioNodes[node.id] = newNode
 
-        if (!isInstrumentNode(newNode)) return
-
-        if (this.subscriptions[node.id]) this.subscriptions[node.id]()
-
-        if (typeof newNode.subscribe === 'function') {
-          this.subscriptions[node.id] = newNode.subscribe((payload: unknown) =>
-            this.props.dispatchSubscriptionEvent(id, payload),
-          )
+        if (isPlaying && isInstrumentNode(newNode)) {
+          this.playAndSubscribeInstrument(newNode)
         }
-
-        if (isPlaying) newNode.play()
       })
   }
 
@@ -188,10 +214,10 @@ class AudioEngine extends Component<AudioEngineProps> {
   private processAudioEngineEvent = (event: AudioEngineEvent) => {
     switch (event.type) {
       case 'GLOBAL_PLAYBACK_START':
-        this.forEachInstrument((node) => node.play())
+        this.forEachInstrument(this.playAndSubscribeInstrument)
         break
       case 'GLOBAL_PLAYBACK_STOP':
-        this.forEachInstrument((node) => node.stop())
+        this.forEachInstrument(this.stopAndUnsubscribeInstrument)
         break
       case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
         this.updateNode(event.payload)
@@ -212,6 +238,7 @@ class AudioEngine extends Component<AudioEngineProps> {
         this.updateAudioGraph()
         break
       case 'AUDIO_NODE_REMOVE':
+        this.subscriptions[event.payload.id]?.()
         this.rebuildAll()
         break
       default:
