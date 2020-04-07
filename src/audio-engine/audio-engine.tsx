@@ -77,8 +77,6 @@ class AudioEngine extends Component<AudioEngineProps> {
     this.audioContext = getAudioContext()
     this.updateAudioNodes()
     this.updateAudioGraph()
-
-    window.SUBS = this.subscriptions
   }
 
   public shouldComponentUpdate(props: AudioEngineProps) {
