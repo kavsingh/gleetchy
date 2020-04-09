@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useRef, useEffect, memo } from 'react'
 import styled from '@emotion/styled'
 import colorFn from 'color'
+import { range } from 'ramda'
 
 import { requireWindowWith } from '~/lib/env'
 
@@ -34,28 +35,22 @@ const drawWaveform = (
   height: number,
   buffer: AudioBuffer,
 ) => {
-  const halfHeight = height / 2
-  const leftChannel = buffer.getChannelData(0)
-  const rightChannel =
-    buffer.numberOfChannels > 1 ? buffer.getChannelData(1) : undefined
   const buffStep = buffer.length / width
+  const channels = range(0, buffer.numberOfChannels).map((channel) =>
+    buffer.getChannelData(channel),
+  )
+  const channelHeight = height / channels.length
+  const mids = channels.map((_, i) => (i + 0.5) * channelHeight)
+  const valueMult = channelHeight / 2
 
-  for (let i = 0; i < width; i += 1) {
-    const index = Math.floor(i * buffStep)
-    const leftVal = leftChannel[index] * halfHeight
+  for (let x = 0; x < width; x++) {
+    const sampleIndex = Math.floor(x * buffStep)
 
-    if (!rightChannel) {
-      context.fillRect(i, halfHeight - leftVal, 1, leftVal * 2)
-    } else {
-      const rightVal = rightChannel[index] * halfHeight
+    for (let c = 0; c < channels.length; c++) {
+      const val = channels[c][sampleIndex] * valueMult
+      const mid = mids[c]
 
-      context.fillRect(i, halfHeight / 2 - leftVal / 2, 1, leftVal)
-      context.fillRect(
-        i,
-        halfHeight + halfHeight / 2 - rightVal / 2,
-        1,
-        rightVal,
-      )
+      context.fillRect(x, mid - val, 1, val * 2)
     }
   }
 }
