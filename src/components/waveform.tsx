@@ -1,11 +1,8 @@
 import React, { FunctionComponent, useRef, useEffect, memo } from 'react'
 import styled from '@emotion/styled'
 import colorFn from 'color'
-import { map } from 'ramda'
 
 import { requireWindowWith } from '~/lib/env'
-
-const normaliseChannel = map((v: number) => (v + 0.5) * 0.5)
 
 const drawTempWaveform = (
   context: CanvasRenderingContext2D,
@@ -38,19 +35,28 @@ const drawWaveform = (
   buffer: AudioBuffer,
 ) => {
   const halfHeight = height / 2
-  const leftChannel = normaliseChannel(buffer.getChannelData(0))
+  const leftChannel = buffer.getChannelData(0)
   const rightChannel =
-    buffer.numberOfChannels > 1
-      ? normaliseChannel(buffer.getChannelData(1))
-      : leftChannel
+    buffer.numberOfChannels > 1 ? buffer.getChannelData(1) : undefined
   const buffStep = buffer.length / width
 
   for (let i = 0; i < width; i += 1) {
     const index = Math.floor(i * buffStep)
     const leftVal = leftChannel[index] * halfHeight
-    const rightVal = rightChannel[index] * halfHeight
 
-    context.fillRect(i, halfHeight - leftVal, 1, leftVal + rightVal)
+    if (!rightChannel) {
+      context.fillRect(i, halfHeight - leftVal, 1, leftVal * 2)
+    } else {
+      const rightVal = rightChannel[index] * halfHeight
+
+      context.fillRect(i, halfHeight / 2 - leftVal / 2, 1, leftVal)
+      context.fillRect(
+        i,
+        halfHeight + halfHeight / 2 - rightVal / 2,
+        1,
+        rightVal,
+      )
+    }
   }
 }
 
