@@ -90,11 +90,9 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
     process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
   ].filter(Boolean) as webpack.Plugin[],
   resolve: {
-    // TODO: Temporarily disable preact build until production build theme
-    // updates are resolved.
-    // alias: isProduction
-    //   ? { 'react': 'preact/compat', 'react-dom': 'preact/compat' }
-    //   : {},
+    alias: isProduction
+      ? { 'react': 'preact/compat', 'react-dom': 'preact/compat' }
+      : {},
     extensions: ['.ts', '.tsx', '.js'],
   },
 }
