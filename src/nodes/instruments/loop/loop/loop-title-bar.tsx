@@ -60,7 +60,7 @@ const LoopTitleBar: FunctionComponent<Pick<
       <Title>
         {fileInfo}
         {loadButton}
-        {audioBuffer ? <Button handler={duplicate}>Copy</Button> : null}
+        {audioBuffer ? <Button handler={duplicate}>Clone</Button> : null}
       </Title>
     </TitleBar>
   )
