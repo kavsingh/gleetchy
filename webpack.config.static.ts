@@ -5,7 +5,7 @@ import baseConfig, { publicPath } from './webpack.config'
 
 const config: Configuration = {
   module: baseConfig.module,
-  resolve: { ...baseConfig.resolve, alias: {} },
+  resolve: { ...baseConfig.resolve },
   mode: 'production',
   entry: {
     gleetchy: ['./src/index-static.tsx'],

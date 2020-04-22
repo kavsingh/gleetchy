@@ -10,7 +10,10 @@
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": false,
     "jsx": "preserve",
-    "lib": ["esnext", "dom"],
+    "lib": [
+      "esnext",
+      "dom"
+    ],
     "module": "esnext",
     "moduleResolution": "node",
     "noEmit": true,
@@ -20,7 +23,12 @@
     "noStrictGenericChecks": false,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "plugins": [{ "name": "typescript-styled-plugin", "validate": false }],
+    "plugins": [
+      {
+        "name": "typescript-styled-plugin",
+        "validate": false
+      }
+    ],
     "pretty": true,
     "rootDir": "./",
     "skipLibCheck": true,
@@ -30,9 +38,17 @@
     "strictNullChecks": true,
     "target": "esnext",
     "paths": {
-      "~/*": ["src/*"]
+      "~/*": [
+        "src/*"
+      ]
     }
   },
-  "exclude": ["**/node_modules"],
-  "include": ["./src", "./scripts", "./webpack.config.ts"]
+  "exclude": [
+    "**/node_modules"
+  ],
+  "include": [
+    "./src",
+    "./scripts",
+    "./webpack.config.ts"
+  ]
 }

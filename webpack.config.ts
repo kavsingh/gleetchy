@@ -21,16 +21,14 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
   },
   target: 'web',
   output: {
+    publicPath,
     filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
     path: fromRoot('dist'),
-    publicPath,
   },
   devServer: {
     host: servePublic ? '0.0.0.0' : 'localhost',
-    port: 3000,
-    inline: true,
     hot: true,
-    historyApiFallback: true,
+    port: 3000,
   },
   module: {
     rules: [
