@@ -5,6 +5,8 @@ import { themes } from '~/style/theme'
 import type { ApplicationState } from '~/state/configure-store'
 import type { ThemeName } from '~/style/theme'
 
+import { createValueEqSelector } from '../lib/selector'
+
 const getTheme = memoizeWith(
   identity,
   (themeName: ThemeName) =>
@@ -21,4 +23,9 @@ export const uiThemeNameSelector = createSelector(
 export const uiThemeSelector = createSelector(
   uiThemeNameSelector,
   (themeName) => getTheme(themeName),
+)
+
+export const uiModifierKeysSelector = createValueEqSelector(
+  uiStateSelector,
+  ({ modifierKeys }) => modifierKeys,
 )

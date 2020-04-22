@@ -80,3 +80,8 @@ export interface DecodedAudioFileData {
 export interface ActionWithPayload<TYPE, PAYLOAD> extends Action<TYPE> {
   payload: PAYLOAD
 }
+
+export type ActionCreatorWithArguments<
+  A extends Action,
+  ARGS extends unknown[]
+> = (...args: ARGS) => A

@@ -12,7 +12,15 @@ import type {
 } from '~/components/single-pointer-drag'
 import type { FunctionComponentWithoutChildren } from '~/types'
 
+import useControlResponseRef, {
+  ControlResponseMultipliers,
+} from './hooks/use-control-response-ref'
+
 const clampValue = clamp(0, 1)
+const controlMultipliers: ControlResponseMultipliers = {
+  normal: 2,
+  fine: 0.4,
+}
 
 const Slider: FunctionComponentWithoutChildren<{
   value: number
@@ -31,6 +39,7 @@ const Slider: FunctionComponentWithoutChildren<{
   title = '',
   onChange = noop,
 }) => {
+  const moveMultiplierRef = useControlResponseRef(controlMultipliers)
   const barRef = useRef<HTMLDivElement | null>(null)
   const valueRef = useRef<number>(value)
 
@@ -48,9 +57,13 @@ const Slider: FunctionComponentWithoutChildren<{
       const movement = isVert ? movementY : movementX
       const dim = isVert ? bar.offsetHeight * -1 : bar.offsetWidth
 
-      onChange(clampValue((movement * 2) / dim + valueRef.current))
+      onChange(
+        clampValue(
+          (movement * moveMultiplierRef.current) / dim + valueRef.current,
+        ),
+      )
     },
-    [orientation, onChange],
+    [orientation, onChange, moveMultiplierRef],
   )
 
   const handleDragEnd = useCallback<SinglePointerDragEndHandler>(

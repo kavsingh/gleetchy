@@ -1,12 +1,14 @@
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import Favicon from 'react-favicon'
 import styled from '@emotion/styled'
 import { ThemeProvider } from 'emotion-theming'
 
 import useUITheme from '~/state/hooks/use-ui-theme'
+import useModifierKeys from '~/state/hooks/use-modifier-keys'
 import favicon from '~/assets/icons/48x48.png'
 import type { ThemeProps } from '~/style/theme'
 import type { FunctionComponentWithoutChildren } from '~/types'
+import { requireWindowWith } from '~/lib/env'
 
 import GlobalStyles from './global-styles'
 import AudioEffectsRack from './audio-effects-rack'
@@ -16,6 +18,24 @@ import Masthead from './masthead'
 
 const UI: FunctionComponentWithoutChildren = () => {
   const [{ theme }] = useUITheme()
+  const [, { registerKeyPress, registerKeyRelease }] = useModifierKeys()
+
+  useEffect(() => {
+    const WINDOW = requireWindowWith([
+      'addEventListener',
+      'removeEventListener',
+    ])
+
+    if (!WINDOW) return undefined
+
+    WINDOW.addEventListener('keydown', registerKeyPress, true)
+    WINDOW.addEventListener('keyup', registerKeyRelease, true)
+
+    return () => {
+      WINDOW.removeEventListener('keydown', registerKeyPress, true)
+      WINDOW.removeEventListener('keyup', registerKeyRelease, true)
+    }
+  }, [registerKeyPress, registerKeyRelease])
 
   return (
     <>

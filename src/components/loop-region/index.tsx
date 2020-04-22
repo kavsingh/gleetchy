@@ -5,12 +5,18 @@ import color from 'color'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import SinglePointerDrag from '~/components/single-pointer-drag'
 import type { FunctionComponentWithoutChildren } from '~/types'
 import type { ThemeProps } from '~/style/theme'
-import type { SinglePointerDragState } from '~/components/single-pointer-drag'
 
+import SinglePointerDrag from '../single-pointer-drag'
 import LoopHandle from './loop-handle'
+import type { SinglePointerDragState } from '../single-pointer-drag'
+import useControlResponseRef from '../hooks/use-control-response-ref'
+
+const controlResponseMultipliers = {
+  normal: 1,
+  fine: 0.4,
+}
 
 const LoopRegion: FunctionComponentWithoutChildren<{
   loopStart: number
@@ -25,33 +31,43 @@ const LoopRegion: FunctionComponentWithoutChildren<{
   onLoopEndDrag = noop,
   onLoopRegionDrag = noop,
 }) => {
+  const moveMultiplierRef = useControlResponseRef(controlResponseMultipliers)
   const containerRef = useRef<HTMLDivElement | null>(null)
 
   const handleStartHandleDrag = useCallback(
     ({ movementX }: SinglePointerDragState) => {
       if (containerRef.current) {
-        onLoopStartDrag(movementX / containerRef.current.offsetWidth)
+        onLoopStartDrag(
+          (movementX * moveMultiplierRef.current) /
+            containerRef.current.offsetWidth,
+        )
       }
     },
-    [onLoopStartDrag],
+    [onLoopStartDrag, moveMultiplierRef],
   )
 
   const handleEndHandleDrag = useCallback(
     ({ movementX }: SinglePointerDragState) => {
       if (containerRef.current) {
-        onLoopEndDrag(movementX / containerRef.current.offsetWidth)
+        onLoopEndDrag(
+          (movementX * moveMultiplierRef.current) /
+            containerRef.current.offsetWidth,
+        )
       }
     },
-    [onLoopEndDrag],
+    [onLoopEndDrag, moveMultiplierRef],
   )
 
   const handleLoopRegionDrag = useCallback(
     ({ movementX }: SinglePointerDragState) => {
       if (containerRef.current) {
-        onLoopRegionDrag(movementX / containerRef.current.offsetWidth)
+        onLoopRegionDrag(
+          (movementX * moveMultiplierRef.current) /
+            containerRef.current.offsetWidth,
+        )
       }
     },
-    [onLoopRegionDrag],
+    [onLoopRegionDrag, moveMultiplierRef],
   )
 
   const regionRatio = loopEnd - loopStart

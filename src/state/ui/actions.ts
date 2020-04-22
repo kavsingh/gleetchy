@@ -1,9 +1,15 @@
 import type { ActionCreator } from 'redux'
 import type { ThunkAction } from 'redux-thunk'
 
+import { ActionCreatorWithArguments } from '~/types'
+
 import { uiThemeNameSelector } from './selectors'
 import type { ApplicationState } from '../configure-store'
-import type { UISetThemeAction } from './types'
+import type {
+  UISetThemeAction,
+  UIKeyPressedAction,
+  UIKeyReleasedAction,
+} from './types'
 
 export const setDarkThemeAction: ActionCreator<UISetThemeAction> = () => ({
   payload: 'dark',
@@ -26,3 +32,13 @@ export const toggleDarkLightUIThemesAction = (): ThunkAction<
   if (themeName === 'dark') dispatch(setLightThemeAction())
   else dispatch(setDarkThemeAction())
 }
+
+export const registerKeyPressAction: ActionCreatorWithArguments<
+  UIKeyPressedAction,
+  [string]
+> = (key) => ({ type: 'UI_KEY_PRESSED', payload: key })
+
+export const registerKeyReleaseAction: ActionCreatorWithArguments<
+  UIKeyReleasedAction,
+  [string]
+> = (key) => ({ type: 'UI_KEY_RELEASED', payload: key })

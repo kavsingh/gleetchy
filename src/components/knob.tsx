@@ -11,7 +11,15 @@ import type { UITheme } from '~/style/theme'
 import type { SinglePointerDragMoveHandler } from '~/components/single-pointer-drag'
 import type { FunctionComponentWithoutChildren } from '~/types'
 
+import useControlResponseRef, {
+  ControlResponseMultipliers,
+} from './hooks/use-control-response-ref'
+
 const clampMove = clamp(0, 1)
+const controlMultipliers: ControlResponseMultipliers = {
+  normal: 1,
+  fine: 0.2,
+}
 
 const Knob: FunctionComponentWithoutChildren<{
   value: number
@@ -34,6 +42,7 @@ const Knob: FunctionComponentWithoutChildren<{
   const knobRef = useRef<HTMLDivElement | null>(null)
   const valueRef = useRef<number>(value)
   const [axis, setAxis] = useState<MovementAxis | undefined>()
+  const moveMultiplierRef = useControlResponseRef(controlMultipliers)
 
   const resetAxis = useCallback(() => setAxis(undefined), [])
 
@@ -56,11 +65,11 @@ const Knob: FunctionComponentWithoutChildren<{
           ? movementX / knob.offsetWidth
           : -movementY / knob.offsetHeight
 
-      onChange(clampMove(valueRef.current + move))
+      onChange(clampMove(valueRef.current + move * moveMultiplierRef.current))
 
       if (!axis) setAxis(moveAxis)
     },
-    [axis, onChange],
+    [axis, onChange, moveMultiplierRef],
   )
 
   useEffect(() => {
