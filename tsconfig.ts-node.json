@@ -1,8 +1,8 @@
 {
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"isolatedModules": false,
-		"module": "commonjs",
-		"target": "ES2018"
-	}
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "isolatedModules": false,
+    "module": "commonjs",
+    "target": "ES2018"
+  }
 }
