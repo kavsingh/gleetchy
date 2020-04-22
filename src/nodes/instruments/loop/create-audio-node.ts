@@ -46,8 +46,7 @@ export default curry(
 
     const trackPlaybackOnInterval = () => {
       if (
-        !props.audioBuffer ||
-        !bufferSourceNode ||
+        !bufferSourceNode?.buffer ||
         !isFiniteNumber(playbackState.ctxTimestamp) ||
         !isFiniteNumber(playbackState.position)
       ) {
@@ -56,7 +55,10 @@ export default curry(
 
       const current = audioContext.currentTime
       const elapsed = current - playbackState.ctxTimestamp
-      const delta = elapsed * props.playbackRate
+
+      playbackState.ctxTimestamp = current
+
+      const delta = elapsed * bufferSourceNode.playbackRate.value
       let nextPosition = playbackState.position + delta
 
       if (
@@ -68,8 +70,7 @@ export default curry(
 
       playbackState.position = nextPosition
       playbackState.positionRatio =
-        playbackState.position / props.audioBuffer.duration
-      playbackState.ctxTimestamp = current
+        playbackState.position / bufferSourceNode.buffer.duration
 
       subscribers.forEach((subscriber) => {
         subscriber({ ...playbackState })
