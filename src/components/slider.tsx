@@ -48,7 +48,7 @@ const Slider: FunctionComponentWithoutChildren<{
       const movement = isVert ? movementY : movementX
       const dim = isVert ? bar.offsetHeight * -1 : bar.offsetWidth
 
-      onChange(clampValue(movement / dim + valueRef.current))
+      onChange(clampValue((movement * 2) / dim + valueRef.current))
     },
     [orientation, onChange],
   )
