@@ -16,6 +16,7 @@ export const publicPath = ''
 
 const config: Configuration & { devServer: DevServerConfiguration } = {
   mode: isProduction ? 'production' : 'development',
+  devtool: isProduction ? 'source-map' : 'inline-cheap-source-map',
   entry: {
     gleetchy: ['./src/index.tsx'],
   },
@@ -88,9 +89,7 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
     process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
   ].filter(Boolean) as webpack.Plugin[],
   resolve: {
-    alias: isProduction
-      ? { 'react': 'preact/compat', 'react-dom': 'preact/compat' }
-      : {},
+    alias: { 'react': 'preact/compat', 'react-dom': 'preact/compat' },
     extensions: ['.ts', '.tsx', '.js'],
   },
 }
