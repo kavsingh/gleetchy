@@ -145,7 +145,9 @@ class AudioEngine extends Component<AudioEngineProps> {
   private disconnectAllNodes() {
     Object.values(this.audioNodes).forEach(
       // Safari crashes if node not connected
-      tryCatch<AudioNodeEffect>((node) => node.disconnect(), noop),
+      tryCatch<AudioNodeEffect>((node) => {
+        node.disconnect()
+      }, noop),
     )
   }
 
@@ -235,10 +237,17 @@ class AudioEngine extends Component<AudioEngineProps> {
         this.updateAudioNodes()
         this.updateAudioGraph()
         break
-      case 'AUDIO_NODE_REMOVE':
+      case 'AUDIO_NODE_REMOVE': {
         this.subscriptions[event.payload.id]?.()
+
+        const node = this.audioNodes[event.payload.id]
+
+        if (!node) return
+
+        if (isInstrumentNode(node)) node.stop()
         this.rebuildAll()
         break
+      }
       default:
         break
     }

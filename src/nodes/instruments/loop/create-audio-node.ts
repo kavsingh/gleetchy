@@ -2,12 +2,22 @@ import { always, curry } from 'ramda'
 
 import { makeConnectable } from '~/lib/connection'
 import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
-import { isFiniteNumber } from '~/lib/util/predicate'
 import type { GInstrumentNode } from '~/types'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
 import type { Props } from './node-props'
+
+const createPositionBuffer = (context: AudioContext, source: AudioBuffer) => {
+  const buffer = context.createBuffer(1, source.length, source.sampleRate)
+  const positions = buffer.getChannelData(0)
+
+  for (let i = 0; i < buffer.length; i++) {
+    positions[i] = i / buffer.length
+  }
+
+  return buffer
+}
 
 export default curry(
   (audioContext: AudioContext, initProps: Partial<Props>) => {
@@ -20,16 +30,23 @@ export default curry(
     const gainNode = audioContext.createGain()
     const getGainNode = always(gainNode)
     const subscribers: PlaybackStateSubscriber[] = []
-    const playbackState: PlaybackState = { playing: false }
+    const playbackState: PlaybackState = { playing: false, positionRatio: 0 }
 
     let bufferSourceNode: AudioBufferSourceNode | null = null
-    let playbackTrackInterval: NodeJS.Timer | null = null
+    let positionBufferSourceNode: AudioBufferSourceNode | null = null
+
+    const positionBufferProcessor = audioContext.createScriptProcessor(
+      2048,
+      1,
+      1,
+    )
 
     eq3Node.connect(gainNode)
+    positionBufferProcessor.connect(audioContext.destination)
     gainNode.gain.value = props.gain
 
     const transferPropsToBufferSourceNode = () => {
-      if (!bufferSourceNode) return
+      if (!bufferSourceNode || !positionBufferSourceNode) return
 
       const { audioBuffer } = props
 
@@ -40,53 +57,33 @@ export default curry(
       bufferSourceNode.loopStart = props.loopStart * duration
       bufferSourceNode.loopEnd = props.loopEnd * duration
       bufferSourceNode.playbackRate.value = props.playbackRate
+      positionBufferSourceNode.loopStart = bufferSourceNode.loopStart
+      positionBufferSourceNode.loopEnd = bufferSourceNode.loopEnd
+      positionBufferSourceNode.playbackRate.value =
+        bufferSourceNode.playbackRate.value
 
       return bufferSourceNode
     }
 
-    const trackPlaybackOnInterval = () => {
-      if (
-        !bufferSourceNode?.buffer ||
-        !isFiniteNumber(playbackState.ctxTimestamp) ||
-        !isFiniteNumber(playbackState.position)
-      ) {
-        return
-      }
-
-      const current = audioContext.currentTime
-      const elapsed = current - playbackState.ctxTimestamp
-
-      playbackState.ctxTimestamp = current
-
-      const delta = elapsed * bufferSourceNode.playbackRate.value
-      let nextPosition = playbackState.position + delta
-
-      if (
-        nextPosition > bufferSourceNode.loopEnd ||
-        nextPosition < bufferSourceNode.loopStart
-      ) {
-        nextPosition = bufferSourceNode.loopStart
-      }
-
-      playbackState.position = nextPosition
-      playbackState.positionRatio =
-        playbackState.position / bufferSourceNode.buffer.duration
-
+    const processScriptEvent = (event: AudioProcessingEvent) => {
       subscribers.forEach((subscriber) => {
-        subscriber({ ...playbackState })
+        subscriber({
+          playing: true,
+          positionRatio: event.inputBuffer.getChannelData(0)[0],
+        })
       })
     }
 
     const removeBufferSourceNode = () => {
-      if (playbackTrackInterval) {
-        clearTimeout(playbackTrackInterval)
-        playbackTrackInterval = null
+      try {
+        bufferSourceNode?.disconnect(eq3Node.getInNode())
+        positionBufferSourceNode?.disconnect(positionBufferProcessor)
+      } catch {
+        // noop
       }
-
-      if (!bufferSourceNode) return
-
-      bufferSourceNode.disconnect(eq3Node.getInNode())
+      positionBufferProcessor.onaudioprocess = null
       bufferSourceNode = null
+      positionBufferSourceNode = null
     }
 
     const replaceBufferSourceNode = () => {
@@ -99,19 +96,26 @@ export default curry(
       bufferSourceNode = audioContext.createBufferSource()
       bufferSourceNode.buffer = audioBuffer
       bufferSourceNode.loop = true
+      positionBufferSourceNode = audioContext.createBufferSource()
+      positionBufferSourceNode.buffer = createPositionBuffer(
+        audioContext,
+        audioBuffer,
+      )
+      positionBufferSourceNode.loop = bufferSourceNode.loop
 
       transferPropsToBufferSourceNode()
 
-      bufferSourceNode.connect(eq3Node.getInNode())
-
       if (!playbackState.playing) return
 
-      bufferSourceNode.start(0, bufferSourceNode.loopStart)
-      playbackState.ctxTimestamp = audioContext.currentTime
-      playbackState.position = bufferSourceNode.loopStart
-      playbackState.positionRatio = loopStart
+      positionBufferProcessor.onaudioprocess = processScriptEvent
 
-      playbackTrackInterval = setInterval(trackPlaybackOnInterval, 20)
+      bufferSourceNode.connect(eq3Node.getInNode())
+      positionBufferSourceNode.connect(positionBufferProcessor)
+
+      bufferSourceNode.start(0, bufferSourceNode.loopStart)
+      positionBufferSourceNode.start(0, positionBufferSourceNode.loopStart)
+
+      playbackState.positionRatio = loopStart
     }
 
     return makeConnectable<
@@ -180,9 +184,7 @@ export default curry(
 
 interface PlaybackState {
   playing: boolean
-  position?: number
   positionRatio?: number
-  ctxTimestamp?: number
 }
 
 type PlaybackStateSubscriber = (state: PlaybackState) => unknown

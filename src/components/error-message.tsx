@@ -1,4 +1,3 @@
-import { memo } from 'react'
 import styled from '@emotion/styled'
 
 import { ThemeProps } from '~/style/theme'
@@ -6,9 +5,9 @@ import { ThemeProps } from '~/style/theme'
 const ErrorMessage = styled.div<ThemeProps>`
   width: 100%;
   padding: 2em;
-  color: ${({ theme }) => theme.colors.emphasis};
+  color: white;
   font-size: 0.9em;
-  background-color: ${({ theme }) => theme.colors.error};
+  background-color: red;
 `
 
-export default memo(ErrorMessage)
+export default ErrorMessage
