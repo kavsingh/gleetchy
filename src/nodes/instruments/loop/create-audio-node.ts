@@ -36,7 +36,7 @@ export default curry(
     let positionBufferSourceNode: AudioBufferSourceNode | null = null
 
     const positionBufferProcessor = audioContext.createScriptProcessor(
-      2048,
+      1024,
       1,
       1,
     )
