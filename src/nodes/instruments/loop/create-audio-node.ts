@@ -40,8 +40,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 
     this.positionProcessor = this.audioContext.createScriptProcessor(1024, 1, 1)
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    this.gainNode.connect((this.eq3Node as any).inNode)
+    this.gainNode.connect(this.eq3Node.inNode)
     this.eq3Node.connect(this.outNode)
 
     this.propsUpdated(this.props, this.props)

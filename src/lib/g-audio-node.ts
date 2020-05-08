@@ -1,6 +1,6 @@
 export abstract class GAudioNode<P extends object = {}> {
-  protected inNode: AudioNode
-  protected outNode: AudioNode
+  private _inNode = this.audioContext.createGain()
+  private _outNode = this.audioContext.createGain()
   protected defaultProps: P = {} as P
   protected props: P
 
@@ -8,22 +8,18 @@ export abstract class GAudioNode<P extends object = {}> {
 
   constructor(protected audioContext: AudioContext, initialProps: Partial<P>) {
     this.props = { ...this.defaultProps, ...initialProps }
-    this.inNode = this.audioContext.createGain()
-    this.outNode = this.audioContext.createGain()
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  connect(node: AudioNode | GAudioNode<any>) {
-    if (node instanceof AudioNode) this.outNode.connect(node)
-    else if (node instanceof GAudioNode) this.outNode.connect(node.inNode)
+  connect(node: AudioNode | GAudioNode) {
+    if (node instanceof AudioNode) this._outNode.connect(node)
+    else if (node instanceof GAudioNode) this._outNode.connect(node._inNode)
     else throw new Error('Unable to connect to node')
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  disconnect(node?: AudioNode | GAudioNode<any>) {
-    if (!node) this.outNode.disconnect()
-    else if (node instanceof AudioNode) this.outNode.disconnect(node)
-    else if (node instanceof GAudioNode) this.outNode.disconnect(node.inNode)
+  disconnect(node?: AudioNode | GAudioNode) {
+    if (!node) this._outNode.disconnect()
+    else if (node instanceof AudioNode) this._outNode.disconnect(node)
+    else if (node instanceof GAudioNode) this._outNode.disconnect(node._inNode)
     else throw new Error('Unable to disconnect node')
   }
 
@@ -33,6 +29,14 @@ export abstract class GAudioNode<P extends object = {}> {
     Object.assign(this.props, nextProps)
 
     this.propsUpdated(this.props, previousProps)
+  }
+
+  get inNode() {
+    return this._inNode
+  }
+
+  get outNode() {
+    return this._outNode
   }
 
   protected abstract propsUpdated(props: P, previousProps: P): void
