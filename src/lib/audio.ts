@@ -1,11 +1,7 @@
 import { curry, propEq, test } from 'ramda'
 
-import type {
-  AudioNodeConnection,
-  AudioNodeMeta,
-  GAudioNode,
-  GInstrumentNode,
-} from '~/types'
+import type { AudioNodeConnection, AudioNodeMeta } from '~/types'
+import type { GAudioNode, GInstrumentNode } from '~/lib/g-audio-node'
 
 export const hasAudioEffectType = <T extends { type?: string }>(item: T) =>
   test(/^audio_effect_/i, item.type || '')

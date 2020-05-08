@@ -1,8 +1,7 @@
-import { always, curry } from 'ramda'
+import { curry } from 'ramda'
 
-import { makeConnectable } from '~/lib/connection'
 import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
-import type { GInstrumentNode } from '~/types'
+import { GInstrumentNode } from '~/lib/g-audio-node'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
@@ -19,172 +18,151 @@ const createPositionBuffer = (context: AudioContext, source: AudioBuffer) => {
   return buffer
 }
 
-export default curry(
-  (audioContext: AudioContext, initProps: Partial<Props>) => {
-    const props = { ...defaultProps, ...initProps }
-    const eq3Node = createEq3Node(audioContext, {
-      lowGain: props.lowGain,
-      midGain: props.midGain,
-      highGain: props.highGain,
-    })
-    const gainNode = audioContext.createGain()
-    const getGainNode = always(gainNode)
-    const subscribers: PlaybackStateSubscriber[] = []
-    const playbackState: PlaybackState = { playing: false, positionRatio: 0 }
+export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
+  type = nodeType
+  defaultProps = defaultProps
 
-    let bufferSourceNode: AudioBufferSourceNode | null = null
-    let positionBufferSourceNode: AudioBufferSourceNode | null = null
+  playbackState: PlaybackState = { playing: false, positionRatio: 0 }
 
-    const positionBufferProcessor = audioContext.createScriptProcessor(
-      1024,
-      1,
-      1,
+  gainNode = this.audioContext.createGain()
+  eq3Node = createEq3Node(this.audioContext, {
+    lowGain: 0,
+    midGain: 0,
+    highGain: 0,
+  })
+
+  positionProcessor: ScriptProcessorNode
+  playbackBufferSource: AudioBufferSourceNode | null = null
+  positionBufferSource: AudioBufferSourceNode | null = null
+
+  constructor(protected audioContext: AudioContext, initProps: Partial<Props>) {
+    super(audioContext, initProps)
+
+    this.positionProcessor = this.audioContext.createScriptProcessor(1024, 1, 1)
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    this.gainNode.connect((this.eq3Node as any).inNode)
+    this.eq3Node.connect(this.outNode)
+
+    this.propsUpdated(this.props, this.props)
+  }
+
+  private processPositionEvent = (event: AudioProcessingEvent) => {
+    const updateState = {
+      ...this.playbackState,
+      positionRatio: event.inputBuffer.getChannelData(0)[0],
+    }
+
+    this.notifySubscribers(updateState)
+  }
+
+  private updateSourceProps() {
+    if (
+      !this.props.audioBuffer ||
+      !this.playbackBufferSource ||
+      !this.positionBufferSource
+    ) {
+      return
+    }
+
+    const { loopStart, loopEnd, playbackRate, audioBuffer } = this.props
+
+    this.positionBufferSource.loopStart = this.playbackBufferSource.loopStart =
+      loopStart * audioBuffer.duration
+    this.positionBufferSource.loopEnd = this.playbackBufferSource.loopEnd =
+      loopEnd * audioBuffer.duration
+    this.positionBufferSource.playbackRate.value = this.playbackBufferSource.playbackRate.value = playbackRate
+  }
+
+  private removeSource() {
+    try {
+      this.playbackBufferSource?.disconnect(this.gainNode)
+      this.positionBufferSource?.disconnect(this.positionProcessor)
+    } catch {
+      // noop
+    }
+
+    this.positionProcessor.onaudioprocess = null
+    this.playbackBufferSource = null
+    this.positionBufferSource = null
+  }
+
+  private replaceSource() {
+    this.removeSource()
+
+    const { audioBuffer } = this.props
+
+    if (!audioBuffer) return
+
+    this.playbackBufferSource = this.audioContext.createBufferSource()
+    this.positionBufferSource = this.audioContext.createBufferSource()
+
+    this.playbackBufferSource.buffer = audioBuffer
+    this.positionBufferSource.buffer = createPositionBuffer(
+      this.audioContext,
+      audioBuffer,
     )
 
-    eq3Node.connect(gainNode)
-    positionBufferProcessor.connect(audioContext.destination)
-    gainNode.gain.value = props.gain
+    this.positionBufferSource.loop = this.playbackBufferSource.loop = true
 
-    const transferPropsToBufferSourceNode = () => {
-      if (!bufferSourceNode || !positionBufferSourceNode) return
+    this.updateSourceProps()
 
-      const { audioBuffer } = props
+    if (!this.playbackState.playing) return
 
-      if (!audioBuffer) return
+    this.positionProcessor.onaudioprocess = this.processPositionEvent
 
-      const { duration } = audioBuffer
+    this.playbackBufferSource.connect(this.gainNode)
+    this.positionBufferSource.connect(this.positionProcessor)
 
-      bufferSourceNode.loopStart = props.loopStart * duration
-      bufferSourceNode.loopEnd = props.loopEnd * duration
-      bufferSourceNode.playbackRate.value = props.playbackRate
-      positionBufferSourceNode.loopStart = bufferSourceNode.loopStart
-      positionBufferSourceNode.loopEnd = bufferSourceNode.loopEnd
-      positionBufferSourceNode.playbackRate.value =
-        bufferSourceNode.playbackRate.value
+    this.playbackBufferSource.start(0, this.playbackBufferSource.loopStart)
+    this.positionBufferSource.start(0, this.positionBufferSource.loopStart)
 
-      return bufferSourceNode
+    this.playbackState.positionRatio = this.positionBufferSource.loopStart
+  }
+
+  protected propsUpdated(props: Props, prevProps: Props) {
+    const { gain, audioBuffer, loopStart, midGain, lowGain, highGain } = props
+
+    this.gainNode.gain.value = gain
+    this.eq3Node.set({ midGain, lowGain, highGain })
+
+    if (
+      prevProps.audioBuffer !== audioBuffer ||
+      prevProps.loopStart !== loopStart
+    ) {
+      this.replaceSource()
+    } else if (audioBuffer && this.playbackBufferSource) {
+      this.updateSourceProps()
+    } else if (!audioBuffer) {
+      this.removeSource()
     }
+  }
 
-    const processScriptEvent = (event: AudioProcessingEvent) => {
-      subscribers.forEach((subscriber) => {
-        subscriber({
-          playing: true,
-          positionRatio: event.inputBuffer.getChannelData(0)[0],
-        })
-      })
-    }
+  play() {
+    if (this.playbackState.playing) return
 
-    const removeBufferSourceNode = () => {
-      try {
-        bufferSourceNode?.disconnect(eq3Node.getInNode())
-        positionBufferSourceNode?.disconnect(positionBufferProcessor)
-      } catch {
-        // noop
-      }
-      positionBufferProcessor.onaudioprocess = null
-      bufferSourceNode = null
-      positionBufferSourceNode = null
-    }
+    this.playbackState.playing = true
+    this.replaceSource()
+  }
 
-    const replaceBufferSourceNode = () => {
-      removeBufferSourceNode()
+  stop() {
+    if (!this.playbackState.playing) return
 
-      const { loopStart, audioBuffer } = props
+    this.playbackState.playing = false
+    this.removeSource()
+  }
 
-      if (!audioBuffer) return
+  destroy() {
+    this.stop()
+  }
+}
 
-      bufferSourceNode = audioContext.createBufferSource()
-      bufferSourceNode.buffer = audioBuffer
-      bufferSourceNode.loop = true
-      positionBufferSourceNode = audioContext.createBufferSource()
-      positionBufferSourceNode.buffer = createPositionBuffer(
-        audioContext,
-        audioBuffer,
-      )
-      positionBufferSourceNode.loop = bufferSourceNode.loop
-
-      transferPropsToBufferSourceNode()
-
-      if (!playbackState.playing) return
-
-      positionBufferProcessor.onaudioprocess = processScriptEvent
-
-      bufferSourceNode.connect(eq3Node.getInNode())
-      positionBufferSourceNode.connect(positionBufferProcessor)
-
-      bufferSourceNode.start(0, bufferSourceNode.loopStart)
-      positionBufferSourceNode.start(0, positionBufferSourceNode.loopStart)
-
-      playbackState.positionRatio = loopStart
-    }
-
-    return makeConnectable<
-      GInstrumentNode<Props, typeof nodeType, PlaybackStateSubscriber>
-    >({
-      getInNode: getGainNode,
-      getOutNode: getGainNode,
-    })({
-      type: nodeType,
-
-      play() {
-        if (playbackState.playing) return
-
-        playbackState.playing = true
-        replaceBufferSourceNode()
-      },
-
-      stop() {
-        if (!playbackState.playing) return
-
-        playbackState.playing = false
-        removeBufferSourceNode()
-      },
-
-      set(newProps: Partial<Props> = {}) {
-        const prevProps = { ...props }
-
-        Object.assign(props, newProps)
-
-        const {
-          gain,
-          audioBuffer,
-          loopStart,
-          midGain,
-          lowGain,
-          highGain,
-        } = props
-
-        eq3Node.set({ midGain, lowGain, highGain })
-        gainNode.gain.value = gain
-
-        if (
-          prevProps.audioBuffer !== audioBuffer ||
-          prevProps.loopStart !== loopStart
-        ) {
-          replaceBufferSourceNode()
-        } else if (audioBuffer && bufferSourceNode) {
-          transferPropsToBufferSourceNode()
-        } else if (!audioBuffer) {
-          removeBufferSourceNode()
-        }
-      },
-
-      subscribe(subscriber: PlaybackStateSubscriber) {
-        if (!subscribers.includes(subscriber)) subscribers.push(subscriber)
-
-        return () => {
-          const subscriberIndex = subscribers.indexOf(subscriber)
-
-          if (subscriberIndex !== -1) subscribers.splice(subscriberIndex, 1)
-        }
-      },
-    })
-  },
+export default curry(
+  (audioContext: AudioContext, initProps: Partial<Props>) =>
+    new GLoopNode(audioContext, { ...defaultProps, ...initProps }),
 )
 
 interface PlaybackState {
   playing: boolean
   positionRatio?: number
 }
-
-type PlaybackStateSubscriber = (state: PlaybackState) => unknown

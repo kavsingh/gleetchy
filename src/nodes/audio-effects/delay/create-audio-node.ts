@@ -1,52 +1,47 @@
-import { always, curry } from 'ramda'
+import { curry } from 'ramda'
 
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
-import { makeConnectable } from '~/lib/connection'
-import type { GAudioNode } from '~/types'
+import { GAudioNode } from '~/lib/g-audio-node'
 
 import { defaultProps } from './node-props'
 import nodeType from './node-type'
 import type { Props } from './node-props'
 
-const updateWetDry = (
-  wetDryRatio: number,
-  wetGainNode: GainNode,
-  dryGainNode: GainNode,
-) => {
-  Object.assign(wetGainNode.gain, { value: wetDryRatio })
-  Object.assign(dryGainNode.gain, { value: 1 - wetDryRatio })
+export class GDelayNode extends GAudioNode<Props> {
+  type = nodeType
+  defaultProps = defaultProps
+
+  delayNode: DelayNode = this.audioContext.createDelay(DELAY_UPPER_BOUND)
+  wetGainNode: GainNode = this.audioContext.createGain()
+  dryGainNode: GainNode = this.audioContext.createGain()
+
+  constructor(
+    protected audioContext: AudioContext,
+    initialProps: Partial<Props>,
+  ) {
+    super(audioContext, initialProps)
+
+    this.inNode.connect(this.dryGainNode)
+    this.inNode.connect(this.delayNode)
+    this.delayNode.connect(this.wetGainNode)
+    this.wetGainNode.connect(this.outNode)
+    this.dryGainNode.connect(this.outNode)
+
+    this.propsUpdated()
+  }
+
+  protected propsUpdated() {
+    this.delayNode.delayTime.value = this.props.delayTime
+    this.wetGainNode.gain.value = this.props.wetDryRatio
+    this.dryGainNode.gain.value = 1 - this.props.wetDryRatio
+  }
+
+  destroy() {
+    // noop
+  }
 }
 
 export default curry(
-  (audioContext: AudioContext, initProps: Partial<Props>) => {
-    const props: Props = { ...defaultProps, ...initProps }
-    const delayNode = audioContext.createDelay(DELAY_UPPER_BOUND)
-    const inNode = audioContext.createGain()
-    const outNode = audioContext.createGain()
-    const wetGainNode = audioContext.createGain()
-    const dryGainNode = audioContext.createGain()
-
-    inNode.connect(dryGainNode)
-    inNode.connect(delayNode)
-    delayNode.connect(wetGainNode)
-    wetGainNode.connect(outNode)
-    dryGainNode.connect(outNode)
-
-    updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
-
-    delayNode.delayTime.value = props.delayTime
-
-    return makeConnectable<GAudioNode<Props, typeof nodeType>>({
-      getInNode: always(inNode),
-      getOutNode: always(outNode),
-    })({
-      type: nodeType,
-
-      set(newProps: Partial<Props> = {}) {
-        Object.assign(props, newProps)
-        delayNode.delayTime.value = props.delayTime
-        updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
-      },
-    })
-  },
+  (audioContext: AudioContext, initProps: Partial<Props>) =>
+    new GDelayNode(audioContext, { ...defaultProps, ...initProps }),
 )

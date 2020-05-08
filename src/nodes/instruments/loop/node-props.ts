@@ -3,6 +3,7 @@ import { defaultProps as eq3DefaultProps } from '~/nodes/audio-effects/eq3/node-
 export const defaultProps = Object.freeze({
   ...eq3DefaultProps,
   audioBuffer: undefined,
+  playbackPosition: undefined,
   fileName: '',
   fileType: '',
   gain: 0.5,

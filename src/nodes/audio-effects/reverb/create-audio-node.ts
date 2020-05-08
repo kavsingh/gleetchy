@@ -1,22 +1,12 @@
-import { always, curry } from 'ramda'
+import { curry } from 'ramda'
 
 import { decodeAudioData } from '~/apis/audio'
-import { makeConnectable } from '~/lib/connection'
 import reverbImpulse from '~/assets/media/impulse-reverb.wav'
-import type { GAudioNode } from '~/types'
+import { GAudioNode } from '~/lib/g-audio-node'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
 import type { Props } from './node-props'
-
-const updateWetDry = (
-  wetDryRatio: number,
-  wetGainNode: GainNode,
-  dryGainNode: GainNode,
-) => {
-  Object.assign(wetGainNode.gain, { value: wetDryRatio })
-  Object.assign(dryGainNode.gain, { value: 1 - wetDryRatio })
-}
 
 const loadImpulse = async (audioContext: AudioContext, url: string) => {
   const response = await fetch(url)
@@ -25,37 +15,43 @@ const loadImpulse = async (audioContext: AudioContext, url: string) => {
   return decodeAudioData(arrayBuffer, audioContext)
 }
 
-export default curry(
-  (audioContext: AudioContext, initProps: Partial<Props>) => {
-    const props: Props = { ...defaultProps, ...initProps }
-    const reverbNode = audioContext.createConvolver()
-    const inNode = audioContext.createGain()
-    const outNode = audioContext.createGain()
-    const wetGainNode = audioContext.createGain()
-    const dryGainNode = audioContext.createGain()
+class GReverbNode extends GAudioNode<Props> {
+  type = nodeType
+  defaultProps = defaultProps
+  reverbNode = this.audioContext.createConvolver()
+  wetGainNode = this.audioContext.createGain()
+  dryGainNode = this.audioContext.createGain()
 
-    inNode.connect(dryGainNode)
-    inNode.connect(reverbNode)
-    reverbNode.connect(wetGainNode)
-    wetGainNode.connect(outNode)
-    dryGainNode.connect(outNode)
+  constructor(
+    protected audioContext: AudioContext,
+    initialProps: Partial<Props>,
+  ) {
+    super(audioContext, initialProps)
 
-    updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
+    this.inNode.connect(this.dryGainNode)
+    this.inNode.connect(this.reverbNode)
+    this.reverbNode.connect(this.wetGainNode)
+    this.wetGainNode.connect(this.outNode)
+    this.dryGainNode.connect(this.outNode)
 
     loadImpulse(audioContext, reverbImpulse).then((buffer) => {
-      reverbNode.buffer = buffer
+      this.reverbNode.buffer = buffer
     })
 
-    return makeConnectable<GAudioNode<Props, typeof nodeType>>({
-      getInNode: always(inNode),
-      getOutNode: always(outNode),
-    })({
-      type: nodeType,
+    this.propsUpdated()
+  }
 
-      set(newProps: Partial<Props> = {}) {
-        Object.assign(props, newProps)
-        updateWetDry(props.wetDryRatio, wetGainNode, dryGainNode)
-      },
-    })
-  },
+  protected propsUpdated() {
+    this.wetGainNode.gain.value = this.props.wetDryRatio
+    this.dryGainNode.gain.value = 1 - this.props.wetDryRatio
+  }
+
+  destroy() {
+    // noop
+  }
+}
+
+export default curry(
+  (audioContext: AudioContext, initProps: Partial<Props>) =>
+    new GReverbNode(audioContext, { ...defaultProps, ...initProps }),
 )

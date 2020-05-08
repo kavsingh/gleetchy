@@ -22,12 +22,8 @@ import type { AudioEngineEvent } from '~/state/audio-engine/types'
 import type { NodeProps as DelayProps } from '~/nodes/audio-effects/delay'
 import type { NodeProps as ReverbProps } from '~/nodes/audio-effects/reverb'
 import type { NodeProps as LoopProps } from '~/nodes/instruments/loop'
-import type {
-  AudioNodeConnection,
-  AudioNodeState,
-  GAudioNode,
-  GInstrumentNode,
-} from '~/types'
+import type { AudioNodeConnection, AudioNodeState } from '~/types'
+import type { GAudioNode, GInstrumentNode } from '~/lib/g-audio-node'
 
 type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode
 type InstrumentNodeProcessor = (node: GInstrumentNode) => void
