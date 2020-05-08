@@ -38,6 +38,13 @@ const globalStyles = (theme: UITheme) => css`
     background-color: ${theme.colors.page};
     -webkit-font-smoothing: antialiased;
   }
+
+  /* TODO: move this back to UI root when audio engine refactored */
+  body {
+    color: ${theme.colors.body};
+    font-family: ${theme.fonts.body};
+    background-color: ${theme.colors.page};
+  }
 `
 
 const GlobalStyles: FunctionComponentWithoutChildren = () => (

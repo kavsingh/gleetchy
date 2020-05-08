@@ -1,23 +1,19 @@
 import React, { memo, useEffect } from 'react'
 import Favicon from 'react-favicon'
 import styled from '@emotion/styled'
-import { ThemeProvider } from 'emotion-theming'
 
-import useUITheme from '~/state/hooks/use-ui-theme'
 import useModifierKeys from '~/state/hooks/use-modifier-keys'
 import favicon from '~/assets/icons/48x48.png'
 import type { ThemeProps } from '~/style/theme'
 import type { FunctionComponentWithoutChildren } from '~/types'
 import { requireWindowWith } from '~/lib/env'
 
-import GlobalStyles from './global-styles'
 import AudioEffectsRack from './audio-effects-rack'
 import InstrumentsRack from './instruments-rack'
 import PatchBay from './patch-bay'
 import Masthead from './masthead'
 
 const UI: FunctionComponentWithoutChildren = () => {
-  const [{ theme }] = useUITheme()
   const [, { registerKeyPress, registerKeyRelease }] = useModifierKeys()
 
   useEffect(() => {
@@ -40,23 +36,20 @@ const UI: FunctionComponentWithoutChildren = () => {
   return (
     <>
       <Favicon url={favicon} />
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <Container>
-          <Masthead />
-          <Divider />
-          <InstrumentsRack />
-          <Divider />
-          <ModifiersContainer>
-            <AudioEffectsRackContainer>
-              <AudioEffectsRack />
-            </AudioEffectsRackContainer>
-            <PatchBayContainer>
-              <PatchBay />
-            </PatchBayContainer>
-          </ModifiersContainer>
-        </Container>
-      </ThemeProvider>
+      <Container>
+        <Masthead />
+        <Divider />
+        <InstrumentsRack />
+        <Divider />
+        <ModifiersContainer>
+          <AudioEffectsRackContainer>
+            <AudioEffectsRack />
+          </AudioEffectsRackContainer>
+          <PatchBayContainer>
+            <PatchBay />
+          </PatchBayContainer>
+        </ModifiersContainer>
+      </Container>
     </>
   )
 }
@@ -67,9 +60,6 @@ const Container = styled.div<ThemeProps>`
   max-width: 92em;
   margin: 0 auto;
   padding: 2em;
-  color: ${({ theme }) => theme.colors.body};
-  font-family: ${({ theme }) => theme.fonts.body};
-  background-color: ${({ theme }) => theme.colors.page};
 `
 
 const Divider = styled.div<ThemeProps>`
