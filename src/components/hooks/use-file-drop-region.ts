@@ -52,5 +52,5 @@ export default function useFileDropRegion({
     [onDrop, eventSetDropActive, eventSetDropInactive],
   )
 
-  return [{ isDropActive }, eventHandlers] as const
+  return { isDropActive, eventHandlers }
 }

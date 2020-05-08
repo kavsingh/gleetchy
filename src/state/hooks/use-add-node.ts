@@ -11,7 +11,7 @@ const useAddNode = () => {
     [dispatch],
   )
 
-  return addNode
+  return { addNode }
 }
 
 export default useAddNode

@@ -33,7 +33,7 @@ const useUITheme = () => {
     }
   }, [dispatch, preferredColorScheme])
 
-  return [{ theme }, { toggleTheme }] as const
+  return { theme, toggleTheme }
 }
 
 export default useUITheme

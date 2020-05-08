@@ -51,7 +51,7 @@ const Rack: FunctionComponentWithoutChildren = () => {
 }
 
 const AddAudioEffectButtons: FunctionComponentWithoutChildren = () => {
-  const addNode = useAddNode()
+  const { addNode } = useAddNode()
   const addReverb = useCallback(() => addNode(reverbType), [addNode])
   const addDelay = useCallback(() => addNode(delayType), [addNode])
 

@@ -11,13 +11,13 @@ const useConnection = (source: AudioNodeMeta, target: AudioNodeMeta) => {
   const dispatch = useDispatch()
   const connections = useSelector(connectionsSelector)
   const connection = getConnectionBetween(connections, source, target)
-  const blocked = !canConnectNodes(connections, source, target)
+  const isBlocked = !canConnectNodes(connections, source, target)
 
   const toggleConnection = useCallback(() => {
-    if (!blocked) dispatch(toggleConnectionAction(source.id, target.id))
-  }, [blocked, dispatch, source.id, target.id])
+    if (!isBlocked) dispatch(toggleConnectionAction(source.id, target.id))
+  }, [isBlocked, dispatch, source.id, target.id])
 
-  return [{ connection, blocked }, { toggleConnection }] as const
+  return { connection, isBlocked, toggleConnection }
 }
 
 export default useConnection

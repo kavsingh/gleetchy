@@ -11,11 +11,11 @@ const PatchBayNode: FunctionComponentWithoutChildren<{
   source: AudioNodeMeta
   target: AudioNodeMeta
 }> = ({ source, target }) => {
-  const [{ connection, blocked }, { toggleConnection }] = useConnection(
+  const { connection, isBlocked, toggleConnection } = useConnection(
     source,
     target,
   )
-  const title = blocked
+  const title = isBlocked
     ? 'This will cause a circular connection, big feedback, ear bleeding, much sadness'
     : `From ${source.label} to ${target.label}`
 
@@ -24,7 +24,7 @@ const PatchBayNode: FunctionComponentWithoutChildren<{
       role="button"
       title={title}
       activeColor={connection?.color}
-      blocked={!!blocked}
+      blocked={!!isBlocked}
       onClick={toggleConnection}
       tabIndex={0}
       onKeyUp={(e) => {

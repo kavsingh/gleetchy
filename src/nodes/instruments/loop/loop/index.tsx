@@ -154,7 +154,7 @@ const ControlsContainer = styled.div`
 const AudioFileDropRegion: FunctionComponent<{
   onFiles(files: File[]): unknown
 }> = ({ children, onFiles }) => {
-  const [, eventHandlers] = useFileDropRegion({
+  const { eventHandlers } = useFileDropRegion({
     onFiles,
     fileFilter: ({ type }) => type.startsWith('audio'),
   })

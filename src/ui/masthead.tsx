@@ -7,18 +7,15 @@ import useUITheme from '~/state/hooks/use-ui-theme'
 import PlayPauseButton from '~/components/play-pause-button'
 import type { FunctionComponentWithoutChildren } from '~/types'
 import type { ThemeProps } from '~/style/theme'
-import useModifierKeys from '~/state/hooks/use-modifier-keys'
 
 const Masthead: FunctionComponentWithoutChildren = () => {
-  const [{ isPlaying }, { togglePlayback }] = useGlobalPlayback()
-  const [, { toggleTheme }] = useUITheme()
-  const [keys] = useModifierKeys()
+  const { isPlaying, togglePlayback } = useGlobalPlayback()
+  const { toggleTheme } = useUITheme()
 
   return (
     <Container>
       <PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
       <SideControlsContainer>
-        {keys.join(', ')}
         <button onClick={toggleTheme}>L/D</button>
         <a
           href="https://www.github.com/kavsingh/gleetchy"

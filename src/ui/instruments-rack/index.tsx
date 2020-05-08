@@ -45,7 +45,7 @@ const Rack: FunctionComponentWithoutChildren = () => {
 }
 
 const AddInstrumentButtons: FunctionComponentWithoutChildren = () => {
-  const addNode = useAddNode()
+  const { addNode } = useAddNode()
   const addLoop = useCallback(() => addNode(loopType), [addNode])
 
   return (

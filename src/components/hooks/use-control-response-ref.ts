@@ -12,12 +12,14 @@ const useControlResponseRef = ({
   normal,
   fine,
 }: ControlResponseMultipliers) => {
-  const [keys] = useModifierKeys()
+  const { activeKeys } = useModifierKeys()
   const multiplierRef = useRef(normal)
 
   useEffect(() => {
-    multiplierRef.current = keys.includes(ModifierKey.Shift) ? fine : normal
-  }, [keys, normal, fine])
+    multiplierRef.current = activeKeys.includes(ModifierKey.Shift)
+      ? fine
+      : normal
+  }, [activeKeys, normal, fine])
 
   return multiplierRef
 }

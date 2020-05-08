@@ -14,7 +14,7 @@ import PatchBay from './patch-bay'
 import Masthead from './masthead'
 
 const UI: FunctionComponentWithoutChildren = () => {
-  const [, { registerKeyPress, registerKeyRelease }] = useModifierKeys()
+  const { registerKeyPress, registerKeyRelease } = useModifierKeys()
 
   useEffect(() => {
     const WINDOW = requireWindowWith([

@@ -6,7 +6,7 @@ import { registerKeyPressAction, registerKeyReleaseAction } from '../ui/actions'
 
 const useModifierKeys = () => {
   const dispatch = useDispatch()
-  const keys = useSelector(uiModifierKeysSelector)
+  const activeKeys = useSelector(uiModifierKeysSelector)
   const registerKeyPress = useCallback(
     (event: KeyboardEvent) => {
       dispatch(registerKeyPressAction(event.key))
@@ -20,7 +20,7 @@ const useModifierKeys = () => {
     [dispatch],
   )
 
-  return [keys, { registerKeyPress, registerKeyRelease }] as const
+  return { activeKeys, registerKeyPress, registerKeyRelease }
 }
 
 export default useModifierKeys

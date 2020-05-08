@@ -6,7 +6,7 @@ import useUITheme from '~/state/hooks/use-ui-theme'
 import GlobalStyles from './global-styles'
 
 const StyledContainer: FunctionComponent = ({ children }) => {
-  const [{ theme }] = useUITheme()
+  const { theme } = useUITheme()
 
   return (
     <ThemeProvider theme={theme}>

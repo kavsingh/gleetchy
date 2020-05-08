@@ -15,7 +15,7 @@ import BaseAudioEngine from './audio-engine'
 const AudioEngine: FunctionComponent = () => {
   const nodes = useSelector(audioNodesSelector)
   const connections = useSelector(connectionsSelector)
-  const [{ isPlaying }] = useGlobalPlayback()
+  const { isPlaying } = useGlobalPlayback()
 
   const dispatch = useDispatch()
   const audioEngineEvents = useSelector(audioEngineEventsSelector)
