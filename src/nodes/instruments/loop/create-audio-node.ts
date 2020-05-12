@@ -1,3 +1,4 @@
+import rafThrottle from 'raf-throttle'
 import { curry } from 'ramda'
 
 import createEq3Node from '~/nodes/audio-effects/eq3/create-audio-node'
@@ -34,11 +35,13 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
   positionProcessor: ScriptProcessorNode
   playbackBufferSource: AudioBufferSourceNode | null = null
   positionBufferSource: AudioBufferSourceNode | null = null
+  throttledNotifySubscribers = rafThrottle(this.notifySubscribers)
 
   constructor(protected audioContext: AudioContext, initProps: Partial<Props>) {
     super(audioContext, initProps)
 
     this.positionProcessor = this.audioContext.createScriptProcessor(1024, 1, 1)
+    this.positionProcessor.connect(this.audioContext.destination)
 
     this.gainNode.connect(this.eq3Node.inNode)
     this.eq3Node.connect(this.outNode)
@@ -52,7 +55,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
       positionRatio: event.inputBuffer.getChannelData(0)[0],
     }
 
-    this.notifySubscribers(updateState)
+    this.throttledNotifySubscribers(updateState)
   }
 
   private updateSourceProps() {
@@ -153,6 +156,13 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 
   destroy() {
     this.stop()
+    this.throttledNotifySubscribers.cancel()
+
+    try {
+      this.positionProcessor.disconnect(this.audioContext.destination)
+    } catch {
+      // noop
+    }
   }
 }
 

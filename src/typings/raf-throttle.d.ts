@@ -1,3 +1,7 @@
 declare module 'raf-throttle' {
-  export default (...args: any[]) => any
+  const throttled: <T extends (...args: any[]) => unknown>(
+    fn: T,
+  ) => T & { cancel: () => void }
+
+  export default throttled
 }
