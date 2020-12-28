@@ -1,9 +1,10 @@
-import React, { FunctionComponent, useRef, useEffect, memo } from 'react'
+import { useRef, useEffect, memo } from 'react'
 import styled from '@emotion/styled'
 import colorFn from 'color'
 import { range } from 'ramda'
 
 import { requireWindowWith } from '~/lib/env'
+import { FCWithoutChildren } from '~/types'
 
 const drawTempWaveform = (
   context: CanvasRenderingContext2D,
@@ -47,8 +48,8 @@ const drawWaveform = (
     const sampleIndex = Math.floor(x * buffStep)
 
     for (let c = 0; c < channels.length; c++) {
-      const val = channels[c][sampleIndex] * valueMult
-      const mid = mids[c]
+      const val = (channels[c]?.[sampleIndex] ?? 0) * valueMult
+      const mid = mids[c] ?? 0
 
       context.fillRect(x, mid - val, 1, val * 2)
     }
@@ -88,7 +89,7 @@ const updateWaveform = (
   }
 }
 
-const Waveform: FunctionComponent<WaveformProps> = ({
+const Waveform: FCWithoutChildren<WaveformProps> = ({
   color,
   baselineColor,
   timeRegions,

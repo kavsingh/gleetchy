@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { FunctionComponent } from 'react'
 import { Action } from 'redux'
+import type { FunctionComponent } from 'react'
 
 export type PropsWithoutChildren<P> = P & { children?: never }
 
-export type FunctionComponentWithoutChildren<P = {}> = FunctionComponent<
+export type FCWithoutChildren<P = Record<string, unknown>> = FunctionComponent<
   PropsWithoutChildren<P>
 >
 
@@ -17,7 +17,8 @@ export interface AudioNodeMeta extends AudioNodeIdentifierMeta {
   label: string
 }
 
-export interface AudioNodeState<PROPS extends object> extends AudioNodeMeta {
+export interface AudioNodeState<PROPS extends Record<string, unknown>>
+  extends AudioNodeMeta {
   audioProps: PROPS
 }
 
@@ -33,18 +34,21 @@ export interface GAudioNodeConnectApi extends GAudioNodeConnectors {
   disconnect(node?: AudioNode | GAudioNodeConnectors): void
 }
 
-export interface GAudioNodeApi<P extends object, T extends string> {
+export interface GAudioNodeApi<
+  P extends Record<string, unknown>,
+  T extends string
+> {
   type: T
   set(props: Partial<P>): void
 }
 
 export type GAudioNode<
-  P extends object = any,
+  P extends Record<string, unknown> = any,
   T extends string = any
 > = GAudioNodeConnectApi & GAudioNodeApi<P, T>
 
 export interface GInstrumentNodeApi<
-  P extends object,
+  P extends Record<string, unknown>,
   T extends string,
   S extends (data: any) => unknown
 > extends GAudioNodeApi<P, T> {
@@ -54,7 +58,7 @@ export interface GInstrumentNodeApi<
 }
 
 export type GInstrumentNode<
-  P extends object = any,
+  P extends Record<string, unknown> = any,
   T extends string = any,
   S extends (data: any) => unknown = any
 > = GAudioNodeConnectApi & GInstrumentNodeApi<P, T, S>

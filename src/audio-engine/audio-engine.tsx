@@ -1,4 +1,4 @@
-import { Component } from 'react'
+import { Component, ReactNode } from 'react'
 import { pick, tryCatch } from 'ramda'
 
 import { warn } from '~/lib/dev'
@@ -19,15 +19,15 @@ import {
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
 import type { AudioEngineEvent } from '~/state/audio-engine/types'
-import type { NodeProps as DelayProps } from '~/nodes/audio-effects/delay'
-import type { NodeProps as ReverbProps } from '~/nodes/audio-effects/reverb'
-import type { NodeProps as LoopProps } from '~/nodes/instruments/loop'
-import type { AudioNodeConnection, AudioNodeState } from '~/types'
 import type { GAudioNode, GInstrumentNode } from '~/lib/g-audio-node'
+import type { AudioNodeConnection, AudioNodeState } from '~/types'
 
 type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode
 type InstrumentNodeProcessor = (node: GInstrumentNode) => void
-type TrySet = (args: { node: AudioEngineNode; audioProps: object }) => void
+type TrySet = (args: {
+  node: AudioEngineNode
+  audioProps: Record<string, unknown>
+}) => void
 type AudioNodeEffect = (node: AudioNode | GAudioNode) => void
 
 const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
@@ -36,7 +36,10 @@ const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
   if (typeof target.set === 'function') target.set(audioProps)
 }, warn)
 
-const createNewNode = (context: AudioContext, state: AudioNodeState<{}>) => {
+const createNewNode = (
+  context: AudioContext,
+  state: AudioNodeState<Record<string, unknown>>,
+) => {
   switch (state.type) {
     case delayType:
       return createDelayNode(context, state.audioProps)
@@ -54,7 +57,7 @@ export interface AudioEngineProps {
   connections: AudioNodeConnection[]
   isPlaying: boolean
   nodes: {
-    [key: string]: AudioNodeState<DelayProps | ReverbProps | LoopProps | {}>
+    [key: string]: AudioNodeState<Record<string, unknown>>
   }
   clearAudioEngineEvents(): unknown
   dispatchSubscriptionEvent(nodeId: string, payload: unknown): unknown
@@ -69,30 +72,30 @@ class AudioEngine extends Component<AudioEngineProps> {
     [key: string]: () => void
   } = {}
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     this.audioContext = getAudioContext()
     this.updateAudioNodes()
     this.updateAudioGraph()
   }
 
-  public shouldComponentUpdate(props: AudioEngineProps) {
+  public shouldComponentUpdate(props: AudioEngineProps): boolean {
     return (
       !!props.audioEngineEvents.length &&
       this.props.audioEngineEvents !== props.audioEngineEvents
     )
   }
 
-  public componentDidUpdate() {
+  public componentDidUpdate(): void {
     this.props.audioEngineEvents.forEach(this.processAudioEngineEvent)
     this.props.clearAudioEngineEvents()
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     this.props.clearAudioEngineEvents()
     if (this.audioContext) this.audioContext.close()
   }
 
-  public render() {
+  public render(): ReactNode {
     return null
   }
 
@@ -130,8 +133,8 @@ class AudioEngine extends Component<AudioEngineProps> {
   private stopAndUnsubscribeInstrument = (node: GInstrumentNode) => {
     const nodeId = this.getNodeId(node)
 
-    if (nodeId && this.subscriptions[nodeId]) {
-      this.subscriptions[nodeId]()
+    if (nodeId) {
+      this.subscriptions[nodeId]?.()
       delete this.subscriptions[nodeId]
     }
 
@@ -163,6 +166,9 @@ class AudioEngine extends Component<AudioEngineProps> {
         if (!this.audioContext) return
 
         const node = nextNodes[id]
+
+        if (!node) return
+
         const newNode = createNewNode(this.audioContext, node)
 
         if (!newNode) return
@@ -190,7 +196,13 @@ class AudioEngine extends Component<AudioEngineProps> {
     })
   }
 
-  private updateNode({ id, audioProps }: { id: string; audioProps: object }) {
+  private updateNode({
+    id,
+    audioProps,
+  }: {
+    id: string
+    audioProps: Record<string, unknown>
+  }) {
     const node = this.audioNodes[id]
 
     if (!node) return
@@ -221,7 +233,10 @@ class AudioEngine extends Component<AudioEngineProps> {
       case 'AUDIO_FILE_DECODE_COMPLETE':
         this.updateNode({
           id: event.payload.id,
-          audioProps: event.payload.file,
+          audioProps: (event.payload.file as unknown) as Record<
+            string,
+            unknown
+          >,
         })
         break
       case 'CONNECTION_ADD':

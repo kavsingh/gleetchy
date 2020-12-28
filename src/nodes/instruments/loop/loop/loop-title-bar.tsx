@@ -1,23 +1,25 @@
-import React, { useMemo, memo } from 'react'
+import { useMemo, memo } from 'react'
 import styled from '@emotion/styled'
-import type { FunctionComponent } from 'react'
 
 import TitleBar from '~/components/title-bar'
 import Button from '~/components/button'
+import type { FCWithoutChildren } from '~/types'
 
 import type { LoopUIProps } from './types'
 
-const LoopTitleBar: FunctionComponent<Pick<
-  LoopUIProps,
-  | 'fileName'
-  | 'selectAudioFile'
-  | 'audioBuffer'
-  | 'label'
-  | 'onLabelChange'
-  | 'duplicate'
-  | 'remove'
-  | 'connections'
->> = ({
+const LoopTitleBar: FCWithoutChildren<
+  Pick<
+    LoopUIProps,
+    | 'fileName'
+    | 'selectAudioFile'
+    | 'audioBuffer'
+    | 'label'
+    | 'onLabelChange'
+    | 'duplicate'
+    | 'remove'
+    | 'connections'
+  >
+> = ({
   label,
   onLabelChange,
   duplicate,

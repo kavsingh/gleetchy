@@ -1,4 +1,5 @@
-import React, { PureComponent, ReactNode } from 'react'
+import { PureComponent } from 'react'
+import type { ReactNode } from 'react'
 
 import ErrorMessage from '~/components/error-message'
 
@@ -12,11 +13,11 @@ class ErrorBoundary extends PureComponent<
 > {
   public state: State = {}
 
-  public componentDidCatch(error: Error) {
+  public componentDidCatch(error: Error): void {
     this.setState(() => ({ error }))
   }
 
-  public render() {
+  public render(): ReactNode {
     const {
       children = null,
       silent = false,

@@ -1,10 +1,3 @@
-const unusedVarsConfig = [
-  'warn',
-  { argsIgnorePattern: '^_', varsIgnorePattern: '[iI]gnored' },
-]
-
-const camelcaseConfig = ['error', { properties: 'never' }]
-
 const srcDependencies = {
   devDependencies: false,
   optionalDependencies: false,
@@ -18,48 +11,49 @@ const devDependencies = {
 }
 
 module.exports = {
+  root: true,
   parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: './',
-    jsx: true,
-  },
+  env: { es6: true, node: true, browser: false },
   settings: {
     'react': { version: 'detect' },
     'import/resolver': 'babel-module',
   },
-  env: { node: true, browser: false, es6: true },
   plugins: [
     '@typescript-eslint',
     'filenames',
     'import',
     'react',
     'react-hooks',
+    '@emotion',
     'prettier',
   ],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:react/recommended',
+    'plugin:react-hooks/recommended',
     'prettier',
     'prettier/react',
     'prettier/@typescript-eslint',
   ],
   rules: {
-    'curly': ['error', 'multi-line', 'consistent'],
+    'camelcase': 'off',
+    'curly': ['warn', 'multi-line', 'consistent'],
     'no-console': 'off',
-    '@typescript-eslint/explicit-function-return-type': 'off',
-    '@typescript-eslint/no-var-requires': 'off',
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+    ],
     'filenames/match-regex': ['error', '^[a-z0-9-.]+$', true],
     'filenames/match-exported': ['error', 'kebab'],
-    'import/no-absolute-path': 'warn',
-    'import/no-cycle': 'warn',
+    'import/no-cycle': 'error',
+    'import/no-self-import': 'error',
+    'import/no-unused-modules': 'error',
+    'import/no-useless-path-segments': 'error',
     'import/no-extraneous-dependencies': ['error', devDependencies],
-    'import/no-self-import': 'warn',
-    'import/no-unused-modules': 'warn',
-    'import/no-useless-path-segments': 'warn',
     'import/order': [
       'warn',
       {
@@ -73,9 +67,11 @@ module.exports = {
         'newlines-between': 'always',
       },
     ],
+    'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
+    'react/jsx-uses-react': 'off',
     'react/prop-types': 'off',
-    'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react/react-in-jsx-scope': 'off',
+    '@emotion/syntax-preference': ['error', 'string'],
     'prettier/prettier': 'warn',
   },
   overrides: [
@@ -86,36 +82,7 @@ module.exports = {
       },
     },
     {
-      files: ['*.js'],
-      rules: {
-        'camelcase': camelcaseConfig,
-        'no-unused-vars': unusedVarsConfig,
-        '@typescript-eslint/camelcase': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-      },
-    },
-    {
-      files: ['*.ts', '*.tsx'],
-      rules: {
-        'camelcase': 'off',
-        'no-unused-vars': 'off',
-        '@typescript-eslint/camelcase': camelcaseConfig,
-        '@typescript-eslint/no-unused-vars': unusedVarsConfig,
-      },
-    },
-    {
-      files: ['*.test.*', '**/__test*/*'],
-      env: { 'node': true, 'jest/globals': true },
-      plugins: ['jest'],
-      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
-      rules: {
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-non-null-assertion': 'off',
-        'import/no-extraneous-dependencies': ['error', devDependencies],
-      },
-    },
-    {
-      files: ['src/**/*.ts', 'src/**/*.tsx'],
+      files: ['src/**/*'],
       env: { node: false, browser: true },
       rules: {
         'no-console': 'error',
@@ -123,8 +90,17 @@ module.exports = {
         'import/no-extraneous-dependencies': ['error', srcDependencies],
       },
     },
+    {
+      files: ['**/*.test.*'],
+      env: { 'node': true, 'jest/globals': true },
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
+      rules: {
+        'no-console': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        'import/no-extraneous-dependencies': ['error', devDependencies],
+      },
+    },
   ],
-  globals: {
-    process: 'readonly',
-  },
 }

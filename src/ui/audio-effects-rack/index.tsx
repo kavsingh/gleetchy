@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from 'react'
+import { useCallback, memo } from 'react'
 import styled from '@emotion/styled'
 import type { FunctionComponent } from 'react'
 
@@ -9,12 +9,12 @@ import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
 import useAddNode from '~/state/hooks/use-add-node'
 import ButtonSet, { Button } from '~/components/button-set'
 import ErrorBoundary from '~/components/error-boundary'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
 import ConnectedDelay from './connected-delay'
 import ConnectedReverb from './connected-reverb'
 
-const AudioEffectsRack: FunctionComponentWithoutChildren = () => (
+const AudioEffectsRack: FCWithoutChildren = () => (
   <Container>
     <Rack />
     <AddAudioEffectButtons />
@@ -23,7 +23,7 @@ const AudioEffectsRack: FunctionComponentWithoutChildren = () => (
 
 export default memo(AudioEffectsRack)
 
-const Rack: FunctionComponentWithoutChildren = () => {
+const Rack: FCWithoutChildren = () => {
   const { audioEffects } = useAudioNodesMeta()
 
   return (
@@ -50,7 +50,7 @@ const Rack: FunctionComponentWithoutChildren = () => {
   )
 }
 
-const AddAudioEffectButtons: FunctionComponentWithoutChildren = () => {
+const AddAudioEffectButtons: FCWithoutChildren = () => {
   const { addNode } = useAddNode()
   const addReverb = useCallback(() => addNode(reverbType), [addNode])
   const addDelay = useCallback(() => addNode(delayType), [addNode])

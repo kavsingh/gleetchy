@@ -1,6 +1,6 @@
 import { memo } from 'react'
+import { keyframes } from '@emotion/react'
 import styled from '@emotion/styled'
-import { keyframes } from '@emotion/core'
 
 const animation = keyframes`
   from {

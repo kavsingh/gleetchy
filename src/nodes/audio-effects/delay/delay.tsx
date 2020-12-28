@@ -1,11 +1,11 @@
-import React, { memo, FunctionComponent, useCallback, useMemo } from 'react'
+import { memo, useCallback, useMemo } from 'react'
 import styled from '@emotion/styled'
 
 import { DELAY_UPPER_BOUND } from '~/constants/audio'
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
-import type { AudioNodeConnection } from '~/types'
+import type { AudioNodeConnection, FCWithoutChildren } from '~/types'
 
 const Container = styled.div<{ isActive: boolean }>`
   width: 100%;
@@ -34,7 +34,7 @@ export interface DelayProps {
   remove(): unknown
 }
 
-const Delay: FunctionComponent<DelayProps> = ({
+const Delay: FCWithoutChildren<DelayProps> = ({
   label = 'Delay',
   connections = [],
   wetDryRatio = 0.5,

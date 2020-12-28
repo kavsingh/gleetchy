@@ -9,20 +9,20 @@ module.exports = ({ env }) => ({
         modules: env('test') ? 'commonjs' : false,
       },
     ],
-    '@babel/preset-react',
-    '@emotion/babel-preset-css-prop',
+    [
+      '@babel/preset-react',
+      { runtime: 'automatic', importSource: '@emotion/react' },
+    ],
     '@babel/preset-typescript',
   ],
   plugins: [
+    '@emotion/babel-plugin',
     '@babel/plugin-proposal-class-properties',
+    ['@babel/plugin-transform-runtime', { regenerator: true }],
     [
       'babel-plugin-module-resolver',
-      {
-        alias: { '~': './src' },
-        extensions: ['.ts', '.tsx', '.js'],
-      },
+      { alias: { '~': './src' }, extensions: ['.ts', '.tsx', '.js', '.jsx'] },
     ],
-    'babel-plugin-emotion',
     !env('test') && [
       'transform-imports',
       {

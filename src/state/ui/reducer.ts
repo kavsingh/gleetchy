@@ -2,10 +2,10 @@ import { produce } from 'immer'
 import type { Reducer } from 'redux'
 
 import { getPreferredColorScheme } from '~/apis/color-scheme'
-import defaultTheme from '~/style/theme'
-import type { ThemeName } from '~/style/theme'
+import { defaultTheme } from '~/style/theme'
 import { ModifierKey } from '~/lib/constants'
 import { stableWithout } from '~/lib/util'
+import type { ThemeName } from '~/style/theme'
 
 import type { UIAction } from './types'
 

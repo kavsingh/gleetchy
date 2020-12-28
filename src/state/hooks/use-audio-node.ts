@@ -24,7 +24,7 @@ import type {
 } from '../audio-nodes/types'
 import type { ApplicationState } from '../configure-store'
 
-const useAudioNode = <T extends object>(
+const useAudioNode = <T extends Record<string, unknown>>(
   id: string,
   isValid: AudioNodeStateValidator,
 ): UseAudioNodeReturn<T> => {
@@ -88,7 +88,7 @@ const useAudioNode = <T extends object>(
 
 export default useAudioNode
 
-export interface UseAudioNodeReturn<T extends object> {
+export interface UseAudioNodeReturn<T extends Record<string, unknown>> {
   label: string
   audioProps: T
   connections: AudioNodeConnection[]
@@ -99,8 +99,11 @@ export interface UseAudioNodeReturn<T extends object> {
   remove: () => AudioNodeRemoveAction
 }
 
-export type AudioNodeStateValidator = (node: AudioNodeState<{}>) => boolean
+export type AudioNodeStateValidator = (
+  node: AudioNodeState<Record<string, unknown>>,
+) => boolean
 
 export const validateNodeType = (
-  type: AudioNodeState<{}>['type'],
-): AudioNodeStateValidator => (node: AudioNodeState<{}>) => node.type === type
+  type: AudioNodeState<Record<string, unknown>>['type'],
+): AudioNodeStateValidator => (node: AudioNodeState<Record<string, unknown>>) =>
+  node.type === type

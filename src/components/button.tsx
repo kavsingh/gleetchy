@@ -1,5 +1,5 @@
-import React, { FunctionComponent, memo } from 'react'
 import styled from '@emotion/styled'
+import type { FunctionComponent } from 'react'
 
 import { ThemeProps } from '~/style/theme'
 
@@ -16,7 +16,7 @@ const Button: FunctionComponent<ButtonProps> = ({ handler, children }) => (
   </Container>
 )
 
-export default memo(Button)
+export default Button
 
 const Container = styled.div<ThemeProps>`
   font-size: 0.8rem;

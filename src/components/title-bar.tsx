@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import { useMemo } from 'react'
 import styled from '@emotion/styled'
 import type { FunctionComponent } from 'react'
 

@@ -1,10 +1,10 @@
-import React, { memo } from 'react'
-import { css, Global } from '@emotion/core'
+import { memo } from 'react'
+import { css, Global } from '@emotion/react'
+import type { Theme } from '@emotion/react'
 
-import type { FunctionComponentWithoutChildren } from '~/types'
-import type { UITheme } from '~/style/theme'
+import type { FCWithoutChildren } from '~/types'
 
-const globalStyles = (theme: UITheme) => css`
+const globalStyles = (theme: Theme) => css`
   html {
     box-sizing: border-box;
     font-size: 14px;
@@ -47,8 +47,6 @@ const globalStyles = (theme: UITheme) => css`
   }
 `
 
-const GlobalStyles: FunctionComponentWithoutChildren = () => (
-  <Global styles={globalStyles} />
-)
+const GlobalStyles: FCWithoutChildren = () => <Global styles={globalStyles} />
 
 export default memo(GlobalStyles)

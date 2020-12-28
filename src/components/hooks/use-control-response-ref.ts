@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, MutableRefObject } from 'react'
 
 import { ModifierKey } from '~/lib/constants'
 import useModifierKeys from '~/state/hooks/use-modifier-keys'
@@ -11,7 +11,7 @@ export interface ControlResponseMultipliers {
 const useControlResponseRef = ({
   normal,
   fine,
-}: ControlResponseMultipliers) => {
+}: ControlResponseMultipliers): MutableRefObject<number> => {
   const { activeKeys } = useModifierKeys()
   const multiplierRef = useRef(normal)
 

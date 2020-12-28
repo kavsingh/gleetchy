@@ -30,13 +30,13 @@ export class GDelayNode extends GAudioNode<Props> {
     this.propsUpdated()
   }
 
-  protected propsUpdated() {
+  protected propsUpdated(): void {
     this.delayNode.delayTime.value = this.props.delayTime
     this.wetGainNode.gain.value = this.props.wetDryRatio
     this.dryGainNode.gain.value = 1 - this.props.wetDryRatio
   }
 
-  destroy() {
+  destroy(): void {
     // noop
   }
 }

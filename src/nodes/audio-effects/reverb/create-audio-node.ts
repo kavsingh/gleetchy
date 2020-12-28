@@ -15,7 +15,7 @@ const loadImpulse = async (audioContext: AudioContext, url: string) => {
   return decodeAudioData(arrayBuffer, audioContext)
 }
 
-class GReverbNode extends GAudioNode<Props> {
+export class GReverbNode extends GAudioNode<Props> {
   type = nodeType
   defaultProps = defaultProps
   reverbNode = this.audioContext.createConvolver()
@@ -41,12 +41,12 @@ class GReverbNode extends GAudioNode<Props> {
     this.propsUpdated()
   }
 
-  protected propsUpdated() {
+  protected propsUpdated(): void {
     this.wetGainNode.gain.value = this.props.wetDryRatio
     this.dryGainNode.gain.value = 1 - this.props.wetDryRatio
   }
 
-  destroy() {
+  destroy(): void {
     // noop
   }
 }

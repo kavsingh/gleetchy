@@ -1,5 +1,5 @@
-import { memo, ReactElement } from 'react'
 import styled from '@emotion/styled'
+import type { ReactElement } from 'react'
 
 import Button, { ButtonProps } from './button'
 
@@ -16,4 +16,4 @@ const ButtonSet = styled.div<{
 
 export { Button }
 
-export default memo(ButtonSet)
+export default ButtonSet

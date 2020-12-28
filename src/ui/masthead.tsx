@@ -1,14 +1,14 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import { GoMarkGithub } from 'react-icons/go'
 import styled from '@emotion/styled'
 
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import useUITheme from '~/state/hooks/use-ui-theme'
 import PlayPauseButton from '~/components/play-pause-button'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 import type { ThemeProps } from '~/style/theme'
 
-const Masthead: FunctionComponentWithoutChildren = () => {
+const Masthead: FCWithoutChildren = () => {
   const { isPlaying, togglePlayback } = useGlobalPlayback()
   const { toggleTheme } = useUITheme()
 

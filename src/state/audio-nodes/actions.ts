@@ -35,7 +35,7 @@ export const removeAudioNodeAction = (id: string): AudioNodeRemoveAction => ({
 
 export const updateAudioNodeAudioPropsAction = (
   id: string,
-  audioProps: object,
+  audioProps: Record<string, unknown>,
 ): AudioNodeUpdateAudioPropsAction => ({
   payload: { id, audioProps },
   type: 'AUDIO_NODE_UPDATE_AUDIO_PROPS',

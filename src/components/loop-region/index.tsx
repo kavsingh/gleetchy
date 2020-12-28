@@ -1,11 +1,11 @@
-import React, { useCallback, useRef, memo } from 'react'
+import { useCallback, useRef, memo } from 'react'
 import styled from '@emotion/styled'
 import { memoizeWith, identity } from 'ramda'
 import color from 'color'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 import type { ThemeProps } from '~/style/theme'
 
 import SinglePointerDrag from '../single-pointer-drag'
@@ -18,7 +18,7 @@ const controlResponseMultipliers = {
   fine: 0.4,
 }
 
-const LoopRegion: FunctionComponentWithoutChildren<{
+const LoopRegion: FCWithoutChildren<{
   loopStart: number
   loopEnd: number
   onLoopStartDrag?(movement: number): unknown

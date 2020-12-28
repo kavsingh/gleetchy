@@ -1,9 +1,9 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
 // Adapted from https://codepen.io/JMChristensen/pen/Ablch
-const SVGArc: FunctionComponentWithoutChildren<{
+const SVGArc: FCWithoutChildren<{
   endRatio: number
   strokeColor: string
   strokeWidth?: number

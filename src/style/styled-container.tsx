@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react'
-import { ThemeProvider } from 'emotion-theming'
+import { ThemeProvider } from '@emotion/react'
+import type { FunctionComponent } from 'react'
 
 import useUITheme from '~/state/hooks/use-ui-theme'
 

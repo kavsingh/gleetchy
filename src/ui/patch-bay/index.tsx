@@ -1,18 +1,18 @@
-import React, { memo, useMemo } from 'react'
+import { memo, useMemo } from 'react'
 import { useSelector } from 'react-redux'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { css } from '@emotion/core'
 
 import {
   connectableSourcesSelector,
   connectableTargetsSelector,
 } from '~/state/audio-nodes/selectors'
 import ErrorBoundary from '~/components/error-boundary'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
 import PatchBayNode from './patch-bay-node'
 
-const PatchBay: FunctionComponentWithoutChildren = () => {
+const PatchBay: FCWithoutChildren = () => {
   const sources = useSelector(connectableSourcesSelector)
   const targets = useSelector(connectableTargetsSelector)
 

@@ -12,10 +12,9 @@ export const defaultProps = Object.freeze({
   playbackRate: 1,
 })
 
-export interface Props
-  extends Mutable<
-    Omit<typeof defaultProps, 'audioBuffer' | 'playbackPosition'>
-  > {
+export type Props = Mutable<
+  Omit<typeof defaultProps, 'audioBuffer' | 'playbackPosition'>
+> & {
   audioBuffer: AudioBuffer | undefined
   playbackPosition: number | undefined
 }

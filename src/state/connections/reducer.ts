@@ -17,8 +17,10 @@ const loop1 = defaultNodes[1]
 const loop2 = defaultNodes[2]
 
 const defaultState: ConnectionsState = [
-  { from: loop1.id, to: mainOut.id, color: nodeColorPool[0] },
-  { from: loop2.id, to: mainOut.id, color: nodeColorPool[1] },
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  { from: loop1.id, to: mainOut.id, color: nodeColorPool[0]! },
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+  { from: loop2.id, to: mainOut.id, color: nodeColorPool[1]! },
 ]
 
 const connectionIs = ({ fromId, toId }: ConnectionDescriptor) =>
@@ -37,7 +39,8 @@ export const connectionsReducer: Reducer<
           draftState.push({
             from: fromId,
             to: toId,
-            color: nodeColorPool[draftState.length % nodeColorPool.length],
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            color: nodeColorPool[draftState.length % nodeColorPool.length]!,
           })
         }
 

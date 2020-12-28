@@ -122,7 +122,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     this.playbackState.positionRatio = this.positionBufferSource.loopStart
   }
 
-  protected propsUpdated(props: Props, prevProps: Props) {
+  protected propsUpdated(props: Props, prevProps: Props): void {
     const { gain, audioBuffer, loopStart, midGain, lowGain, highGain } = props
 
     this.gainNode.gain.value = gain
@@ -140,21 +140,21 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     }
   }
 
-  play() {
+  play(): void {
     if (this.playbackState.playing) return
 
     this.playbackState.playing = true
     this.replaceSource()
   }
 
-  stop() {
+  stop(): void {
     if (!this.playbackState.playing) return
 
     this.playbackState.playing = false
     this.removeSource()
   }
 
-  destroy() {
+  destroy(): void {
     this.stop()
     this.throttledNotifySubscribers.cancel()
 

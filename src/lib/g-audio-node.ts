@@ -1,4 +1,4 @@
-export abstract class GAudioNode<P extends object = {}> {
+export abstract class GAudioNode<P = Record<string, unknown>> {
   private _inNode = this.audioContext.createGain()
   private _outNode = this.audioContext.createGain()
   protected defaultProps: P = {} as P
@@ -10,20 +10,20 @@ export abstract class GAudioNode<P extends object = {}> {
     this.props = { ...this.defaultProps, ...initialProps }
   }
 
-  connect(node: AudioNode | GAudioNode) {
+  connect(node: AudioNode | GAudioNode): void {
     if (node instanceof AudioNode) this._outNode.connect(node)
     else if (node instanceof GAudioNode) this._outNode.connect(node._inNode)
     else throw new Error('Unable to connect to node')
   }
 
-  disconnect(node?: AudioNode | GAudioNode) {
+  disconnect(node?: AudioNode | GAudioNode): void {
     if (!node) this._outNode.disconnect()
     else if (node instanceof AudioNode) this._outNode.disconnect(node)
     else if (node instanceof GAudioNode) this._outNode.disconnect(node._inNode)
     else throw new Error('Unable to disconnect node')
   }
 
-  set(nextProps: Partial<P>) {
+  set(nextProps: Partial<P>): void {
     const previousProps = { ...this.props }
 
     Object.assign(this.props, nextProps)
@@ -31,11 +31,11 @@ export abstract class GAudioNode<P extends object = {}> {
     this.propsUpdated(this.props, previousProps)
   }
 
-  get inNode() {
+  get inNode(): AudioNode {
     return this._inNode
   }
 
-  get outNode() {
+  get outNode(): AudioNode {
     return this._outNode
   }
 
@@ -47,12 +47,12 @@ export abstract class GAudioNode<P extends object = {}> {
 type GInstrumentNodeSubscriber<S> = (state: S) => unknown
 
 export abstract class GInstrumentNode<
-  P extends object = {},
-  S extends object = {}
+  P = Record<string, unknown>,
+  S = Record<string, unknown>
 > extends GAudioNode<P> {
   private subscribers: GInstrumentNodeSubscriber<S>[] = []
 
-  subscribe(subscriber: GInstrumentNodeSubscriber<S>) {
+  subscribe(subscriber: GInstrumentNodeSubscriber<S>): () => void {
     if (!this.subscribers.includes(subscriber)) {
       this.subscribers.push(subscriber)
     }
@@ -64,7 +64,7 @@ export abstract class GInstrumentNode<
     }
   }
 
-  protected notifySubscribers(state: S) {
+  protected notifySubscribers(state: S): void {
     this.subscribers.forEach((subscriber) => {
       subscriber(state)
     })

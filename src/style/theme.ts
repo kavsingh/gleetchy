@@ -26,8 +26,8 @@ const fonts: Fonts = {
   body: 'system-ui, -apple-system, BlinkMacSystemFont, sans-serif',
 }
 
-export const themes: UITheme[] = [
-  {
+export const themes: Record<ThemeName, UITheme> = {
+  dark: {
     fonts,
     name: 'dark',
     colors: {
@@ -38,7 +38,7 @@ export const themes: UITheme[] = [
       error: 'rgba(236, 103, 100, 1)',
     },
   },
-  {
+  light: {
     fonts,
     name: 'light',
     colors: {
@@ -49,6 +49,6 @@ export const themes: UITheme[] = [
       error: 'rgba(236, 103, 100, 1)',
     },
   },
-]
+}
 
-export default themes[0]
+export const defaultTheme = themes.light

@@ -2,7 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "isolatedModules": false,
+    // Target Node 10 runtime
+    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
     "module": "commonjs",
-    "target": "ES2018"
+    "target": "es2018",
   }
 }

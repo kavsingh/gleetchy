@@ -2,11 +2,8 @@ import { MAIN_OUT_ID } from '~/constants/audio'
 import * as delay from '~/nodes/audio-effects/delay'
 import * as reverb from '~/nodes/audio-effects/reverb'
 import * as loop from '~/nodes/instruments/loop'
-import type { AudioNodeState } from '~/types'
 
-const defaultNodes: AudioNodeState<
-  delay.NodeProps | reverb.NodeProps | loop.NodeProps | {}
->[] = [
+const defaultNodes = [
   {
     id: MAIN_OUT_ID,
     label: 'Main',
@@ -49,6 +46,6 @@ const defaultNodes: AudioNodeState<
     audioProps: { ...reverb.defaultProps },
     type: reverb.nodeType,
   },
-]
+] as const
 
 export default defaultNodes

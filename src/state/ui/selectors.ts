@@ -9,8 +9,7 @@ import { createValueEqSelector } from '../lib/selector'
 
 const getTheme = memoizeWith(
   identity,
-  (themeName: ThemeName) =>
-    themes.find((theme) => theme.name === themeName) || themes[0],
+  (themeName: ThemeName) => themes[themeName],
 )
 
 const uiStateSelector = (state: ApplicationState) => state.ui

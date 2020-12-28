@@ -1,4 +1,4 @@
-import React, { FunctionComponent, memo } from 'react'
+import { memo } from 'react'
 import { Provider } from 'react-redux'
 
 import AudioEngine from '~/audio-engine'
@@ -7,8 +7,9 @@ import type { ApplicationStore } from '~/state/configure-store'
 
 import StyledContainer from './style/styled-container'
 import ErrorBoundary from './components/error-boundary'
+import type { FCWithoutChildren } from './types'
 
-const App: FunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
+const App: FCWithoutChildren<{ store: ApplicationStore }> = ({ store }) => (
   <Provider store={store}>
     <StyledContainer>
       <ErrorBoundary>

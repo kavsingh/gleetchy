@@ -1,9 +1,9 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import styled from '@emotion/styled'
 
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
-const PlayPauseButton: FunctionComponentWithoutChildren<{
+const PlayPauseButton: FCWithoutChildren<{
   isPlaying: boolean
   onClick(): unknown
 }> = ({ isPlaying, onClick }) => (

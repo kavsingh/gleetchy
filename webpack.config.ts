@@ -1,35 +1,36 @@
-import webpack, { Configuration } from 'webpack'
-import { Configuration as DevServerConfiguration } from 'webpack-dev-server'
+import webpack, { WebpackPluginInstance } from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import WorkboxPlugin from 'workbox-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import PWAManifest from 'webpack-pwa-manifest'
 import color from 'color'
+import type { Configuration } from 'webpack'
 
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
-import theme from './src/style/theme'
-
-const servePublic = process.env.PUBLIC === 'true'
-const isProduction = process.env.NODE_ENV === 'production'
+import { defaultTheme } from './src/style/theme'
 
 export const publicPath = ''
 
-const config: Configuration & { devServer: DevServerConfiguration } = {
-  mode: isProduction ? 'production' : 'development',
-  devtool: isProduction ? 'source-map' : 'inline-cheap-source-map',
+const servePublic = process.env.PUBLIC === 'true'
+const isProd = (env: Record<string, unknown>) => env.production === true
+
+const config = (env: Record<string, unknown>): Configuration => ({
+  mode: isProd(env) ? 'production' : 'development',
+  devtool: isProd(env) ? 'source-map' : 'inline-cheap-source-map',
   entry: {
     gleetchy: ['./src/index.tsx'],
   },
   target: 'web',
   output: {
     publicPath,
-    filename: isProduction ? '[name].[chunkhash].js' : '[name].js',
+    filename: isProd(env) ? '[name].[chunkhash].js' : '[name].js',
     path: fromRoot('dist'),
   },
   devServer: {
     host: servePublic ? '0.0.0.0' : 'localhost',
     hot: true,
     port: 3000,
+    contentBase: './dist',
   },
   module: {
     rules: [
@@ -56,8 +57,8 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
       short_name: 'Gleetchy',
       start_url: process.env.PWA_START_URL || '/',
       display: 'fullscreen',
-      theme_color: color(theme.colors.page).hex(),
-      background_color: color(theme.colors.page).hex(),
+      theme_color: color(defaultTheme.colors.page).hex(),
+      background_color: color(defaultTheme.colors.page).hex(),
       icons: [
         ...[48, 72, 96, 144, 168, 192, 512].map((size) => ({
           src: fromRoot(`src/assets/icons/${size}x${size}.png`),
@@ -69,7 +70,7 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
         },
       ],
     }),
-    isProduction &&
+    isProd(env) &&
       new WorkboxPlugin.GenerateSW({
         cacheId: 'gleetchy-sw',
         swDest: 'gleetchy-sw.js',
@@ -87,11 +88,11 @@ const config: Configuration & { devServer: DevServerConfiguration } = {
         ],
       }),
     process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
-  ].filter(Boolean) as webpack.Plugin[],
+  ].filter(Boolean) as WebpackPluginInstance[],
   resolve: {
     alias: { 'react': 'preact/compat', 'react-dom': 'preact/compat' },
-    extensions: ['.ts', '.tsx', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
   },
-}
+})
 
 export default config

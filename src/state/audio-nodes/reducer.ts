@@ -25,7 +25,11 @@ import type { AudioNodeState, AudioNodeIdentifierMeta } from '~/types'
 import type { AudioFileDecodeCompleteAction } from '../audio-files/types'
 import type { AudioNodesAction } from './types'
 
-type KnownProps = DelayNodeProps | ReverbNodeProps | LoopNodeProps | {}
+type KnownProps =
+  | DelayNodeProps
+  | ReverbNodeProps
+  | LoopNodeProps
+  | Record<string, unknown>
 
 export interface AudioNodesState {
   byId: {

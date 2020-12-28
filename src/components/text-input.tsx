@@ -1,13 +1,13 @@
-import React, { useCallback, memo } from 'react'
+import { useCallback, memo } from 'react'
 import AutosizeInput from 'react-input-autosize'
 import styled from '@emotion/styled'
 import type { ChangeEventHandler } from 'react'
 
 import { cancelReactEvent, noop } from '~/lib/util'
 import type { ThemeProps } from '~/style/theme'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
-const TextInput: FunctionComponentWithoutChildren<{
+const TextInput: FCWithoutChildren<{
   value: string | number
   placeholder?: string
   onChange?(value: string): unknown

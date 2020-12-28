@@ -1,7 +1,7 @@
-import React, { PureComponent } from 'react'
+import { PureComponent } from 'react'
 import { clamp } from 'ramda'
 import styled from '@emotion/styled'
-import type { FunctionComponent } from 'react'
+import type { FunctionComponent, ReactNode } from 'react'
 
 import { noop } from '~/lib/util'
 import { UI as Eq3 } from '~/nodes/audio-effects/eq3'
@@ -13,7 +13,7 @@ import LoopTitleBar from './loop-title-bar'
 import type { LoopUIProps } from './types'
 
 class Loop extends PureComponent<LoopUIProps> {
-  public render() {
+  public render(): ReactNode {
     const {
       nodeId,
       audioBuffer,
@@ -32,7 +32,6 @@ class Loop extends PureComponent<LoopUIProps> {
       onPlaybackRateChange = noop,
       onEqChange = noop,
       selectAudioFile = noop,
-      receiveAudioFile = noop,
       onLabelChange = noop,
       duplicate = noop,
       remove = noop,
@@ -40,7 +39,7 @@ class Loop extends PureComponent<LoopUIProps> {
 
     return (
       <Container isActive={isActive}>
-        <AudioFileDropRegion onFiles={(files) => receiveAudioFile(files[0])}>
+        <AudioFileDropRegion onFiles={this.handleFiles}>
           <TitleBarContainer>
             <LoopTitleBar
               label={label}
@@ -83,6 +82,10 @@ class Loop extends PureComponent<LoopUIProps> {
         </AudioFileDropRegion>
       </Container>
     )
+  }
+
+  private handleFiles = (files: File[]) => {
+    if (files[0]) this.props.receiveAudioFile(files[0])
   }
 
   private handleLoopStartDrag = (movement: number) => {

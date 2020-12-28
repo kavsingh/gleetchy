@@ -8,8 +8,9 @@
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "isolatedModules": false,
+    "isolatedModules": true,
     "jsx": "preserve",
+    "jsxImportSource": "@emotion/react",
     "lib": [
       "esnext",
       "dom"
@@ -21,8 +22,14 @@
     "noImplicitAny": true,
     "noImplicitReturns": true,
     "noStrictGenericChecks": false,
+    "noUncheckedIndexedAccess": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "paths": {
+      "~/*": [
+        "src/*"
+      ]
+    },
     "plugins": [
       {
         "name": "typescript-styled-plugin",
@@ -36,12 +43,7 @@
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
-    "target": "esnext",
-    "paths": {
-      "~/*": [
-        "src/*"
-      ]
-    }
+    "target": "esnext"
   },
   "exclude": [
     "**/node_modules"
@@ -49,6 +51,7 @@
   "include": [
     "./src",
     "./scripts",
-    "./webpack.config.ts"
+    "./*.config.ts",
+    "./*.config.js"
   ]
 }

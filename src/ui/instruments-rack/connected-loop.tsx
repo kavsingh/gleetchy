@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, memo } from 'react'
+import { useCallback, memo } from 'react'
 import { useDispatch } from 'react-redux'
 
 import { nodeType, NodeProps, UI } from '~/nodes/instruments/loop'
@@ -7,8 +7,9 @@ import {
   selectAudioFileAction,
 } from '~/state/audio-files/actions'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
+import type { FCWithoutChildren } from '~/types'
 
-const ConnectedLoop: FunctionComponent<{ id: string }> = ({ id }) => {
+const ConnectedLoop: FCWithoutChildren<{ id: string }> = ({ id }) => {
   const {
     label,
     connections,

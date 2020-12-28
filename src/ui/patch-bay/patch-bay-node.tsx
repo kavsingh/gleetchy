@@ -1,13 +1,13 @@
-import React, { memo } from 'react'
+import { memo } from 'react'
 import styled from '@emotion/styled'
 import { memoizeWith, identity } from 'ramda'
 import color from 'color'
 
 import useConnection from '~/state/hooks/use-connection'
 import type { ThemeProps } from '~/style/theme'
-import type { FunctionComponentWithoutChildren, AudioNodeMeta } from '~/types'
+import type { FCWithoutChildren, AudioNodeMeta } from '~/types'
 
-const PatchBayNode: FunctionComponentWithoutChildren<{
+const PatchBayNode: FCWithoutChildren<{
   source: AudioNodeMeta
   target: AudioNodeMeta
 }> = ({ source, target }) => {

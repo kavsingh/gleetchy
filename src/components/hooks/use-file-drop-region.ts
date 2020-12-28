@@ -13,7 +13,18 @@ export default function useFileDropRegion({
   fileFilter = T,
   onFiles = noop,
   onNoFiles = noop,
-}: UseFileDropRegionProps) {
+}: UseFileDropRegionProps): {
+  isDropActive: boolean
+  eventHandlers: {
+    onDrop: DragEventHandler
+    onDrag: typeof cancelReactEvent
+    onDragOver: typeof cancelReactEvent
+    onDragStart: typeof cancelReactEvent
+    onDragEnter: DragEventHandler
+    onDragLeave: DragEventHandler
+    onDragEnd: DragEventHandler
+  }
+} {
   const [isDropActive, setIsDropActive] = useState(false)
 
   const eventSetDropActive = useCallback<DragEventHandler>((event) => {

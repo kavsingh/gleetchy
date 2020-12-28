@@ -1,10 +1,11 @@
-import React, { memo, FunctionComponent, useMemo, useCallback } from 'react'
+import { memo, useMemo, useCallback } from 'react'
 import styled from '@emotion/styled'
 
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
+import type { FCWithoutChildren } from '~/types'
 
-const PlaybackControls: FunctionComponent<PlaybackControlsProps> = ({
+const PlaybackControls: FCWithoutChildren<PlaybackControlsProps> = ({
   gain = 1,
   playbackRate = 1,
   onGainChange = noop,

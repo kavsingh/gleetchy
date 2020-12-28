@@ -38,12 +38,22 @@ export const audioEffectsIdentifierMetaSelector = createValueEqSelector(
 
 export const mainOutNodeSelector = createSelector(
   audioNodesSelector,
-  (nodes) => nodes[MAIN_OUT_ID],
+  (nodes) => {
+    const mainOut = nodes[MAIN_OUT_ID]
+
+    if (!mainOut) throw new Error('Main out not found')
+
+    return mainOut
+  },
 )
 
 export const mainOutMetaSelector = createValueEqSelector(
   mainOutNodeSelector,
-  ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
+  (mainOutMeta): AudioNodeMeta => {
+    const { id, type, label } = mainOutMeta
+
+    return { id, type, label }
+  },
 )
 
 export const activeAudioNodeIdsSelector = createValueEqSelector(
@@ -62,8 +72,11 @@ export const connectableSourcesSelector = createValueEqSelector(
   instrumentsIdentifierMetaSelector,
   audioEffectsIdentifierMetaSelector,
   (nodes, instruments, effects): AudioNodeMeta[] => [
-    ...instruments.map((meta) => ({ ...meta, label: nodes[meta.id].label })),
-    ...effects.map((meta) => ({ ...meta, label: nodes[meta.id].label })),
+    ...instruments.map((meta) => ({
+      ...meta,
+      label: nodes[meta.id]?.label || '',
+    })),
+    ...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label || '' })),
   ],
 )
 
@@ -72,7 +85,7 @@ export const connectableTargetsSelector = createValueEqSelector(
   audioEffectsIdentifierMetaSelector,
   mainOutMetaSelector,
   (nodes, effects, out): AudioNodeMeta[] => [
-    ...effects.map((meta) => ({ ...meta, label: nodes[meta.id].label })),
+    ...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label || '' })),
     out,
   ],
 )

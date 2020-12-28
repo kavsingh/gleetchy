@@ -1,15 +1,14 @@
-import React, { memo, useState, useRef, useCallback, useEffect } from 'react'
+import { memo, useState, useRef, useCallback, useEffect } from 'react'
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import { useTheme } from 'emotion-theming'
 import { clamp } from 'ramda'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
 import SinglePointerDrag from '~/components/single-pointer-drag'
 import SVGArc from '~/components/svg-arc'
-import type { UITheme } from '~/style/theme'
 import type { SinglePointerDragMoveHandler } from '~/components/single-pointer-drag'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
 import useControlResponseRef, {
   ControlResponseMultipliers,
@@ -21,7 +20,7 @@ const controlMultipliers: ControlResponseMultipliers = {
   fine: 0.2,
 }
 
-const Knob: FunctionComponentWithoutChildren<{
+const Knob: FCWithoutChildren<{
   value: number
   defaultValue?: number
   radius?: number | string
@@ -38,7 +37,7 @@ const Knob: FunctionComponentWithoutChildren<{
   valueLabel = '',
   onChange = noop,
 }) => {
-  const theme = useTheme<UITheme>()
+  const theme = useTheme()
   const knobRef = useRef<HTMLDivElement | null>(null)
   const valueRef = useRef<number>(value)
   const [axis, setAxis] = useState<MovementAxis | undefined>()

@@ -22,7 +22,7 @@ export type AudioNodeUpdateLabelAction = ActionWithPayload<
 
 export type AudioNodeUpdateAudioPropsAction = ActionWithPayload<
   'AUDIO_NODE_UPDATE_AUDIO_PROPS',
-  { id: string; audioProps: object }
+  { id: string; audioProps: Record<string, unknown> }
 >
 
 export type AudioNodesAction =

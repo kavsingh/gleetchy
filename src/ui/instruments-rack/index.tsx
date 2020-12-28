@@ -1,4 +1,4 @@
-import React, { useCallback, memo } from 'react'
+import { useCallback, memo } from 'react'
 import styled from '@emotion/styled'
 import type { FunctionComponent } from 'react'
 
@@ -8,22 +8,20 @@ import { nodeType as loopType } from '~/nodes/instruments/loop'
 import AnimIn from '~/components/anim-in'
 import ErrorBoundary from '~/components/error-boundary'
 import ButtonSet, { Button } from '~/components/button-set'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
 import ConnectedLoop from './connected-loop'
 
-const InstrumentsRack: FunctionComponentWithoutChildren = () => {
-  return (
-    <Container>
-      <Rack />
-      <AddInstrumentButtons />
-    </Container>
-  )
-}
+const InstrumentsRack: FCWithoutChildren = () => (
+  <Container>
+    <Rack />
+    <AddInstrumentButtons />
+  </Container>
+)
 
 export default memo(InstrumentsRack)
 
-const Rack: FunctionComponentWithoutChildren = () => {
+const Rack: FCWithoutChildren = () => {
   const { instruments } = useAudioNodesMeta()
 
   return (
@@ -44,7 +42,7 @@ const Rack: FunctionComponentWithoutChildren = () => {
   )
 }
 
-const AddInstrumentButtons: FunctionComponentWithoutChildren = () => {
+const AddInstrumentButtons: FCWithoutChildren = () => {
   const { addNode } = useAddNode()
   const addLoop = useCallback(() => addNode(loopType), [addNode])
 

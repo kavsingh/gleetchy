@@ -1,16 +1,15 @@
-import React, { memo, useRef, useEffect, useCallback } from 'react'
+import { memo, useRef, useEffect, useCallback } from 'react'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
-import { css } from '@emotion/core'
 import { clamp } from 'ramda'
 
 import { noop } from '~/lib/util'
-import { ThemeProps } from '~/style/theme'
 import SinglePointerDrag from '~/components/single-pointer-drag'
 import type {
   SinglePointerDragMoveHandler,
   SinglePointerDragEndHandler,
 } from '~/components/single-pointer-drag'
-import type { FunctionComponentWithoutChildren } from '~/types'
+import type { FCWithoutChildren } from '~/types'
 
 import useControlResponseRef, {
   ControlResponseMultipliers,
@@ -22,7 +21,7 @@ const controlMultipliers: ControlResponseMultipliers = {
   fine: 0.4,
 }
 
-const Slider: FunctionComponentWithoutChildren<{
+const Slider: FCWithoutChildren<{
   value: number
   defaultValue?: number
   orientation?: Orientation
@@ -146,17 +145,18 @@ const Text = styled.div`
   text-overflow: ellipsis;
 `
 
-const Label = styled(Text)<OrientationProps>(({ orientation }) =>
-  orientation === 'horizontal'
-    ? css`
-        display: flex;
-        align-items: center;
-        width: 3em;
-      `
-    : css`
-        height: 1.4em;
-      `,
-)
+const Label = styled(Text)<OrientationProps>`
+  ${({ orientation }) =>
+    orientation === 'horizontal'
+      ? css`
+          display: flex;
+          align-items: center;
+          width: 3em;
+        `
+      : css`
+          height: 1.4em;
+        `};
+`
 
 const ValueLabel = styled(Text)<OrientationProps>`
   display: flex;
@@ -189,7 +189,7 @@ const BarContainer = styled.div<OrientationProps>`
         `}
 `
 
-const Track = styled.div<ThemeProps & OrientationProps>`
+const Track = styled.div<OrientationProps>`
   position: absolute;
   z-index: 1;
   background-color: ${({ theme }) => theme.colors.keyline};
@@ -209,7 +209,7 @@ const Track = styled.div<ThemeProps & OrientationProps>`
         `};
 `
 
-const Bar = styled.div<ThemeProps & OrientationProps>`
+const Bar = styled.div<OrientationProps>`
   position: absolute;
   z-index: 2;
   background-color: ${({ theme }) => theme.colors.emphasis};

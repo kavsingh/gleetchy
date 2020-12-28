@@ -1,6 +1,7 @@
-import { PureComponent, ReactNode } from 'react'
+import { PureComponent } from 'react'
 import rafThrottle from 'raf-throttle'
 import { pipe, tap } from 'ramda'
+import type { ReactNode } from 'react'
 
 import { cancelEvent, noop } from '~/lib/util'
 import { filterSupportedEvents, requireWindowWith } from '~/lib/env'
@@ -8,7 +9,7 @@ import { filterSupportedEvents, requireWindowWith } from '~/lib/env'
 const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
   const { currentTarget, timeStamp } = event
   const { clientX = 0, clientY = 0 } = (event as TouchEvent).touches
-    ? (event as TouchEvent).touches[0]
+    ? (event as TouchEvent).touches[0] ?? {}
     : (event as MouseEvent)
 
   return {
@@ -60,7 +61,7 @@ export default class SinglePointerDrag extends PureComponent<
     this.throttledHandleDragMove = rafThrottle(this.handleDragMove)
   }
 
-  public componentDidMount() {
+  public componentDidMount(): void {
     this.mouseMoveEvents = filterSupportedEvents(['mousemove'])
     this.mouseEndEvents = filterSupportedEvents(['mouseup'])
     this.touchMoveEvents = filterSupportedEvents(['touchmove'])
@@ -69,7 +70,7 @@ export default class SinglePointerDrag extends PureComponent<
     this.endEvents = [...this.mouseEndEvents, ...this.touchEndEvents]
   }
 
-  public componentWillUnmount() {
+  public componentWillUnmount(): void {
     const WINDOW = requireWindowWith(['removeEventListener'])
 
     if (!WINDOW) {
@@ -85,7 +86,7 @@ export default class SinglePointerDrag extends PureComponent<
     )
   }
 
-  public render() {
+  public render(): ReactNode {
     return this.props.children({
       dragListeners: {
         onMouseDown: this.handleMouseDown,

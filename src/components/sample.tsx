@@ -1,15 +1,16 @@
-import React, { FunctionComponent, memo, useMemo } from 'react'
+import { memo, useMemo } from 'react'
+import { useTheme } from '@emotion/react'
 import styled from '@emotion/styled'
-import { useTheme } from 'emotion-theming'
 import color from 'color'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { ThemeProps, UITheme } from '~/style/theme'
+import { ThemeProps } from '~/style/theme'
 import LoopRegion from '~/components/loop-region'
 import Waveform from '~/components/waveform'
+import type { FCWithoutChildren } from '~/types'
 
-const Sample: FunctionComponent<SampleProps> = ({
+const Sample: FCWithoutChildren<SampleProps> = ({
   audioBuffer,
   positionRatio = 0,
   loopStart = 0,
@@ -20,7 +21,7 @@ const Sample: FunctionComponent<SampleProps> = ({
   onLoopRegionDrag = noop,
   selectAudioFile = noop,
 }) => {
-  const theme = useTheme<UITheme>()
+  const theme = useTheme()
 
   const waveForm = useMemo(
     () => (

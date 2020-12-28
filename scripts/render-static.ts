@@ -36,9 +36,9 @@ const parseStaticConfig = (config: Configuration) => {
 }
 
 const renderStatic = async (initialState: Partial<ApplicationState>) => {
-  const { baseOutputPath } = parseBaseConfig(baseConfig)
+  const { baseOutputPath } = parseBaseConfig(baseConfig({ production: true }))
   const { staticOutputPath, staticOutputFilename } = parseStaticConfig(
-    staticConfig,
+    staticConfig(),
   )
 
   const baseDistPath = fromRoot(baseOutputPath)
@@ -51,7 +51,8 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
       : 'gleetchy',
   )
 
-  await promisify(webpack)([staticConfig])
+  await promisify(webpack)([staticConfig()])
+
   const { default: render } = await import(staticModulePath)
   const dom = await JSDOM.fromFile(path.resolve(baseDistPath, 'index.html'))
   const appRoot = dom.window.document.querySelector<HTMLElement>('#app-root')
