@@ -9,12 +9,14 @@ import type { Configuration } from 'webpack'
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
 import { defaultTheme } from './src/style/theme'
 
+type ConfigEnv = { production?: boolean }
+
 export const publicPath = ''
 
 const servePublic = process.env.PUBLIC === 'true'
-const isProd = (env: Record<string, unknown>) => env.production === true
+const isProd = (env: ConfigEnv) => env.production === true
 
-const config = (env: Record<string, unknown>): Configuration => ({
+const configFactory = (env: ConfigEnv): Configuration => ({
   mode: isProd(env) ? 'production' : 'development',
   devtool: isProd(env) ? 'source-map' : 'inline-cheap-source-map',
   entry: {
@@ -89,10 +91,7 @@ const config = (env: Record<string, unknown>): Configuration => ({
       }),
     process.env.BUNDLE_ANALYZE === 'true' && new BundleAnalyzerPlugin(),
   ].filter(Boolean) as WebpackPluginInstance[],
-  resolve: {
-    alias: { 'react': 'preact/compat', 'react-dom': 'preact/compat' },
-    extensions: ['.ts', '.tsx', '.js', '.jsx'],
-  },
+  resolve: { extensions: ['.ts', '.tsx', '.js', '.jsx'] },
 })
 
-export default config
+export default configFactory

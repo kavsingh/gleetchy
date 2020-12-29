@@ -2,17 +2,17 @@ import { promisify } from 'util'
 import path from 'path'
 import { writeFile } from 'fs'
 
-import webpack, { Configuration } from 'webpack'
+import webpack from 'webpack'
 import { JSDOM } from 'jsdom'
 
 import { ApplicationState } from '../src/state/configure-store'
-import baseConfig from '../webpack.config'
-import staticConfig from '../webpack.config.static'
+import baseConfigFactory from '../webpack.config'
+import staticConfigFactory from '../webpack.config.static'
 import spawnAsync from './lib/spawn-async'
 import { resolveFromProjectRoot as fromRoot } from './lib/util'
 
-const parseBaseConfig = (config: Configuration) => {
-  const { output = {} } = config
+const parseBaseConfig = (config: typeof baseConfigFactory) => {
+  const { output = {} } = config({ production: true })
 
   if (!output.path) {
     throw new Error('base config.output must have path defined')
@@ -21,8 +21,8 @@ const parseBaseConfig = (config: Configuration) => {
   return { baseOutputPath: output.path }
 }
 
-const parseStaticConfig = (config: Configuration) => {
-  const { output = {} } = config
+const parseStaticConfig = (config: typeof staticConfigFactory) => {
+  const { output = {} } = config()
   const { filename, path: outputPath } = output
 
   if (!outputPath || !filename) {
@@ -36,9 +36,9 @@ const parseStaticConfig = (config: Configuration) => {
 }
 
 const renderStatic = async (initialState: Partial<ApplicationState>) => {
-  const { baseOutputPath } = parseBaseConfig(baseConfig({ production: true }))
+  const { baseOutputPath } = parseBaseConfig(baseConfigFactory)
   const { staticOutputPath, staticOutputFilename } = parseStaticConfig(
-    staticConfig(),
+    staticConfigFactory,
   )
 
   const baseDistPath = fromRoot(baseOutputPath)
@@ -51,7 +51,7 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
       : 'gleetchy',
   )
 
-  await promisify(webpack)([staticConfig()])
+  await promisify(webpack)([staticConfigFactory()])
 
   const { default: render } = await import(staticModulePath)
   const dom = await JSDOM.fromFile(path.resolve(baseDistPath, 'index.html'))
