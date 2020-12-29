@@ -53,6 +53,8 @@ module.exports = {
     'import/no-self-import': 'error',
     'import/no-unused-modules': 'error',
     'import/no-useless-path-segments': 'error',
+    // temp disable, should be handled by typescript
+    'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': ['error', devDependencies],
     'import/order': [
       'warn',
