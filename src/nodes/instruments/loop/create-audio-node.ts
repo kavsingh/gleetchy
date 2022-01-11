@@ -6,6 +6,9 @@ import { GInstrumentNode } from '~/lib/g-audio-node'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
+// @ts-expect-error worklet url import via webpack
+// eslint-disable-next-line import/default
+import processor from './processor.worklet'
 
 import type { Props } from './node-props'
 
@@ -44,6 +47,10 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     this.gainNode.connect(this.eq3Node.inNode)
     this.eq3Node.connect(this.outNode)
     this.worklet = new AudioWorkletNode(this.audioContext, 'loop-processor')
+  }
+
+  static override getWorklets(): Promise<string[]> {
+    return Promise.resolve([processor as string])
   }
 
   play(): void {

@@ -10,10 +10,9 @@ import {
   dispatchAudioEngineSubscriptionAction,
 } from '~/state/audio-engine/actions'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
-// register worklets
-// @ts-expect-error worklet url import via webpack
-// eslint-disable-next-line import/default
-import loopProcessor from '~/nodes/instruments/loop/processor.worklet'
+import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
+import { GDelayNode } from '~/nodes/audio-effects/delay/create-audio-node'
+import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'
 
 import BaseAudioEngine from './audio-engine'
 
@@ -42,9 +41,7 @@ const AudioEngine: FCWithoutChildren = () => {
   )
 
   useEffect(() => {
-    void getAudioContext()
-      .audioWorklet.addModule(loopProcessor as string)
-      .then(() => setWorkletsReady(true))
+    void registerWorklets().then(() => setWorkletsReady(true))
   }, [])
 
   return workletsReady ? (
@@ -60,3 +57,18 @@ const AudioEngine: FCWithoutChildren = () => {
 }
 
 export default AudioEngine
+
+const registerWorklets = async () => {
+  const context = getAudioContext()
+  const sources = (
+    await Promise.all([
+      GLoopNode.getWorklets(),
+      GDelayNode.getWorklets(),
+      GReverbNode.getWorklets(),
+    ])
+  ).flat()
+
+  return Promise.all(
+    sources.map((source) => context.audioWorklet.addModule(source)),
+  )
+}

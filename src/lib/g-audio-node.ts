@@ -20,6 +20,10 @@ export abstract class GAudioNode<P = Record<string, unknown>> {
     return this.outputGainNode
   }
 
+  static async getWorklets(): Promise<string[]> {
+    return Promise.resolve([])
+  }
+
   connect(node: AudioNode | GAudioNode): void {
     if (node instanceof AudioNode) {
       this.outputGainNode.connect(node)
