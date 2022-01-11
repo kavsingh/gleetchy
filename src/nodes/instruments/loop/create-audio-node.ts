@@ -33,7 +33,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     highGain: 0,
   })
 
-  positionProcessor: ScriptProcessorNode
+  worklet: AudioWorkletNode
   playbackBufferSource: AudioBufferSourceNode | null = null
   positionBufferSource: AudioBufferSourceNode | null = null
   throttledNotifySubscribers = rafThrottle(this.notifySubscribers)
@@ -41,20 +41,16 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
   constructor(protected audioContext: AudioContext, initProps: Partial<Props>) {
     super(audioContext, initProps)
 
-    this.positionProcessor = this.audioContext.createScriptProcessor(1024, 1, 1)
-    this.positionProcessor.connect(this.audioContext.destination)
-
     this.gainNode.connect(this.eq3Node.inNode)
     this.eq3Node.connect(this.outNode)
-
-    this.propsUpdated(this.props, this.props)
+    this.worklet = new AudioWorkletNode(this.audioContext, 'loop-processor')
   }
 
   play(): void {
     if (this.playbackState.playing) return
 
     this.playbackState.playing = true
-    this.replaceSource()
+    void this.replaceSource()
   }
 
   stop(): void {
@@ -67,12 +63,6 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
   destroy(): void {
     this.stop()
     this.throttledNotifySubscribers.cancel()
-
-    try {
-      this.positionProcessor.disconnect(this.audioContext.destination)
-    } catch {
-      // noop
-    }
   }
 
   protected propsUpdated(props: Props, prevProps: Props): void {
@@ -85,7 +75,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
       prevProps.audioBuffer !== audioBuffer ||
       prevProps.loopStart !== loopStart
     ) {
-      this.replaceSource()
+      void this.replaceSource()
     } else if (audioBuffer && this.playbackBufferSource) {
       this.updateSourceProps()
     } else if (!audioBuffer) {
@@ -100,6 +90,13 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     }
 
     this.throttledNotifySubscribers(updateState)
+  }
+
+  private processWorkletPositionMessage = (message: MessageEvent<number>) => {
+    this.throttledNotifySubscribers({
+      ...this.playbackState,
+      positionRatio: message.data,
+    })
   }
 
   private updateSourceProps() {
@@ -124,12 +121,13 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
   private removeSource() {
     try {
       this.playbackBufferSource?.disconnect(this.gainNode)
-      this.positionBufferSource?.disconnect(this.positionProcessor)
-    } catch {
-      // noop
+      this.positionBufferSource?.disconnect(this.worklet)
+    } catch (e) {
+      // eslint-disable-next-line no-console
+      console.error(e)
     }
 
-    this.positionProcessor.onaudioprocess = null
+    this.worklet.port.onmessage = null
     this.playbackBufferSource = null
     this.positionBufferSource = null
   }
@@ -152,15 +150,19 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 
     this.positionBufferSource.loop = this.playbackBufferSource.loop = true
 
+    this.propsUpdated(this.props, this.props)
+
+    if (this.worklet) this.positionBufferSource.connect(this.worklet)
+
     this.updateSourceProps()
 
     if (!this.playbackState.playing) return
 
-    this.positionProcessor.onaudioprocess = this.processPositionEvent
+    if (this.worklet) {
+      this.worklet.port.onmessage = this.processWorkletPositionMessage
+    }
 
     this.playbackBufferSource.connect(this.gainNode)
-    this.positionBufferSource.connect(this.positionProcessor)
-
     this.playbackBufferSource.start(0, this.playbackBufferSource.loopStart)
     this.positionBufferSource.start(0, this.positionBufferSource.loopStart)
 

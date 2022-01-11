@@ -10,6 +10,7 @@ import {
 } from '~/state/audio-engine/actions'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 
+// register worklets
 import BaseAudioEngine from './audio-engine'
 
 import type { FCWithoutChildren } from '~/types'

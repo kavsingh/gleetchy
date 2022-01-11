@@ -8,8 +8,7 @@
     "jsx": "preserve",
     "jsxImportSource": "@emotion/react",
     "lib": [
-      "esnext",
-      "dom"
+      "esnext"
     ],
     "module": "esnext",
     "moduleResolution": "node",

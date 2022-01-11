@@ -42,6 +42,11 @@ const configFactory: ConfigurationFactory = (env) => ({
   module: {
     rules: [
       {
+        test: /\.worklet.[jt]sx?$/,
+        exclude: fromRoot('node_modules'),
+        use: [{ loader: 'worklet-loader' }, { loader: 'babel-loader' }],
+      },
+      {
         test: /\.[jt]sx?$/,
         exclude: fromRoot('node_modules'),
         use: [{ loader: 'babel-loader' }],
