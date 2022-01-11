@@ -1,12 +1,13 @@
 import { useMemo } from 'react'
 import styled from '@emotion/styled'
-import type { FunctionComponent } from 'react'
 
 import { noop } from '~/lib/util'
-import type { AudioNodeConnection } from '~/types'
 
 import TextInput from './text-input'
 import Button from './button'
+
+import type { AudioNodeConnection } from '~/types'
+import type { FunctionComponent } from 'react'
 
 const TitleBar: FunctionComponent<{
   label: string

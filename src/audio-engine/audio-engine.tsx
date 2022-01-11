@@ -1,4 +1,4 @@
-import { Component, ReactNode } from 'react'
+import { Component } from 'react'
 import { pick, tryCatch } from 'ramda'
 
 import { warn } from '~/lib/dev'
@@ -18,6 +18,8 @@ import {
   createAudioNode as createLoopNode,
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
+
+import type { ReactNode } from 'react'
 import type { AudioEngineEvent } from '~/state/audio-engine/types'
 import type { GAudioNode, GInstrumentNode } from '~/lib/g-audio-node'
 import type { AudioNodeConnection, AudioNodeState } from '~/types'
@@ -92,7 +94,7 @@ class AudioEngine extends Component<AudioEngineProps> {
 
   public componentWillUnmount(): void {
     this.props.clearAudioEngineEvents()
-    if (this.audioContext) this.audioContext.close()
+    if (this.audioContext) void this.audioContext.close()
   }
 
   public render(): ReactNode {
@@ -100,9 +102,7 @@ class AudioEngine extends Component<AudioEngineProps> {
   }
 
   private getInstrumentNodes = (): GInstrumentNode[] => {
-    return Object.values(this.audioNodes).filter(
-      isInstrumentNode,
-    ) as GInstrumentNode[]
+    return Object.values(this.audioNodes).filter(isInstrumentNode)
   }
 
   private forEachInstrument = (fn: InstrumentNodeProcessor) => {
@@ -233,10 +233,7 @@ class AudioEngine extends Component<AudioEngineProps> {
       case 'AUDIO_FILE_DECODE_COMPLETE':
         this.updateNode({
           id: event.payload.id,
-          audioProps: (event.payload.file as unknown) as Record<
-            string,
-            unknown
-          >,
+          audioProps: event.payload.file as unknown as Record<string, unknown>,
         })
         break
       case 'CONNECTION_ADD':

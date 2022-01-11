@@ -1,7 +1,9 @@
 import styled from '@emotion/styled'
-import type { ReactElement } from 'react'
 
-import Button, { ButtonProps } from './button'
+import Button from './button'
+
+import type { ButtonProps } from './button'
+import type { ReactElement } from 'react'
 
 const ButtonSet = styled.div<{
   children: ReactElement<ButtonProps>[] | ReactElement<ButtonProps>

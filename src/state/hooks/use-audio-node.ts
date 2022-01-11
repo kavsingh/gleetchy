@@ -9,13 +9,14 @@ import {
   removeAudioNodeAction,
 } from '~/state/audio-nodes/actions'
 import { getConnectionsFor } from '~/lib/audio'
-import type { AudioNodeState, AudioNodeConnection } from '~/types'
 
 import {
-  audioNodesSelector,
-  activeAudioNodeIdsSelector,
+  selectAudioNodes,
+  selectActiveAudioNodeIds,
 } from '../audio-nodes/selectors'
-import { connectionsSelector } from '../connections/selectors'
+import { selectConnections } from '../connections/selectors'
+
+import type { AudioNodeState, AudioNodeConnection } from '~/types'
 import type {
   AudioNodeUpdateAudioPropsAction,
   AudioNodeUpdateLabelAction,
@@ -29,26 +30,26 @@ const useAudioNode = <T extends Record<string, unknown>>(
   isValid: AudioNodeStateValidator,
 ): UseAudioNodeReturn<T> => {
   const node = useSelector<ApplicationState, AudioNodeState<T>>(
-    (state) => audioNodesSelector(state)[id] as AudioNodeState<T>,
+    (state) => selectAudioNodes(state)[id] as AudioNodeState<T>,
     equals,
   )
   const isActive = useSelector<ApplicationState, boolean>((state) =>
-    activeAudioNodeIdsSelector(state).includes(node.id),
+    selectActiveAudioNodeIds(state).includes(node.id),
   )
-  const allConnections = useSelector(connectionsSelector)
+  const allConnections = useSelector(selectConnections)
   const dispatch = useDispatch()
 
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
 
-  const duplicate = useCallback(() => dispatch(duplicateAudioNodeAction(id)), [
-    id,
-    dispatch,
-  ])
+  const duplicate = useCallback(
+    () => dispatch(duplicateAudioNodeAction(id)),
+    [id, dispatch],
+  )
 
-  const remove = useCallback(() => dispatch(removeAudioNodeAction(id)), [
-    id,
-    dispatch,
-  ])
+  const remove = useCallback(
+    () => dispatch(removeAudioNodeAction(id)),
+    [id, dispatch],
+  )
 
   const updateAudioProps = useCallback(
     (audioProps: Partial<T>) =>
@@ -103,7 +104,9 @@ export type AudioNodeStateValidator = (
   node: AudioNodeState<Record<string, unknown>>,
 ) => boolean
 
-export const validateNodeType = (
-  type: AudioNodeState<Record<string, unknown>>['type'],
-): AudioNodeStateValidator => (node: AudioNodeState<Record<string, unknown>>) =>
-  node.type === type
+export const validateNodeType =
+  (
+    type: AudioNodeState<Record<string, unknown>>['type'],
+  ): AudioNodeStateValidator =>
+  (node: AudioNodeState<Record<string, unknown>>) =>
+    node.type === type

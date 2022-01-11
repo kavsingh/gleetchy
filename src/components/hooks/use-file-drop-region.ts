@@ -1,7 +1,9 @@
-import { useState, useCallback, useMemo, DragEventHandler } from 'react'
+import { useState, useCallback, useMemo } from 'react'
 import { T } from 'ramda'
 
 import { noop, cancelReactEvent } from '~/lib/util'
+
+import type { DragEventHandler } from 'react'
 
 export interface UseFileDropRegionProps {
   fileFilter?(file: File, index: number, array: File[]): boolean

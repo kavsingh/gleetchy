@@ -1,7 +1,7 @@
 import styled from '@emotion/styled'
-import type { FunctionComponent } from 'react'
 
-import { ThemeProps } from '~/style/theme'
+import type { ThemeProps } from '~/style/theme'
+import type { FunctionComponent } from 'react'
 
 const Button: FunctionComponent<ButtonProps> = ({ handler, children }) => (
   <Container

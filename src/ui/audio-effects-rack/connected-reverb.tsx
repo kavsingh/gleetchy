@@ -1,7 +1,9 @@
 import { memo, useCallback } from 'react'
 
-import { nodeType, NodeProps, UI } from '~/nodes/audio-effects/reverb'
+import { nodeType, UI } from '~/nodes/audio-effects/reverb'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
+
+import type { NodeProps } from '~/nodes/audio-effects/reverb'
 import type { FCWithoutChildren } from '~/types'
 
 const ConnectedReverb: FCWithoutChildren<{ id: string }> = ({ id }) => {
@@ -16,7 +18,7 @@ const ConnectedReverb: FCWithoutChildren<{ id: string }> = ({ id }) => {
   } = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
   const handleWetDryRatioChange = useCallback(
-    (wetDryRatio) => updateAudioProps({ wetDryRatio }),
+    (wetDryRatio: number) => updateAudioProps({ wetDryRatio }),
     [updateAudioProps],
   )
 

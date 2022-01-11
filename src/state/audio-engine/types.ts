@@ -1,11 +1,9 @@
+import type { ConnectionsAction } from '../connections/types'
 import type { Action } from 'redux'
-
 import type { ActionWithPayload } from '~/types'
 import type { AudioNodesAction } from '~/state/audio-nodes/types'
 import type { AudioFilesAction } from '~/state/audio-files/types'
 import type { GlobalPlaybackAction } from '~/state/global-playback/types'
-
-import { ConnectionsAction } from '../connections/types'
 
 export type AudioEngineClearEventsAction = Action<'AUDIO_ENGINE_CLEAR_EVENTS'>
 

@@ -1,10 +1,11 @@
 import { PureComponent } from 'react'
 import rafThrottle from 'raf-throttle'
 import { pipe, tap } from 'ramda'
-import type { ReactNode } from 'react'
 
 import { cancelEvent, noop } from '~/lib/util'
 import { filterSupportedEvents, requireWindowWith } from '~/lib/env'
+
+import type { ReactNode } from 'react'
 
 const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
   const { currentTarget, timeStamp } = event
@@ -271,10 +272,10 @@ export type SinglePointerDragEndHandler = (
 ) => unknown
 
 export interface SinglePointerDragProps {
-  children(props: ChildRenderProps): ReactNode
   onDragStart?: SinglePointerDragStartHandler
   onDragMove?: SinglePointerDragMoveHandler
   onDragEnd?: SinglePointerDragEndHandler
+  children(props: ChildRenderProps): ReactNode
 }
 
 type MouseOrTouchEvent =

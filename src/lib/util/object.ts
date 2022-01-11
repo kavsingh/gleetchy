@@ -11,5 +11,6 @@ export const stableOmit: {
   <K extends string>(keys: K[]): <T>(obj: T) => Omit<T, K>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
 } = curry((keys: string[], obj: any) =>
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-argument
   keys.some(has(__, obj)) ? omit(keys, obj) : obj,
 )

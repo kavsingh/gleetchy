@@ -1,18 +1,18 @@
 import { curry } from 'ramda'
 
-import { decodeAudioData } from '~/apis/audio'
 import reverbImpulse from '~/assets/media/impulse-reverb.wav'
 import { GAudioNode } from '~/lib/g-audio-node'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
+
 import type { Props } from './node-props'
 
 const loadImpulse = async (audioContext: AudioContext, url: string) => {
   const response = await fetch(url)
   const arrayBuffer = await response.arrayBuffer()
 
-  return decodeAudioData(arrayBuffer, audioContext)
+  return audioContext.decodeAudioData(arrayBuffer)
 }
 
 export class GReverbNode extends GAudioNode<Props> {
@@ -34,20 +34,20 @@ export class GReverbNode extends GAudioNode<Props> {
     this.wetGainNode.connect(this.outNode)
     this.dryGainNode.connect(this.outNode)
 
-    loadImpulse(audioContext, reverbImpulse).then((buffer) => {
+    void loadImpulse(audioContext, reverbImpulse).then((buffer) => {
       this.reverbNode.buffer = buffer
     })
 
     this.propsUpdated()
   }
 
+  destroy(): void {
+    // noop
+  }
+
   protected propsUpdated(): void {
     this.wetGainNode.gain.value = this.props.wetDryRatio
     this.dryGainNode.gain.value = 1 - this.props.wetDryRatio
-  }
-
-  destroy(): void {
-    // noop
   }
 }
 

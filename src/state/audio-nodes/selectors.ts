@@ -1,65 +1,50 @@
-import { createSelector } from 'reselect'
-
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {
   hasConnectionTo,
   hasInstrumentType,
   hasAudioEffectType,
 } from '~/lib/audio'
-import { connectionsSelector } from '~/state/connections/selectors'
-import type { ApplicationState } from '~/state/configure-store'
-import type { AudioNodeMeta } from '~/types'
+import { selectConnections } from '~/state/connections/selectors'
 
 import { createValueEqSelector } from '../lib/selector'
 
-const audioNodesStateSelector = (state: ApplicationState) => state.audioNodes
+import type { ApplicationState } from '~/state/configure-store'
+import type { AudioNodeMeta } from '~/types'
 
-export const audioNodesSelector = createSelector(
-  audioNodesStateSelector,
-  (state) => state.byId,
-)
+export const selectAudioNodes = (state: ApplicationState) =>
+  state.audioNodes.byId
 
 // TODO: Better naming
+export const selectNodesIdentifierMeta = (state: ApplicationState) =>
+  state.audioNodes.orderedIndentifierMeta
 
-export const nodesIdentifierMetaSelector = createSelector(
-  audioNodesStateSelector,
-  (state) => state.orderedIndentifierMeta,
-)
-
-export const instrumentsIdentifierMetaSelector = createValueEqSelector(
-  nodesIdentifierMetaSelector,
+export const selectInstrumentsIdentifierMeta = createValueEqSelector(
+  selectNodesIdentifierMeta,
   (meta) => meta.filter(hasInstrumentType),
 )
 
-export const audioEffectsIdentifierMetaSelector = createValueEqSelector(
-  nodesIdentifierMetaSelector,
+export const selectAudioEffectsIdentifierMeta = createValueEqSelector(
+  selectNodesIdentifierMeta,
   (meta) => meta.filter(hasAudioEffectType),
 )
 
-export const mainOutNodeSelector = createSelector(
-  audioNodesSelector,
-  (nodes) => {
-    const mainOut = nodes[MAIN_OUT_ID]
+export const selectMainOutNode = (state: ApplicationState) => {
+  const mainOut = state.audioNodes.byId[MAIN_OUT_ID]
 
-    if (!mainOut) throw new Error('Main out not found')
+  if (!mainOut) throw new Error('Main out not found')
 
-    return mainOut
-  },
+  return mainOut
+}
+
+export const selectMainOutMeta = createValueEqSelector(
+  selectMainOutNode,
+  ({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 )
 
-export const mainOutMetaSelector = createValueEqSelector(
-  mainOutNodeSelector,
-  (mainOutMeta): AudioNodeMeta => {
-    const { id, type, label } = mainOutMeta
-
-    return { id, type, label }
-  },
-)
-
-export const activeAudioNodeIdsSelector = createValueEqSelector(
-  nodesIdentifierMetaSelector,
-  connectionsSelector,
-  mainOutNodeSelector,
+export const selectActiveAudioNodeIds = createValueEqSelector(
+  selectNodesIdentifierMeta,
+  selectConnections,
+  selectMainOutNode,
   (meta, connections, mainOut) => {
     const connectedToMain = hasConnectionTo(connections, mainOut.id)
 
@@ -67,10 +52,10 @@ export const activeAudioNodeIdsSelector = createValueEqSelector(
   },
 )
 
-export const connectableSourcesSelector = createValueEqSelector(
-  audioNodesSelector,
-  instrumentsIdentifierMetaSelector,
-  audioEffectsIdentifierMetaSelector,
+export const selectConnectableSources = createValueEqSelector(
+  selectAudioNodes,
+  selectInstrumentsIdentifierMeta,
+  selectAudioEffectsIdentifierMeta,
   (nodes, instruments, effects): AudioNodeMeta[] => [
     ...instruments.map((meta) => ({
       ...meta,
@@ -80,10 +65,10 @@ export const connectableSourcesSelector = createValueEqSelector(
   ],
 )
 
-export const connectableTargetsSelector = createValueEqSelector(
-  audioNodesSelector,
-  audioEffectsIdentifierMetaSelector,
-  mainOutMetaSelector,
+export const selectConnectableTargets = createValueEqSelector(
+  selectAudioNodes,
+  selectAudioEffectsIdentifierMeta,
+  selectMainOutMeta,
   (nodes, effects, out): AudioNodeMeta[] => [
     ...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label || '' })),
     out,

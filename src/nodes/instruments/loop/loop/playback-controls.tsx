@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
+
 import type { FCWithoutChildren } from '~/types'
 
 const PlaybackControls: FCWithoutChildren<PlaybackControlsProps> = ({

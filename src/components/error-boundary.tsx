@@ -1,7 +1,8 @@
 import { PureComponent } from 'react'
-import type { ReactNode } from 'react'
 
 import ErrorMessage from '~/components/error-message'
+
+import type { ReactNode } from 'react'
 
 const defaultRenderError: ErrorRenderer = (error) => (
   <ErrorMessage>{error.toString()}</ErrorMessage>

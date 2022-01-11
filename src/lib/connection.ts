@@ -36,21 +36,21 @@ const createDisconnect = (getOutNode: AudioNodeReturn) =>
     }
   }
 
-/* eslint-disable @typescript-eslint/no-explicit-any */
-export const makeConnectable = <
-  N extends GAudioNode<any, any> | GInstrumentNode<any, any, any>
->({
-  getInNode,
-  getOutNode,
-}: GAudioNodeConnectors) => (
-  api: N extends GInstrumentNode<any, any, any>
-    ? GInstrumentNodeApi<any, any, any>
-    : GAudioNodeApi<any, any>,
-): N =>
-  Object.assign(api as any, {
-    connect: createConnect(getOutNode),
-    disconnect: createDisconnect(getOutNode),
+/* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
+export const makeConnectable =
+  <N extends GAudioNode<any, any> | GInstrumentNode<any, any, any>>({
     getInNode,
     getOutNode,
-  })
+  }: GAudioNodeConnectors) =>
+  (
+    api: N extends GInstrumentNode<any, any, any>
+      ? GInstrumentNodeApi<any, any, any>
+      : GAudioNodeApi<any, any>,
+  ): N =>
+    Object.assign(api as any, {
+      connect: createConnect(getOutNode),
+      disconnect: createDisconnect(getOutNode),
+      getInNode,
+      getOutNode,
+    })
 /* eslint-enable */

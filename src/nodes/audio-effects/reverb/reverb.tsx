@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
+
 import type { AudioNodeConnection, FCWithoutChildren } from '~/types'
 
 const Container = styled.div<{ isActive: boolean }>`

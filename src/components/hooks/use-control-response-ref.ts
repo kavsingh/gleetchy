@@ -1,7 +1,9 @@
-import { useRef, useEffect, MutableRefObject } from 'react'
+import { useRef, useEffect } from 'react'
 
 import { ModifierKey } from '~/lib/constants'
 import useModifierKeys from '~/state/hooks/use-modifier-keys'
+
+import type { MutableRefObject } from 'react'
 
 export interface ControlResponseMultipliers {
   normal: number

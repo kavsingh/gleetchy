@@ -1,13 +1,13 @@
 import { useSelector } from 'react-redux'
 
 import {
-  instrumentsIdentifierMetaSelector,
-  audioEffectsIdentifierMetaSelector,
+  selectInstrumentsIdentifierMeta,
+  selectAudioEffectsIdentifierMeta,
 } from '~/state/audio-nodes/selectors'
 
 const useAudioNodesMeta = () => {
-  const instruments = useSelector(instrumentsIdentifierMetaSelector)
-  const audioEffects = useSelector(audioEffectsIdentifierMetaSelector)
+  const instruments = useSelector(selectInstrumentsIdentifierMeta)
+  const audioEffects = useSelector(selectAudioEffectsIdentifierMeta)
 
   return { instruments, audioEffects }
 }

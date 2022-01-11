@@ -1,7 +1,7 @@
 import { memo } from 'react'
 import { css, Global } from '@emotion/react'
-import type { Theme } from '@emotion/react'
 
+import type { Theme } from '@emotion/react'
 import type { FCWithoutChildren } from '~/types'
 
 const globalStyles = (theme: Theme) => css`

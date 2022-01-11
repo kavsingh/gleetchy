@@ -13,7 +13,7 @@ export const getAudioContext = () => {
     throw new Error('Could not access dom')
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
   const AudioContext = WINDOW.AudioContext || (WINDOW as any).webkitAudioContext
 
   if (!AudioContext) {
@@ -24,8 +24,3 @@ export const getAudioContext = () => {
 
   return audioContext
 }
-
-export const decodeAudioData = (buffer: ArrayBuffer, context?: AudioContext) =>
-  new Promise<AudioBuffer>((resolve, reject) => {
-    ;(context || getAudioContext()).decodeAudioData(buffer, resolve, reject)
-  })

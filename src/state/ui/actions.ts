@@ -1,9 +1,8 @@
+import { selectThemeName } from './selectors'
+
+import type { ActionCreatorWithArguments } from '~/types'
 import type { ActionCreator } from 'redux'
 import type { ThunkAction } from 'redux-thunk'
-
-import { ActionCreatorWithArguments } from '~/types'
-
-import { uiThemeNameSelector } from './selectors'
 import type { ApplicationState } from '../configure-store'
 import type {
   UISetThemeAction,
@@ -21,17 +20,14 @@ export const setLightThemeAction: ActionCreator<UISetThemeAction> = () => ({
   type: 'UI_SET_THEME',
 })
 
-export const toggleDarkLightUIThemesAction = (): ThunkAction<
-  void,
-  ApplicationState,
-  undefined,
-  UISetThemeAction
-> => (dispatch, getState) => {
-  const themeName = uiThemeNameSelector(getState())
+export const toggleDarkLightUIThemesAction =
+  (): ThunkAction<void, ApplicationState, undefined, UISetThemeAction> =>
+  (dispatch, getState) => {
+    const themeName = selectThemeName(getState())
 
-  if (themeName === 'dark') dispatch(setLightThemeAction())
-  else dispatch(setDarkThemeAction())
-}
+    if (themeName === 'dark') dispatch(setLightThemeAction())
+    else dispatch(setDarkThemeAction())
+  }
 
 export const registerKeyPressAction: ActionCreatorWithArguments<
   UIKeyPressedAction,

@@ -3,12 +3,13 @@ import type {
   AudioEngineSubscriptionEventAction,
 } from './types'
 
-export const clearAudioEngineEventsAction = (): AudioEngineClearEventsAction => ({
-  type: 'AUDIO_ENGINE_CLEAR_EVENTS',
-})
+export const clearAudioEngineEventsAction =
+  (): AudioEngineClearEventsAction => ({
+    type: 'AUDIO_ENGINE_CLEAR_EVENTS',
+  })
 
 export const dispatchAudioEngineSubscriptionAction = <
-  P extends { [key: string]: unknown }
+  P extends { [key: string]: unknown },
 >(
   nodeId: string,
   subscriptionPayload: P,

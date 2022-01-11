@@ -4,17 +4,18 @@ import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
 import {
-  connectableSourcesSelector,
-  connectableTargetsSelector,
+  selectConnectableSources,
+  selectConnectableTargets,
 } from '~/state/audio-nodes/selectors'
 import ErrorBoundary from '~/components/error-boundary'
-import type { FCWithoutChildren } from '~/types'
 
 import PatchBayNode from './patch-bay-node'
 
+import type { FCWithoutChildren } from '~/types'
+
 const PatchBay: FCWithoutChildren = () => {
-  const sources = useSelector(connectableSourcesSelector)
-  const targets = useSelector(connectableTargetsSelector)
+  const sources = useSelector(selectConnectableSources)
+  const targets = useSelector(selectConnectableTargets)
 
   const sourceLabels = useMemo(
     () => (

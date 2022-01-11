@@ -5,6 +5,7 @@ import { GAudioNode } from '~/lib/g-audio-node'
 
 import { defaultProps } from './node-props'
 import nodeType from './node-type'
+
 import type { Props } from './node-props'
 
 export class GDelayNode extends GAudioNode<Props> {
@@ -30,14 +31,14 @@ export class GDelayNode extends GAudioNode<Props> {
     this.propsUpdated()
   }
 
+  destroy(): void {
+    // noop
+  }
+
   protected propsUpdated(): void {
     this.delayNode.delayTime.value = this.props.delayTime
     this.wetGainNode.gain.value = this.props.wetDryRatio
     this.dryGainNode.gain.value = 1 - this.props.wetDryRatio
-  }
-
-  destroy(): void {
-    // noop
   }
 }
 

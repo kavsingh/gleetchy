@@ -1,4 +1,4 @@
-import { Action } from 'redux'
+import type { Action } from 'redux'
 
 export type GlobalPlaybackStartAction = Action<'GLOBAL_PLAYBACK_START'>
 

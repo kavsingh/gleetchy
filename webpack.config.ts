@@ -1,22 +1,27 @@
-import webpack, { WebpackPluginInstance } from 'webpack'
+import webpack from 'webpack'
 import HtmlWebpackPlugin from 'html-webpack-plugin'
 import WorkboxPlugin from 'workbox-webpack-plugin'
 import { BundleAnalyzerPlugin } from 'webpack-bundle-analyzer'
 import PWAManifest from 'webpack-pwa-manifest'
 import color from 'color'
-import type { Configuration } from 'webpack'
 
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
 import { defaultTheme } from './src/style/theme'
 
-type ConfigEnv = { production?: boolean }
+import type { Configuration, WebpackPluginInstance } from 'webpack'
+
+type ConfigurationFactory = (
+  env?: string | Record<string, unknown>,
+) => Configuration
+
+const isProd = (env: Parameters<ConfigurationFactory>[0]) =>
+  typeof env === 'string' ? env === 'production' : !!env?.production
 
 export const publicPath = ''
 
 const servePublic = process.env.PUBLIC === 'true'
-const isProd = (env: ConfigEnv) => env.production === true
 
-const configFactory = (env: ConfigEnv): Configuration => ({
+const configFactory: ConfigurationFactory = (env) => ({
   mode: isProd(env) ? 'production' : 'development',
   devtool: isProd(env) ? 'source-map' : 'inline-cheap-source-map',
   entry: {
@@ -32,7 +37,7 @@ const configFactory = (env: ConfigEnv): Configuration => ({
     host: servePublic ? '0.0.0.0' : 'localhost',
     hot: true,
     port: 3000,
-    contentBase: './dist',
+    static: './dist',
   },
   module: {
     rules: [

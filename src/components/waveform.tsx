@@ -4,7 +4,8 @@ import colorFn from 'color'
 import { range } from 'ramda'
 
 import { requireWindowWith } from '~/lib/env'
-import { FCWithoutChildren } from '~/types'
+
+import type { FCWithoutChildren } from '~/types'
 
 const drawTempWaveform = (
   context: CanvasRenderingContext2D,

@@ -3,8 +3,8 @@ import styled from '@emotion/styled'
 
 import TitleBar from '~/components/title-bar'
 import Button from '~/components/button'
-import type { FCWithoutChildren } from '~/types'
 
+import type { FCWithoutChildren } from '~/types'
 import type { LoopUIProps } from './types'
 
 const LoopTitleBar: FCWithoutChildren<

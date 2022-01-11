@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Action } from 'redux'
+import type { Action } from 'redux'
 import type { FunctionComponent } from 'react'
 
 export type PropsWithoutChildren<P> = P & { children?: never }
@@ -36,7 +36,7 @@ export interface GAudioNodeConnectApi extends GAudioNodeConnectors {
 
 export interface GAudioNodeApi<
   P extends Record<string, unknown>,
-  T extends string
+  T extends string,
 > {
   type: T
   set(props: Partial<P>): void
@@ -44,13 +44,13 @@ export interface GAudioNodeApi<
 
 export type GAudioNode<
   P extends Record<string, unknown> = any,
-  T extends string = any
+  T extends string = any,
 > = GAudioNodeConnectApi & GAudioNodeApi<P, T>
 
 export interface GInstrumentNodeApi<
   P extends Record<string, unknown>,
   T extends string,
-  S extends (data: any) => unknown
+  S extends (data: any) => unknown,
 > extends GAudioNodeApi<P, T> {
   play(): void
   stop(): void
@@ -60,7 +60,7 @@ export interface GInstrumentNodeApi<
 export type GInstrumentNode<
   P extends Record<string, unknown> = any,
   T extends string = any,
-  S extends (data: any) => unknown = any
+  S extends (data: any) => unknown = any,
 > = GAudioNodeConnectApi & GInstrumentNodeApi<P, T, S>
 
 export interface AudioNodeConnection {
@@ -87,5 +87,5 @@ export interface ActionWithPayload<TYPE, PAYLOAD> extends Action<TYPE> {
 
 export type ActionCreatorWithArguments<
   A extends Action,
-  ARGS extends unknown[]
+  ARGS extends unknown[],
 > = (...args: ARGS) => A

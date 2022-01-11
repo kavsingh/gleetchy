@@ -1,6 +1,7 @@
 import { isFiniteNumber } from '~/lib/util/predicate'
 import useAudioNodeSubscriptionData from '~/state/hooks/use-audio-node-subscription-data'
 import Sample from '~/components/sample'
+
 import type { SampleProps } from '~/components/sample'
 import type { FCWithoutChildren } from '~/types'
 

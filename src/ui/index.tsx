@@ -5,13 +5,14 @@ import styled from '@emotion/styled'
 import { requireWindowWith } from '~/lib/env'
 import useModifierKeys from '~/state/hooks/use-modifier-keys'
 import favicon from '~/assets/icons/48x48.png'
-import type { ThemeProps } from '~/style/theme'
-import type { FCWithoutChildren } from '~/types'
 
 import AudioEffectsRack from './audio-effects-rack'
 import InstrumentsRack from './instruments-rack'
 import PatchBay from './patch-bay'
 import Masthead from './masthead'
+
+import type { FCWithoutChildren } from '~/types'
+import type { ThemeProps } from '~/style/theme'
 
 const UI: FCWithoutChildren = () => {
   const { registerKeyPress, registerKeyRelease } = useModifierKeys()

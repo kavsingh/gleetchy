@@ -6,6 +6,7 @@ import { GInstrumentNode } from '~/lib/g-audio-node'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
+
 import type { Props } from './node-props'
 
 const createPositionBuffer = (context: AudioContext, source: AudioBuffer) => {
@@ -49,6 +50,49 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     this.propsUpdated(this.props, this.props)
   }
 
+  play(): void {
+    if (this.playbackState.playing) return
+
+    this.playbackState.playing = true
+    this.replaceSource()
+  }
+
+  stop(): void {
+    if (!this.playbackState.playing) return
+
+    this.playbackState.playing = false
+    this.removeSource()
+  }
+
+  destroy(): void {
+    this.stop()
+    this.throttledNotifySubscribers.cancel()
+
+    try {
+      this.positionProcessor.disconnect(this.audioContext.destination)
+    } catch {
+      // noop
+    }
+  }
+
+  protected propsUpdated(props: Props, prevProps: Props): void {
+    const { gain, audioBuffer, loopStart, midGain, lowGain, highGain } = props
+
+    this.gainNode.gain.value = gain
+    this.eq3Node.set({ midGain, lowGain, highGain })
+
+    if (
+      prevProps.audioBuffer !== audioBuffer ||
+      prevProps.loopStart !== loopStart
+    ) {
+      this.replaceSource()
+    } else if (audioBuffer && this.playbackBufferSource) {
+      this.updateSourceProps()
+    } else if (!audioBuffer) {
+      this.removeSource()
+    }
+  }
+
   private processPositionEvent = (event: AudioProcessingEvent) => {
     const updateState = {
       ...this.playbackState,
@@ -73,7 +117,8 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
       loopStart * audioBuffer.duration
     this.positionBufferSource.loopEnd = this.playbackBufferSource.loopEnd =
       loopEnd * audioBuffer.duration
-    this.positionBufferSource.playbackRate.value = this.playbackBufferSource.playbackRate.value = playbackRate
+    this.positionBufferSource.playbackRate.value =
+      this.playbackBufferSource.playbackRate.value = playbackRate
   }
 
   private removeSource() {
@@ -120,49 +165,6 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     this.positionBufferSource.start(0, this.positionBufferSource.loopStart)
 
     this.playbackState.positionRatio = this.positionBufferSource.loopStart
-  }
-
-  protected propsUpdated(props: Props, prevProps: Props): void {
-    const { gain, audioBuffer, loopStart, midGain, lowGain, highGain } = props
-
-    this.gainNode.gain.value = gain
-    this.eq3Node.set({ midGain, lowGain, highGain })
-
-    if (
-      prevProps.audioBuffer !== audioBuffer ||
-      prevProps.loopStart !== loopStart
-    ) {
-      this.replaceSource()
-    } else if (audioBuffer && this.playbackBufferSource) {
-      this.updateSourceProps()
-    } else if (!audioBuffer) {
-      this.removeSource()
-    }
-  }
-
-  play(): void {
-    if (this.playbackState.playing) return
-
-    this.playbackState.playing = true
-    this.replaceSource()
-  }
-
-  stop(): void {
-    if (!this.playbackState.playing) return
-
-    this.playbackState.playing = false
-    this.removeSource()
-  }
-
-  destroy(): void {
-    this.stop()
-    this.throttledNotifySubscribers.cancel()
-
-    try {
-      this.positionProcessor.disconnect(this.audioContext.destination)
-    } catch {
-      // noop
-    }
   }
 }
 

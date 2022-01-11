@@ -5,6 +5,7 @@ import styled from '@emotion/styled'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import useUITheme from '~/state/hooks/use-ui-theme'
 import PlayPauseButton from '~/components/play-pause-button'
+
 import type { FCWithoutChildren } from '~/types'
 import type { ThemeProps } from '~/style/theme'
 

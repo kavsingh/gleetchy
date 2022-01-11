@@ -5,11 +5,12 @@ import { writeFile } from 'fs'
 import webpack from 'webpack'
 import { JSDOM } from 'jsdom'
 
-import { ApplicationState } from '../src/state/configure-store'
 import baseConfigFactory from '../webpack.config'
 import staticConfigFactory from '../webpack.config.static'
 import spawnAsync from './lib/spawn-async'
 import { resolveFromProjectRoot as fromRoot } from './lib/util'
+
+import type { ApplicationState } from '../src/state/configure-store'
 
 const parseBaseConfig = (config: typeof baseConfigFactory) => {
   const { output = {} } = config({ production: true })
@@ -37,9 +38,8 @@ const parseStaticConfig = (config: typeof staticConfigFactory) => {
 
 const renderStatic = async (initialState: Partial<ApplicationState>) => {
   const { baseOutputPath } = parseBaseConfig(baseConfigFactory)
-  const { staticOutputPath, staticOutputFilename } = parseStaticConfig(
-    staticConfigFactory,
-  )
+  const { staticOutputPath, staticOutputFilename } =
+    parseStaticConfig(staticConfigFactory)
 
   const baseDistPath = fromRoot(baseOutputPath)
   const staticDistPath = fromRoot(staticOutputPath)
@@ -53,7 +53,9 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
 
   await promisify(webpack)([staticConfigFactory()])
 
-  const { default: render } = await import(staticModulePath)
+  const { default: render } = (await import(staticModulePath)) as {
+    default: (state: unknown) => string
+  }
   const dom = await JSDOM.fromFile(path.resolve(baseDistPath, 'index.html'))
   const appRoot = dom.window.document.querySelector<HTMLElement>('#app-root')
 
@@ -71,4 +73,4 @@ const renderStatic = async (initialState: Partial<ApplicationState>) => {
   )
 }
 
-renderStatic({})
+void renderStatic({})

@@ -4,6 +4,7 @@ import { GAudioNode } from '~/lib/g-audio-node'
 
 import nodeType from './node-type'
 import { defaultProps } from './node-props'
+
 import type { Props } from './node-props'
 
 export class GEq3Node extends GAudioNode<Props> {
@@ -34,14 +35,14 @@ export class GEq3Node extends GAudioNode<Props> {
     this.propsUpdated()
   }
 
+  destroy(): void {
+    // noop
+  }
+
   protected propsUpdated(): void {
     this.lowNode.gain.value = this.props.lowGain * 40
     this.midNode.gain.value = this.props.midGain * 40
     this.highNode.gain.value = this.props.highGain * 40
-  }
-
-  destroy(): void {
-    // noop
   }
 }
 

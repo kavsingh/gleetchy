@@ -10,51 +10,32 @@ const devDependencies = {
   peerDependencies: false,
 }
 
+const testFilePatterns = (extensions = '*') =>
+  ['**/*.test', '**/*.mock', '**/__test__/**/*', '**/__mocks__/**/*'].map(
+    (pattern) => `${pattern}.${extensions}`,
+  )
+
 module.exports = {
   root: true,
-  parser: '@typescript-eslint/parser',
   env: { es6: true, node: true, browser: false },
-  settings: {
-    'react': { version: 'detect' },
-    'import/resolver': 'babel-module',
-  },
-  plugins: [
-    '@typescript-eslint',
-    'filenames',
-    'import',
-    'react',
-    'react-hooks',
-    '@emotion',
-    'prettier',
-  ],
+  settings: { 'import/resolver': 'babel-module' },
+  plugins: ['filenames'],
   extends: [
     'eslint:recommended',
-    'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
     'plugin:import/typescript',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'prettier',
-    'prettier/react',
-    'prettier/@typescript-eslint',
+    'plugin:prettier/recommended',
   ],
   rules: {
-    'camelcase': 'off',
     'curly': ['warn', 'multi-line', 'consistent'],
     'no-console': 'off',
-    'no-unused-vars': 'off',
-    '@typescript-eslint/no-unused-vars': [
-      'error',
-      { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
-    ],
+    'no-throw-literal': 'error',
     'filenames/match-regex': ['error', '^[a-z0-9-.]+$', true],
     'filenames/match-exported': ['error', 'kebab'],
     'import/no-cycle': 'error',
     'import/no-self-import': 'error',
     'import/no-unused-modules': 'error',
     'import/no-useless-path-segments': 'error',
-    // temp disable, should be handled by typescript
-    'import/no-unresolved': 'off',
     'import/no-extraneous-dependencies': ['error', devDependencies],
     'import/order': [
       'warn',
@@ -64,21 +45,51 @@ module.exports = {
           'external',
           'internal',
           ['parent', 'sibling', 'index'],
+          'type',
         ],
         'pathGroups': [{ pattern: '~/**', group: 'internal' }],
+        'pathGroupsExcludedImportTypes': ['type'],
         'newlines-between': 'always',
       },
     ],
-    'react/jsx-filename-extension': ['error', { extensions: ['.tsx', '.jsx'] }],
-    'react/jsx-uses-react': 'off',
-    'react/prop-types': 'off',
-    'react/react-in-jsx-scope': 'off',
-    '@emotion/syntax-preference': ['error', 'string'],
     'prettier/prettier': 'warn',
   },
   overrides: [
     {
-      files: ['*.config.*'],
+      files: ['*.js'],
+      parser: '@babel/eslint-parser',
+    },
+    {
+      files: ['*.ts?(x)'],
+      parser: '@typescript-eslint/parser',
+      parserOptions: { project: './tsconfig.json' },
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+      ],
+      rules: {
+        'camelcase': 'off',
+        'no-shadow': 'off',
+        'no-throw-literal': 'off',
+        'no-unused-vars': 'off',
+        '@typescript-eslint/consistent-type-imports': ['error'],
+        '@typescript-eslint/member-ordering': ['warn'],
+        '@typescript-eslint/no-shadow': [
+          'error',
+          {
+            ignoreTypeValueShadow: false,
+            ignoreFunctionTypeParameterNameValueShadow: true,
+          },
+        ],
+        '@typescript-eslint/no-throw-literal': 'error',
+        '@typescript-eslint/no-unused-vars': [
+          'error',
+          { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+        ],
+      },
+    },
+    {
+      files: ['./*'],
       rules: {
         'filenames/match-exported': 'off',
       },
@@ -86,22 +97,50 @@ module.exports = {
     {
       files: ['src/**/*'],
       env: { node: false, browser: true },
+      settings: { react: { version: 'detect' } },
+      plugins: ['@emotion'],
+      extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended'],
       rules: {
         'no-console': 'error',
-        '@typescript-eslint/no-var-requires': 'error',
         'import/no-extraneous-dependencies': ['error', srcDependencies],
+        'react/jsx-filename-extension': [
+          'error',
+          { extensions: ['.tsx', '.jsx'] },
+        ],
+        'react/jsx-uses-react': 'off',
+        'react/prop-types': 'off',
+        'react/react-in-jsx-scope': 'off',
+        '@emotion/no-vanilla': 'error',
+        '@emotion/syntax-preference': ['error', 'string'],
       },
     },
     {
-      files: ['**/*.test.*'],
+      files: testFilePatterns(),
       env: { 'node': true, 'jest/globals': true },
-      plugins: ['jest'],
-      extends: ['plugin:jest/recommended', 'plugin:jest/style'],
+      extends: [
+        'plugin:jest/recommended',
+        'plugin:jest/style',
+        'plugin:jest-dom/recommended',
+      ],
       rules: {
         'no-console': 'off',
+        'import/no-extraneous-dependencies': ['error', devDependencies],
+        'filenames/match-exported': ['error', 'kebab', '\\.test$'],
+      },
+    },
+    {
+      files: testFilePatterns('[jt]s?(x)'),
+      extends: ['plugin:testing-library/react'],
+    },
+    {
+      files: testFilePatterns('ts?(x)'),
+      rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
-        'import/no-extraneous-dependencies': ['error', devDependencies],
+        '@typescript-eslint/no-unsafe-argument': 'off',
+        '@typescript-eslint/no-unsafe-assignment': 'off',
+        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/unbound-method': 'off',
       },
     },
   ],

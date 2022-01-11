@@ -1,12 +1,13 @@
 import { produce } from 'immer'
 import { allPass, propEq } from 'ramda'
-import type { Reducer } from 'redux'
 
 import { nodeColorPool } from '~/style/color'
 import { stableWithout } from '~/lib/util'
-import type { AudioNodeConnection } from '~/types'
 
 import defaultNodes from '../default-nodes'
+
+import type { AudioNodeConnection } from '~/types'
+import type { Reducer } from 'redux'
 import type { AudioNodeRemoveAction } from '../audio-nodes/types'
 import type { ConnectionDescriptor, ConnectionsAction } from './types'
 

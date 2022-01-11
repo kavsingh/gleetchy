@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
 import { usePreferredColorScheme } from '~/apis/color-scheme'
-import { uiThemeSelector } from '~/state/ui/selectors'
+import { selectTheme } from '~/state/ui/selectors'
 import {
   toggleDarkLightUIThemesAction,
   setDarkThemeAction,
@@ -13,7 +13,7 @@ const useUITheme = () => {
   const dispatch = useDispatch()
 
   const preferredColorScheme = usePreferredColorScheme()
-  const theme = useSelector(uiThemeSelector)
+  const theme = useSelector(selectTheme)
 
   const toggleTheme = useCallback(
     () => dispatch(toggleDarkLightUIThemesAction()),

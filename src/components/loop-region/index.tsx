@@ -5,13 +5,14 @@ import color from 'color'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import type { FCWithoutChildren } from '~/types'
-import type { ThemeProps } from '~/style/theme'
 
 import SinglePointerDrag from '../single-pointer-drag'
 import LoopHandle from './loop-handle'
-import type { SinglePointerDragState } from '../single-pointer-drag'
 import useControlResponseRef from '../hooks/use-control-response-ref'
+
+import type { FCWithoutChildren } from '~/types'
+import type { ThemeProps } from '~/style/theme'
+import type { SinglePointerDragState } from '../single-pointer-drag'
 
 const controlResponseMultipliers = {
   normal: 1,

@@ -1,7 +1,9 @@
 import { memo, useCallback } from 'react'
 
-import { nodeType, NodeProps, UI } from '~/nodes/audio-effects/delay'
+import { nodeType, UI } from '~/nodes/audio-effects/delay'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
+
+import type { NodeProps } from '~/nodes/audio-effects/delay'
 import type { FCWithoutChildren } from '~/types'
 
 const ConnectedReverb: FCWithoutChildren<{ id: string }> = ({ id }) => {
@@ -16,12 +18,12 @@ const ConnectedReverb: FCWithoutChildren<{ id: string }> = ({ id }) => {
   } = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
   const handleDelayTimeChange = useCallback(
-    (delayTime) => updateAudioProps({ delayTime }),
+    (delayTime: number) => updateAudioProps({ delayTime }),
     [updateAudioProps],
   )
 
   const handleWetDryRatioChange = useCallback(
-    (wetDryRatio) => updateAudioProps({ wetDryRatio }),
+    (wetDryRatio: number) => updateAudioProps({ wetDryRatio }),
     [updateAudioProps],
   )
 

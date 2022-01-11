@@ -3,6 +3,7 @@ import styled from '@emotion/styled'
 
 import { noop } from '~/lib/util'
 import Slider from '~/components/slider'
+
 import type { FCWithoutChildren } from '~/types'
 
 const Container = styled.div`

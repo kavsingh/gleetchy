@@ -1,7 +1,9 @@
-import webpack, { Configuration } from 'webpack'
+import webpack from 'webpack'
 
 import { resolveFromProjectRoot as fromRoot } from './scripts/lib/util'
 import baseConfigFactory, { publicPath } from './webpack.config'
+
+import type { Configuration } from 'webpack'
 
 const configFactory = (): Configuration => {
   const { module, resolve } = baseConfigFactory({ production: true })

@@ -5,9 +5,10 @@ import color from 'color'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import { ThemeProps } from '~/style/theme'
 import LoopRegion from '~/components/loop-region'
 import Waveform from '~/components/waveform'
+
+import type { ThemeProps } from '~/style/theme'
 import type { FCWithoutChildren } from '~/types'
 
 const Sample: FCWithoutChildren<SampleProps> = ({

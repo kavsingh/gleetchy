@@ -20,7 +20,16 @@ offlineInstall('gleetchy-sw.js', '')
 
 if (ssrInitialState) {
   delete appRoot.dataset.ssrInitialState
-  hydrate(<App store={configureStore(JSON.parse(ssrInitialState))} />, appRoot)
+
+  const parsedState: unknown = JSON.parse(ssrInitialState)
+  const initialState =
+    parsedState &&
+    typeof parsedState === 'object' &&
+    !Array.isArray(parsedState)
+      ? parsedState
+      : {}
+
+  hydrate(<App store={configureStore(initialState)} />, appRoot)
 } else {
   render(<App store={configureStore()} />, appRoot)
 }

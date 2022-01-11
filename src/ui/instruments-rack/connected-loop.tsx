@@ -1,12 +1,15 @@
 import { useCallback, memo } from 'react'
 import { useDispatch } from 'react-redux'
 
-import { nodeType, NodeProps, UI } from '~/nodes/instruments/loop'
+import { nodeType, UI } from '~/nodes/instruments/loop'
 import {
   receiveAudioFileAction,
   selectAudioFileAction,
 } from '~/state/audio-files/actions'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
+
+import type { NodeProps as Eq3Props } from '~/nodes/audio-effects/eq3'
+import type { NodeProps } from '~/nodes/instruments/loop'
 import type { FCWithoutChildren } from '~/types'
 
 const ConnectedLoop: FCWithoutChildren<{ id: string }> = ({ id }) => {
@@ -43,12 +46,14 @@ const ConnectedLoop: FCWithoutChildren<{ id: string }> = ({ id }) => {
     [updateAudioProps],
   )
 
-  const handleEqChange = useCallback((eqProps) => updateAudioProps(eqProps), [
-    updateAudioProps,
-  ])
+  const handleEqChange = useCallback(
+    (eqProps: Eq3Props) => updateAudioProps(eqProps),
+    [updateAudioProps],
+  )
 
   const handleLoopRegionChange = useCallback(
-    (loopStart, loopEnd) => updateAudioProps({ loopStart, loopEnd }),
+    (loopStart: number, loopEnd: number) =>
+      updateAudioProps({ loopStart, loopEnd }),
     [updateAudioProps],
   )
 

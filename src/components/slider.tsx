@@ -5,15 +5,15 @@ import { clamp } from 'ramda'
 
 import { noop } from '~/lib/util'
 import SinglePointerDrag from '~/components/single-pointer-drag'
+
+import useControlResponseRef from './hooks/use-control-response-ref'
+
+import type { ControlResponseMultipliers } from './hooks/use-control-response-ref'
 import type {
   SinglePointerDragMoveHandler,
   SinglePointerDragEndHandler,
 } from '~/components/single-pointer-drag'
 import type { FCWithoutChildren } from '~/types'
-
-import useControlResponseRef, {
-  ControlResponseMultipliers,
-} from './hooks/use-control-response-ref'
 
 const clampValue = clamp(0, 1)
 const controlMultipliers: ControlResponseMultipliers = {

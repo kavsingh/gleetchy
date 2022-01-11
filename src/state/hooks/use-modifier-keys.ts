@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { uiModifierKeysSelector } from '../ui/selectors'
+import { selectModifierKeys } from '../ui/selectors'
 import { registerKeyPressAction, registerKeyReleaseAction } from '../ui/actions'
 
 const useModifierKeys = () => {
   const dispatch = useDispatch()
-  const activeKeys = useSelector(uiModifierKeysSelector)
+  const activeKeys = useSelector(selectModifierKeys)
   const registerKeyPress = useCallback(
     (event: KeyboardEvent) => {
       dispatch(registerKeyPressAction(event.key))

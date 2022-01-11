@@ -1,7 +1,6 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
 import thunk from 'redux-thunk'
-import type { Store } from 'redux'
 
 import { audioEngineReducer } from './audio-engine/reducer'
 import { audioFilesReducer } from './audio-files/reducer'
@@ -9,6 +8,8 @@ import { connectionsReducer } from './connections/reducer'
 import { globalPlaybackReducer } from './global-playback/reducer'
 import { audioNodesReducer } from './audio-nodes/reducer'
 import { uiReducer } from './ui/reducer'
+
+import type { Store } from 'redux'
 import type { AudioEngineState } from './audio-engine/reducer'
 import type { AudioEngineAction } from './audio-engine/types'
 import type { AudioFilesState } from './audio-files/reducer'

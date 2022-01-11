@@ -1,30 +1,12 @@
-import { createSelector } from 'reselect'
-import { memoizeWith, identity } from 'ramda'
-
 import { themes } from '~/style/theme'
+
 import type { ApplicationState } from '~/state/configure-store'
-import type { ThemeName } from '~/style/theme'
 
-import { createValueEqSelector } from '../lib/selector'
+export const selectThemeName = (state: ApplicationState) =>
+  state.ui.currentThemeName
 
-const getTheme = memoizeWith(
-  identity,
-  (themeName: ThemeName) => themes[themeName],
-)
+export const selectTheme = (state: ApplicationState) =>
+  themes[state.ui.currentThemeName]
 
-const uiStateSelector = (state: ApplicationState) => state.ui
-
-export const uiThemeNameSelector = createSelector(
-  uiStateSelector,
-  ({ currentThemeName }) => currentThemeName,
-)
-
-export const uiThemeSelector = createSelector(
-  uiThemeNameSelector,
-  (themeName) => getTheme(themeName),
-)
-
-export const uiModifierKeysSelector = createValueEqSelector(
-  uiStateSelector,
-  ({ modifierKeys }) => modifierKeys,
-)
+export const selectModifierKeys = (state: ApplicationState) =>
+  state.ui.modifierKeys

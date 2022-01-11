@@ -1,25 +1,26 @@
 import { useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { audioNodesSelector } from '~/state/audio-nodes/selectors'
-import { connectionsSelector } from '~/state/connections/selectors'
-import { audioEngineEventsSelector } from '~/state/audio-engine/selectors'
+import { selectAudioNodes } from '~/state/audio-nodes/selectors'
+import { selectConnections } from '~/state/connections/selectors'
+import { selectAudioEngineEvents } from '~/state/audio-engine/selectors'
 import {
   clearAudioEngineEventsAction,
   dispatchAudioEngineSubscriptionAction,
 } from '~/state/audio-engine/actions'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
-import type { FCWithoutChildren } from '~/types'
 
 import BaseAudioEngine from './audio-engine'
 
+import type { FCWithoutChildren } from '~/types'
+
 const AudioEngine: FCWithoutChildren = () => {
-  const nodes = useSelector(audioNodesSelector)
-  const connections = useSelector(connectionsSelector)
+  const nodes = useSelector(selectAudioNodes)
+  const connections = useSelector(selectConnections)
   const { isPlaying } = useGlobalPlayback()
 
   const dispatch = useDispatch()
-  const audioEngineEvents = useSelector(audioEngineEventsSelector)
+  const audioEngineEvents = useSelector(selectAudioEngineEvents)
 
   const clearAudioEngineEvents = useCallback(
     () => dispatch(clearAudioEngineEventsAction()),

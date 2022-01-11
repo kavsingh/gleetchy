@@ -41,4 +41,12 @@ export const serialize: (state: ApplicationState) => string = pipe(
     JSON.stringify(unsetUnserializable(state)),
 )
 
-export const deserialize = (stateString: string) => JSON.parse(stateString)
+export const deserialize = <T>(stateString: string): T | undefined => {
+  try {
+    const parsed: unknown = JSON.parse(stateString)
+
+    return parsed as T | undefined
+  } catch (_e) {
+    return undefined
+  }
+}

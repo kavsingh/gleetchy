@@ -1,6 +1,6 @@
 import { produce } from 'immer'
-import type { Reducer } from 'redux'
 
+import type { Reducer } from 'redux'
 import type { AudioFilesAction } from '../audio-files/types'
 import type { ConnectionsAction } from '../connections/types'
 import type { GlobalPlaybackAction } from '../global-playback/types'

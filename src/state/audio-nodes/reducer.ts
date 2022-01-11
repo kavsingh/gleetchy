@@ -1,6 +1,5 @@
 import { produce } from 'immer'
 import { pick } from 'ramda'
-import type { Reducer } from 'redux'
 
 import {
   defaultProps as delayDefaultProps,
@@ -17,11 +16,12 @@ import {
 import initialNodes from '~/state/default-nodes'
 import { prefixedId } from '~/lib/id'
 import { stableOmit, stableFilter } from '~/lib/util'
+
+import type { Reducer } from 'redux'
 import type { NodeProps as DelayNodeProps } from '~/nodes/audio-effects/delay'
 import type { NodeProps as ReverbNodeProps } from '~/nodes/audio-effects/reverb'
 import type { NodeProps as LoopNodeProps } from '~/nodes/instruments/loop'
 import type { AudioNodeState, AudioNodeIdentifierMeta } from '~/types'
-
 import type { AudioFileDecodeCompleteAction } from '../audio-files/types'
 import type { AudioNodesAction } from './types'
 

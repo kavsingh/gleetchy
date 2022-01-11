@@ -1,6 +1,6 @@
 import { produce } from 'immer'
-import type { Reducer } from 'redux'
 
+import type { Reducer } from 'redux'
 import type { GlobalPlaybackAction } from './types'
 
 export interface GlobalPlaybackState {

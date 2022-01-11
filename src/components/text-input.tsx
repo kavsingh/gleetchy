@@ -1,9 +1,10 @@
 import { useCallback, memo } from 'react'
 import AutosizeInput from 'react-input-autosize'
 import styled from '@emotion/styled'
-import type { ChangeEventHandler } from 'react'
 
 import { cancelReactEvent, noop } from '~/lib/util'
+
+import type { ChangeEventHandler } from 'react'
 import type { ThemeProps } from '~/style/theme'
 import type { FCWithoutChildren } from '~/types'
 

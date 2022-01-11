@@ -1,12 +1,12 @@
 import { produce } from 'immer'
-import type { Reducer } from 'redux'
 
 import { getPreferredColorScheme } from '~/apis/color-scheme'
 import { defaultTheme } from '~/style/theme'
 import { ModifierKey } from '~/lib/constants'
 import { stableWithout } from '~/lib/util'
-import type { ThemeName } from '~/style/theme'
 
+import type { Reducer } from 'redux'
+import type { ThemeName } from '~/style/theme'
 import type { UIAction } from './types'
 
 const isModifierKey = (key: string): key is ModifierKey =>
@@ -47,13 +47,15 @@ export const uiReducer: Reducer<UIState, UIAction> = (
         if (!draftState.modifierKeys.includes(key)) {
           draftState.modifierKeys.push(key)
         }
+
         break
       }
       case 'UI_KEY_RELEASED':
         draftState.modifierKeys = stableWithout(
-          [action.payload],
+          [action.payload as ModifierKey],
           draftState.modifierKeys,
         )
+
         break
       default:
         break
