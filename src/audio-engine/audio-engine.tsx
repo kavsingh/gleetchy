@@ -18,10 +18,11 @@ import {
   createAudioNode as createLoopNode,
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
+import { GAudioNode } from '~/lib/g-audio-node'
 
 import type { ReactNode } from 'react'
 import type { AudioEngineEvent } from '~/state/audio-engine/types'
-import type { GAudioNode, GInstrumentNode } from '~/lib/g-audio-node'
+import type { GInstrumentNode } from '~/lib/g-audio-node'
 import type { AudioNodeConnection, AudioNodeState } from '~/types'
 
 type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode
@@ -246,13 +247,24 @@ class AudioEngine extends Component<AudioEngineProps> {
         this.updateAudioGraph()
         break
       case 'AUDIO_NODE_REMOVE': {
+        // eslint-disable-next-line no-console
         this.subscriptions[event.payload.id]?.()
 
         const node = this.audioNodes[event.payload.id]
 
         if (!node) return
 
-        if (isInstrumentNode(node)) node.stop()
+        if (node instanceof GAudioNode) {
+          try {
+            node.destroy()
+          } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e)
+          }
+        }
+
+        delete this.audioNodes[event.payload.id]
+
         this.rebuildAll()
         break
       }

@@ -70,6 +70,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
   destroy(): void {
     this.stop()
     this.throttledNotifySubscribers.cancel()
+    this.worklet.port.postMessage('kill')
   }
 
   protected propsUpdated(props: Props, prevProps: Props): void {
@@ -129,9 +130,8 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     try {
       this.playbackBufferSource?.disconnect(this.gainNode)
       this.positionBufferSource?.disconnect(this.worklet)
-    } catch (e) {
-      // eslint-disable-next-line no-console
-      console.error(e)
+    } catch (_e) {
+      // noop
     }
 
     this.worklet.port.onmessage = null
