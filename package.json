@@ -26,7 +26,7 @@
     "prestatic": "rimraf dist-static",
     "static": "./ts scripts/render-static",
     "export": "yarn build && yarn static",
-    "servestatic": "serve dist-static"
+    "preview": "serve dist-static"
   },
   "dependencies": {
     "@babel/runtime": "7.16.7",
