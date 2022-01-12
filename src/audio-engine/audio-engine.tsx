@@ -260,10 +260,7 @@ class AudioEngine extends Component<AudioEngineProps> {
           }
         }
 
-        if (!this.props.nodes[id]) {
-          console.log('!!!!! DELETING NODE')
-          delete this.audioNodes[id]
-        }
+        if (!this.props.nodes[id]) delete this.audioNodes[id]
 
         this.updateAudioGraph()
 
