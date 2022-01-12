@@ -211,48 +211,45 @@ class AudioEngine extends Component<AudioEngineProps> {
     setNodeProps({ node, audioProps })
   }
 
-  private rebuildAll() {
-    this.disconnectAllNodes()
-
-    this.audioNodes = {}
-
-    this.updateAudioNodes()
-    this.updateAudioGraph()
-  }
-
   private processAudioEngineEvent = (event: AudioEngineEvent) => {
     switch (event.type) {
       case 'GLOBAL_PLAYBACK_START':
         this.forEachInstrument(this.playAndSubscribeInstrument)
+
         break
       case 'GLOBAL_PLAYBACK_STOP':
         this.forEachInstrument(this.stopAndUnsubscribeInstrument)
+
         break
       case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
         this.updateNode(event.payload)
+
         break
       case 'AUDIO_FILE_DECODE_COMPLETE':
         this.updateNode({
           id: event.payload.id,
           audioProps: event.payload.file as unknown as Record<string, unknown>,
         })
+
         break
       case 'CONNECTION_ADD':
       case 'CONNECTION_REMOVE':
         this.updateAudioGraph()
+
         break
       case 'AUDIO_NODE_ADD':
       case 'AUDIO_NODE_DUPLICATE':
         this.updateAudioNodes()
         this.updateAudioGraph()
+
         break
       case 'AUDIO_NODE_REMOVE': {
-        // eslint-disable-next-line no-console
-        this.subscriptions[event.payload.id]?.()
-
-        const node = this.audioNodes[event.payload.id]
+        const { id } = event.payload
+        const node = this.audioNodes[id]
 
         if (!node) return
+
+        if (isInstrumentNode(node)) this.stopAndUnsubscribeInstrument(node)
 
         if (node instanceof GAudioNode) {
           try {
@@ -263,9 +260,13 @@ class AudioEngine extends Component<AudioEngineProps> {
           }
         }
 
-        delete this.audioNodes[event.payload.id]
+        if (!this.props.nodes[id]) {
+          console.log('!!!!! DELETING NODE')
+          delete this.audioNodes[id]
+        }
 
-        this.rebuildAll()
+        this.updateAudioGraph()
+
         break
       }
       default:
