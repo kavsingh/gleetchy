@@ -2,10 +2,10 @@ import { isFiniteNumber } from '~/lib/util/predicate'
 import useAudioNodeSubscriptionData from '~/state/hooks/use-audio-node-subscription-data'
 import Sample from '~/components/sample'
 
+import type { VoidFunctionComponent } from 'react'
 import type { SampleProps } from '~/components/sample'
-import type { FCWithoutChildren } from '~/types'
 
-const LoopSample: FCWithoutChildren<SampleProps & { nodeId: string }> = ({
+const LoopSample: VoidFunctionComponent<SampleProps & { nodeId: string }> = ({
   nodeId,
   ...props
 }) => {

@@ -3,10 +3,10 @@ import { memo, useCallback } from 'react'
 import { nodeType, UI } from '~/nodes/audio-effects/reverb'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 
+import type { VoidFunctionComponent } from 'react'
 import type { NodeProps } from '~/nodes/audio-effects/reverb'
-import type { FCWithoutChildren } from '~/types'
 
-const ConnectedReverb: FCWithoutChildren<{ id: string }> = ({ id }) => {
+const ConnectedReverb: VoidFunctionComponent<{ id: string }> = ({ id }) => {
   const {
     connections,
     isActive,

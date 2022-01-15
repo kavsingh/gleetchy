@@ -4,10 +4,10 @@ import styled from '@emotion/styled'
 import TitleBar from '~/components/title-bar'
 import Button from '~/components/button'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 import type { LoopUIProps } from './types'
 
-const LoopTitleBar: FCWithoutChildren<
+const LoopTitleBar: VoidFunctionComponent<
   Pick<
     LoopUIProps,
     | 'fileName'

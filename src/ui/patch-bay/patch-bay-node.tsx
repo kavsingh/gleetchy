@@ -5,10 +5,11 @@ import color from 'color'
 
 import useConnection from '~/state/hooks/use-connection'
 
+import type { VoidFunctionComponent } from 'react'
 import type { ThemeProps } from '~/style/theme'
-import type { FCWithoutChildren, AudioNodeMeta } from '~/types'
+import type { AudioNodeMeta } from '~/types'
 
-const PatchBayNode: FCWithoutChildren<{
+const PatchBayNode: VoidFunctionComponent<{
   source: AudioNodeMeta
   target: AudioNodeMeta
 }> = ({ source, target }) => {

@@ -4,16 +4,16 @@ import styled from '@emotion/styled'
 import { clamp } from 'ramda'
 
 import { noop } from '~/lib/util'
-import SinglePointerDrag from '~/components/single-pointer-drag'
 
 import useControlResponseRef from './hooks/use-control-response-ref'
+import SinglePointerDrag from './single-pointer-drag'
 
+import type { VoidFunctionComponent } from 'react'
 import type { ControlResponseMultipliers } from './hooks/use-control-response-ref'
 import type {
   SinglePointerDragMoveHandler,
   SinglePointerDragEndHandler,
-} from '~/components/single-pointer-drag'
-import type { FCWithoutChildren } from '~/types'
+} from './single-pointer-drag'
 
 const clampValue = clamp(0, 1)
 const controlMultipliers: ControlResponseMultipliers = {
@@ -21,7 +21,7 @@ const controlMultipliers: ControlResponseMultipliers = {
   fine: 0.4,
 }
 
-const Slider: FCWithoutChildren<{
+const Slider: VoidFunctionComponent<{
   value: number
   defaultValue?: number
   orientation?: Orientation

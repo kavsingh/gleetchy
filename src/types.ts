@@ -1,12 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { Action } from 'redux'
-import type { FunctionComponent } from 'react'
-
-export type PropsWithoutChildren<P> = P & { children?: never }
-
-export type FCWithoutChildren<P = Record<string, unknown>> = FunctionComponent<
-  PropsWithoutChildren<P>
->
 
 export interface AudioNodeIdentifierMeta {
   readonly id: string

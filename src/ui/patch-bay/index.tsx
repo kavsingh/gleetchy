@@ -11,9 +11,9 @@ import ErrorBoundary from '~/components/error-boundary'
 
 import PatchBayNode from './patch-bay-node'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 
-const PatchBay: FCWithoutChildren = () => {
+const PatchBay: VoidFunctionComponent = () => {
   const sources = useSelector(selectConnectableSources)
   const targets = useSelector(selectConnectableTargets)
 

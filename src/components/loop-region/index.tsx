@@ -7,10 +7,10 @@ import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
 
 import SinglePointerDrag from '../single-pointer-drag'
-import LoopHandle from './loop-handle'
 import useControlResponseRef from '../hooks/use-control-response-ref'
+import LoopHandle from './loop-handle'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 import type { ThemeProps } from '~/style/theme'
 import type { SinglePointerDragState } from '../single-pointer-drag'
 
@@ -19,7 +19,7 @@ const controlResponseMultipliers = {
   fine: 0.4,
 }
 
-const LoopRegion: FCWithoutChildren<{
+const LoopRegion: VoidFunctionComponent<{
   loopStart: number
   loopEnd: number
   onLoopStartDrag?(movement: number): unknown

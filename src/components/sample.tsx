@@ -8,10 +8,10 @@ import { layoutAbsoluteFill } from '~/style/layout'
 import LoopRegion from '~/components/loop-region'
 import Waveform from '~/components/waveform'
 
+import type { VoidFunctionComponent } from 'react'
 import type { ThemeProps } from '~/style/theme'
-import type { FCWithoutChildren } from '~/types'
 
-const Sample: FCWithoutChildren<SampleProps> = ({
+const Sample: VoidFunctionComponent<SampleProps> = ({
   audioBuffer,
   positionRatio = 0,
   loopStart = 0,

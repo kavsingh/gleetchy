@@ -7,10 +7,10 @@ import UI from '~/ui'
 import StyledContainer from './style/styled-container'
 import ErrorBoundary from './components/error-boundary'
 
+import type { VoidFunctionComponent } from 'react'
 import type { ApplicationStore } from '~/state/configure-store'
-import type { FCWithoutChildren } from './types'
 
-const App: FCWithoutChildren<{ store: ApplicationStore }> = ({ store }) => (
+const App: VoidFunctionComponent<{ store: ApplicationStore }> = ({ store }) => (
   <Provider store={store}>
     <StyledContainer>
       <ErrorBoundary>

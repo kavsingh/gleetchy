@@ -8,11 +8,11 @@ import {
 } from '~/state/audio-files/actions'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 
+import type { VoidFunctionComponent } from 'react'
 import type { NodeProps as Eq3Props } from '~/nodes/audio-effects/eq3'
 import type { NodeProps } from '~/nodes/instruments/loop'
-import type { FCWithoutChildren } from '~/types'
 
-const ConnectedLoop: FCWithoutChildren<{ id: string }> = ({ id }) => {
+const ConnectedLoop: VoidFunctionComponent<{ id: string }> = ({ id }) => {
   const {
     label,
     connections,

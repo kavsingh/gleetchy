@@ -5,14 +5,14 @@ import { clamp } from 'ramda'
 
 import { noop } from '~/lib/util'
 import { layoutAbsoluteFill } from '~/style/layout'
-import SinglePointerDrag from '~/components/single-pointer-drag'
-import SVGArc from '~/components/svg-arc'
 
 import useControlResponseRef from './hooks/use-control-response-ref'
+import SinglePointerDrag from './single-pointer-drag'
+import SVGArc from './svg-arc'
 
+import type { VoidFunctionComponent } from 'react'
 import type { ControlResponseMultipliers } from './hooks/use-control-response-ref'
-import type { SinglePointerDragMoveHandler } from '~/components/single-pointer-drag'
-import type { FCWithoutChildren } from '~/types'
+import type { SinglePointerDragMoveHandler } from './single-pointer-drag'
 
 const clampMove = clamp(0, 1)
 const controlMultipliers: ControlResponseMultipliers = {
@@ -20,7 +20,7 @@ const controlMultipliers: ControlResponseMultipliers = {
   fine: 0.2,
 }
 
-const Knob: FCWithoutChildren<{
+const Knob: VoidFunctionComponent<{
   value: number
   defaultValue?: number
   radius?: number | string

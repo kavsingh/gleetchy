@@ -16,9 +16,9 @@ import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'
 
 import BaseAudioEngine from './audio-engine'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 
-const AudioEngine: FCWithoutChildren = () => {
+const AudioEngine: VoidFunctionComponent = () => {
   const nodes = useSelector(selectAudioNodes)
   const connections = useSelector(selectConnections)
   const { isPlaying } = useGlobalPlayback()

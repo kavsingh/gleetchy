@@ -11,10 +11,10 @@ import InstrumentsRack from './instruments-rack'
 import PatchBay from './patch-bay'
 import Masthead from './masthead'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 import type { ThemeProps } from '~/style/theme'
 
-const UI: FCWithoutChildren = () => {
+const UI: VoidFunctionComponent = () => {
   const { registerKeyPress, registerKeyRelease } = useModifierKeys()
 
   useEffect(() => {

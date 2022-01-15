@@ -1,9 +1,9 @@
 import { memo } from 'react'
 import styled from '@emotion/styled'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 
-const PlayPauseButton: FCWithoutChildren<{
+const PlayPauseButton: VoidFunctionComponent<{
   isPlaying: boolean
   onClick(): unknown
 }> = ({ isPlaying, onClick }) => (

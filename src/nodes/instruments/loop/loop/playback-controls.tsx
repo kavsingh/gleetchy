@@ -4,9 +4,9 @@ import styled from '@emotion/styled'
 import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 
-const PlaybackControls: FCWithoutChildren<PlaybackControlsProps> = ({
+const PlaybackControls: VoidFunctionComponent<PlaybackControlsProps> = ({
   gain = 1,
   playbackRate = 1,
   onGainChange = noop,

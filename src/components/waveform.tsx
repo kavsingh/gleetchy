@@ -5,7 +5,7 @@ import { range } from 'ramda'
 
 import { requireWindowWith } from '~/lib/env'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 
 const drawTempWaveform = (
   context: CanvasRenderingContext2D,
@@ -90,7 +90,7 @@ const updateWaveform = (
   }
 }
 
-const Waveform: FCWithoutChildren<WaveformProps> = ({
+const Waveform: VoidFunctionComponent<WaveformProps> = ({
   color,
   baselineColor,
   timeRegions,

@@ -10,10 +10,9 @@ import ButtonSet, { Button } from '~/components/button-set'
 
 import ConnectedLoop from './connected-loop'
 
-import type { FCWithoutChildren } from '~/types'
-import type { FunctionComponent } from 'react'
+import type { FC, VoidFunctionComponent } from 'react'
 
-const InstrumentsRack: FCWithoutChildren = () => (
+const InstrumentsRack: VoidFunctionComponent = () => (
   <Container>
     <Rack />
     <AddInstrumentButtons />
@@ -22,7 +21,7 @@ const InstrumentsRack: FCWithoutChildren = () => (
 
 export default memo(InstrumentsRack)
 
-const Rack: FCWithoutChildren = () => {
+const Rack: VoidFunctionComponent = () => {
   const { instruments } = useAudioNodesMeta()
 
   return (
@@ -43,7 +42,7 @@ const Rack: FCWithoutChildren = () => {
   )
 }
 
-const AddInstrumentButtons: FCWithoutChildren = () => {
+const AddInstrumentButtons: VoidFunctionComponent = () => {
   const { addNode } = useAddNode()
   const addLoop = useCallback(() => addNode(loopType), [addNode])
 
@@ -54,7 +53,7 @@ const AddInstrumentButtons: FCWithoutChildren = () => {
   )
 }
 
-const RackMount: FunctionComponent = ({ children }) => (
+const RackMount: FC = ({ children }) => (
   <InstrumentContainer>
     <ErrorBoundary>{children}</ErrorBoundary>
   </InstrumentContainer>

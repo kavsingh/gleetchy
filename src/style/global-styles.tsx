@@ -1,8 +1,14 @@
 import { memo } from 'react'
 import { css, Global } from '@emotion/react'
 
+import type { VoidFunctionComponent } from 'react'
 import type { Theme } from '@emotion/react'
-import type { FCWithoutChildren } from '~/types'
+
+const GlobalStyles: VoidFunctionComponent = () => (
+  <Global styles={globalStyles} />
+)
+
+export default memo(GlobalStyles)
 
 const globalStyles = (theme: Theme) => css`
   html {
@@ -46,7 +52,3 @@ const globalStyles = (theme: Theme) => css`
     background-color: ${theme.colors.page};
   }
 `
-
-const GlobalStyles: FCWithoutChildren = () => <Global styles={globalStyles} />
-
-export default memo(GlobalStyles)

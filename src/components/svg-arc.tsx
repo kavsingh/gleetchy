@@ -1,9 +1,9 @@
 import { memo } from 'react'
 
-import type { FCWithoutChildren } from '~/types'
+import type { VoidFunctionComponent } from 'react'
 
 // Adapted from https://codepen.io/JMChristensen/pen/Ablch
-const SVGArc: FCWithoutChildren<{
+const SVGArc: VoidFunctionComponent<{
   endRatio: number
   strokeColor: string
   strokeWidth?: number

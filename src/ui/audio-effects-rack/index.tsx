@@ -12,10 +12,9 @@ import ErrorBoundary from '~/components/error-boundary'
 import ConnectedDelay from './connected-delay'
 import ConnectedReverb from './connected-reverb'
 
-import type { FCWithoutChildren } from '~/types'
-import type { FunctionComponent } from 'react'
+import type { FC, VoidFunctionComponent } from 'react'
 
-const AudioEffectsRack: FCWithoutChildren = () => (
+const AudioEffectsRack: VoidFunctionComponent = () => (
   <Container>
     <Rack />
     <AddAudioEffectButtons />
@@ -24,7 +23,7 @@ const AudioEffectsRack: FCWithoutChildren = () => (
 
 export default memo(AudioEffectsRack)
 
-const Rack: FCWithoutChildren = () => {
+const Rack: VoidFunctionComponent = () => {
   const { audioEffects } = useAudioNodesMeta()
 
   return (
@@ -51,7 +50,7 @@ const Rack: FCWithoutChildren = () => {
   )
 }
 
-const AddAudioEffectButtons: FCWithoutChildren = () => {
+const AddAudioEffectButtons: VoidFunctionComponent = () => {
   const { addNode } = useAddNode()
   const addReverb = useCallback(() => addNode(reverbType), [addNode])
   const addDelay = useCallback(() => addNode(delayType), [addNode])
@@ -64,7 +63,7 @@ const AddAudioEffectButtons: FCWithoutChildren = () => {
   )
 }
 
-const RackMount: FunctionComponent = ({ children }) => (
+const RackMount: FC = ({ children }) => (
   <AudioEffectContainer>
     <ErrorBoundary>{children}</ErrorBoundary>
   </AudioEffectContainer>
