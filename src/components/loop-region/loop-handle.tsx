@@ -1,10 +1,10 @@
 import { memo } from 'react'
 import styled from '@emotion/styled'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { ThemeProps } from '~/style/theme'
 
-const LoopHandle: VoidFunctionComponent<{
+const LoopHandle: FC<{
   align: Alignment
 }> = ({ align = 'left' }) => (
   <Container align={align}>

@@ -1,9 +1,9 @@
 import styled from '@emotion/styled'
 
+import type { FC } from 'react'
 import type { ThemeProps } from '~/style/theme'
-import type { FunctionComponent } from 'react'
 
-const Button: FunctionComponent<ButtonProps> = ({ handler, children }) => (
+const Button: FC<ButtonProps> = ({ handler, children }) => (
   <Container
     role="button"
     tabIndex={0}

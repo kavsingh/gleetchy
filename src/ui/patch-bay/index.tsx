@@ -11,9 +11,9 @@ import ErrorBoundary from '~/components/error-boundary'
 
 import PatchBayNode from './patch-bay-node'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 
-const PatchBay: VoidFunctionComponent = () => {
+const PatchBay: FC = () => {
   const sources = useSelector(selectConnectableSources)
   const targets = useSelector(selectConnectableTargets)
 

@@ -10,7 +10,7 @@ import SinglePointerDrag from '../single-pointer-drag'
 import useControlResponseRef from '../hooks/use-control-response-ref'
 import LoopHandle from './loop-handle'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { ThemeProps } from '~/style/theme'
 import type { SinglePointerDragState } from '../single-pointer-drag'
 
@@ -19,7 +19,7 @@ const controlResponseMultipliers = {
   fine: 0.4,
 }
 
-const LoopRegion: VoidFunctionComponent<{
+const LoopRegion: FC<{
   loopStart: number
   loopEnd: number
   onLoopStartDrag?(movement: number): unknown

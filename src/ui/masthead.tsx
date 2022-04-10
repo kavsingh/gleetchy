@@ -6,10 +6,10 @@ import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import useUITheme from '~/state/hooks/use-ui-theme'
 import PlayPauseButton from '~/components/play-pause-button'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { ThemeProps } from '~/style/theme'
 
-const Masthead: VoidFunctionComponent = () => {
+const Masthead: FC = () => {
   const { isPlaying, togglePlayback } = useGlobalPlayback()
   const { toggleTheme } = useUITheme()
 

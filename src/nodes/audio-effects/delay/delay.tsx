@@ -6,7 +6,7 @@ import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { AudioNodeConnection } from '~/types'
 
 const Container = styled.div<{ isActive: boolean }>`
@@ -36,7 +36,7 @@ export interface DelayProps {
   remove(): unknown
 }
 
-const Delay: VoidFunctionComponent<DelayProps> = ({
+const Delay: FC<DelayProps> = ({
   label = 'Delay',
   connections = [],
   wetDryRatio = 0.5,

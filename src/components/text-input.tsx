@@ -4,10 +4,10 @@ import styled from '@emotion/styled'
 
 import { cancelReactEvent, noop } from '~/lib/util'
 
-import type { ChangeEventHandler, VoidFunctionComponent } from 'react'
+import type { ChangeEventHandler, FC } from 'react'
 import type { ThemeProps } from '~/style/theme'
 
-const TextInput: VoidFunctionComponent<{
+const TextInput: FC<{
   value: string | number
   placeholder?: string
   onChange?(value: string): unknown

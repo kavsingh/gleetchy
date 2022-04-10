@@ -20,7 +20,6 @@ class LoopProcessor extends AudioWorkletProcessor {
   }
 }
 
-// @ts-expect-error keine ahnung
 registerProcessor('loop-processor', LoopProcessor)
 
 export {}

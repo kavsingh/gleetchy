@@ -1,12 +1,14 @@
 import { memo } from 'react'
-import { css, Global } from '@emotion/react'
+import { css, Global, useTheme } from '@emotion/react'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { Theme } from '@emotion/react'
 
-const GlobalStyles: VoidFunctionComponent = () => (
-  <Global styles={globalStyles} />
-)
+const GlobalStyles: FC = () => {
+  const theme = useTheme()
+
+  return <Global styles={globalStyles(theme)} />
+}
 
 export default memo(GlobalStyles)
 

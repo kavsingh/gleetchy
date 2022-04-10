@@ -4,7 +4,7 @@ import styled from '@emotion/styled'
 import { noop } from '~/lib/util'
 import Slider from '~/components/slider'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 
 const Container = styled.div`
   display: flex;
@@ -24,7 +24,7 @@ export interface Eq3Props {
   onChange(eqProps: { [key: string]: number }): unknown
 }
 
-const Eq3: VoidFunctionComponent<Eq3Props> = ({
+const Eq3: FC<Eq3Props> = ({
   lowGain = 0,
   midGain = 0,
   highGain = 0,

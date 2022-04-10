@@ -4,12 +4,8 @@ import ErrorMessage from '~/components/error-message'
 
 import type { ReactNode } from 'react'
 
-const defaultRenderError: ErrorRenderer = (error) => (
-  <ErrorMessage>{error.toString()}</ErrorMessage>
-)
-
 class ErrorBoundary extends PureComponent<
-  { silent?: boolean; renderError?: ErrorRenderer },
+  { silent?: boolean; renderError?: ErrorRenderer; children: ReactNode },
   State
 > {
   public state: State = {}
@@ -31,6 +27,10 @@ class ErrorBoundary extends PureComponent<
 }
 
 export default ErrorBoundary
+
+const defaultRenderError: ErrorRenderer = (error) => (
+  <ErrorMessage>{error.toString()}</ErrorMessage>
+)
 
 export type ErrorRenderer = <E extends Error>(error: E) => ReactNode
 

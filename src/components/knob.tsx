@@ -10,7 +10,7 @@ import useControlResponseRef from './hooks/use-control-response-ref'
 import SinglePointerDrag from './single-pointer-drag'
 import SVGArc from './svg-arc'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { ControlResponseMultipliers } from './hooks/use-control-response-ref'
 import type { SinglePointerDragMoveHandler } from './single-pointer-drag'
 
@@ -20,7 +20,7 @@ const controlMultipliers: ControlResponseMultipliers = {
   fine: 0.2,
 }
 
-const Knob: VoidFunctionComponent<{
+const Knob: FC<{
   value: number
   defaultValue?: number
   radius?: number | string

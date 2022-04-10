@@ -8,7 +8,7 @@ import { noop } from '~/lib/util'
 import useControlResponseRef from './hooks/use-control-response-ref'
 import SinglePointerDrag from './single-pointer-drag'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { ControlResponseMultipliers } from './hooks/use-control-response-ref'
 import type {
   SinglePointerDragMoveHandler,
@@ -21,7 +21,7 @@ const controlMultipliers: ControlResponseMultipliers = {
   fine: 0.4,
 }
 
-const Slider: VoidFunctionComponent<{
+const Slider: FC<{
   value: number
   defaultValue?: number
   orientation?: Orientation

@@ -7,11 +7,12 @@ import TextInput from './text-input'
 import Button from './button'
 
 import type { AudioNodeConnection } from '~/types'
-import type { FunctionComponent } from 'react'
+import type { FC, ReactNode } from 'react'
 
-const TitleBar: FunctionComponent<{
+const TitleBar: FC<{
   label: string
   type: string
+  children?: ReactNode
   connections?: AudioNodeConnection[]
   onLabelChange?(label: string): unknown
   onRemoveClick?(): unknown

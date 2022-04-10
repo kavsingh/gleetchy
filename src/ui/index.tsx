@@ -11,10 +11,10 @@ import InstrumentsRack from './instruments-rack'
 import PatchBay from './patch-bay'
 import Masthead from './masthead'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { ThemeProps } from '~/style/theme'
 
-const UI: VoidFunctionComponent = () => {
+const UI: FC = () => {
   const { registerKeyPress, registerKeyRelease } = useModifierKeys()
 
   useEffect(() => {

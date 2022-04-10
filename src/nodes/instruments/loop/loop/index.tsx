@@ -10,7 +10,7 @@ import LoopSample from './loop-sample'
 import PlaybackControls from './playback-controls'
 import LoopTitleBar from './loop-title-bar'
 
-import type { FunctionComponent, ReactNode } from 'react'
+import type { FC, ReactNode } from 'react'
 import type { LoopUIProps } from './types'
 
 class Loop extends PureComponent<LoopUIProps> {
@@ -155,7 +155,8 @@ const ControlsContainer = styled.div`
   margin-left: 1.2em;
 `
 
-const AudioFileDropRegion: FunctionComponent<{
+const AudioFileDropRegion: FC<{
+  children: ReactNode
   onFiles(files: File[]): unknown
 }> = ({ children, onFiles }) => {
   const { eventHandlers } = useFileDropRegion({

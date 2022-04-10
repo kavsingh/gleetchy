@@ -4,9 +4,9 @@ import useUITheme from '~/state/hooks/use-ui-theme'
 
 import GlobalStyles from './global-styles'
 
-import type { FunctionComponent } from 'react'
+import type { FC, ReactNode } from 'react'
 
-const StyledContainer: FunctionComponent = ({ children }) => {
+const StyledContainer: FC<{ children: ReactNode }> = ({ children }) => {
   const { theme } = useUITheme()
 
   return (

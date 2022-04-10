@@ -3,10 +3,10 @@ import { memo, useCallback } from 'react'
 import { nodeType, UI } from '~/nodes/audio-effects/delay'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { NodeProps } from '~/nodes/audio-effects/delay'
 
-const ConnectedReverb: VoidFunctionComponent<{ id: string }> = ({ id }) => {
+const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
   const {
     connections,
     isActive,

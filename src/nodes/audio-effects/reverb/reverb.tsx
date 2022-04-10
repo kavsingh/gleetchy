@@ -5,7 +5,7 @@ import { noop } from '~/lib/util'
 import Knob from '~/components/knob'
 import TitleBar from '~/components/title-bar'
 
-import type { VoidFunctionComponent } from 'react'
+import type { FC } from 'react'
 import type { AudioNodeConnection } from '~/types'
 
 const Container = styled.div<{ isActive: boolean }>`
@@ -33,7 +33,7 @@ export interface ReverbProps {
   remove(): unknown
 }
 
-const Reverb: VoidFunctionComponent<ReverbProps> = ({
+const Reverb: FC<ReverbProps> = ({
   label = 'Reverb',
   wetDryRatio = 0.5,
   isActive = true,

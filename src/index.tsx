@@ -1,4 +1,4 @@
-import { render, hydrate } from 'react-dom'
+import { hydrateRoot } from 'react-dom/client'
 
 import { requireWindowWith } from '~/lib/env'
 import offlineInstall from '~/lib/offline-install'
@@ -18,18 +18,12 @@ const { ssrInitialState } = appRoot.dataset
 
 offlineInstall('gleetchy-sw.js', '')
 
-if (ssrInitialState) {
-  delete appRoot.dataset.ssrInitialState
+delete appRoot.dataset.ssrInitialState
 
-  const parsedState: unknown = JSON.parse(ssrInitialState)
-  const initialState =
-    parsedState &&
-    typeof parsedState === 'object' &&
-    !Array.isArray(parsedState)
-      ? parsedState
-      : {}
+const parsedState: unknown = JSON.parse(ssrInitialState || '{}')
+const initialState =
+  parsedState && typeof parsedState === 'object' && !Array.isArray(parsedState)
+    ? parsedState
+    : {}
 
-  hydrate(<App store={configureStore(initialState)} />, appRoot)
-} else {
-  render(<App store={configureStore()} />, appRoot)
-}
+hydrateRoot(appRoot, <App store={configureStore(initialState)} />)
