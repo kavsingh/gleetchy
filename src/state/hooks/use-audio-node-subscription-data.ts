@@ -1,10 +1,9 @@
-import { useSelector } from 'react-redux'
 import { equals } from 'ramda'
 
-import type { ApplicationState } from '../configure-store'
+import { useAppSelector } from './base'
 
 const useAudioNodeSubscriptionData = (id: string) =>
-  useSelector<ApplicationState, { [key: string]: unknown }>(
+  useAppSelector(
     (state) => state.audioEngine.subscriptionData[id] || {},
     equals,
   )

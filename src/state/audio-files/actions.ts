@@ -6,23 +6,13 @@ import {
 } from '~/apis/file'
 import { getAudioContext } from '~/apis/audio'
 
-import type { Dispatch } from 'redux'
 import type { AudioFileData } from '~/types'
-import type {
-  AudioFileDecodeCompleteAction,
-  AudioFileDecodeErrorAction,
-  AudioFileDecodeStartAction,
-  AudioFileLoadCompleteAction,
-  AudioFileLoadErrorAction,
-  AudioFileLoadStartAction,
-} from './types'
+import type { AppDispatch, AppThunkAction } from '../configure-store'
 
 export const selectAudioFileAction =
-  (id: string) => async (dispatch: Dispatch) => {
-    dispatch<AudioFileLoadStartAction>({
-      payload: { id },
-      type: 'AUDIO_FILE_LOAD_START',
-    })
+  (id: string): AppThunkAction =>
+  async (dispatch) => {
+    dispatch({ type: 'AUDIO_FILE_LOAD_START', payload: { id } })
 
     let file: AudioFileData | undefined
 
@@ -31,14 +21,14 @@ export const selectAudioFileAction =
 
       if (!file) throw new Error('No file loaded')
 
-      dispatch<AudioFileLoadCompleteAction>({
-        payload: { id, file },
+      dispatch({
         type: 'AUDIO_FILE_LOAD_COMPLETE',
+        payload: { id, file },
       })
     } catch (e) {
-      dispatch<AudioFileLoadErrorAction>({
-        payload: { id, error: errorFrom(e) },
+      dispatch({
         type: 'AUDIO_FILE_LOAD_ERROR',
+        payload: { id, error: errorFrom(e) },
       })
     }
 
@@ -46,25 +36,23 @@ export const selectAudioFileAction =
   }
 
 export const receiveAudioFileAction =
-  (id: string, file: File) => async (dispatch: Dispatch) => {
-    dispatch<AudioFileLoadStartAction>({
-      payload: { id },
-      type: 'AUDIO_FILE_LOAD_START',
-    })
+  (id: string, file: File): AppThunkAction =>
+  async (dispatch) => {
+    dispatch({ type: 'AUDIO_FILE_LOAD_START', payload: { id } })
 
     let fileData: AudioFileData | undefined
 
     try {
       fileData = await readFileToArrayBuffer(file)
 
-      dispatch<AudioFileLoadCompleteAction>({
-        payload: { id, file: fileData },
+      dispatch({
         type: 'AUDIO_FILE_LOAD_COMPLETE',
+        payload: { id, file: fileData },
       })
     } catch (e) {
-      dispatch<AudioFileLoadErrorAction>({
-        payload: { id, error: errorFrom(e) },
+      dispatch({
         type: 'AUDIO_FILE_LOAD_ERROR',
+        payload: { id, error: errorFrom(e) },
       })
     }
 
@@ -72,29 +60,26 @@ export const receiveAudioFileAction =
   }
 
 const decodeFileBuffer = async (
-  dispatch: Dispatch,
+  dispatch: AppDispatch,
   id: string,
   file: AudioFileData,
 ) => {
-  dispatch<AudioFileDecodeStartAction>({
-    payload: { id },
-    type: 'AUDIO_FILE_DECODE_START',
-  })
+  dispatch({ type: 'AUDIO_FILE_DECODE_START', payload: { id } })
 
   try {
     const audioBuffer = await getAudioContext().decodeAudioData(file.buffer)
 
-    dispatch<AudioFileDecodeCompleteAction>({
-      payload: {
-        file: { ...pick(['fileName', 'fileType'], file), audioBuffer },
-        id,
-      },
+    dispatch({
       type: 'AUDIO_FILE_DECODE_COMPLETE',
+      payload: {
+        id,
+        file: { ...pick(['fileName', 'fileType'], file), audioBuffer },
+      },
     })
   } catch (e) {
-    dispatch<AudioFileDecodeErrorAction>({
-      payload: { id, error: errorFrom(e) },
+    dispatch({
       type: 'AUDIO_FILE_DECODE_ERROR',
+      payload: { id, error: errorFrom(e) },
     })
   }
 }

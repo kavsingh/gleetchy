@@ -1,16 +1,16 @@
 import { useCallback } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 import { getConnectionBetween, canConnectNodes } from '~/lib/audio'
 
 import { selectConnections } from '../connections/selectors'
 import { toggleConnectionAction } from '../connections/actions'
+import { useAppDispatch, useAppSelector } from './base'
 
 import type { AudioNodeMeta } from '~/types'
 
 const useConnection = (source: AudioNodeMeta, target: AudioNodeMeta) => {
-  const dispatch = useDispatch()
-  const connections = useSelector(selectConnections)
+  const dispatch = useAppDispatch()
+  const connections = useAppSelector(selectConnections)
   const connection = getConnectionBetween(connections, source, target)
   const isBlocked = !canConnectNodes(connections, source, target)
 
@@ -18,7 +18,7 @@ const useConnection = (source: AudioNodeMeta, target: AudioNodeMeta) => {
     if (!isBlocked) dispatch(toggleConnectionAction(source.id, target.id))
   }, [isBlocked, dispatch, source.id, target.id])
 
-  return { connection, isBlocked, toggleConnection }
+  return { connection, isBlocked, toggleConnection } as const
 }
 
 export default useConnection

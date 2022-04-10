@@ -10,7 +10,7 @@ import staticConfigFactory from '../webpack.config.static'
 import spawnAsync from './lib/spawn-async'
 import { resolveFromProjectRoot as fromRoot } from './lib/util'
 
-import type { ApplicationState } from '../src/state/configure-store'
+import type { AppState } from '../src/state/configure-store'
 
 const parseBaseConfig = (config: typeof baseConfigFactory) => {
   const { output = {} } = config({ production: true })
@@ -36,7 +36,7 @@ const parseStaticConfig = (config: typeof staticConfigFactory) => {
   }
 }
 
-const renderStatic = async (initialState: Partial<ApplicationState>) => {
+const renderStatic = async (initialState: Partial<AppState>) => {
   const { baseOutputPath } = parseBaseConfig(baseConfigFactory)
   const { staticOutputPath, staticOutputFilename } =
     parseStaticConfig(staticConfigFactory)

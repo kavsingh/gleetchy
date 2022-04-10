@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 
 import { getAudioContext } from '~/apis/audio'
 import { selectAudioNodes } from '~/state/audio-nodes/selectors'
 import { selectConnections } from '~/state/connections/selectors'
 import { selectAudioEngineEvents } from '~/state/audio-engine/selectors'
+import { useAppSelector, useAppDispatch } from '~/state/hooks/base'
 import {
   clearAudioEngineEventsAction,
   dispatchAudioEngineSubscriptionAction,
@@ -19,12 +19,12 @@ import BaseAudioEngine from './audio-engine'
 import type { FC } from 'react'
 
 const AudioEngine: FC = () => {
-  const nodes = useSelector(selectAudioNodes)
-  const connections = useSelector(selectConnections)
+  const nodes = useAppSelector(selectAudioNodes)
+  const connections = useAppSelector(selectConnections)
   const { isPlaying } = useGlobalPlayback()
 
-  const dispatch = useDispatch()
-  const audioEngineEvents = useSelector(selectAudioEngineEvents)
+  const dispatch = useAppDispatch()
+  const audioEngineEvents = useAppSelector(selectAudioEngineEvents)
   const [workletsReady, setWorkletsReady] = useState(false)
 
   const clearAudioEngineEvents = useCallback(

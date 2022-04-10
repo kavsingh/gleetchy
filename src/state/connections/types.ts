@@ -15,4 +15,12 @@ export type ConnectionRemoveAction = ActionWithPayload<
   ConnectionDescriptor
 >
 
-export type ConnectionsAction = ConnectionAddAction | ConnectionRemoveAction
+export type ConnectionToggleAction = ActionWithPayload<
+  'CONNECTION_TOGGLE',
+  ConnectionDescriptor
+>
+
+export type ConnectionsAction =
+  | ConnectionAddAction
+  | ConnectionRemoveAction
+  | ConnectionToggleAction

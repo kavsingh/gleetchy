@@ -30,9 +30,11 @@ export const audioEngineReducer: Reducer<
       case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
       case 'CONNECTION_ADD':
       case 'CONNECTION_REMOVE':
+      case 'CONNECTION_TOGGLE':
       case 'AUDIO_FILE_DECODE_COMPLETE':
       case 'GLOBAL_PLAYBACK_START':
       case 'GLOBAL_PLAYBACK_STOP':
+      case 'GLOBAL_PLAYBACK_TOGGLE':
         draftState.events.push(action as AudioEngineEvent)
         break
       case 'AUDIO_ENGINE_CLEAR_EVENTS':

@@ -21,6 +21,9 @@ export const globalPlaybackReducer: Reducer<
       case 'GLOBAL_PLAYBACK_STOP':
         draftState.isPlaying = false
         break
+      case 'GLOBAL_PLAYBACK_TOGGLE':
+        draftState.isPlaying = !draftState.isPlaying
+        break
       default:
         break
     }

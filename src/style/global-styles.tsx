@@ -51,6 +51,5 @@ const globalStyles = (theme: Theme) => css`
   body {
     color: ${theme.colors.body};
     font-family: ${theme.fonts.body};
-    background-color: ${theme.colors.page};
   }
 `

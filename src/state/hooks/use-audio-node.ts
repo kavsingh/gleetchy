@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { equals } from 'ramda'
 
 import {
@@ -15,29 +14,23 @@ import {
   selectActiveAudioNodeIds,
 } from '../audio-nodes/selectors'
 import { selectConnections } from '../connections/selectors'
+import { useAppDispatch, useAppSelector } from './base'
 
 import type { AudioNodeState, AudioNodeConnection } from '~/types'
-import type {
-  AudioNodeUpdateAudioPropsAction,
-  AudioNodeUpdateLabelAction,
-  AudioNodeDuplicateAction,
-  AudioNodeRemoveAction,
-} from '../audio-nodes/types'
-import type { ApplicationState } from '../configure-store'
 
 const useAudioNode = <T extends Record<string, unknown>>(
   id: string,
   isValid: AudioNodeStateValidator,
-): UseAudioNodeReturn<T> => {
-  const node = useSelector<ApplicationState, AudioNodeState<T>>(
+) => {
+  const node = useAppSelector(
     (state) => selectAudioNodes(state)[id] as AudioNodeState<T>,
     equals,
   )
-  const isActive = useSelector<ApplicationState, boolean>((state) =>
+  const isActive = useAppSelector((state) =>
     selectActiveAudioNodeIds(state).includes(node.id),
   )
-  const allConnections = useSelector(selectConnections)
-  const dispatch = useDispatch()
+  const allConnections = useAppSelector(selectConnections)
+  const dispatch = useAppDispatch()
 
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
 
@@ -84,21 +77,10 @@ const useAudioNode = <T extends Record<string, unknown>>(
     updateLabel,
     duplicate,
     remove,
-  }
+  } as const
 }
 
 export default useAudioNode
-
-export interface UseAudioNodeReturn<T extends Record<string, unknown>> {
-  label: string
-  audioProps: T
-  connections: AudioNodeConnection[]
-  isActive: boolean
-  updateAudioProps: (audioProps: Partial<T>) => AudioNodeUpdateAudioPropsAction
-  updateLabel: (label: string) => AudioNodeUpdateLabelAction
-  duplicate: () => AudioNodeDuplicateAction
-  remove: () => AudioNodeRemoveAction
-}
 
 export type AudioNodeStateValidator = (
   node: AudioNodeState<Record<string, unknown>>,

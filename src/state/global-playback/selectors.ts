@@ -1,4 +1,4 @@
-import type { ApplicationState } from '~/state/configure-store'
+import type { AppState } from '~/state/configure-store'
 
-export const selectIsPlaying = (state: ApplicationState) =>
+export const selectIsPlaying = (state: AppState) =>
   state.globalPlayback.isPlaying

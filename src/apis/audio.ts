@@ -20,6 +20,7 @@ export const getAudioContext = () => {
     throw new Error('No audio context available')
   }
 
+  // NOTE: https://developer.chrome.com/blog/autoplay/#web-audio
   audioContext = new AudioContext()
 
   return audioContext

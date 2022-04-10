@@ -8,14 +8,13 @@ import { selectConnections } from '~/state/connections/selectors'
 
 import { createValueEqSelector } from '../lib/selector'
 
-import type { ApplicationState } from '~/state/configure-store'
+import type { AppState } from '~/state/configure-store'
 import type { AudioNodeMeta } from '~/types'
 
-export const selectAudioNodes = (state: ApplicationState) =>
-  state.audioNodes.byId
+export const selectAudioNodes = (state: AppState) => state.audioNodes.byId
 
 // TODO: Better naming
-export const selectNodesIdentifierMeta = (state: ApplicationState) =>
+export const selectNodesIdentifierMeta = (state: AppState) =>
   state.audioNodes.orderedIndentifierMeta
 
 export const selectInstrumentsIdentifierMeta = createValueEqSelector(
@@ -28,7 +27,7 @@ export const selectAudioEffectsIdentifierMeta = createValueEqSelector(
   (meta) => meta.filter(hasAudioEffectType),
 )
 
-export const selectMainOutNode = (state: ApplicationState) => {
+export const selectMainOutNode = (state: AppState) => {
   const mainOut = state.audioNodes.byId[MAIN_OUT_ID]
 
   if (!mainOut) throw new Error('Main out not found')

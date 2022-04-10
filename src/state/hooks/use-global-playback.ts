@@ -1,20 +1,20 @@
 import { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 
 import { selectIsPlaying } from '~/state/global-playback/selectors'
 import { toggleGlobalPlaybackAction } from '~/state/global-playback/actions'
 
-const useGlobalPlayback = () => {
-  const dispatch = useDispatch()
+import { useAppDispatch, useAppSelector } from './base'
 
-  const isPlaying = useSelector(selectIsPlaying)
+const useGlobalPlayback = () => {
+  const dispatch = useAppDispatch()
+  const isPlaying = useAppSelector(selectIsPlaying)
 
   const togglePlayback = useCallback(
     () => dispatch(toggleGlobalPlaybackAction()),
     [dispatch],
   )
 
-  return { isPlaying, togglePlayback }
+  return { isPlaying, togglePlayback } as const
 }
 
 export default useGlobalPlayback

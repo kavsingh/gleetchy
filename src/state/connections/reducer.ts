@@ -32,17 +32,21 @@ export const connectionsReducer: Reducer<
   ConnectionsAction | AudioNodeRemoveAction
 > = (state = defaultState, action) =>
   produce(state, (draftState) => {
+    const addConnection = (fromId: string, toId: string) => {
+      draftState.push({
+        from: fromId,
+        to: toId,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        color: nodeColorPool[draftState.length % nodeColorPool.length]!,
+      })
+    }
+
     switch (action.type) {
       case 'CONNECTION_ADD': {
         const { fromId, toId } = action.payload
 
         if (!draftState.find(connectionIs({ fromId, toId }))) {
-          draftState.push({
-            from: fromId,
-            to: toId,
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            color: nodeColorPool[draftState.length % nodeColorPool.length]!,
-          })
+          addConnection(fromId, toId)
         }
 
         break
@@ -52,6 +56,15 @@ export const connectionsReducer: Reducer<
         const idx = draftState.findIndex(connectionIs({ fromId, toId }))
 
         if (idx !== -1) draftState.splice(idx, 1)
+
+        break
+      }
+      case 'CONNECTION_TOGGLE': {
+        const { fromId, toId } = action.payload
+        const idx = draftState.findIndex(connectionIs({ fromId, toId }))
+
+        if (idx === -1) addConnection(fromId, toId)
+        else draftState.splice(idx, 1)
 
         break
       }

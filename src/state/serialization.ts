@@ -1,6 +1,6 @@
 import { anyPass, pick, pipe } from 'ramda'
 
-import type { ApplicationState } from '~/state/configure-store'
+import type { AppState } from '~/state/configure-store'
 
 const isObjectLike = (value: unknown): value is { [key: string]: unknown } =>
   typeof value === 'object'
@@ -35,10 +35,9 @@ const unsetUnserializable = (struct: unknown): unknown => {
   return struct
 }
 
-export const serialize: (state: ApplicationState) => string = pipe(
-  pick<keyof ApplicationState>(['audioNodes', 'connections', 'audioFiles']),
-  (state: Partial<ApplicationState>) =>
-    JSON.stringify(unsetUnserializable(state)),
+export const serialize: (state: AppState) => string = pipe(
+  pick<keyof AppState>(['audioNodes', 'connections', 'audioFiles']),
+  (state: Partial<AppState>) => JSON.stringify(unsetUnserializable(state)),
 )
 
 export const deserialize = <T>(stateString: string): T | undefined => {

@@ -7,9 +7,7 @@ let fileInput: HTMLInputElement
 const getFileInput = () => {
   const WINDOW = requireWindowWith(['document.createElement'])
 
-  if (!WINDOW) {
-    return undefined
-  }
+  if (!WINDOW) return undefined
 
   if (!fileInput) {
     fileInput = WINDOW.document.createElement('input')

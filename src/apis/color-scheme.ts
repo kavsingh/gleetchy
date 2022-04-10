@@ -34,12 +34,18 @@ export const usePreferredColorScheme = () => {
   )
 
   useEffect(() => {
-    darkSchemeQuery?.addListener(handleDarkSchemeQueryChange)
-    lightSchemeQuery?.addListener(handleLightSchemeQueryChange)
+    darkSchemeQuery?.addEventListener('change', handleDarkSchemeQueryChange)
+    lightSchemeQuery?.addEventListener('change', handleLightSchemeQueryChange)
 
     return () => {
-      darkSchemeQuery?.removeListener(handleDarkSchemeQueryChange)
-      lightSchemeQuery?.removeListener(handleLightSchemeQueryChange)
+      darkSchemeQuery?.removeEventListener(
+        'change',
+        handleDarkSchemeQueryChange,
+      )
+      lightSchemeQuery?.removeEventListener(
+        'change',
+        handleLightSchemeQueryChange,
+      )
     }
   }, [handleDarkSchemeQueryChange, handleLightSchemeQueryChange])
 

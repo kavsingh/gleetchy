@@ -1,3 +1,3 @@
-import type { ApplicationState } from '~/state/configure-store'
+import type { AppState } from '~/state/configure-store'
 
-export const selectConnections = (state: ApplicationState) => state.connections
+export const selectConnections = (state: AppState) => state.connections

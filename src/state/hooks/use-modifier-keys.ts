@@ -1,12 +1,12 @@
 import { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 
 import { selectModifierKeys } from '../ui/selectors'
 import { registerKeyPressAction, registerKeyReleaseAction } from '../ui/actions'
+import { useAppDispatch, useAppSelector } from './base'
 
 const useModifierKeys = () => {
-  const dispatch = useDispatch()
-  const activeKeys = useSelector(selectModifierKeys)
+  const dispatch = useAppDispatch()
+  const activeKeys = useAppSelector(selectModifierKeys)
   const registerKeyPress = useCallback(
     (event: KeyboardEvent) => {
       dispatch(registerKeyPressAction(event.key))
@@ -20,7 +20,7 @@ const useModifierKeys = () => {
     [dispatch],
   )
 
-  return { activeKeys, registerKeyPress, registerKeyRelease }
+  return { activeKeys, registerKeyPress, registerKeyRelease } as const
 }
 
 export default useModifierKeys

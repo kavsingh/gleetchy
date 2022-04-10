@@ -142,6 +142,13 @@ class AudioEngine extends Component<AudioEngineProps> {
     node.stop()
   }
 
+  private toggleInstrumentPlaybackAndSubscription = (node: GInstrumentNode) => {
+    const { isPlaying } = this.props
+
+    if (isPlaying) this.playAndSubscribeInstrument(node)
+    else this.stopAndUnsubscribeInstrument(node)
+  }
+
   private disconnectAllNodes() {
     Object.values(this.audioNodes).forEach(
       // Safari crashes if node not connected
@@ -221,6 +228,10 @@ class AudioEngine extends Component<AudioEngineProps> {
         this.forEachInstrument(this.stopAndUnsubscribeInstrument)
 
         break
+      case 'GLOBAL_PLAYBACK_TOGGLE':
+        this.forEachInstrument(this.toggleInstrumentPlaybackAndSubscription)
+
+        break
       case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
         this.updateNode(event.payload)
 
@@ -234,6 +245,7 @@ class AudioEngine extends Component<AudioEngineProps> {
         break
       case 'CONNECTION_ADD':
       case 'CONNECTION_REMOVE':
+      case 'CONNECTION_TOGGLE':
         this.updateAudioGraph()
 
         break

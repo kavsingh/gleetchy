@@ -9,27 +9,6 @@ import type { Reducer } from 'redux'
 import type { ThemeName } from '~/style/theme'
 import type { UIAction } from './types'
 
-const isModifierKey = (key: string): key is ModifierKey =>
-  Object.values(ModifierKey).includes(key as ModifierKey)
-
-export interface UIState {
-  currentThemeName: ThemeName
-  modifierKeys: ModifierKey[]
-}
-
-const getInitialTheme = (): ThemeName => {
-  const preferred = getPreferredColorScheme()
-
-  if (preferred === 'no-preference') return defaultTheme.name
-
-  return preferred === 'light' ? 'light' : 'dark'
-}
-
-const defaultState: UIState = {
-  currentThemeName: getInitialTheme(),
-  modifierKeys: [],
-}
-
 export const uiReducer: Reducer<UIState, UIAction> = (
   state = defaultState,
   action,
@@ -38,6 +17,10 @@ export const uiReducer: Reducer<UIState, UIAction> = (
     switch (action.type) {
       case 'UI_SET_THEME':
         draftState.currentThemeName = action.payload
+        break
+      case 'UI_TOGGLE_THEME':
+        draftState.currentThemeName =
+          draftState.currentThemeName === 'light' ? 'dark' : 'light'
         break
       case 'UI_KEY_PRESSED': {
         const key = action.payload
@@ -61,3 +44,24 @@ export const uiReducer: Reducer<UIState, UIAction> = (
         break
     }
   })
+
+export interface UIState {
+  currentThemeName: ThemeName
+  modifierKeys: ModifierKey[]
+}
+
+const isModifierKey = (key: string): key is ModifierKey =>
+  Object.values(ModifierKey).includes(key as ModifierKey)
+
+const getInitialTheme = (): ThemeName => {
+  const preferred = getPreferredColorScheme()
+
+  if (preferred === 'no-preference') return defaultTheme.name
+
+  return preferred === 'light' ? 'light' : 'dark'
+}
+
+const defaultState: UIState = {
+  currentThemeName: getInitialTheme(),
+  modifierKeys: [],
+}

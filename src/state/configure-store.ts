@@ -9,7 +9,8 @@ import { globalPlaybackReducer } from './global-playback/reducer'
 import { audioNodesReducer } from './audio-nodes/reducer'
 import { uiReducer } from './ui/reducer'
 
-import type { Store } from 'redux'
+import type { ThunkAction } from 'redux-thunk'
+import type { Store, Dispatch } from 'redux'
 import type { AudioEngineState } from './audio-engine/reducer'
 import type { AudioEngineAction } from './audio-engine/types'
 import type { AudioFilesState } from './audio-files/reducer'
@@ -26,28 +27,9 @@ import type { UIAction } from './ui/types'
 const middlewares = [thunk]
 const composeEnhancers = composeWithDevTools({})
 
-export interface ApplicationState {
-  audioEngine: AudioEngineState
-  audioFiles: AudioFilesState
-  audioNodes: AudioNodesState
-  connections: ConnectionsState
-  globalPlayback: GlobalPlaybackState
-  ui: UIState
-}
-
-export type ApplicationAction =
-  | AudioEngineAction
-  | AudioFilesAction
-  | AudioNodesAction
-  | ConnectionsAction
-  | GlobalPlaybackAction
-  | UIAction
-
-export type ApplicationStore = Store<ApplicationState, ApplicationAction>
-
 export const configureStore = (
-  initialState: Partial<ApplicationState> = {},
-): ApplicationStore =>
+  initialState: Partial<AppState> = {},
+): AppStore =>
   createStore(
     combineReducers({
       audioEngine: audioEngineReducer,
@@ -60,3 +42,29 @@ export const configureStore = (
     initialState,
     composeEnhancers(applyMiddleware(...middlewares)),
   )
+
+export interface AppState {
+  audioEngine: AudioEngineState
+  audioFiles: AudioFilesState
+  audioNodes: AudioNodesState
+  connections: ConnectionsState
+  globalPlayback: GlobalPlaybackState
+  ui: UIState
+}
+
+export type AppAction =
+  | AudioEngineAction
+  | AudioFilesAction
+  | AudioNodesAction
+  | ConnectionsAction
+  | GlobalPlaybackAction
+  | UIAction
+
+export type AppDispatch = Dispatch<AppAction>
+
+export type AppStore = Store<AppState, AppAction>
+
+export type AppThunkAction<
+  ReturnType = void,
+  ExtraThunkArg = undefined,
+> = ThunkAction<ReturnType, AppState, ExtraThunkArg, AppAction>

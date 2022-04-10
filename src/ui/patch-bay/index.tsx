@@ -1,5 +1,4 @@
 import { memo, useMemo } from 'react'
-import { useSelector } from 'react-redux'
 import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 
@@ -8,14 +7,15 @@ import {
   selectConnectableTargets,
 } from '~/state/audio-nodes/selectors'
 import ErrorBoundary from '~/components/error-boundary'
+import { useAppSelector } from '~/state/hooks/base'
 
 import PatchBayNode from './patch-bay-node'
 
 import type { FC } from 'react'
 
 const PatchBay: FC = () => {
-  const sources = useSelector(selectConnectableSources)
-  const targets = useSelector(selectConnectableTargets)
+  const sources = useAppSelector(selectConnectableSources)
+  const targets = useAppSelector(selectConnectableTargets)
 
   const sourceLabels = useMemo(
     () => (

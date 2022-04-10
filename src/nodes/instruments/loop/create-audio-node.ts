@@ -91,15 +91,6 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     }
   }
 
-  private processPositionEvent = (event: AudioProcessingEvent) => {
-    const updateState = {
-      ...this.playbackState,
-      positionRatio: event.inputBuffer.getChannelData(0)[0],
-    }
-
-    this.throttledNotifySubscribers(updateState)
-  }
-
   private processWorkletPositionMessage = (message: MessageEvent<number>) => {
     this.throttledNotifySubscribers({
       ...this.playbackState,

@@ -4,7 +4,7 @@ import { configureStore } from '~/state/configure-store'
 
 import App from './app'
 
-import type { ApplicationState } from '~/state/configure-store'
+import type { AppState } from '~/state/configure-store'
 
-export default (initialState: Partial<ApplicationState> = {}): string =>
+export default (initialState: Partial<AppState> = {}): string =>
   renderToString(<App store={configureStore(initialState)} />)

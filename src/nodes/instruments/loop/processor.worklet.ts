@@ -11,9 +11,6 @@ class LoopProcessor extends AudioWorkletProcessor {
   process(inputList: InputList) {
     const position = inputList[0]?.[0]?.[0]
 
-    // eslint-disable-next-line no-console
-    console.log(position)
-
     if (Number.isFinite(position)) this.port.postMessage(position)
 
     return this.keepAlive
