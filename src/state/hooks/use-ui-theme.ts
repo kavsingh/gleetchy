@@ -3,9 +3,9 @@ import { useCallback, useEffect } from 'react'
 import { usePreferredColorScheme } from '~/apis/color-scheme'
 import { selectTheme } from '~/state/ui/selectors'
 import {
-  setDarkThemeAction,
-  setLightThemeAction,
-  toggleThemeAction,
+  setDarkTheme,
+  setLightTheme,
+  toggleTheme as toggleThemeAction,
 } from '~/state/ui/actions'
 
 import { useAppDispatch, useAppSelector } from './base'
@@ -23,10 +23,10 @@ const useUITheme = () => {
   useEffect(() => {
     switch (preferredColorScheme) {
       case 'dark':
-        dispatch(setDarkThemeAction())
+        dispatch(setDarkTheme())
         break
       case 'light':
-        dispatch(setLightThemeAction())
+        dispatch(setLightTheme())
         break
       default:
         break

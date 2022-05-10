@@ -1,88 +1,63 @@
+import { createAsyncThunk } from '@reduxjs/toolkit'
 import { head, pick } from 'ramda'
 
 import {
-  loadAudioFilesToArrayBuffers,
   readFileToArrayBuffer,
+  loadAudioFilesToArrayBuffers,
 } from '~/apis/file'
 import { getAudioContext } from '~/apis/audio'
 
-import type { AudioFileData } from '~/types'
-import type { AppDispatch, AppThunkAction } from '../configure-store'
+import type { AudioFileData, DecodedAudioFileData } from '~/types'
 
-export const selectAudioFileAction =
-  (id: string): AppThunkAction =>
-  async (dispatch) => {
-    dispatch({ type: 'AUDIO_FILE_LOAD_START', payload: { id } })
-
-    let file: AudioFileData | undefined
-
+export const selectAudioFile = createAsyncThunk(
+  'audioFiles/select',
+  async ({ id }: { id: string }) => {
     try {
-      file = head(await loadAudioFilesToArrayBuffers())
+      const file = head(await loadAudioFilesToArrayBuffers())
 
       if (!file) throw new Error('No file loaded')
 
-      dispatch({
-        type: 'AUDIO_FILE_LOAD_COMPLETE',
-        payload: { id, file },
-      })
+      return { id, file }
     } catch (e) {
-      dispatch({
-        type: 'AUDIO_FILE_LOAD_ERROR',
-        payload: { id, error: errorFrom(e) },
-      })
+      throw errorFrom(e)
     }
+  },
+)
 
-    if (file) void decodeFileBuffer(dispatch, id, file)
-  }
-
-export const receiveAudioFileAction =
-  (id: string, file: File): AppThunkAction =>
-  async (dispatch) => {
-    dispatch({ type: 'AUDIO_FILE_LOAD_START', payload: { id } })
-
-    let fileData: AudioFileData | undefined
-
+export const receiveAudioFile = createAsyncThunk(
+  'audioFiles/receive',
+  async ({ id, file }: { id: string; file: File }) => {
     try {
-      fileData = await readFileToArrayBuffer(file)
+      const fileData = await readFileToArrayBuffer(file)
 
-      dispatch({
-        type: 'AUDIO_FILE_LOAD_COMPLETE',
-        payload: { id, file: fileData },
-      })
+      return { id, file: fileData }
     } catch (e) {
-      dispatch({
-        type: 'AUDIO_FILE_LOAD_ERROR',
-        payload: { id, error: errorFrom(e) },
-      })
+      throw errorFrom(e)
     }
+  },
+)
 
-    if (fileData) void decodeFileBuffer(dispatch, id, fileData)
-  }
+export const decodeAudioFile = createAsyncThunk(
+  'audioFiles/decode',
+  async ({
+    id,
+    file,
+  }: {
+    id: string
+    file: AudioFileData
+  }): Promise<{ id: string; file: DecodedAudioFileData }> => {
+    try {
+      const audioBuffer = await getAudioContext().decodeAudioData(file.buffer)
 
-const decodeFileBuffer = async (
-  dispatch: AppDispatch,
-  id: string,
-  file: AudioFileData,
-) => {
-  dispatch({ type: 'AUDIO_FILE_DECODE_START', payload: { id } })
-
-  try {
-    const audioBuffer = await getAudioContext().decodeAudioData(file.buffer)
-
-    dispatch({
-      type: 'AUDIO_FILE_DECODE_COMPLETE',
-      payload: {
+      return {
         id,
         file: { ...pick(['fileName', 'fileType'], file), audioBuffer },
-      },
-    })
-  } catch (e) {
-    dispatch({
-      type: 'AUDIO_FILE_DECODE_ERROR',
-      payload: { id, error: errorFrom(e) },
-    })
-  }
-}
+      }
+    } catch (e) {
+      throw errorFrom(e)
+    }
+  },
+)
 
 const errorFrom = (value: unknown) =>
   value instanceof Error ? value : new Error(String(value))

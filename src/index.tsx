@@ -2,7 +2,7 @@ import { hydrateRoot } from 'react-dom/client'
 
 import { requireWindowWith } from '~/lib/env'
 import offlineInstall from '~/lib/offline-install'
-import { configureStore } from '~/state/configure-store'
+import { createStore } from '~/state/configure-store'
 
 import App from './app'
 
@@ -26,4 +26,4 @@ const initialState =
     ? parsedState
     : {}
 
-hydrateRoot(appRoot, <App store={configureStore(initialState)} />)
+hydrateRoot(appRoot, <App store={createStore(initialState)} />)

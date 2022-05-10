@@ -1,7 +1,10 @@
 import { useCallback } from 'react'
 
+import {
+  registerKeyPress as registerKeyPressAction,
+  registerKeyRelease as registerKeyReleaseAction,
+} from '../ui/actions'
 import { selectModifierKeys } from '../ui/selectors'
-import { registerKeyPressAction, registerKeyReleaseAction } from '../ui/actions'
 import { useAppDispatch, useAppSelector } from './base'
 
 const useModifierKeys = () => {

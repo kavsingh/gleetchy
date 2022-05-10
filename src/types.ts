@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { Action } from 'redux'
 
 export interface AudioNodeIdentifierMeta {
   readonly id: string
@@ -73,12 +72,3 @@ export interface DecodedAudioFileData {
   fileName: string
   fileType: string
 }
-
-export interface ActionWithPayload<TYPE, PAYLOAD> extends Action<TYPE> {
-  payload: PAYLOAD
-}
-
-export type ActionCreatorWithArguments<
-  A extends Action,
-  ARGS extends unknown[],
-> = (...args: ARGS) => A

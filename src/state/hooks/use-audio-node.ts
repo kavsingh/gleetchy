@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react'
 import { equals } from 'ramda'
 
 import {
-  updateAudioNodeAudioPropsAction,
-  updateAudioNodeLabelAction,
-  duplicateAudioNodeAction,
-  removeAudioNodeAction,
+  updateAudioNodeProps,
+  updateAudioNodeLabel,
+  duplicateAudioNode,
+  removeAudioNode,
 } from '~/state/audio-nodes/actions'
 import { getConnectionsFor } from '~/lib/audio'
 
@@ -35,23 +35,23 @@ const useAudioNode = <T extends Record<string, unknown>>(
   const [connections, setConnections] = useState<AudioNodeConnection[]>([])
 
   const duplicate = useCallback(
-    () => dispatch(duplicateAudioNodeAction(id)),
+    () => dispatch(duplicateAudioNode(id)),
     [id, dispatch],
   )
 
   const remove = useCallback(
-    () => dispatch(removeAudioNodeAction(id)),
+    () => dispatch(removeAudioNode(id)),
     [id, dispatch],
   )
 
   const updateAudioProps = useCallback(
     (audioProps: Partial<T>) =>
-      dispatch(updateAudioNodeAudioPropsAction(id, audioProps)),
+      dispatch(updateAudioNodeProps({ id, audioProps })),
     [id, dispatch],
   )
 
   const updateLabel = useCallback(
-    (label: string) => dispatch(updateAudioNodeLabelAction(id, label)),
+    (label: string) => dispatch(updateAudioNodeLabel({ id, label })),
     [id, dispatch],
   )
 
@@ -69,14 +69,14 @@ const useAudioNode = <T extends Record<string, unknown>>(
   }, [id, allConnections])
 
   return {
-    label: node.label,
-    audioProps: node.audioProps,
     connections,
     isActive,
     updateAudioProps,
     updateLabel,
     duplicate,
     remove,
+    label: node.label,
+    audioProps: node.audioProps,
   } as const
 }
 

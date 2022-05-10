@@ -1,21 +1,21 @@
-import { MAIN_OUT_ID } from '~/constants/audio'
 import {
-  hasConnectionTo,
-  hasInstrumentType,
   hasAudioEffectType,
+  hasInstrumentType,
+  hasConnectionTo,
 } from '~/lib/audio'
+import { MAIN_OUT_ID } from '~/constants/audio'
 import { selectConnections } from '~/state/connections/selectors'
 
 import { createValueEqSelector } from '../lib/selector'
 
-import type { AppState } from '~/state/configure-store'
 import type { AudioNodeMeta } from '~/types'
+import type { AppState } from '../configure-store'
 
 export const selectAudioNodes = (state: AppState) => state.audioNodes.byId
 
 // TODO: Better naming
 export const selectNodesIdentifierMeta = (state: AppState) =>
-  state.audioNodes.orderedIndentifierMeta
+  state.audioNodes.orderedIdentifierMeta
 
 export const selectInstrumentsIdentifierMeta = createValueEqSelector(
   selectNodesIdentifierMeta,

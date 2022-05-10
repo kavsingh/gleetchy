@@ -1,16 +1,15 @@
 import { useCallback } from 'react'
 
+import { togglePlayback as togglePlaybackAction } from '~/state/global-playback/actions'
 import { selectIsPlaying } from '~/state/global-playback/selectors'
-import { toggleGlobalPlaybackAction } from '~/state/global-playback/actions'
 
 import { useAppDispatch, useAppSelector } from './base'
 
 const useGlobalPlayback = () => {
   const dispatch = useAppDispatch()
   const isPlaying = useAppSelector(selectIsPlaying)
-
   const togglePlayback = useCallback(
-    () => dispatch(toggleGlobalPlaybackAction()),
+    () => dispatch(togglePlaybackAction()),
     [dispatch],
   )
 
