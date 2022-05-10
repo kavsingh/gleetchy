@@ -25,11 +25,8 @@ export const createStore = (
     reducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: {
-          ignoredActions: ['audioFiles/select/fulfilled'],
-        },
-      }),
+      // TODO: revisit
+      getDefaultMiddleware({ serializableCheck: false }),
     devTools: process.env.NODE_ENV !== 'production',
   })
 
