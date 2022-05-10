@@ -25,6 +25,27 @@ export const audioFilesSlice = createSlice({
   name: 'audioFiles',
   reducers: {},
   extraReducers: (builder) => {
+    builder.addCase(decodeAudioFile.pending, (state, action) => {
+      state.decodingIds = stableAppendUnique(
+        [action.meta.arg.id],
+        state.decodingIds,
+      )
+      state.decodeErrors = stableOmit([action.meta.arg.id], state.decodeErrors)
+    })
+
+    builder.addCase(decodeAudioFile.rejected, (state, action) => {
+      state.decodingIds = stableWithout([action.meta.arg.id], state.decodingIds)
+      state.loadErrors[action.meta.arg.id] = action.error
+    })
+
+    builder.addCase(decodeAudioFile.fulfilled, (state, action) => {
+      state.decodingIds = stableWithout([action.payload.id], state.decodingIds)
+      state.files[action.payload.id] = Object.assign(
+        state.files[action.payload.id] ?? {},
+        action.payload.file,
+      )
+    })
+
     builder.addMatcher(
       isPending(selectAudioFile, receiveAudioFile),
       (state, action) => {
@@ -56,27 +77,6 @@ export const audioFilesSlice = createSlice({
         )
       },
     )
-
-    builder.addCase(decodeAudioFile.pending, (state, action) => {
-      state.decodingIds = stableAppendUnique(
-        [action.meta.arg.id],
-        state.decodingIds,
-      )
-      state.decodeErrors = stableOmit([action.meta.arg.id], state.decodeErrors)
-    })
-
-    builder.addCase(decodeAudioFile.rejected, (state, action) => {
-      state.decodingIds = stableWithout([action.meta.arg.id], state.decodingIds)
-      state.loadErrors[action.meta.arg.id] = action.error
-    })
-
-    builder.addCase(decodeAudioFile.fulfilled, (state, action) => {
-      state.decodingIds = stableWithout([action.payload.id], state.decodingIds)
-      state.files[action.payload.id] = Object.assign(
-        state.files[action.payload.id] ?? {},
-        action.payload.file,
-      )
-    })
   },
 })
 

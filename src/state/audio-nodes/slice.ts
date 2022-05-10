@@ -87,7 +87,10 @@ export const audioNodesSlice = createSlice({
     },
     updateAudioNodeProps: (
       state,
-      action: PayloadAction<{ id: string; audioProps: unknown }>,
+      action: PayloadAction<{
+        id: string
+        audioProps: Record<string, unknown>
+      }>,
     ) => {
       const { id, audioProps } = action.payload
       const existing = state.byId[id]

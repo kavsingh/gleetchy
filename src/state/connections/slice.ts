@@ -44,7 +44,7 @@ export const connectionsSlice = createSlice({
     ) => {
       const idx = state.findIndex(connectionIs({ fromId, toId }))
 
-      if (idx < 0) state.splice(idx, 1)
+      if (idx > -1) state.splice(idx, 1)
       else state.push(createConnection(state, { fromId, toId }))
     },
   },

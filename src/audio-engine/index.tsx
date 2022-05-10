@@ -6,8 +6,8 @@ import { selectConnections } from '~/state/connections/selectors'
 import { selectAudioEngineEvents } from '~/state/audio-engine/selectors'
 import { useAppSelector, useAppDispatch } from '~/state/hooks/base'
 import {
-  clearAudioEngineEventsAction,
-  dispatchAudioEngineSubscriptionAction,
+  clearEvents,
+  publishSubscriptionEvent,
 } from '~/state/audio-engine/actions'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
@@ -28,15 +28,15 @@ const AudioEngine: FC = () => {
   const [workletsReady, setWorkletsReady] = useState(false)
 
   const clearAudioEngineEvents = useCallback(
-    () => dispatch(clearAudioEngineEventsAction()),
+    () => dispatch(clearEvents()),
     [dispatch],
   )
 
-  const dispatchSubscriptionEvent = useCallback<
-    typeof dispatchAudioEngineSubscriptionAction
-  >(
-    (nodeId, eventPayload) =>
-      dispatch(dispatchAudioEngineSubscriptionAction(nodeId, eventPayload)),
+  const dispatchSubscriptionEvent = useCallback(
+    (
+      nodeId: PublishEventArgs['nodeId'],
+      subscriptionPayload: PublishEventArgs['subscriptionPayload'],
+    ) => dispatch(publishSubscriptionEvent({ nodeId, subscriptionPayload })),
     [dispatch],
   )
 
@@ -72,3 +72,5 @@ const registerWorklets = async () => {
     sources.map((source) => context.audioWorklet.addModule(source)),
   )
 }
+
+type PublishEventArgs = Parameters<typeof publishSubscriptionEvent>[0]

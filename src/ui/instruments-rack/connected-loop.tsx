@@ -1,12 +1,12 @@
 import { useCallback, memo } from 'react'
-import { useDispatch } from 'react-redux'
 
 import { nodeType, UI } from '~/nodes/instruments/loop'
 import {
-  receiveAudioFileAction,
-  selectAudioFileAction,
+  receiveAudioFile as receiveAudioFileAction,
+  selectAudioFile as selectAudioFileAction,
 } from '~/state/audio-files/actions'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
+import { useAppDispatch } from '~/state/hooks/base'
 
 import type { FC } from 'react'
 import type { NodeProps as Eq3Props } from '~/nodes/audio-effects/eq3'
@@ -24,15 +24,15 @@ const ConnectedLoop: FC<{ id: string }> = ({ id }) => {
     remove,
   } = useAudioNode<NodeProps>(id, validateNodeType(nodeType))
 
-  const dispatch = useDispatch()
+  const dispatch = useAppDispatch()
 
   const receiveAudioFile = useCallback(
-    (file: File) => dispatch(receiveAudioFileAction(id, file)),
+    (file: File) => dispatch(receiveAudioFileAction({ id, file })),
     [id, dispatch],
   )
 
   const selectAudioFile = useCallback(
-    () => dispatch(selectAudioFileAction(id)),
+    () => dispatch(selectAudioFileAction({ id })),
     [id, dispatch],
   )
 

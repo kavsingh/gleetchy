@@ -1,5 +1,6 @@
 import { Component } from 'react'
 import { pick, tryCatch } from 'ramda'
+import { isAnyOf } from '@reduxjs/toolkit'
 
 import { warn } from '~/lib/dev'
 import { noop } from '~/lib/util'
@@ -19,9 +20,21 @@ import {
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
 import { GAudioNode } from '~/lib/g-audio-node'
+import { togglePlayback } from '~/state/global-playback/actions'
+import {
+  addConnection,
+  removeConnection,
+  toggleConnection,
+} from '~/state/connections/actions'
+import {
+  addAudioNode,
+  duplicateAudioNode,
+  removeAudioNode,
+  updateAudioNodeProps,
+} from '~/state/audio-nodes/actions'
+import { decodeAudioFile } from '~/state/audio-files/actions'
 
 import type { ReactNode } from 'react'
-import type { AudioEngineEvent } from '~/state/audio-engine/types'
 import type { GInstrumentNode } from '~/lib/g-audio-node'
 import type { AudioNodeConnection, AudioNodeState } from '~/types'
 
@@ -56,7 +69,7 @@ const createNewNode = (
 }
 
 export interface AudioEngineProps {
-  audioEngineEvents: AudioEngineEvent[]
+  audioEngineEvents: unknown[]
   connections: AudioNodeConnection[]
   isPlaying: boolean
   nodes: {
@@ -218,68 +231,65 @@ class AudioEngine extends Component<AudioEngineProps> {
     setNodeProps({ node, audioProps })
   }
 
-  private processAudioEngineEvent = (event: AudioEngineEvent) => {
-    switch (event.type) {
-      case 'GLOBAL_PLAYBACK_START':
-        this.forEachInstrument(this.playAndSubscribeInstrument)
+  private processAudioEngineEvent = (event: unknown) => {
+    if (isAnyOf(togglePlayback)) {
+      this.forEachInstrument(this.toggleInstrumentPlaybackAndSubscription)
 
-        break
-      case 'GLOBAL_PLAYBACK_STOP':
-        this.forEachInstrument(this.stopAndUnsubscribeInstrument)
+      return
+    }
 
-        break
-      case 'GLOBAL_PLAYBACK_TOGGLE':
-        this.forEachInstrument(this.toggleInstrumentPlaybackAndSubscription)
+    if (isAnyOf(addConnection, removeConnection, toggleConnection)) {
+      this.updateAudioGraph()
 
-        break
-      case 'AUDIO_NODE_UPDATE_AUDIO_PROPS':
-        this.updateNode(event.payload)
+      return
+    }
 
-        break
-      case 'AUDIO_FILE_DECODE_COMPLETE':
-        this.updateNode({
-          id: event.payload.id,
-          audioProps: event.payload.file as unknown as Record<string, unknown>,
-        })
+    if (isAnyOf(addAudioNode, duplicateAudioNode)) {
+      this.updateAudioNodes()
+      this.updateAudioGraph()
 
-        break
-      case 'CONNECTION_ADD':
-      case 'CONNECTION_REMOVE':
-      case 'CONNECTION_TOGGLE':
-        this.updateAudioGraph()
+      return
+    }
 
-        break
-      case 'AUDIO_NODE_ADD':
-      case 'AUDIO_NODE_DUPLICATE':
-        this.updateAudioNodes()
-        this.updateAudioGraph()
+    if (isAnyOf(removeAudioNode)) {
+      const id = (event as ReturnType<typeof removeAudioNode>).payload
+      const node = this.audioNodes[id]
 
-        break
-      case 'AUDIO_NODE_REMOVE': {
-        const { id } = event.payload
-        const node = this.audioNodes[id]
+      if (!node) return
 
-        if (!node) return
+      if (isInstrumentNode(node)) this.stopAndUnsubscribeInstrument(node)
 
-        if (isInstrumentNode(node)) this.stopAndUnsubscribeInstrument(node)
-
-        if (node instanceof GAudioNode) {
-          try {
-            node.destroy()
-          } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e)
-          }
+      if (node instanceof GAudioNode) {
+        try {
+          node.destroy()
+        } catch (e) {
+          // eslint-disable-next-line no-console
+          console.error(e)
         }
-
-        if (!this.props.nodes[id]) delete this.audioNodes[id]
-
-        this.updateAudioGraph()
-
-        break
       }
-      default:
-        break
+
+      if (!this.props.nodes[id]) delete this.audioNodes[id]
+
+      this.updateAudioGraph()
+
+      return
+    }
+
+    if (isAnyOf(updateAudioNodeProps)) {
+      this.updateNode(
+        (event as ReturnType<typeof updateAudioNodeProps>).payload,
+      )
+    }
+
+    if (isAnyOf(decodeAudioFile.fulfilled)) {
+      const { id, file } = (
+        event as ReturnType<typeof decodeAudioFile.fulfilled>
+      ).payload
+
+      this.updateNode({
+        id,
+        audioProps: file as unknown as Record<string, unknown>,
+      })
     }
   }
 }

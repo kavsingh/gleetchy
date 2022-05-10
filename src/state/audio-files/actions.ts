@@ -11,13 +11,16 @@ import type { AudioFileData, DecodedAudioFileData } from '~/types'
 
 export const selectAudioFile = createAsyncThunk(
   'audioFiles/select',
-  async ({ id }: { id: string }) => {
+  async ({ id }: { id: string }, { dispatch }) => {
     try {
       const file = head(await loadAudioFilesToArrayBuffers())
 
       if (!file) throw new Error('No file loaded')
+      const result = { id, file }
 
-      return { id, file }
+      void dispatch(decodeAudioFile(result))
+
+      return result
     } catch (e) {
       throw errorFrom(e)
     }
@@ -26,11 +29,14 @@ export const selectAudioFile = createAsyncThunk(
 
 export const receiveAudioFile = createAsyncThunk(
   'audioFiles/receive',
-  async ({ id, file }: { id: string; file: File }) => {
+  async ({ id, file }: { id: string; file: File }, { dispatch }) => {
     try {
       const fileData = await readFileToArrayBuffer(file)
+      const result = { id, file: fileData }
 
-      return { id, file: fileData }
+      void dispatch(decodeAudioFile(result))
+
+      return result
     } catch (e) {
       throw errorFrom(e)
     }
