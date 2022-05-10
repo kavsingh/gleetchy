@@ -232,27 +232,27 @@ class AudioEngine extends Component<AudioEngineProps> {
   }
 
   private processAudioEngineEvent = (event: unknown) => {
-    if (isAnyOf(togglePlayback)) {
+    if (isAnyOf(togglePlayback)(event)) {
       this.forEachInstrument(this.toggleInstrumentPlaybackAndSubscription)
 
       return
     }
 
-    if (isAnyOf(addConnection, removeConnection, toggleConnection)) {
+    if (isAnyOf(addConnection, removeConnection, toggleConnection)(event)) {
       this.updateAudioGraph()
 
       return
     }
 
-    if (isAnyOf(addAudioNode, duplicateAudioNode)) {
+    if (isAnyOf(addAudioNode, duplicateAudioNode)(event)) {
       this.updateAudioNodes()
       this.updateAudioGraph()
 
       return
     }
 
-    if (isAnyOf(removeAudioNode)) {
-      const id = (event as ReturnType<typeof removeAudioNode>).payload
+    if (isAnyOf(removeAudioNode)(event)) {
+      const id = event.payload
       const node = this.audioNodes[id]
 
       if (!node) return
@@ -275,21 +275,16 @@ class AudioEngine extends Component<AudioEngineProps> {
       return
     }
 
-    if (isAnyOf(updateAudioNodeProps)) {
-      this.updateNode(
-        (event as ReturnType<typeof updateAudioNodeProps>).payload,
-      )
+    if (isAnyOf(updateAudioNodeProps)(event)) {
+      this.updateNode(event.payload)
+
+      return
     }
 
-    if (isAnyOf(decodeAudioFile.fulfilled)) {
-      const { id, file } = (
-        event as ReturnType<typeof decodeAudioFile.fulfilled>
-      ).payload
+    if (isAnyOf(decodeAudioFile.fulfilled)(event)) {
+      const { id, file } = event.payload
 
-      this.updateNode({
-        id,
-        audioProps: file as unknown as Record<string, unknown>,
-      })
+      this.updateNode({ id, audioProps: { ...file } })
     }
   }
 }
