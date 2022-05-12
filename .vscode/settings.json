@@ -1,7 +1,13 @@
 {
-  "editor.formatOnSave": true,
-  "eslint.enable": true,
+  "css.validate": false,
+  "scss.validate": false,
   "stylelint.enable": true,
+  "stylelint.validate": [
+    "css",
+    "tsx",
+  ],
+  "eslint.enable": true,
+  "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },

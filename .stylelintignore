@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dist-static/
+coverage/
+reports/
+.stryker-tmp/
+.DS_Store
+*.log
+*.log.*
+*.sublime-project
+*.sublime-workspace
+*stats.html
