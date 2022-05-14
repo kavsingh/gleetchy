@@ -19,12 +19,11 @@ import BaseAudioEngine from './audio-engine'
 import type { FC } from 'react'
 
 const AudioEngine: FC = () => {
+  const dispatch = useAppDispatch()
+  const { audioContext } = useAudioContext()
+  const { isPlaying } = useGlobalPlayback()
   const nodes = useAppSelector(selectAudioNodes)
   const connections = useAppSelector(selectConnections)
-  const { isPlaying } = useGlobalPlayback()
-  const { audioContext } = useAudioContext()
-
-  const dispatch = useAppDispatch()
   const audioEngineEvents = useAppSelector(selectAudioEngineEvents)
   const [workletsReady, setWorkletsReady] = useState(false)
 
@@ -47,7 +46,7 @@ const AudioEngine: FC = () => {
     void registerWorklets(audioContext).then(() => setWorkletsReady(true))
   }, [audioContext])
 
-  return workletsReady ? (
+  return audioContext && workletsReady ? (
     <BaseAudioEngine
       audioContext={audioContext}
       isPlaying={isPlaying}
