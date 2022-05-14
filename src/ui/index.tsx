@@ -30,12 +30,14 @@ const UI: FC = () => {
 
     WINDOW.addEventListener('keydown', registerKeyPress, true)
     WINDOW.addEventListener('keyup', registerKeyRelease, true)
-    WINDOW.addEventListener('click', clickHandler)
+    WINDOW.addEventListener('click', clickHandler, {
+      passive: true,
+      once: true,
+    })
 
     return () => {
       WINDOW.removeEventListener('keydown', registerKeyPress, true)
       WINDOW.removeEventListener('keyup', registerKeyRelease, true)
-      WINDOW.removeEventListener('click', clickHandler, true)
     }
   }, [registerKeyPress, registerKeyRelease, initAudioContext])
 

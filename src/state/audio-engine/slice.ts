@@ -1,6 +1,6 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
-import { getAudioContext } from '~/apis/audio'
+import { requireWindowWith } from '~/lib/env'
 
 import { decodeAudioFile } from '../audio-files/actions'
 import {
@@ -56,6 +56,20 @@ export const audioEngineSlice = createSlice({
     })
   },
 })
+
+const getAudioContext = () => {
+  const WINDOW = requireWindowWith()
+
+  if (!WINDOW) throw new Error('Could not access dom')
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+  const AudioContext = WINDOW.AudioContext || (WINDOW as any).webkitAudioContext
+
+  if (!AudioContext) throw new Error('No audio context available')
+
+  // NOTE: https://developer.chrome.com/blog/autoplay/#web-audio
+  return new AudioContext()
+}
 
 const sourceActions = [
   addAudioNode,
