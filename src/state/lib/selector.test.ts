@@ -1,3 +1,4 @@
+import { describe, it, expect } from 'vitest'
 import { createSelector } from 'reselect'
 
 import { createValueEqSelector } from './selector'

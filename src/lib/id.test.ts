@@ -1,6 +1,8 @@
+import { describe, it, expect, vi } from 'vitest'
+
 import { prefixedId } from './id'
 
-jest.mock('cuid', () => ({ slug: () => 'SLUG' }))
+vi.mock('cuid', () => ({ slug: () => 'SLUG' }))
 
 describe('lib/id', () => {
   describe('prefixedId', () => {

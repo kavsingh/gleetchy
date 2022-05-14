@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { stableWithout, stableFilter, stableAppendUnique } from './array'
 
 describe('util/array', () => {

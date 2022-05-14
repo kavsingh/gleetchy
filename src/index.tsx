@@ -1,7 +1,6 @@
-import { hydrateRoot } from 'react-dom/client'
+import { createRoot } from 'react-dom/client'
 
 import { requireWindowWith } from '~/lib/env'
-import offlineInstall from '~/lib/offline-install'
 import { createStore } from '~/state/configure-store'
 
 import App from './app'
@@ -14,9 +13,8 @@ const appRoot = WINDOW.document.getElementById('app-root')
 
 if (!appRoot) throw new Error('Could not find app mount at #app-root')
 
+const reactRoot = createRoot(appRoot)
 const { ssrInitialState } = appRoot.dataset
-
-offlineInstall('gleetchy-sw.js', '')
 
 delete appRoot.dataset.ssrInitialState
 
@@ -26,4 +24,4 @@ const initialState =
     ? parsedState
     : {}
 
-hydrateRoot(appRoot, <App store={createStore(initialState)} />)
+reactRoot.render(<App store={createStore(initialState)} />)

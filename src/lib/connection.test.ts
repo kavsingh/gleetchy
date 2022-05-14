@@ -1,24 +1,9 @@
+import { describe, it, expect, vi } from 'vitest'
+
 import { makeConnectable } from './connection'
 import { noop } from './util'
 
 const context = new AudioContext()
-
-const createConnectableFromGainNodes = () => {
-  const inNode = context.createGain()
-  const outNode = context.createGain()
-
-  jest.spyOn(inNode, 'connect')
-  jest.spyOn(outNode, 'connect')
-
-  return {
-    inNode,
-    outNode,
-    node: makeConnectable({
-      getInNode: jest.fn(() => inNode),
-      getOutNode: jest.fn(() => outNode),
-    })({ type: 'node', set: noop }),
-  }
-}
 
 describe('lib/connection', () => {
   describe('makeConnectable', () => {
@@ -47,3 +32,20 @@ describe('lib/connection', () => {
     })
   })
 })
+
+const createConnectableFromGainNodes = () => {
+  const inNode = context.createGain()
+  const outNode = context.createGain()
+
+  vi.spyOn(inNode, 'connect')
+  vi.spyOn(outNode, 'connect')
+
+  return {
+    inNode,
+    outNode,
+    node: makeConnectable({
+      getInNode: vi.fn(() => inNode),
+      getOutNode: vi.fn(() => outNode),
+    })({ type: 'node', set: noop }),
+  }
+}

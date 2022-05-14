@@ -18,7 +18,16 @@ const testFilePatterns = (extensions = '*') =>
 module.exports = {
   root: true,
   env: { es6: true, node: true, browser: false },
-  settings: { 'import/resolver': 'babel-module' },
+  settings: {
+    'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
+    'import/resolver': {
+      'eslint-import-resolver-typescript': { project: './tsconfig.json' },
+      'eslint-import-resolver-custom-alias': {
+        alias: { '~': './src' },
+        extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      },
+    },
+  },
   plugins: ['filenames'],
   extends: [
     'eslint:recommended',
@@ -56,10 +65,6 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['*.js'],
-      parser: '@babel/eslint-parser',
-    },
-    {
       files: ['*.ts?(x)'],
       parser: '@typescript-eslint/parser',
       parserOptions: { project: './tsconfig.json' },
@@ -72,7 +77,10 @@ module.exports = {
         'no-shadow': 'off',
         'no-throw-literal': 'off',
         'no-unused-vars': 'off',
-        '@typescript-eslint/consistent-type-imports': ['error'],
+        '@typescript-eslint/consistent-type-imports': [
+          'error',
+          { disallowTypeAnnotations: false },
+        ],
         '@typescript-eslint/member-ordering': ['warn'],
         '@typescript-eslint/no-shadow': [
           'error',
@@ -98,7 +106,6 @@ module.exports = {
       files: ['src/**/*'],
       env: { node: false, browser: true },
       settings: { react: { version: 'detect' } },
-      plugins: ['@emotion'],
       extends: ['plugin:react/recommended', 'plugin:react-hooks/recommended'],
       rules: {
         'no-console': 'error',
@@ -110,18 +117,11 @@ module.exports = {
         'react/jsx-uses-react': 'off',
         'react/prop-types': 'off',
         'react/react-in-jsx-scope': 'off',
-        '@emotion/no-vanilla': 'error',
-        '@emotion/syntax-preference': ['error', 'string'],
       },
     },
     {
       files: testFilePatterns(),
-      env: { 'node': true, 'jest/globals': true },
-      extends: [
-        'plugin:jest/recommended',
-        'plugin:jest/style',
-        'plugin:jest-dom/recommended',
-      ],
+      env: { node: true },
       rules: {
         'no-console': 'off',
         'import/no-extraneous-dependencies': ['error', devDependencies],
@@ -129,7 +129,7 @@ module.exports = {
       },
     },
     {
-      files: testFilePatterns('[jt]s?(x)'),
+      files: testFilePatterns('[jt]sx'),
       extends: ['plugin:testing-library/react'],
     },
     {
@@ -137,9 +137,8 @@ module.exports = {
       rules: {
         '@typescript-eslint/no-explicit-any': 'off',
         '@typescript-eslint/no-non-null-assertion': 'off',
-        '@typescript-eslint/no-unsafe-argument': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
-        '@typescript-eslint/no-unsafe-member-access': 'off',
+        '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/unbound-method': 'off',
       },
     },

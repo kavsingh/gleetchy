@@ -1,3 +1,5 @@
+import { describe, it, expect } from 'vitest'
+
 import { requireWindowWith, filterSupportedEvents } from './env'
 
 // Note: this suite assumes window object as provided by jest / jsdom
