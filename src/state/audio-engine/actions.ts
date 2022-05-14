@@ -1,4 +1,4 @@
 import { audioEngineSlice } from './slice'
 
-export const { clearEvents, publishSubscriptionEvent } =
+export const { clearEvents, publishSubscriptionEvent, initAudioContext } =
   audioEngineSlice.actions

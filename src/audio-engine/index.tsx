@@ -8,11 +8,11 @@ import {
   clearEvents,
   publishSubscriptionEvent,
 } from '~/state/audio-engine/actions'
+import useAudioContext from '~/state/hooks/use-audio-context'
 import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
 import { GDelayNode } from '~/nodes/audio-effects/delay/create-audio-node'
 import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'
-import { useAudioContext } from '~/contexts/audio-context-context'
 
 import BaseAudioEngine from './audio-engine'
 

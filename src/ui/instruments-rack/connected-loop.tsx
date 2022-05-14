@@ -7,7 +7,7 @@ import {
 } from '~/state/audio-files/actions'
 import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
 import { useAppDispatch } from '~/state/hooks/base'
-import { useAudioContext } from '~/contexts/audio-context-context'
+import useAudioContext from '~/state/hooks/use-audio-context'
 
 import type { FC } from 'react'
 import type { NodeProps as Eq3Props } from '~/nodes/audio-effects/eq3'

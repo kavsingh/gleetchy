@@ -1,5 +1,7 @@
 import { createSlice, isAnyOf } from '@reduxjs/toolkit'
 
+import { getAudioContext } from '~/apis/audio'
+
 import { decodeAudioFile } from '../audio-files/actions'
 import {
   addAudioNode,
@@ -22,6 +24,17 @@ export const audioEngineSlice = createSlice({
   initialState,
   name: 'audioEngine',
   reducers: {
+    initAudioContext: (state) => {
+      const context = state.audioContext
+
+      if (!context || context.state === 'closed') {
+        state.audioContext = getAudioContext()
+
+        return
+      }
+
+      if (context?.state === 'suspended') void context.resume()
+    },
     clearEvents: (state) => {
       state.events = []
     },

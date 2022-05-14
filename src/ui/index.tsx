@@ -5,7 +5,7 @@ import styled from '@emotion/styled'
 import { requireWindowWith } from '~/lib/env'
 import useModifierKeys from '~/state/hooks/use-modifier-keys'
 import favicon from '~/assets/icons/48x48.png'
-import { useAudioContext } from '~/contexts/audio-context-context'
+import useAudioContext from '~/state/hooks/use-audio-context'
 
 import AudioEffectsRack from './audio-effects-rack'
 import InstrumentsRack from './instruments-rack'
