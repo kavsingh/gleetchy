@@ -59,4 +59,5 @@ const sourceActions = [
 interface AudioEngineState {
   events: unknown[]
   subscriptionData: { [nodeId: string]: { [key: string]: unknown } }
+  audioContext?: AudioContext
 }

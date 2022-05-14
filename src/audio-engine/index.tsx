@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { getAudioContext } from '~/apis/audio'
 import { selectAudioNodes } from '~/state/audio-nodes/selectors'
 import { selectConnections } from '~/state/connections/selectors'
 import { selectAudioEngineEvents } from '~/state/audio-engine/selectors'
@@ -13,6 +12,7 @@ import useGlobalPlayback from '~/state/hooks/use-global-playback'
 import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
 import { GDelayNode } from '~/nodes/audio-effects/delay/create-audio-node'
 import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'
+import { useAudioContext } from '~/contexts/audio-context-context'
 
 import BaseAudioEngine from './audio-engine'
 
@@ -22,6 +22,7 @@ const AudioEngine: FC = () => {
   const nodes = useAppSelector(selectAudioNodes)
   const connections = useAppSelector(selectConnections)
   const { isPlaying } = useGlobalPlayback()
+  const { audioContext } = useAudioContext()
 
   const dispatch = useAppDispatch()
   const audioEngineEvents = useAppSelector(selectAudioEngineEvents)
@@ -41,11 +42,14 @@ const AudioEngine: FC = () => {
   )
 
   useEffect(() => {
-    void registerWorklets().then(() => setWorkletsReady(true))
-  }, [])
+    if (!audioContext) return
+
+    void registerWorklets(audioContext).then(() => setWorkletsReady(true))
+  }, [audioContext])
 
   return workletsReady ? (
     <BaseAudioEngine
+      audioContext={audioContext}
       isPlaying={isPlaying}
       nodes={nodes}
       connections={connections}
@@ -58,8 +62,7 @@ const AudioEngine: FC = () => {
 
 export default AudioEngine
 
-const registerWorklets = async () => {
-  const context = getAudioContext()
+const registerWorklets = async (context: AudioContext) => {
   const sources = (
     await Promise.all([
       GLoopNode.getWorklets(),

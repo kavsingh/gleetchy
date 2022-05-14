@@ -5,20 +5,19 @@ import {
   readFileToArrayBuffer,
   loadAudioFilesToArrayBuffers,
 } from '~/apis/file'
-import { getAudioContext } from '~/apis/audio'
 
 import type { AudioFileData, DecodedAudioFileData } from '~/types'
 
 export const selectAudioFile = createAsyncThunk(
   'audioFiles/select',
-  async ({ id }: { id: string }, { dispatch }) => {
+  async ({ id, audioContext }: SelectAudioFileArg, { dispatch }) => {
     try {
       const file = head(await loadAudioFilesToArrayBuffers())
 
       if (!file) throw new Error('No file loaded')
       const result = { id, file }
 
-      void dispatch(decodeAudioFile(result))
+      void dispatch(decodeAudioFile({ ...result, audioContext }))
 
       return result
     } catch (e) {
@@ -29,12 +28,12 @@ export const selectAudioFile = createAsyncThunk(
 
 export const receiveAudioFile = createAsyncThunk(
   'audioFiles/receive',
-  async ({ id, file }: { id: string; file: File }, { dispatch }) => {
+  async ({ id, file, audioContext }: ReceiveAudioFileArg, { dispatch }) => {
     try {
       const fileData = await readFileToArrayBuffer(file)
       const result = { id, file: fileData }
 
-      void dispatch(decodeAudioFile(result))
+      void dispatch(decodeAudioFile({ ...result, audioContext }))
 
       return result
     } catch (e) {
@@ -48,12 +47,10 @@ export const decodeAudioFile = createAsyncThunk(
   async ({
     id,
     file,
-  }: {
-    id: string
-    file: AudioFileData
-  }): Promise<{ id: string; file: DecodedAudioFileData }> => {
+    audioContext,
+  }: DecodeAudioFileArg): Promise<DecodeAudioFileReturn> => {
     try {
-      const audioBuffer = await getAudioContext().decodeAudioData(file.buffer)
+      const audioBuffer = await audioContext.decodeAudioData(file.buffer)
 
       return {
         id,
@@ -67,3 +64,25 @@ export const decodeAudioFile = createAsyncThunk(
 
 const errorFrom = (value: unknown) =>
   value instanceof Error ? value : new Error(String(value))
+
+interface SelectAudioFileArg {
+  id: string
+  audioContext: AudioContext
+}
+
+interface ReceiveAudioFileArg {
+  id: string
+  file: File
+  audioContext: AudioContext
+}
+
+interface DecodeAudioFileArg {
+  id: string
+  file: AudioFileData
+  audioContext: AudioContext
+}
+
+interface DecodeAudioFileReturn {
+  id: string
+  file: DecodedAudioFileData
+}

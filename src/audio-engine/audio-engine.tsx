@@ -5,7 +5,6 @@ import { isAnyOf } from '@reduxjs/toolkit'
 import { warn } from '~/lib/dev'
 import { noop } from '~/lib/util'
 import { isInstrumentNode } from '~/lib/audio'
-import { getAudioContext } from '~/apis/audio'
 import { MAIN_OUT_ID } from '~/constants/audio'
 import {
   createAudioNode as createDelayNode,
@@ -75,12 +74,12 @@ export interface AudioEngineProps {
   nodes: {
     [key: string]: AudioNodeState<Record<string, unknown>>
   }
+  audioContext?: AudioContext
   clearAudioEngineEvents(): unknown
   dispatchSubscriptionEvent(nodeId: string, payload: unknown): unknown
 }
 
 class AudioEngine extends Component<AudioEngineProps> {
-  private audioContext?: AudioContext
   private audioNodes: {
     [key: string]: GAudioNode | GInstrumentNode | AudioNode
   } = {}
@@ -89,26 +88,36 @@ class AudioEngine extends Component<AudioEngineProps> {
   } = {}
 
   public componentDidMount(): void {
-    this.audioContext = getAudioContext()
+    if (!this.props.audioContext) return
+
     this.updateAudioNodes()
     this.updateAudioGraph()
   }
 
-  public shouldComponentUpdate(props: AudioEngineProps): boolean {
+  public shouldComponentUpdate(nextProps: AudioEngineProps): boolean {
+    if (nextProps.audioContext !== this.props.audioContext) return true
+
     return (
-      !!props.audioEngineEvents.length &&
-      this.props.audioEngineEvents !== props.audioEngineEvents
+      !!nextProps.audioEngineEvents.length &&
+      this.props.audioEngineEvents !== nextProps.audioEngineEvents
     )
   }
 
-  public componentDidUpdate(): void {
+  public componentDidUpdate(prevProps: AudioEngineProps): void {
+    if (
+      this.props.audioContext &&
+      this.props.audioContext !== prevProps.audioContext
+    ) {
+      this.updateAudioNodes()
+      this.updateAudioGraph()
+    }
+
     this.props.audioEngineEvents.forEach(this.processAudioEngineEvent)
     this.props.clearAudioEngineEvents()
   }
 
   public componentWillUnmount(): void {
     this.props.clearAudioEngineEvents()
-    if (this.audioContext) void this.audioContext.close()
   }
 
   public render(): ReactNode {
@@ -172,25 +181,25 @@ class AudioEngine extends Component<AudioEngineProps> {
   }
 
   private updateAudioNodes() {
-    if (!this.audioContext) return
+    if (!this.props?.audioContext) return
 
     const { nodes: nextNodes = {}, isPlaying = false } = this.props
     const nextNodeIds = Object.keys(nextNodes)
 
     this.audioNodes = Object.entries(this.audioNodes).length
       ? pick(nextNodeIds, this.audioNodes)
-      : { [MAIN_OUT_ID]: this.audioContext.destination }
+      : { [MAIN_OUT_ID]: this.props.audioContext.destination }
 
     nextNodeIds
       .filter((id) => !this.audioNodes[id])
       .forEach((id) => {
-        if (!this.audioContext) return
+        if (!this.props.audioContext) return
 
         const node = nextNodes[id]
 
         if (!node) return
 
-        const newNode = createNewNode(this.audioContext, node)
+        const newNode = createNewNode(this.props.audioContext, node)
 
         if (!newNode) return
 
