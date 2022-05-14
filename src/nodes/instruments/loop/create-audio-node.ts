@@ -73,16 +73,13 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
   }
 
   protected propsUpdated(props: Props, prevProps: Props): void {
-    const { gain, audioBuffer, loopStart, midGain, lowGain, highGain } = props
+    const { gain, audioBuffer, midGain, lowGain, highGain } = props
 
     this.gainNode.gain.value = gain
     this.eq3Node.set({ midGain, lowGain, highGain })
 
-    if (
-      prevProps.audioBuffer !== audioBuffer ||
-      prevProps.loopStart !== loopStart
-    ) {
-      void this.replaceSource()
+    if (prevProps.audioBuffer !== audioBuffer) {
+      this.replaceSource()
     } else if (audioBuffer && this.playbackBufferSource) {
       this.updateSourceProps()
     } else if (!audioBuffer) {
@@ -90,11 +87,9 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     }
   }
 
-  private processWorkletPositionMessage = (message: MessageEvent<number>) => {
-    this.throttledNotifySubscribers({
-      ...this.playbackState,
-      positionRatio: message.data,
-    })
+  private processWorkletPositionMessage = ({ data }: MessageEvent<number>) => {
+    this.playbackState.positionRatio = data
+    this.throttledNotifySubscribers(this.playbackState)
   }
 
   private updateSourceProps() {
@@ -107,17 +102,20 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
     }
 
     const { loopStart, loopEnd, playbackRate, audioBuffer } = this.props
+    const { duration } = audioBuffer
 
     this.positionBufferSource.loopStart = this.playbackBufferSource.loopStart =
-      loopStart * audioBuffer.duration
+      loopStart * duration
     this.positionBufferSource.loopEnd = this.playbackBufferSource.loopEnd =
-      loopEnd * audioBuffer.duration
+      loopEnd * duration
     this.positionBufferSource.playbackRate.value =
       this.playbackBufferSource.playbackRate.value = playbackRate
   }
 
   private removeSource() {
     try {
+      this.playbackBufferSource?.stop()
+      this.positionBufferSource?.stop()
       this.playbackBufferSource?.disconnect(this.gainNode)
       this.positionBufferSource?.disconnect(this.worklet)
     } catch (_e) {
