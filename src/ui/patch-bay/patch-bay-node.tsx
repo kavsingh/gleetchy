@@ -6,7 +6,6 @@ import color from 'color'
 import useConnection from '~/state/hooks/use-connection'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 import type { AudioNodeMeta } from '~/types'
 
 const PatchBayNode: FC<{
@@ -42,12 +41,10 @@ const getActiveBorderColor = memoizeWith(identity, (activeColor: string) =>
   color(activeColor).darken(0.06).hex(),
 )
 
-const Container = styled.div<
-  ThemeProps & {
-    activeColor?: string
-    blocked: boolean
-  }
->`
+const Container = styled.div<{
+  activeColor?: string
+  blocked: boolean
+}>`
   width: 0.8em;
   height: 0.8em;
   margin: 0 auto;

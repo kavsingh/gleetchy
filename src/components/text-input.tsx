@@ -5,7 +5,6 @@ import styled from '@emotion/styled'
 import { cancelReactEvent, noop } from '~/lib/util'
 
 import type { ChangeEventHandler, FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 
 const TextInput: FC<{
   value: string | number
@@ -33,7 +32,7 @@ const TextInput: FC<{
 
 export default memo(TextInput)
 
-const Container = styled.div<ThemeProps>`
+const Container = styled.div`
   input {
     border: none;
     border-bottom: 1px solid transparent;

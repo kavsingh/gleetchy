@@ -1,8 +1,6 @@
 import styled from '@emotion/styled'
 
-import type { ThemeProps } from '~/style/theme'
-
-const ErrorMessage = styled.div<ThemeProps>`
+const ErrorMessage = styled.div`
   width: 100%;
   padding: 2em;
   color: ${({ theme }) => theme.colors.emphasis};

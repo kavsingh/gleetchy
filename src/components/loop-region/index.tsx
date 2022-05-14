@@ -11,7 +11,6 @@ import useControlResponseRef from '../hooks/use-control-response-ref'
 import LoopHandle from './loop-handle'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 import type { SinglePointerDragState } from '../single-pointer-drag'
 
 const controlResponseMultipliers = {
@@ -159,7 +158,7 @@ const inactiveOverlayColor = memoizeWith(identity, (baseColor: string) =>
   color(baseColor).alpha(0.8).string(),
 )
 
-const InactiveRegion = styled(Region)<ThemeProps>`
+const InactiveRegion = styled(Region)`
   z-index: 0;
   background-color: ${({ theme }) => inactiveOverlayColor(theme.colors.page)};
 `

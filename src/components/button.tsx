@@ -1,7 +1,6 @@
 import styled from '@emotion/styled'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 
 const Button: FC<ButtonProps> = ({ handler, children }) => (
   <Container
@@ -18,7 +17,7 @@ const Button: FC<ButtonProps> = ({ handler, children }) => (
 
 export default Button
 
-const Container = styled.div<ThemeProps>`
+const Container = styled.div`
   font-size: 0.8rem;
   cursor: pointer;
   transition: color 0.2s ease-out;

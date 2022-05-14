@@ -7,7 +7,6 @@ import useUITheme from '~/state/hooks/use-ui-theme'
 import PlayPauseButton from '~/components/play-pause-button'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 
 const Masthead: FC = () => {
   const { isPlaying, togglePlayback } = useGlobalPlayback()
@@ -40,7 +39,7 @@ const Container = styled.div`
   width: 100%;
 `
 
-const SideControlsContainer = styled.div<ThemeProps>`
+const SideControlsContainer = styled.div`
   display: flex;
   flex-flow: row nowrap;
   align-items: center;

@@ -9,7 +9,6 @@ import LoopRegion from '~/components/loop-region'
 import Waveform from '~/components/waveform'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 
 const Sample: FC<SampleProps> = ({
   audioBuffer,
@@ -103,7 +102,7 @@ const PlayheadContainer = styled.div`
   pointer-events: none;
 `
 
-const Playhead = styled.div<ThemeProps & { position: number }>`
+const Playhead = styled.div<{ position: number }>`
   ${layoutAbsoluteFill}
   z-index: 2;
   transform: translateX(${({ position }) => position * 100}%);
@@ -126,7 +125,7 @@ const LoopRegionContainer = styled.div`
   z-index: 3;
 `
 
-const InitLoadButon = styled.div<ThemeProps>`
+const InitLoadButon = styled.div`
   ${layoutAbsoluteFill}
   z-index: 3;
   display: flex;

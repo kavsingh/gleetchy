@@ -2,7 +2,6 @@ import { memo } from 'react'
 import styled from '@emotion/styled'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 
 const LoopHandle: FC<{
   align: Alignment
@@ -24,9 +23,10 @@ const Container = styled.div<{ align: Alignment }>`
   pointer-events: none;
 `
 
-const Tag = styled.div<
-  { align: Alignment; verticalPosition?: 'top' | 'bottom' } & ThemeProps
->`
+const Tag = styled.div<{
+  align: Alignment
+  verticalPosition?: 'top' | 'bottom'
+}>`
   position: absolute;
   top: ${({ verticalPosition = 'top' }) =>
     verticalPosition === 'top' ? 0 : 'initial'};
@@ -40,7 +40,7 @@ const Tag = styled.div<
   pointer-events: all;
 `
 
-const Bar = styled.div<{ align: Alignment } & ThemeProps>`
+const Bar = styled.div<{ align: Alignment }>`
   position: absolute;
   top: 0;
   right: ${({ align }) => (align === 'right' ? '-100%' : 'initial')};

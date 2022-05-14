@@ -13,7 +13,6 @@ import PatchBay from './patch-bay'
 import Masthead from './masthead'
 
 import type { FC } from 'react'
-import type { ThemeProps } from '~/style/theme'
 
 const UI: FC = () => {
   const { initAudioContext } = useAudioContext()
@@ -63,13 +62,13 @@ const UI: FC = () => {
 
 export default memo(UI)
 
-const Container = styled.div<ThemeProps>`
+const Container = styled.div`
   max-width: 92em;
   margin: 0 auto;
   padding: 2em;
 `
 
-const Divider = styled.div<ThemeProps>`
+const Divider = styled.div`
   height: 1px;
   margin: 1em 0;
   background-color: ${({ theme }) => theme.colors.keyline};
