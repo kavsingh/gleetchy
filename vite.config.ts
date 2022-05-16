@@ -15,6 +15,7 @@ const checker = checkerPlugin({
 })
 
 export default defineConfig({
+  define: { 'import.meta.vitest': 'undefined' },
   build: { sourcemap: true },
   plugins: [reactPlugin(), checker, legacyPlugin()],
   resolve: { alias: { '~': path.resolve(__dirname, './src') } },
@@ -28,5 +29,6 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     coverage: { reporter: ['text', 'html'] },
+    includeSource: ['src/**/*.{js,ts}'],
   },
 })
