@@ -119,6 +119,14 @@ const LoopRegion: FC<{
   )
 }
 
+// eslint-disable-next-line react/display-name
+export default memo(
+  LoopRegion,
+  (prevProps, nextProps) =>
+    prevProps.loopStart === nextProps.loopStart &&
+    prevProps.loopEnd === nextProps.loopEnd,
+)
+
 const Container = styled.div`
   position: relative;
   width: 100%;
@@ -162,10 +170,3 @@ const InactiveRegion = styled(Region)`
   z-index: 0;
   background-color: ${({ theme }) => inactiveOverlayColor(theme.colors.page)};
 `
-
-export default memo(
-  LoopRegion,
-  (prevProps, nextProps) =>
-    prevProps.loopStart === nextProps.loopStart &&
-    prevProps.loopEnd === nextProps.loopEnd,
-)

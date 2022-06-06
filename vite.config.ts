@@ -1,3 +1,5 @@
+/// <reference types="vitest" />
+
 import path from 'path'
 
 import { defineConfig } from 'vite'
@@ -21,8 +23,8 @@ export default defineConfig({
   resolve: { alias: { '~': path.resolve(__dirname, './src') } },
   css: { modules: { localsConvention: 'camelCaseOnly' } },
   esbuild: {
-    jsxFactory: `jsx`,
-    jsxInject: `import { jsx } from '@emotion/react'`,
+    jsxFactory: 'jsx',
+    jsxInject: "import { jsx } from '@emotion/react'",
   },
   test: {
     include: ['src/**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}'],
