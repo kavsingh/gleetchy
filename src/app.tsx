@@ -1,7 +1,7 @@
 import { memo, StrictMode } from 'react'
 import { Provider } from 'react-redux'
 
-import AudioEngine from '~/audio-engine'
+import Audio from '~/audio'
 import UI from '~/ui'
 
 import StyledContainer from './style/styled-container'
@@ -15,7 +15,7 @@ const App: FC<{ store: AppStore }> = ({ store }) => (
     <Provider store={store}>
       <StyledContainer>
         <ErrorBoundary>
-          <AudioEngine />
+          <Audio />
         </ErrorBoundary>
         <ErrorBoundary>
           <UI />

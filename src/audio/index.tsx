@@ -14,11 +14,11 @@ import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
 import { GDelayNode } from '~/nodes/audio-effects/delay/create-audio-node'
 import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'
 
-import BaseAudioEngine from './audio-engine'
+import BaseAudioEngine from './audio-engine-component'
 
 import type { FC } from 'react'
 
-const AudioEngine: FC = () => {
+const Audio: FC = () => {
   const dispatch = useAppDispatch()
   const { audioContext } = useAudioContext()
   const { isPlaying } = useGlobalPlayback()
@@ -59,7 +59,7 @@ const AudioEngine: FC = () => {
   ) : null
 }
 
-export default AudioEngine
+export default Audio
 
 const registerWorklets = async (context: AudioContext) => {
   const sources = (

@@ -67,7 +67,7 @@ const createNewNode = (
   }
 }
 
-export interface AudioEngineProps {
+export interface AudioEngineComponentProps {
   audioEngineEvents: unknown[]
   connections: AudioNodeConnection[]
   isPlaying: boolean
@@ -79,7 +79,7 @@ export interface AudioEngineProps {
   dispatchSubscriptionEvent(nodeId: string, payload: unknown): unknown
 }
 
-class AudioEngine extends Component<AudioEngineProps> {
+class AudioEngineComponent extends Component<AudioEngineComponentProps> {
   private audioNodes: {
     [key: string]: GAudioNode | GInstrumentNode | AudioNode
   } = {}
@@ -94,7 +94,7 @@ class AudioEngine extends Component<AudioEngineProps> {
     this.updateAudioGraph()
   }
 
-  public shouldComponentUpdate(nextProps: AudioEngineProps): boolean {
+  public shouldComponentUpdate(nextProps: AudioEngineComponentProps): boolean {
     if (nextProps.audioContext !== this.props.audioContext) return true
 
     return (
@@ -103,7 +103,7 @@ class AudioEngine extends Component<AudioEngineProps> {
     )
   }
 
-  public componentDidUpdate(prevProps: AudioEngineProps): void {
+  public componentDidUpdate(prevProps: AudioEngineComponentProps): void {
     if (
       this.props.audioContext &&
       this.props.audioContext !== prevProps.audioContext
@@ -298,4 +298,4 @@ class AudioEngine extends Component<AudioEngineProps> {
   }
 }
 
-export default AudioEngine
+export default AudioEngineComponent
