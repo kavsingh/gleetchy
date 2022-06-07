@@ -1,8 +1,8 @@
 import { useCallback, memo } from 'react'
 import styled from '@emotion/styled'
 
-import useAudioNodesMeta from '~/state/hooks/use-audio-nodes-meta'
-import useAddNode from '~/state/hooks/use-add-node'
+import useAudioNodesMeta from '~/app-store/hooks/use-audio-nodes-meta'
+import useAddNode from '~/app-store/hooks/use-add-node'
 import { nodeType as loopType } from '~/nodes/instruments/loop'
 import AnimIn from '~/components/anim-in'
 import ErrorBoundary from '~/components/error-boundary'

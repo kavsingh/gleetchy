@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import { audioContextSlice } from './audio-context/slice'
 import { audioEngineSlice } from './audio-engine/slice'
 import { globalPlaybackSlice } from './global-playback/slice'
 import { audioFilesSlice } from './audio-files/slice'
@@ -10,6 +11,7 @@ import { uiSlice } from './ui/slice'
 import type { StateFromReducersMapObject } from '@reduxjs/toolkit'
 
 const reducer = {
+  [audioContextSlice.name]: audioContextSlice.reducer,
   [audioEngineSlice.name]: audioEngineSlice.reducer,
   [globalPlaybackSlice.name]: globalPlaybackSlice.reducer,
   [audioFilesSlice.name]: audioFilesSlice.reducer,

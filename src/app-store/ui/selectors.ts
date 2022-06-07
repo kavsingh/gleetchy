@@ -1,6 +1,6 @@
 import { themes } from '~/style/theme'
 
-import type { AppState } from '~/state/configure-store'
+import type { AppState } from '~/app-store/configure-store'
 
 export const selectThemeName = (state: AppState) => state.ui.currentThemeName
 

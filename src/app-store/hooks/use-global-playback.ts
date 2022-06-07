@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { togglePlayback as togglePlaybackAction } from '~/state/global-playback/actions'
-import { selectIsPlaying } from '~/state/global-playback/selectors'
+import { togglePlayback as togglePlaybackAction } from '~/app-store/global-playback/actions'
+import { selectIsPlaying } from '~/app-store/global-playback/selectors'
 
 import { useAppDispatch, useAppSelector } from './base'
 

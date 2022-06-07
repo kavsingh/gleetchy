@@ -2,8 +2,8 @@ import { memo } from 'react'
 import { GoMarkGithub } from 'react-icons/go'
 import styled from '@emotion/styled'
 
-import useGlobalPlayback from '~/state/hooks/use-global-playback'
-import useUITheme from '~/state/hooks/use-ui-theme'
+import useGlobalPlayback from '~/app-store/hooks/use-global-playback'
+import useUITheme from '~/app-store/hooks/use-ui-theme'
 import PlayPauseButton from '~/components/play-pause-button'
 
 import type { FC } from 'react'

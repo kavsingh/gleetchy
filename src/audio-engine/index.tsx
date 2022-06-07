@@ -1,15 +1,15 @@
 import { useCallback, useEffect, useState } from 'react'
 
-import { selectAudioNodes } from '~/state/audio-nodes/selectors'
-import { selectConnections } from '~/state/connections/selectors'
-import { selectAudioEngineEvents } from '~/state/audio-engine/selectors'
-import { useAppSelector, useAppDispatch } from '~/state/hooks/base'
+import { selectAudioNodes } from '~/app-store/audio-nodes/selectors'
+import { selectConnections } from '~/app-store/connections/selectors'
+import { selectAudioEngineEvents } from '~/app-store/audio-engine/selectors'
+import { useAppSelector, useAppDispatch } from '~/app-store/hooks/base'
 import {
   clearEvents,
   publishSubscriptionEvent,
-} from '~/state/audio-engine/actions'
-import useAudioContext from '~/state/hooks/use-audio-context'
-import useGlobalPlayback from '~/state/hooks/use-global-playback'
+} from '~/app-store/audio-engine/actions'
+import useAudioContext from '~/app-store/hooks/use-audio-context'
+import useGlobalPlayback from '~/app-store/hooks/use-global-playback'
 import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
 import { GDelayNode } from '~/nodes/audio-effects/delay/create-audio-node'
 import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'

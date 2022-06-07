@@ -4,7 +4,7 @@ import {
   hasConnectionTo,
 } from '~/lib/audio'
 import { MAIN_OUT_ID } from '~/constants/audio'
-import { selectConnections } from '~/state/connections/selectors'
+import { selectConnections } from '~/app-store/connections/selectors'
 
 import { createValueEqSelector } from '../lib/selector'
 

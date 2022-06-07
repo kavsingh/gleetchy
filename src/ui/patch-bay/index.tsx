@@ -5,9 +5,9 @@ import styled from '@emotion/styled'
 import {
   selectConnectableSources,
   selectConnectableTargets,
-} from '~/state/audio-nodes/selectors'
+} from '~/app-store/audio-nodes/selectors'
 import ErrorBoundary from '~/components/error-boundary'
-import { useAppSelector } from '~/state/hooks/base'
+import { useAppSelector } from '~/app-store/hooks/base'
 
 import PatchBayNode from './patch-bay-node'
 

@@ -6,7 +6,7 @@ import {
   updateAudioNodeLabel,
   duplicateAudioNode,
   removeAudioNode,
-} from '~/state/audio-nodes/actions'
+} from '~/app-store/audio-nodes/actions'
 import { getConnectionsFor } from '~/lib/audio'
 
 import {

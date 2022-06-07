@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { pick } from 'ramda'
 
-import initialNodes from '~/state/default-nodes'
+import initialNodes from '~/app-store/default-nodes'
 import {
   defaultProps as delayDefaultProps,
   nodeType as delayNodeType,

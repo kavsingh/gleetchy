@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from 'react'
 
 import { usePreferredColorScheme } from '~/apis/color-scheme'
-import { selectTheme } from '~/state/ui/selectors'
+import { selectTheme } from '~/app-store/ui/selectors'
 import {
   setDarkTheme,
   setLightTheme,
   toggleTheme as toggleThemeAction,
-} from '~/state/ui/actions'
+} from '~/app-store/ui/actions'
 
 import { useAppDispatch, useAppSelector } from './base'
 

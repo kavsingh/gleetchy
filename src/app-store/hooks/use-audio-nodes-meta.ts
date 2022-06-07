@@ -1,7 +1,7 @@
 import {
   selectInstrumentsIdentifierMeta,
   selectAudioEffectsIdentifierMeta,
-} from '~/state/audio-nodes/selectors'
+} from '~/app-store/audio-nodes/selectors'
 
 import { useAppSelector } from './base'
 

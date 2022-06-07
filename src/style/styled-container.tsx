@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@emotion/react'
 
-import useUITheme from '~/state/hooks/use-ui-theme'
+import useUITheme from '~/app-store/hooks/use-ui-theme'
 
 import GlobalStyles from './global-styles'
 

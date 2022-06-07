@@ -3,7 +3,7 @@ import styled from '@emotion/styled'
 import { memoizeWith, identity } from 'ramda'
 import color from 'color'
 
-import useConnection from '~/state/hooks/use-connection'
+import useConnection from '~/app-store/hooks/use-connection'
 
 import type { FC } from 'react'
 import type { AudioNodeMeta } from '~/types'

@@ -1,7 +1,7 @@
 import { memo, useCallback } from 'react'
 
 import { nodeType, UI } from '~/nodes/audio-effects/reverb'
-import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
+import useAudioNode, { validateNodeType } from '~/app-store/hooks/use-audio-node'
 
 import type { FC } from 'react'
 import type { NodeProps } from '~/nodes/audio-effects/reverb'

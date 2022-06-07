@@ -19,19 +19,19 @@ import {
   nodeType as loopType,
 } from '~/nodes/instruments/loop'
 import { GAudioNode } from '~/lib/g-audio-node'
-import { togglePlayback } from '~/state/global-playback/actions'
+import { togglePlayback } from '~/app-store/global-playback/actions'
 import {
   addConnection,
   removeConnection,
   toggleConnection,
-} from '~/state/connections/actions'
+} from '~/app-store/connections/actions'
 import {
   addAudioNode,
   duplicateAudioNode,
   removeAudioNode,
   updateAudioNodeProps,
-} from '~/state/audio-nodes/actions'
-import { decodeAudioFile } from '~/state/audio-files/actions'
+} from '~/app-store/audio-nodes/actions'
+import { decodeAudioFile } from '~/app-store/audio-files/actions'
 
 import type { ReactNode } from 'react'
 import type { GInstrumentNode } from '~/lib/g-audio-node'

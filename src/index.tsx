@@ -1,7 +1,7 @@
 import { createRoot } from 'react-dom/client'
 
 import { requireWindowWith } from '~/lib/env'
-import { createStore } from '~/state/configure-store'
+import { createStore } from '~/app-store/configure-store'
 
 import App from './app'
 

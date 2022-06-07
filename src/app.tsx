@@ -8,7 +8,7 @@ import StyledContainer from './style/styled-container'
 import ErrorBoundary from './components/error-boundary'
 
 import type { FC } from 'react'
-import type { AppStore } from '~/state/configure-store'
+import type { AppStore } from '~/app-store/configure-store'
 
 const App: FC<{ store: AppStore }> = ({ store }) => (
   <StrictMode>

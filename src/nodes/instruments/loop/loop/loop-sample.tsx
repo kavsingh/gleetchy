@@ -1,5 +1,5 @@
 import { isFiniteNumber } from '~/lib/util/predicate'
-import useAudioNodeSubscriptionData from '~/state/hooks/use-audio-node-subscription-data'
+import useAudioNodeSubscriptionData from '~/app-store/hooks/use-audio-node-subscription-data'
 import Sample from '~/components/sample'
 
 import type { FC } from 'react'

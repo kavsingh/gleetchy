@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 
-import { initAudioContext as initAudioContextAction } from '../audio-engine/actions'
-import { selectAudioContext } from '../audio-engine/selectors'
+import { initAudioContext as initAudioContextAction } from '../audio-context/actions'
+import { selectAudioContext } from '../audio-context/selectors'
 import { useAppDispatch, useAppSelector } from './base'
 
 const useAudioContext = () => {

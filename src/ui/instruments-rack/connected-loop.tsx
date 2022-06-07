@@ -4,10 +4,10 @@ import { nodeType, UI } from '~/nodes/instruments/loop'
 import {
   receiveAudioFile as receiveAudioFileAction,
   selectAudioFile as selectAudioFileAction,
-} from '~/state/audio-files/actions'
-import useAudioNode, { validateNodeType } from '~/state/hooks/use-audio-node'
-import { useAppDispatch } from '~/state/hooks/base'
-import useAudioContext from '~/state/hooks/use-audio-context'
+} from '~/app-store/audio-files/actions'
+import useAudioNode, { validateNodeType } from '~/app-store/hooks/use-audio-node'
+import { useAppDispatch } from '~/app-store/hooks/base'
+import useAudioContext from '~/app-store/hooks/use-audio-context'
 
 import type { FC } from 'react'
 import type { NodeProps as Eq3Props } from '~/nodes/audio-effects/eq3'

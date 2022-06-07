@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 
-import { addAudioNode } from '~/state/audio-nodes/actions'
+import { addAudioNode } from '~/app-store/audio-nodes/actions'
 
 import { useAppDispatch } from './base'
 
