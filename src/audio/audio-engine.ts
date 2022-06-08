@@ -35,7 +35,7 @@ import { GLoopNode } from '~/nodes/instruments/loop/create-audio-node'
 import { GDelayNode } from '~/nodes/audio-effects/delay/create-audio-node'
 import { GReverbNode } from '~/nodes/audio-effects/reverb/create-audio-node'
 
-import type { Action } from '@reduxjs/toolkit'
+import type { AnyAction } from '@reduxjs/toolkit'
 import type { AppState } from '~/app-store/configure-store'
 import type { GInstrumentNode } from '~/lib/g-audio-node'
 import type { AudioNodeState } from '~/types'
@@ -59,8 +59,12 @@ export default class AudioEngine {
     this.publishSubscriptionEvent = publishSubscriptionEvent
   }
 
-  public update = async (appState: AppState, action: Action | 'INIT') => {
-    await this.updateAudioContext(appState.audioContext.audioContext)
+  public update = async (appState: AppState, action: AnyAction) => {
+    const didUpdate = await this.updateAudioContext(
+      appState.audioContext.audioContext,
+    )
+
+    if (!(this.audioContext && this.workletsLoaded)) return
 
     const updateNodes = () =>
       this.updateAudioNodes(
@@ -70,9 +74,7 @@ export default class AudioEngine {
 
     const updateGraph = () => this.updateAudioGraph(appState.connections)
 
-    if (!(this.audioContext && this.workletsLoaded)) return
-
-    if (action === 'INIT') {
+    if (didUpdate) {
       updateNodes()
       updateGraph()
 
@@ -144,14 +146,12 @@ export default class AudioEngine {
   private updateAudioContext = async (
     nextContext: AppState['audioContext']['audioContext'],
   ) => {
-    if (!nextContext || this.audioContext === nextContext) {
-      if (this.workletsLoaded) return
-      return this.loadWorklets()
-    }
+    if (!nextContext || this.audioContext === nextContext) return false
 
     this.audioContext = nextContext
+    await this.loadWorklets()
 
-    return this.loadWorklets()
+    return true
   }
 
   private loadWorklets = async () => {

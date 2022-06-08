@@ -1,5 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
+import { AudioEngine, setupAudioEngineListeners } from '~/audio'
+
 import { audioContextSlice } from './audio-context/slice'
 import { audioEngineSlice } from './audio-engine/slice'
 import { globalPlaybackSlice } from './global-playback/slice'
@@ -7,6 +9,8 @@ import { audioFilesSlice } from './audio-files/slice'
 import { audioNodesSlice } from './audio-nodes/slice'
 import { connectionsSlice } from './connections/slice'
 import { uiSlice } from './ui/slice'
+import { appStartListening, listenerMiddleware } from './listener-middleware'
+import { publishSubscriptionEvent } from './audio-engine/actions'
 
 import type { StateFromReducersMapObject } from '@reduxjs/toolkit'
 
@@ -22,16 +26,35 @@ const reducer = {
 
 export const createStore = (
   preloadedState: Partial<StateFromReducersMapObject<typeof reducer>> = {},
-) =>
-  configureStore({
+) => {
+  const store = configureStore({
     reducer,
     preloadedState,
     middleware: (getDefaultMiddleware) =>
-      // TODO: revisit
-      getDefaultMiddleware({ serializableCheck: false }),
+      // TODO: revisit serializable check
+      getDefaultMiddleware({ serializableCheck: false }).prepend(
+        listenerMiddleware.middleware,
+      ),
     devTools: process.env.NODE_ENV !== 'production',
   })
 
-export type AppStore = ReturnType<typeof createStore>
+  const audioEngine = new AudioEngine({
+    publishSubscriptionEvent: (nodeId: string, subscriptionPayload: unknown) =>
+      store.dispatch(publishSubscriptionEvent({ nodeId, subscriptionPayload })),
+  })
+
+  const removeAudioEngineListeners = setupAudioEngineListeners(
+    audioEngine,
+    appStartListening,
+  )
+
+  const dispose = () => {
+    removeAudioEngineListeners()
+  }
+
+  return { store, dispose }
+}
+
+export type AppStore = ReturnType<typeof createStore>['store']
 export type AppState = ReturnType<AppStore['getState']>
 export type AppDispatch = AppStore['dispatch']

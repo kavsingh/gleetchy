@@ -23,5 +23,6 @@ const initialState =
   parsedState && typeof parsedState === 'object' && !Array.isArray(parsedState)
     ? parsedState
     : {}
+const { store } = createStore(initialState)
 
-reactRoot.render(<App store={createStore(initialState)} />)
+reactRoot.render(<App store={store} />)
