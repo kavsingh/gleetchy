@@ -9,7 +9,7 @@ const LoopSample: FC<SampleProps & { nodeId: string }> = ({
   nodeId,
   ...props
 }) => {
-  const { positionRatio } = useAudioNodeSubscriptionData(nodeId)
+  const positionRatio = useAudioNodeSubscriptionData(nodeId)?.positionRatio
 
   return (
     <Sample
