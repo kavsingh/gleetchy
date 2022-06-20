@@ -42,12 +42,9 @@ import type { AudioNodeState } from '~/types'
 
 export default class AudioEngine {
   private publishSubscriptionEvent: SubscriptionEventDispatcher
-  private audioNodes: {
-    [key: string]: GAudioNode | GInstrumentNode | AudioNode
-  } = {}
-  private subscriptions: {
-    [key: string]: () => void
-  } = {}
+  private audioNodes: Record<string, GAudioNode | GInstrumentNode | AudioNode> =
+    {}
+  private subscriptions: Record<string, () => void> = {}
   private audioContext?: AudioContext
   private workletsLoaded = false
 
@@ -290,7 +287,7 @@ const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
 const createNewNode = (
   context: AudioContext,
   state: AudioNodeState<Record<string, unknown>>,
-) => {
+): GAudioNode | GInstrumentNode | undefined => {
   switch (state.type) {
     case delayType:
       return createDelayNode(context, state.audioProps)
