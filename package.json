@@ -96,7 +96,7 @@
     "file-loader": "6.2.0",
     "html-webpack-plugin": "4.5.0",
     "jest": "26.6.3",
-    "jsdom": "16.4.0",
+    "jsdom": "16.5.0",
     "local-web-server": "4.2.1",
     "prettier": "2.2.1",
     "raf": "3.4.1",
