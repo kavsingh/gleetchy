@@ -22,10 +22,6 @@ module.exports = {
     'import/parsers': { '@typescript-eslint/parser': ['.ts', '.tsx'] },
     'import/resolver': {
       'eslint-import-resolver-typescript': { project: './tsconfig.json' },
-      'eslint-import-resolver-custom-alias': {
-        alias: { '~': './src' },
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
-      },
     },
   },
   plugins: ['filenames'],

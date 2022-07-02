@@ -17,7 +17,7 @@ export const audioContextSlice = createSlice({
         return
       }
 
-      if (context?.state === 'suspended') void context.resume()
+      if (context.state === 'suspended') void context.resume()
     },
   },
 })
