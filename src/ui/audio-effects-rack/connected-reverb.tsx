@@ -6,6 +6,7 @@ import useAudioNode, {
 } from "~/app-store/hooks/use-audio-node";
 
 import type { FC } from "react";
+import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
 import type { NodeProps } from "~/nodes/audio-effects/reverb";
 
 const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
@@ -24,14 +25,21 @@ const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
 		[updateAudioProps],
 	);
 
+	const handleImpulseChange = useCallback(
+		(impulse: ImpulseName) => updateAudioProps({ impulse }),
+		[updateAudioProps],
+	);
+
 	return (
 		<UI
 			connections={connections}
 			isActive={isActive}
 			label={label}
+			impulse={audioProps.impulse}
 			wetDryRatio={audioProps.wetDryRatio}
 			onLabelChange={updateLabel}
 			onWetDryRatioChange={handleWetDryRatioChange}
+			onImpulseChange={handleImpulseChange}
 			remove={remove}
 		/>
 	);

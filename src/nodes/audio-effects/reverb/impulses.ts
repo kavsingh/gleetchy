@@ -1,8 +1,6 @@
 import impulseWide from "./impulse-wide.wav";
 import impulseTight from "./impulse-tight.wav";
 
-export type ImpulseName = keyof typeof impulseUrls;
-
 export const loadImpulse = async (
 	audioContext: AudioContext,
 	name: ImpulseName,
@@ -12,6 +10,8 @@ export const loadImpulse = async (
 
 	return audioContext.decodeAudioData(arrayBuffer);
 };
+
+export type ImpulseName = keyof typeof impulseUrls;
 
 const impulseUrls = {
 	wide: impulseWide,
