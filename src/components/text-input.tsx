@@ -45,7 +45,7 @@ const Container = styled.div`
 		&:hover,
 		&:active,
 		&:focus {
-			color: ${({ theme }) => theme.colors.emphasis};
+			color: ${({ theme }) => theme.colors.text[600]};
 		}
 
 		&:focus {

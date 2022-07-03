@@ -73,7 +73,7 @@ const Container = styled.div`
 	display: flex;
 	flex-wrap: wrap;
 	align-items: flex-start;
-	width: 100%;
+	inline-size: 100%;
 `;
 
 const AudioEffectContainer = styled(AnimIn)`

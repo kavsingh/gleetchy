@@ -129,8 +129,8 @@ export default memo(
 
 const Container = styled.div`
 	position: relative;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 `;
 
 const HandleContainer = styled.div<{ offset: number }>`
@@ -168,5 +168,6 @@ const inactiveOverlayColor = memoizeWith(identity, (baseColor: string) =>
 
 const InactiveRegion = styled(Region)`
 	z-index: 0;
-	background-color: ${({ theme }) => inactiveOverlayColor(theme.colors.page)};
+	background-color: ${({ theme }) =>
+		inactiveOverlayColor(theme.colors.surface[0])};
 `;

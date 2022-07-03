@@ -58,7 +58,7 @@ const Container = styled.div`
 	flex-direction: column;
 	align-items: center;
 	justify-content: space-between;
-	height: 100%;
+	block-size: 100%;
 `;
 
 export interface PlaybackControlsProps {

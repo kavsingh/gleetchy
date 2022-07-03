@@ -5,11 +5,9 @@ interface Fonts {
 }
 
 interface Colors {
-	page: string;
-	body: string;
-	emphasis: string;
-	keyline: string;
-	error: string;
+	text: { 100: string; 400: string; 600: string };
+	surface: { 0: string };
+	semantic: { error: string };
 }
 
 export interface UITheme {
@@ -27,22 +25,26 @@ export const themes: Record<ThemeName, UITheme> = {
 		fonts,
 		name: "dark",
 		colors: {
-			page: "rgba(16, 16, 16, 1)",
-			body: "rgba(200, 200, 200, 1)",
-			emphasis: "rgba(255, 255, 255, 1)",
-			keyline: "rgba(25, 85, 85, 1)",
-			error: "rgba(236, 103, 100, 1)",
+			surface: { 0: "rgb(16 16 16)" },
+			text: {
+				100: "rgb(25 85 85)",
+				400: "rgb(200 200 200)",
+				600: "rgb(255 255 255)",
+			},
+			semantic: { error: "rgb(236 103 100)" },
 		},
 	},
 	light: {
 		fonts,
 		name: "light",
 		colors: {
-			page: "rgba(255, 255, 255, 1)",
-			body: "rgba(34, 34, 34, 1)",
-			emphasis: "rgba(0, 0, 0, 1)",
-			keyline: "rgba(232, 232, 232, 1)",
-			error: "rgba(236, 103, 100, 1)",
+			surface: { 0: "rgb(255 255 255)" },
+			text: {
+				100: "rgb(232 232 232)",
+				400: "rgb(34 34 34)",
+				600: "rgb(0 0 0)",
+			},
+			semantic: { error: "rgb(236 103 100)" },
 		},
 	},
 };

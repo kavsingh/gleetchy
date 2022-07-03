@@ -57,11 +57,11 @@ const PatchBay: FC = () => {
 export default memo(PatchBay);
 
 const Container = styled.table`
-	width: 100%;
+	inline-size: 100%;
 `;
 
 const labelStyle = css`
-	max-width: 5.4em;
+	max-inline-size: 5.4em;
 	overflow: hidden;
 	font-weight: 400;
 	font-size: 0.68em;

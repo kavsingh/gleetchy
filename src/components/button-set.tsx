@@ -11,8 +11,8 @@ const ButtonSet = styled.div<{
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 100%;
-	min-height: 5em;
+	inline-size: 100%;
+	min-block-size: 5em;
 	padding: 0.8rem 0;
 `;
 

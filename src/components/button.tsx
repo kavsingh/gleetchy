@@ -24,7 +24,7 @@ const Container = styled.div`
 
 	&:hover,
 	&:active {
-		color: ${({ theme }) => theme.colors.emphasis};
+		color: ${({ theme }) => theme.colors.text[600]};
 	}
 `;
 

@@ -62,7 +62,7 @@ const RackMount: FC<{ children: ReactNode }> = ({ children }) => (
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
-	width: 100%;
+	inline-size: 100%;
 `;
 
 const InstrumentContainer = styled(AnimIn)`

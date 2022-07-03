@@ -36,7 +36,7 @@ const Container = styled.div`
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	width: 100%;
+	inline-size: 100%;
 `;
 
 const SideControlsContainer = styled.div`
@@ -48,7 +48,7 @@ const SideControlsContainer = styled.div`
 	a,
 	button {
 		display: block;
-		color: ${({ theme }) => theme.colors.body};
+		color: ${({ theme }) => theme.colors.text[400]};
 		cursor: pointer;
 		opacity: 0.4;
 		transition: opacity 0.2s ease-out;

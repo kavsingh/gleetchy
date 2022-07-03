@@ -192,7 +192,7 @@ const BarContainer = styled.div<OrientationProps>`
 const Track = styled.div<OrientationProps>`
 	position: absolute;
 	z-index: 1;
-	background-color: ${({ theme }) => theme.colors.keyline};
+	background-color: ${({ theme }) => theme.colors.text[100]};
 	${({ orientation }) =>
 		orientation === "horizontal"
 			? css`
@@ -212,7 +212,7 @@ const Track = styled.div<OrientationProps>`
 const Bar = styled.div<OrientationProps>`
 	position: absolute;
 	z-index: 2;
-	background-color: ${({ theme }) => theme.colors.emphasis};
+	background-color: ${({ theme }) => theme.colors.text[600]};
 	${({ orientation }) =>
 		orientation === "horizontal"
 			? css`

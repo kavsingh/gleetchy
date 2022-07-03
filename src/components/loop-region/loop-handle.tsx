@@ -36,7 +36,7 @@ const Tag = styled.div<{
 	left: ${({ align }) => (align === "left" ? 0 : "initial")};
 	width: 60%;
 	height: 1px;
-	background-color: ${({ theme }) => theme.colors.emphasis};
+	background-color: ${({ theme }) => theme.colors.text[600]};
 	pointer-events: all;
 `;
 
@@ -48,9 +48,9 @@ const Bar = styled.div<{ align: Alignment }>`
 	width: 100%;
 	height: 100%;
 	border-right: ${({ align, theme }) =>
-		align === "left" ? `1px solid ${theme.colors.emphasis}` : "none"};
+		align === "left" ? `1px solid ${theme.colors.text[600]}` : "none"};
 	border-left: ${({ align, theme }) =>
-		align === "right" ? `1px solid ${theme.colors.emphasis}` : "none"};
+		align === "right" ? `1px solid ${theme.colors.text[600]}` : "none"};
 	pointer-events: all;
 `;
 

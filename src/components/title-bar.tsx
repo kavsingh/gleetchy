@@ -79,18 +79,18 @@ const InfoContainer = styled.div`
 
 const ConnectionsContainer = styled.div`
 	display: flex;
-	height: 100%;
+	block-size: 100%;
 `;
 
 const Connection = styled.div`
 	flex-grow: 0;
 	flex-shrink: 0;
-	width: 0.8em;
-	height: 0.8em;
-	margin-right: 0.3em;
+	inline-size: 0.8em;
+	block-size: 0.8em;
+	margin-inline-end: 0.3em;
 	background-color: ${(props) => props.color};
 `;
 
 const TypeLabel = styled.div`
-	margin-right: 0.3em;
+	margin-inline-end: 0.3em;
 `;

@@ -8,13 +8,13 @@ import type { FC } from "react";
 
 const Container = styled.div`
 	display: flex;
-	height: 100%;
-	margin-left: 0.6em;
+	block-size: 100%;
+	margin-inline-start: 0.6em;
 `;
 
 const SliderContainer = styled.div`
-	width: 2em;
-	height: 100%;
+	inline-size: 2em;
+	block-size: 100%;
 `;
 
 export interface Eq3Props {

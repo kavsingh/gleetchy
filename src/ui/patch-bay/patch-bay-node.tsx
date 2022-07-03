@@ -45,14 +45,14 @@ const Container = styled.div<{
 	activeColor?: string;
 	blocked: boolean;
 }>`
-	width: 0.8em;
-	height: 0.8em;
+	inline-size: 0.8em;
+	block-size: 0.8em;
 	margin: 0 auto;
 	border: 1px solid
 		${({ activeColor, theme }) =>
-			activeColor ? getActiveBorderColor(activeColor) : theme.colors.keyline};
+			activeColor ? getActiveBorderColor(activeColor) : theme.colors.text[100]};
 	background-color: ${({ activeColor, blocked, theme }) =>
-		activeColor || (blocked ? theme.colors.keyline : "transparent")};
+		activeColor || (blocked ? theme.colors.text[100] : "transparent")};
 	transform: ${({ blocked }) =>
 		blocked ? "rotate(45deg) scale(0.5)" : "rotate(0deg) scale(1)"};
 	cursor: ${({ blocked }) => (blocked ? "default" : "pointer")};
@@ -60,6 +60,6 @@ const Container = styled.div<{
 
 	&:hover {
 		border-color: ${({ activeColor, theme }) =>
-			activeColor || theme.colors.body};
+			activeColor || theme.colors.text[400]};
 	}
 `;

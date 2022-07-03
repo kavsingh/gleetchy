@@ -65,15 +65,15 @@ const UI: FC = () => {
 export default memo(UI);
 
 const Container = styled.div`
-	max-width: 92em;
+	max-inline-size: 92em;
 	margin: 0 auto;
 	padding: 2em;
 `;
 
 const Divider = styled.div`
-	height: 1px;
+	block-size: 1px;
 	margin: 1em 0;
-	background-color: ${({ theme }) => theme.colors.keyline};
+	background-color: ${({ theme }) => theme.colors.text[100]};
 `;
 
 const ModifiersContainer = styled.div`

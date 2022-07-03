@@ -97,8 +97,8 @@ const Knob: FC<{
 								endRatio={value}
 								strokeWidth={6}
 								backgroundStrokeWidth={3}
-								strokeColor={theme.colors.emphasis}
-								backgroundStrokeColor={theme.colors.keyline}
+								strokeColor={theme.colors.text[600]}
+								backgroundStrokeColor={theme.colors.text[100]}
 							/>
 						</KnobSVGContainer>
 					</KnobContainer>
@@ -115,8 +115,8 @@ const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 `;
 
 const Label = styled.div`
@@ -130,8 +130,8 @@ const KnobContainer = styled.div<{
 }>`
 	position: relative;
 	flex: 0 0 auto;
-	width: ${({ radius }) => radius};
-	height: ${({ radius }) => radius};
+	inline-size: ${({ radius }) => radius};
+	block-size: ${({ radius }) => radius};
 	margin: 0.4em auto 0.3em;
 	cursor: ${({ axis }) =>
 		!axis ? "move" : axis === "vertical" ? "ns-resize" : "ew-resize"};

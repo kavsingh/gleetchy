@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
 
 const ErrorMessage = styled.div`
-	width: 100%;
+	inline-size: 100%;
 	padding: 2em;
-	color: ${({ theme }) => theme.colors.emphasis};
+	color: ${({ theme }) => theme.colors.text[600]};
 	font-size: 0.9em;
-	background-color: ${({ theme }) => theme.colors.error};
+	background-color: ${({ theme }) => theme.colors.semantic.error};
 `;
 
 export default ErrorMessage;

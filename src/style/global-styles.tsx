@@ -40,16 +40,16 @@ const globalStyles = (theme: Theme) => css`
 
 	html,
 	body {
-		width: 100%;
+		inline-size: 100%;
 		margin: 0;
 		padding: 0;
-		background-color: ${theme.colors.page};
+		background-color: ${theme.colors.surface[0]};
 		-webkit-font-smoothing: antialiased;
 	}
 
 	/* TODO: move this back to UI root when audio engine refactored */
 	body {
-		color: ${theme.colors.body};
+		color: ${theme.colors.text[400]};
 		font-family: ${theme.fonts.body};
 	}
 `;

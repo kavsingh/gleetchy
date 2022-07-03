@@ -129,8 +129,8 @@ class Loop extends PureComponent<LoopUIProps> {
 export default Loop;
 
 const Container = styled.div<{ isActive: boolean }>`
-	width: 100%;
-	height: 12em;
+	inline-size: 100%;
+	block-size: 12em;
 	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
 	transition: opacity 0.2s ease-out;
 `;
@@ -138,21 +138,21 @@ const Container = styled.div<{ isActive: boolean }>`
 const TitleBarContainer = styled.div`
 	flex-grow: 0;
 	flex-shrink: 0;
-	width: 100%;
+	inline-size: 100%;
 `;
 
 const MainContainer = styled.div`
 	display: flex;
 	flex: 1 0 10em;
 	flex-wrap: nowrap;
-	width: 100%;
-	padding-left: 0.2em;
+	inline-size: 100%;
+	padding-inline-start: 0.2em;
 `;
 
 const ControlsContainer = styled.div`
 	display: flex;
-	height: 100%;
-	margin-left: 1.2em;
+	block-size: 100%;
+	margin-inline-start: 1.2em;
 `;
 
 const AudioFileDropRegion: FC<{
@@ -172,6 +172,6 @@ const FileDropWrapper = styled.div`
 	flex-direction: column;
 	align-items: stretch;
 	justify-content: stretch;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 `;

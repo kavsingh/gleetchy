@@ -26,12 +26,12 @@ const Sample: FC<SampleProps> = ({
 	const waveForm = useMemo(
 		() => (
 			<Waveform
-				color={theme.colors.emphasis}
-				baselineColor={theme.colors.keyline}
+				color={theme.colors.text[600]}
+				baselineColor={theme.colors.text[100]}
 				buffer={audioBuffer}
 			/>
 		),
-		[audioBuffer, theme.colors.emphasis, theme.colors.keyline],
+		[audioBuffer, theme.colors.text],
 	);
 	const loopRegion = useMemo(
 		() => (
@@ -87,8 +87,8 @@ export default memo(Sample);
 
 const Container = styled.div`
 	position: relative;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 `;
 
 const WaveformContainer = styled.div`
@@ -115,7 +115,7 @@ const Playhead = styled.div<{ position: number }>`
 		left: 0;
 		display: block;
 		width: 1px;
-		background-color: ${({ theme }) => theme.colors.emphasis};
+		background-color: ${({ theme }) => theme.colors.text[600]};
 		content: " ";
 	}
 `;
@@ -134,7 +134,7 @@ const InitLoadButon = styled.div`
 	justify-content: space-around;
 	padding: 3em;
 	background-color: ${({ theme }) =>
-		color(theme.colors.page).alpha(0.96).string()};
+		color(theme.colors.surface[0]).alpha(0.96).string()};
 	cursor: pointer;
 
 	span {

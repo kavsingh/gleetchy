@@ -9,14 +9,14 @@ import type { FC } from "react";
 import type { AudioNodeConnection } from "~/types";
 
 const Container = styled.div<{ isActive: boolean }>`
-	width: 100%;
+	inline-size: 100%;
 	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
 	transition: opacity 0.2s ease-out;
 `;
 
 const ControlsContainer = styled.div`
 	display: flex;
-	width: 100%;
+	inline-size: 100%;
 `;
 
 const KnobContainer = styled.div`
