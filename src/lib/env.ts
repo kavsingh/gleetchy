@@ -1,34 +1,34 @@
-import { path, pipe, split, uniq } from 'ramda'
+import { path, pipe, split, uniq } from "ramda";
 
-import { isNotNil } from './util/object'
+import { isNotNil } from "./util/object";
 
 export const requireWindowWith = (propPaths: string[] = []) => {
-  const WINDOW = typeof window !== 'undefined' ? window : undefined
+	const WINDOW = typeof window !== "undefined" ? window : undefined;
 
-  if (!WINDOW) return undefined
+	if (!WINDOW) return undefined;
 
-  const windowHas = pipe(split('.'), (parts) => path(parts, WINDOW), isNotNil)
+	const windowHas = pipe(split("."), (parts) => path(parts, WINDOW), isNotNil);
 
-  return propPaths.every(windowHas) ? WINDOW : undefined
-}
+	return propPaths.every(windowHas) ? WINDOW : undefined;
+};
 
 const asEventName = (name: string) =>
-  name.startsWith('on') ? name.slice(2) : name
+	name.startsWith("on") ? name.slice(2) : name;
 
 const isSupportedEvent = (name: string) => {
-  const asHandlerName = name.startsWith('on') ? name : `on${name}`
-  const WINDOW = requireWindowWith(['document.documentElement'])
+	const asHandlerName = name.startsWith("on") ? name : `on${name}`;
+	const WINDOW = requireWindowWith(["document.documentElement"]);
 
-  return WINDOW
-    ? asHandlerName in WINDOW.document ||
-        asHandlerName in WINDOW.document.documentElement
-    : false
-}
+	return WINDOW
+		? asHandlerName in WINDOW.document ||
+				asHandlerName in WINDOW.document.documentElement
+		: false;
+};
 
 export const filterSupportedEvents = (eventNames: string[]) =>
-  uniq(
-    eventNames.reduce((acc: string[], name) => {
-      if (isSupportedEvent(name)) acc.push(asEventName(name))
-      return acc
-    }, []),
-  )
+	uniq(
+		eventNames.reduce((acc: string[], name) => {
+			if (isSupportedEvent(name)) acc.push(asEventName(name));
+			return acc;
+		}, []),
+	);

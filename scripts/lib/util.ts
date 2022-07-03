@@ -1,5 +1,5 @@
-import path from 'path'
+import path from "path";
 
-import { PROJECT_ROOT } from './constants'
+import { PROJECT_ROOT } from "./constants";
 
-export const resolveFromProjectRoot = path.resolve.bind(path, PROJECT_ROOT)
+export const resolveFromProjectRoot = path.resolve.bind(path, PROJECT_ROOT);

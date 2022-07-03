@@ -1,1 +1,1 @@
-export default 'AUDIO_EFFECT_REVERB'
+export default "AUDIO_EFFECT_REVERB";

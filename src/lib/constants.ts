@@ -1,3 +1,3 @@
 export enum ModifierKey {
-  Shift = 'Shift',
+	Shift = "Shift",
 }

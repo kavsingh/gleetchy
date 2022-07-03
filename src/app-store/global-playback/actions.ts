@@ -1,3 +1,3 @@
-import { globalPlaybackSlice } from './slice'
+import { globalPlaybackSlice } from "./slice";
 
-export const { togglePlayback } = globalPlaybackSlice.actions
+export const { togglePlayback } = globalPlaybackSlice.actions;

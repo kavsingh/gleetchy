@@ -1,8 +1,8 @@
-import type { ImpulseName } from './impulses'
+import type { ImpulseName } from "./impulses";
 
 export const defaultProps = {
-  wetDryRatio: 0.5,
-  impulse: 'wet' as ImpulseName,
-}
+	wetDryRatio: 0.5,
+	impulse: "wet" as ImpulseName,
+};
 
-export type Props = typeof defaultProps
+export type Props = typeof defaultProps;

@@ -1,19 +1,19 @@
-import impulseWide from './impulse-wide.wav'
-import impulseTight from './impulse-tight.wav'
+import impulseWide from "./impulse-wide.wav";
+import impulseTight from "./impulse-tight.wav";
 
-export type ImpulseName = keyof typeof impulseUrls
+export type ImpulseName = keyof typeof impulseUrls;
 
 export const loadImpulse = async (
-  audioContext: AudioContext,
-  name: ImpulseName,
+	audioContext: AudioContext,
+	name: ImpulseName,
 ) => {
-  const response = await fetch(impulseUrls[name])
-  const arrayBuffer = await response.arrayBuffer()
+	const response = await fetch(impulseUrls[name]);
+	const arrayBuffer = await response.arrayBuffer();
 
-  return audioContext.decodeAudioData(arrayBuffer)
-}
+	return audioContext.decodeAudioData(arrayBuffer);
+};
 
 const impulseUrls = {
-  wide: impulseWide,
-  tight: impulseTight,
-}
+	wide: impulseWide,
+	tight: impulseTight,
+};

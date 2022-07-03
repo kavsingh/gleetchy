@@ -1,3 +1,3 @@
-import { audioContextSlice } from './slice'
+import { audioContextSlice } from "./slice";
 
-export const { initAudioContext } = audioContextSlice.actions
+export const { initAudioContext } = audioContextSlice.actions;

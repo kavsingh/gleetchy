@@ -1,6 +1,6 @@
-import { memo } from 'react'
-import { keyframes } from '@emotion/react'
-import styled from '@emotion/styled'
+import { memo } from "react";
+import { keyframes } from "@emotion/react";
+import styled from "@emotion/styled";
 
 const animation = keyframes`
   from {
@@ -10,13 +10,13 @@ const animation = keyframes`
   to {
     opacity: 1;
   }
-`
+`;
 
 const AnimIn = styled.div`
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  animation: ${animation} 400ms forwards ease-out;
-`
+	width: 100%;
+	height: 100%;
+	opacity: 0;
+	animation: ${animation} 400ms forwards ease-out;
+`;
 
-export default memo(AnimIn)
+export default memo(AnimIn);

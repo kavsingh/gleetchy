@@ -1,29 +1,29 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect } from "react";
 
-import { ModifierKey } from '~/lib/constants'
-import useModifierKeys from '~/app-store/hooks/use-modifier-keys'
+import { ModifierKey } from "~/lib/constants";
+import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
 
-import type { MutableRefObject } from 'react'
+import type { MutableRefObject } from "react";
 
 export interface ControlResponseMultipliers {
-  normal: number
-  fine: number
+	normal: number;
+	fine: number;
 }
 
 const useControlResponseRef = ({
-  normal,
-  fine,
+	normal,
+	fine,
 }: ControlResponseMultipliers): MutableRefObject<number> => {
-  const { activeKeys } = useModifierKeys()
-  const multiplierRef = useRef(normal)
+	const { activeKeys } = useModifierKeys();
+	const multiplierRef = useRef(normal);
 
-  useEffect(() => {
-    multiplierRef.current = activeKeys.includes(ModifierKey.Shift)
-      ? fine
-      : normal
-  }, [activeKeys, normal, fine])
+	useEffect(() => {
+		multiplierRef.current = activeKeys.includes(ModifierKey.Shift)
+			? fine
+			: normal;
+	}, [activeKeys, normal, fine]);
 
-  return multiplierRef
-}
+	return multiplierRef;
+};
 
-export default useControlResponseRef
+export default useControlResponseRef;

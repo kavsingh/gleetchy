@@ -1,11 +1,11 @@
 {
-  "extends": "./tsconfig.json",
-  "compilerOptions": {
-    "isolatedModules": false,
-    "module": "commonjs",
-    // Target Node 18 runtime
-    // https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
-    "lib": ["es2022"],
-    "target": "es2022"
-  }
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"isolatedModules": false,
+		"module": "commonjs",
+		// Target Node 18 runtime
+		// https://github.com/microsoft/TypeScript/wiki/Node-Target-Mapping
+		"lib": ["es2022"],
+		"target": "es2022"
+	}
 }

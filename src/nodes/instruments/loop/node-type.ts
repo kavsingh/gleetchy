@@ -1,1 +1,1 @@
-export default 'INSTRUMENT_LOOP'
+export default "INSTRUMENT_LOOP";

@@ -1,1 +1,1 @@
-export default 'AUDIO_EFFECT_DELAY'
+export default "AUDIO_EFFECT_DELAY";

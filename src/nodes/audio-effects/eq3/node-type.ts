@@ -1,1 +1,1 @@
-export default 'AUDIO_EFFECT_EQ3'
+export default "AUDIO_EFFECT_EQ3";

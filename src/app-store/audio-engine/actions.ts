@@ -1,3 +1,3 @@
-import { audioEngineSlice } from './slice'
+import { audioEngineSlice } from "./slice";
 
-export const { publishSubscriptionEvent } = audioEngineSlice.actions
+export const { publishSubscriptionEvent } = audioEngineSlice.actions;

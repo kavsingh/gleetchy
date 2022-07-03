@@ -1,6 +1,6 @@
 export const defaultProps = {
-  delayTime: 0.6,
-  wetDryRatio: 0.5,
-}
+	delayTime: 0.6,
+	wetDryRatio: 0.5,
+};
 
-export type Props = typeof defaultProps
+export type Props = typeof defaultProps;

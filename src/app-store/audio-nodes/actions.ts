@@ -1,9 +1,9 @@
-import { audioNodesSlice } from './slice'
+import { audioNodesSlice } from "./slice";
 
 export const {
-  addAudioNode,
-  removeAudioNode,
-  duplicateAudioNode,
-  updateAudioNodeLabel,
-  updateAudioNodeProps,
-} = audioNodesSlice.actions
+	addAudioNode,
+	removeAudioNode,
+	duplicateAudioNode,
+	updateAudioNodeLabel,
+	updateAudioNodeProps,
+} = audioNodesSlice.actions;

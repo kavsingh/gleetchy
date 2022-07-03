@@ -1,96 +1,96 @@
-import { useMemo } from 'react'
-import styled from '@emotion/styled'
+import { useMemo } from "react";
+import styled from "@emotion/styled";
 
-import { noop } from '~/lib/util'
+import { noop } from "~/lib/util";
 
-import TextInput from './text-input'
-import Button from './button'
+import TextInput from "./text-input";
+import Button from "./button";
 
-import type { AudioNodeConnection } from '~/types'
-import type { FC, ReactNode } from 'react'
+import type { AudioNodeConnection } from "~/types";
+import type { FC, ReactNode } from "react";
 
 const TitleBar: FC<{
-  label: string
-  type: string
-  children?: ReactNode
-  connections?: AudioNodeConnection[]
-  onLabelChange?(label: string): unknown
-  onRemoveClick?(): unknown
+	label: string;
+	type: string;
+	children?: ReactNode;
+	connections?: AudioNodeConnection[];
+	onLabelChange?(label: string): unknown;
+	onRemoveClick?(): unknown;
 }> = ({
-  label,
-  type,
-  onLabelChange = noop,
-  onRemoveClick = noop,
-  connections = [],
-  children,
+	label,
+	type,
+	onLabelChange = noop,
+	onRemoveClick = noop,
+	connections = [],
+	children,
 }) => {
-  const connectionIndicators = useMemo(
-    () => (
-      <>
-        {connections.map(({ color, from, to }) => (
-          <Connection color={color} key={`${from}${to}`} />
-        ))}
-      </>
-    ),
-    [connections],
-  )
+	const connectionIndicators = useMemo(
+		() => (
+			<>
+				{connections.map(({ color, from, to }) => (
+					<Connection color={color} key={`${from}${to}`} />
+				))}
+			</>
+		),
+		[connections],
+	);
 
-  return (
-    <Container>
-      <ConnectionsAndLabelContainer>
-        <ConnectionsContainer>{connectionIndicators}</ConnectionsContainer>
-        <TextInput onChange={onLabelChange} value={label} />
-      </ConnectionsAndLabelContainer>
-      <InfoContainer>
-        <TypeLabel>{type} /</TypeLabel>
-        {children}
-        <Button handler={onRemoveClick}>Remove</Button>
-      </InfoContainer>
-    </Container>
-  )
-}
+	return (
+		<Container>
+			<ConnectionsAndLabelContainer>
+				<ConnectionsContainer>{connectionIndicators}</ConnectionsContainer>
+				<TextInput onChange={onLabelChange} value={label} />
+			</ConnectionsAndLabelContainer>
+			<InfoContainer>
+				<TypeLabel>{type} /</TypeLabel>
+				{children}
+				<Button handler={onRemoveClick}>Remove</Button>
+			</InfoContainer>
+		</Container>
+	);
+};
 
-export default TitleBar
+export default TitleBar;
 
 const Container = styled.div`
-  margin-bottom: 0.6em;
-  font-size: 0.8em;
-`
+	margin-bottom: 0.6em;
+	font-size: 0.8em;
+`;
 
 const ConnectionsAndLabelContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
 
-  input {
-    margin: 0;
-    padding: 0;
-    font-weight: 500;
-    appearance: none;
-  }
-`
+	input {
+		margin: 0;
+		padding: 0;
+		font-weight: 500;
+		appearance: none;
+	}
+`;
 
 const InfoContainer = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-`
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+`;
 
 const ConnectionsContainer = styled.div`
-  display: flex;
-  height: 100%;
-`
+	display: flex;
+	height: 100%;
+`;
 
 const Connection = styled.div`
-  flex-grow: 0;
-  flex-shrink: 0;
-  width: 0.8em;
-  height: 0.8em;
-  margin-right: 0.3em;
-  background-color: ${(props) => props.color};
-`
+	flex-grow: 0;
+	flex-shrink: 0;
+	width: 0.8em;
+	height: 0.8em;
+	margin-right: 0.3em;
+	background-color: ${(props) => props.color};
+`;
 
 const TypeLabel = styled.div`
-  margin-right: 0.3em;
-`
+	margin-right: 0.3em;
+`;

@@ -1,91 +1,91 @@
 export abstract class GAudioNode<P = Record<string, unknown>> {
-  protected defaultProps: P = {} as P
-  protected props: P
-  private inputGainNode: AudioNode
-  private outputGainNode: AudioNode
+	protected defaultProps: P = {} as P;
+	protected props: P;
+	private inputGainNode: AudioNode;
+	private outputGainNode: AudioNode;
 
-  abstract type: string
+	abstract type: string;
 
-  constructor(protected audioContext: AudioContext, initialProps: Partial<P>) {
-    this.props = { ...this.defaultProps, ...initialProps }
-    this.inputGainNode = audioContext.createGain()
-    this.outputGainNode = audioContext.createGain()
-  }
+	constructor(protected audioContext: AudioContext, initialProps: Partial<P>) {
+		this.props = { ...this.defaultProps, ...initialProps };
+		this.inputGainNode = audioContext.createGain();
+		this.outputGainNode = audioContext.createGain();
+	}
 
-  get inNode(): AudioNode {
-    return this.inputGainNode
-  }
+	get inNode(): AudioNode {
+		return this.inputGainNode;
+	}
 
-  get outNode(): AudioNode {
-    return this.outputGainNode
-  }
+	get outNode(): AudioNode {
+		return this.outputGainNode;
+	}
 
-  static async getWorklets(): Promise<string[]> {
-    return Promise.resolve([])
-  }
+	static async getWorklets(): Promise<string[]> {
+		return Promise.resolve([]);
+	}
 
-  connect(node: AudioNode | GAudioNode): void {
-    if (node instanceof AudioNode) {
-      this.outputGainNode.connect(node)
-    } else if (node instanceof GAudioNode) {
-      this.outputGainNode.connect(node.inputGainNode)
-    } else {
-      throw new Error('Unable to connect to node')
-    }
-  }
+	connect(node: AudioNode | GAudioNode): void {
+		if (node instanceof AudioNode) {
+			this.outputGainNode.connect(node);
+		} else if (node instanceof GAudioNode) {
+			this.outputGainNode.connect(node.inputGainNode);
+		} else {
+			throw new Error("Unable to connect to node");
+		}
+	}
 
-  disconnect(node?: AudioNode | GAudioNode): void {
-    if (!node) {
-      this.outputGainNode.disconnect()
-    } else if (node instanceof AudioNode) {
-      this.outputGainNode.disconnect(node)
-    } else if (node instanceof GAudioNode) {
-      this.outputGainNode.disconnect(node.inputGainNode)
-    } else {
-      throw new Error('Unable to disconnect node')
-    }
-  }
+	disconnect(node?: AudioNode | GAudioNode): void {
+		if (!node) {
+			this.outputGainNode.disconnect();
+		} else if (node instanceof AudioNode) {
+			this.outputGainNode.disconnect(node);
+		} else if (node instanceof GAudioNode) {
+			this.outputGainNode.disconnect(node.inputGainNode);
+		} else {
+			throw new Error("Unable to disconnect node");
+		}
+	}
 
-  set(nextProps: Partial<P>): void {
-    const previousProps = { ...this.props }
+	set(nextProps: Partial<P>): void {
+		const previousProps = { ...this.props };
 
-    Object.assign(this.props, nextProps)
+		Object.assign(this.props, nextProps);
 
-    this.propsUpdated(this.props, previousProps)
-  }
+		this.propsUpdated(this.props, previousProps);
+	}
 
-  abstract destroy(): void
+	abstract destroy(): void;
 
-  protected abstract propsUpdated(props: P, previousProps: P): void
+	protected abstract propsUpdated(props: P, previousProps: P): void;
 }
 
-type GInstrumentNodeSubscriber<S> = (state: S) => unknown
+type GInstrumentNodeSubscriber<S> = (state: S) => unknown;
 
 export abstract class GInstrumentNode<
-  P = Record<string, unknown>,
-  S = Record<string, unknown>,
+	P = Record<string, unknown>,
+	S = Record<string, unknown>,
 > extends GAudioNode<P> {
-  private subscribers: GInstrumentNodeSubscriber<S>[] = []
+	private subscribers: GInstrumentNodeSubscriber<S>[] = [];
 
-  subscribe(subscriber: GInstrumentNodeSubscriber<S>): () => void {
-    if (!this.subscribers.includes(subscriber)) {
-      this.subscribers.push(subscriber)
-    }
+	subscribe(subscriber: GInstrumentNodeSubscriber<S>): () => void {
+		if (!this.subscribers.includes(subscriber)) {
+			this.subscribers.push(subscriber);
+		}
 
-    return () => {
-      const idx = this.subscribers.indexOf(subscriber)
+		return () => {
+			const idx = this.subscribers.indexOf(subscriber);
 
-      if (idx !== -1) this.subscribers.splice(idx, 1)
-    }
-  }
+			if (idx !== -1) this.subscribers.splice(idx, 1);
+		};
+	}
 
-  protected notifySubscribers = (state: S) => {
-    this.subscribers.forEach((subscriber) => {
-      subscriber(state)
-    })
-  }
+	protected notifySubscribers = (state: S) => {
+		this.subscribers.forEach((subscriber) => {
+			subscriber(state);
+		});
+	};
 
-  abstract play(): void
+	abstract play(): void;
 
-  abstract stop(): void
+	abstract stop(): void;
 }
