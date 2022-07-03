@@ -1,4 +1,4 @@
-import { PureComponent } from "react";
+import { memo, useCallback, useEffect, useRef } from "react";
 import { clamp } from "ramda";
 import styled from "@emotion/styled";
 
@@ -13,120 +13,138 @@ import LoopTitleBar from "./loop-title-bar";
 import type { FC, ReactNode } from "react";
 import type { LoopUIProps } from "./types";
 
-class Loop extends PureComponent<LoopUIProps> {
-	public render(): ReactNode {
-		const {
-			nodeId,
-			audioBuffer,
-			loopStart = 0,
-			loopEnd = 1,
-			label = "",
-			fileName = "",
-			connections = [],
-			isActive = true,
-			highGain = 0,
-			midGain = 0,
-			lowGain = 0,
-			playbackRate = 1,
-			gain = 0.5,
-			onGainChange = noop,
-			onPlaybackRateChange = noop,
-			onEqChange = noop,
-			selectAudioFile = noop,
-			onLabelChange = noop,
-			duplicate = noop,
-			remove = noop,
-		} = this.props;
+const Loop: FC<LoopUIProps> = ({
+	nodeId,
+	audioBuffer,
+	loopStart = 0,
+	loopEnd = 1,
+	label = "",
+	fileName = "",
+	connections = [],
+	isActive = true,
+	highGain = 0,
+	midGain = 0,
+	lowGain = 0,
+	playbackRate = 1,
+	gain = 0.5,
+	onGainChange = noop,
+	onPlaybackRateChange = noop,
+	onEqChange = noop,
+	selectAudioFile = noop,
+	onLabelChange = noop,
+	duplicate = noop,
+	remove = noop,
+	receiveAudioFile = noop,
+	onLoopRegionChange = noop,
+}) => {
+	const regionRef = useRef({ loopStart, loopEnd });
 
-		return (
-			<Container isActive={isActive}>
-				<AudioFileDropRegion onFiles={this.handleFiles}>
-					<TitleBarContainer>
-						<LoopTitleBar
-							label={label}
-							fileName={fileName}
-							audioBuffer={audioBuffer}
-							connections={connections}
-							onLabelChange={onLabelChange}
-							duplicate={duplicate}
-							remove={remove}
-							selectAudioFile={selectAudioFile}
+	useEffect(() => {
+		regionRef.current = { loopStart, loopEnd };
+	}, [loopStart, loopEnd]);
+
+	const handleFiles = useCallback(
+		(files: File[]) => {
+			if (files[0]) receiveAudioFile(files[0]);
+		},
+		[receiveAudioFile],
+	);
+
+	const handleLoopStartDrag = useCallback(
+		(movement: number) => {
+			onLoopRegionChange(
+				clamp(
+					0,
+					regionRef.current.loopEnd - 0.0001,
+					regionRef.current.loopStart + movement,
+				),
+				regionRef.current.loopEnd,
+			);
+		},
+		[onLoopRegionChange],
+	);
+
+	const handleLoopEndDrag = useCallback(
+		(movement: number) => {
+			onLoopRegionChange(
+				regionRef.current.loopStart,
+				clamp(
+					regionRef.current.loopStart + 0.0001,
+					1,
+					regionRef.current.loopEnd + movement,
+				),
+			);
+		},
+		[onLoopRegionChange],
+	);
+
+	const handleLoopRegionDrag = useCallback(
+		(movement: number) => {
+			const gap = regionRef.current.loopEnd - regionRef.current.loopStart;
+			let nextStart: number;
+			let nextEnd: number;
+
+			if (movement < 0) {
+				nextStart = clamp(0, 1 - gap, regionRef.current.loopStart + movement);
+				nextEnd = nextStart + gap;
+			} else {
+				nextEnd = clamp(gap, 1, regionRef.current.loopEnd + movement);
+				nextStart = nextEnd - gap;
+			}
+
+			onLoopRegionChange(nextStart, nextEnd);
+		},
+		[onLoopRegionChange],
+	);
+
+	return (
+		<Container isActive={isActive}>
+			<AudioFileDropRegion onFiles={handleFiles}>
+				<TitleBarContainer>
+					<LoopTitleBar
+						label={label}
+						fileName={fileName}
+						audioBuffer={audioBuffer}
+						connections={connections}
+						onLabelChange={onLabelChange}
+						duplicate={duplicate}
+						remove={remove}
+						selectAudioFile={selectAudioFile}
+					/>
+				</TitleBarContainer>
+				<MainContainer>
+					<LoopSample
+						nodeId={nodeId}
+						fromSaved={!!(fileName && !audioBuffer)}
+						audioBuffer={audioBuffer}
+						loopStart={loopStart}
+						loopEnd={loopEnd}
+						onLoopStartDrag={handleLoopStartDrag}
+						onLoopEndDrag={handleLoopEndDrag}
+						onLoopRegionDrag={handleLoopRegionDrag}
+						selectAudioFile={selectAudioFile}
+					/>
+					<ControlsContainer>
+						<PlaybackControls
+							gain={gain}
+							playbackRate={playbackRate}
+							onGainChange={onGainChange}
+							onPlaybackRateChange={onPlaybackRateChange}
 						/>
-					</TitleBarContainer>
-					<MainContainer>
-						<LoopSample
-							nodeId={nodeId}
-							fromSaved={!!(fileName && !audioBuffer)}
-							audioBuffer={audioBuffer}
-							loopStart={loopStart}
-							loopEnd={loopEnd}
-							onLoopStartDrag={this.handleLoopStartDrag}
-							onLoopEndDrag={this.handleLoopEndDrag}
-							onLoopRegionDrag={this.handleLoopRegionDrag}
-							selectAudioFile={selectAudioFile}
+						<Eq3
+							lowGain={lowGain}
+							midGain={midGain}
+							highGain={highGain}
+							onChange={onEqChange}
 						/>
-						<ControlsContainer>
-							<PlaybackControls
-								gain={gain}
-								playbackRate={playbackRate}
-								onGainChange={onGainChange}
-								onPlaybackRateChange={onPlaybackRateChange}
-							/>
-							<Eq3
-								lowGain={lowGain}
-								midGain={midGain}
-								highGain={highGain}
-								onChange={onEqChange}
-							/>
-						</ControlsContainer>
-					</MainContainer>
-				</AudioFileDropRegion>
-			</Container>
-		);
-	}
+					</ControlsContainer>
+				</MainContainer>
+			</AudioFileDropRegion>
+		</Container>
+	);
+};
 
-	private handleFiles = (files: File[]) => {
-		if (files[0]) this.props.receiveAudioFile(files[0]);
-	};
-
-	private handleLoopStartDrag = (movement: number) => {
-		const { loopStart, loopEnd } = this.props;
-
-		this.props.onLoopRegionChange(
-			clamp(0, loopEnd - 0.0001, loopStart + movement),
-			loopEnd,
-		);
-	};
-
-	private handleLoopEndDrag = (movement: number) => {
-		const { loopStart, loopEnd } = this.props;
-
-		this.props.onLoopRegionChange(
-			loopStart,
-			clamp(loopStart + 0.0001, 1, loopEnd + movement),
-		);
-	};
-
-	private handleLoopRegionDrag = (movement: number) => {
-		const { loopStart, loopEnd } = this.props;
-		const gap = loopEnd - loopStart;
-
-		let nextStart;
-		let nextEnd;
-
-		if (movement < 0) {
-			nextStart = clamp(0, 1 - gap, loopStart + movement);
-			nextEnd = nextStart + gap;
-		} else {
-			nextEnd = clamp(gap, 1, loopEnd + movement);
-			nextStart = nextEnd - gap;
-		}
-
-		this.props.onLoopRegionChange(nextStart, nextEnd);
-	};
-}
-
-export default Loop;
+export default memo(Loop);
 
 const Container = styled.div<{ isActive: boolean }>`
 	inline-size: 100%;
