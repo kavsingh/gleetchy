@@ -6,20 +6,14 @@ import { clamp } from "ramda";
 import { noop } from "~/lib/util";
 
 import useControlResponseRef from "./hooks/use-control-response-ref";
-import SinglePointerDrag from "./single-pointer-drag";
+import usePointerDrag from "./hooks/use-pointer-drag";
 
 import type { FC } from "react";
-import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
 import type {
-	SinglePointerDragMoveHandler,
-	SinglePointerDragEndHandler,
-} from "./single-pointer-drag";
-
-const clampValue = clamp(0, 1);
-const controlMultipliers: ControlResponseMultipliers = {
-	normal: 2,
-	fine: 0.4,
-};
+	PointerDragEndHandler,
+	PointerDragMoveHandler,
+} from "./hooks/use-pointer-drag";
+import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
 
 const Slider: FC<{
 	value: number;
@@ -46,7 +40,7 @@ const Slider: FC<{
 		onChange(defaultValue);
 	}, [onChange, defaultValue]);
 
-	const handleDragMove = useCallback<SinglePointerDragMoveHandler>(
+	const onDragMove = useCallback<PointerDragMoveHandler>(
 		({ movementX, movementY }) => {
 			const { current: bar } = barRef;
 
@@ -65,7 +59,7 @@ const Slider: FC<{
 		[orientation, onChange, moveMultiplierRef],
 	);
 
-	const handleDragEnd = useCallback<SinglePointerDragEndHandler>(
+	const onDragEnd = useCallback<PointerDragEndHandler>(
 		({ duration, movementX, movementY, targetX, targetY }) => {
 			const { current: bar } = barRef;
 
@@ -90,30 +84,27 @@ const Slider: FC<{
 
 	const offVal = `${(1 - value) * 100}%`;
 
+	const dragHandlers = usePointerDrag({ onDragMove, onDragEnd });
+
 	return (
 		<Container orientation={orientation} title={title}>
 			<Label orientation={orientation}>{label}</Label>
-			<SinglePointerDrag onDragMove={handleDragMove} onDragEnd={handleDragEnd}>
-				{({ dragListeners }) => (
-					<BarContainer
-						{...dragListeners}
-						orientation={orientation}
-						role="presentation"
-						onDoubleClick={handleDoubleClick}
-						ref={barRef}
-					>
-						<Track orientation={orientation} />
-						<Bar
-							orientation={orientation}
-							style={
-								orientation === "horizontal"
-									? { right: offVal }
-									: { top: offVal }
-							}
-						/>
-					</BarContainer>
-				)}
-			</SinglePointerDrag>
+
+			<BarContainer
+				{...dragHandlers}
+				orientation={orientation}
+				role="presentation"
+				onDoubleClick={handleDoubleClick}
+				ref={barRef}
+			>
+				<Track orientation={orientation} />
+				<Bar
+					orientation={orientation}
+					style={
+						orientation === "horizontal" ? { right: offVal } : { top: offVal }
+					}
+				/>
+			</BarContainer>
 			<ValueLabel orientation={orientation}>{valueLabel}</ValueLabel>
 		</Container>
 	);
@@ -229,5 +220,13 @@ const Bar = styled.div<OrientationProps>`
 			  `};
 `;
 
+const clampValue = clamp(0, 1);
+
+const controlMultipliers: ControlResponseMultipliers = {
+	normal: 1,
+	fine: 0.4,
+};
+
 type Orientation = "vertical" | "horizontal";
+
 type OrientationProps = { orientation: Orientation };

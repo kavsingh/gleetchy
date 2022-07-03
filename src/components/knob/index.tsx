@@ -7,18 +7,12 @@ import { noop } from "~/lib/util";
 import { layoutAbsoluteFill } from "~/style/layout";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
-import SinglePointerDrag from "../single-pointer-drag";
 import SVGArc from "./svg-arc";
+import usePointerDrag from "../hooks/use-pointer-drag";
 
-import type { FC } from "react";
+import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type { ControlResponseMultipliers } from "../hooks/use-control-response-ref";
-import type { SinglePointerDragMoveHandler } from "../single-pointer-drag";
-
-const clampMove = clamp(0, 1);
-const controlMultipliers: ControlResponseMultipliers = {
-	normal: 1,
-	fine: 0.2,
-};
+import type { FC } from "react";
 
 const Knob: FC<{
 	value: number;
@@ -49,7 +43,7 @@ const Knob: FC<{
 		onChange(defaultValue);
 	}, [onChange, defaultValue]);
 
-	const handleDragMove = useCallback<SinglePointerDragMoveHandler>(
+	const onDragMove = useCallback<PointerDragMoveHandler>(
 		({ movementX, movementY }) => {
 			const { current: knob } = knobRef;
 
@@ -75,37 +69,35 @@ const Knob: FC<{
 		valueRef.current = value;
 	}, [value]);
 
+	const dragHandlers = usePointerDrag({
+		onDragMove,
+		onDragStart: resetAxis,
+		onDragEnd: resetAxis,
+	});
+
 	return (
-		<SinglePointerDrag
-			onDragStart={resetAxis}
-			onDragEnd={resetAxis}
-			onDragMove={handleDragMove}
-		>
-			{({ dragListeners }) => (
-				<Container title={title}>
-					<Label>{label}</Label>
-					<KnobContainer
-						{...dragListeners}
-						radius={radius}
-						axis={axis}
-						onDoubleClick={handleDoubleClick}
-						role="presentation"
-						ref={knobRef}
-					>
-						<KnobSVGContainer>
-							<SVGArc
-								endRatio={value}
-								strokeWidth={6}
-								backgroundStrokeWidth={3}
-								strokeColor={theme.colors.text[600]}
-								backgroundStrokeColor={theme.colors.text[100]}
-							/>
-						</KnobSVGContainer>
-					</KnobContainer>
-					<Label>{valueLabel}</Label>
-				</Container>
-			)}
-		</SinglePointerDrag>
+		<Container title={title}>
+			<Label>{label}</Label>
+			<KnobContainer
+				{...dragHandlers}
+				radius={radius}
+				axis={axis}
+				onDoubleClick={handleDoubleClick}
+				role="presentation"
+				ref={knobRef}
+			>
+				<KnobSVGContainer>
+					<SVGArc
+						endRatio={value}
+						strokeWidth={6}
+						backgroundStrokeWidth={3}
+						strokeColor={theme.colors.text[600]}
+						backgroundStrokeColor={theme.colors.text[100]}
+					/>
+				</KnobSVGContainer>
+			</KnobContainer>
+			<Label>{valueLabel}</Label>
+		</Container>
 	);
 };
 
@@ -140,5 +132,12 @@ const KnobContainer = styled.div<{
 const KnobSVGContainer = styled.div`
 	${layoutAbsoluteFill}
 `;
+
+const clampMove = clamp(0, 1);
+
+const controlMultipliers: ControlResponseMultipliers = {
+	normal: 1,
+	fine: 0.2,
+};
 
 type MovementAxis = "vertical" | "horizontal";

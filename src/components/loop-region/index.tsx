@@ -6,12 +6,12 @@ import color from "color";
 import { noop } from "~/lib/util";
 import { layoutAbsoluteFill } from "~/style/layout";
 
-import SinglePointerDrag from "../single-pointer-drag";
 import useControlResponseRef from "../hooks/use-control-response-ref";
 import LoopHandle from "./loop-handle";
+import usePointerDrag from "../hooks/use-pointer-drag";
 
+import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type { FC } from "react";
-import type { SinglePointerDragState } from "../single-pointer-drag";
 
 const controlResponseMultipliers = {
 	normal: 1,
@@ -34,8 +34,8 @@ const LoopRegion: FC<{
 	const moveMultiplierRef = useControlResponseRef(controlResponseMultipliers);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
-	const handleStartHandleDrag = useCallback(
-		({ movementX }: SinglePointerDragState) => {
+	const handleStartHandleDrag = useCallback<PointerDragMoveHandler>(
+		({ movementX }) => {
 			if (containerRef.current) {
 				onLoopStartDrag(
 					(movementX * moveMultiplierRef.current) /
@@ -46,8 +46,8 @@ const LoopRegion: FC<{
 		[onLoopStartDrag, moveMultiplierRef],
 	);
 
-	const handleEndHandleDrag = useCallback(
-		({ movementX }: SinglePointerDragState) => {
+	const handleEndHandleDrag = useCallback<PointerDragMoveHandler>(
+		({ movementX }) => {
 			if (containerRef.current) {
 				onLoopEndDrag(
 					(movementX * moveMultiplierRef.current) /
@@ -58,8 +58,8 @@ const LoopRegion: FC<{
 		[onLoopEndDrag, moveMultiplierRef],
 	);
 
-	const handleLoopRegionDrag = useCallback(
-		({ movementX }: SinglePointerDragState) => {
+	const handleLoopRegionDrag = useCallback<PointerDragMoveHandler>(
+		({ movementX }) => {
 			if (containerRef.current) {
 				onLoopRegionDrag(
 					(movementX * moveMultiplierRef.current) /
@@ -75,43 +75,40 @@ const LoopRegion: FC<{
 		? regionRatio * containerRef.current.offsetWidth < 30
 		: false;
 
+	const startDragListeners = usePointerDrag({
+		onDragMove: handleStartHandleDrag,
+	});
+	const regionDragListeners = usePointerDrag({
+		onDragMove: handleLoopRegionDrag,
+	});
+	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
+
 	return (
 		<Container ref={containerRef}>
-			<SinglePointerDrag onDragMove={handleStartHandleDrag}>
-				{({ dragListeners }) => (
-					<HandleContainer
-						{...dragListeners}
-						role="presentation"
-						offset={loopStart}
-					>
-						<LoopHandle align="left" />
-					</HandleContainer>
-				)}
-			</SinglePointerDrag>
-			<SinglePointerDrag onDragMove={handleEndHandleDrag}>
-				{({ dragListeners }) => (
-					<HandleContainer
-						{...dragListeners}
-						role="presentation"
-						offset={loopEnd}
-					>
-						<LoopHandle align="right" />
-					</HandleContainer>
-				)}
-			</SinglePointerDrag>
+			<HandleContainer
+				{...startDragListeners}
+				role="presentation"
+				offset={loopStart}
+			>
+				<LoopHandle align="left" />
+			</HandleContainer>
+
+			<HandleContainer
+				{...endDragListeners}
+				role="presentation"
+				offset={loopEnd}
+			>
+				<LoopHandle align="right" />
+			</HandleContainer>
 			<RegionsContainer>
 				<InactiveRegion start={0} end={loopStart} />
 				{regionRatio < 1 ? (
-					<SinglePointerDrag onDragMove={handleLoopRegionDrag}>
-						{({ dragListeners }) => (
-							<ActiveRegion
-								{...dragListeners}
-								start={loopStart}
-								end={loopEnd}
-								preferred={preferRegionDrag}
-							/>
-						)}
-					</SinglePointerDrag>
+					<ActiveRegion
+						{...regionDragListeners}
+						start={loopStart}
+						end={loopEnd}
+						preferred={preferRegionDrag}
+					/>
 				) : null}
 				<InactiveRegion start={loopEnd} end={1} />
 			</RegionsContainer>
