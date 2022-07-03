@@ -6,7 +6,7 @@ import useAddNode from "~/app-store/hooks/use-add-node";
 import { nodeType as loopType } from "~/nodes/instruments/loop";
 import AnimIn from "~/components/anim-in";
 import ErrorBoundary from "~/components/error-boundary";
-import ButtonSet, { Button } from "~/components/button-set";
+import ButtonGroup, { Button } from "~/components/button-group";
 
 import ConnectedLoop from "./connected-loop";
 
@@ -47,9 +47,9 @@ const AddInstrumentButtons: FC = () => {
 	const addLoop = useCallback(() => addNode(loopType), [addNode]);
 
 	return (
-		<ButtonSet>
+		<ButtonGroup>
 			<Button handler={addLoop}>Add Loop</Button>
-		</ButtonSet>
+		</ButtonGroup>
 	);
 };
 

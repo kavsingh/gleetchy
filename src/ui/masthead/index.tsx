@@ -4,7 +4,7 @@ import styled from "@emotion/styled";
 
 import useGlobalPlayback from "~/app-store/hooks/use-global-playback";
 import useUITheme from "~/app-store/hooks/use-ui-theme";
-import PlayPauseButton from "~/components/play-pause-button";
+import PlayPauseButton from "~/ui/masthead/play-pause-button";
 
 import type { FC } from "react";
 

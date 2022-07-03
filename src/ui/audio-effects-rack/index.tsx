@@ -6,7 +6,7 @@ import { nodeType as delayType } from "~/nodes/audio-effects/delay";
 import { nodeType as reverbType } from "~/nodes/audio-effects/reverb";
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import useAddNode from "~/app-store/hooks/use-add-node";
-import ButtonSet, { Button } from "~/components/button-set";
+import ButtonGroup, { Button } from "~/components/button-group";
 import ErrorBoundary from "~/components/error-boundary";
 
 import ConnectedDelay from "./connected-delay";
@@ -56,10 +56,10 @@ const AddAudioEffectButtons: FC = () => {
 	const addDelay = useCallback(() => addNode(delayType), [addNode]);
 
 	return (
-		<ButtonSet>
+		<ButtonGroup>
 			<Button handler={addReverb}>Add Reverb</Button>
 			<Button handler={addDelay}>Add Delay</Button>
-		</ButtonSet>
+		</ButtonGroup>
 	);
 };
 

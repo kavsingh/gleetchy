@@ -5,7 +5,7 @@ import Button from "./button";
 import type { ReactElement } from "react";
 import type { ButtonProps } from "./button";
 
-const ButtonSet = styled.div<{
+const ButtonGroup = styled.div<{
 	children: ReactElement<ButtonProps>[] | ReactElement<ButtonProps>;
 }>`
 	display: flex;
@@ -18,4 +18,4 @@ const ButtonSet = styled.div<{
 
 export { Button };
 
-export default ButtonSet;
+export default ButtonGroup;

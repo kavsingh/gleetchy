@@ -6,13 +6,13 @@ import { clamp } from "ramda";
 import { noop } from "~/lib/util";
 import { layoutAbsoluteFill } from "~/style/layout";
 
-import useControlResponseRef from "./hooks/use-control-response-ref";
-import SinglePointerDrag from "./single-pointer-drag";
+import useControlResponseRef from "../hooks/use-control-response-ref";
+import SinglePointerDrag from "../single-pointer-drag";
 import SVGArc from "./svg-arc";
 
 import type { FC } from "react";
-import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
-import type { SinglePointerDragMoveHandler } from "./single-pointer-drag";
+import type { ControlResponseMultipliers } from "../hooks/use-control-response-ref";
+import type { SinglePointerDragMoveHandler } from "../single-pointer-drag";
 
 const clampMove = clamp(0, 1);
 const controlMultipliers: ControlResponseMultipliers = {
