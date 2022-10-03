@@ -1,13 +1,12 @@
-export abstract class GAudioNode<P = Record<string, unknown>> {
-	protected defaultProps: P = {} as P;
+export abstract class GAudioNode<P extends Record<string, unknown> = Record<string, unknown>> {
 	protected props: P;
 	private inputGainNode: AudioNode;
 	private outputGainNode: AudioNode;
 
 	abstract type: string;
 
-	constructor(protected audioContext: AudioContext, initialProps: Partial<P>) {
-		this.props = { ...this.defaultProps, ...initialProps };
+	constructor(protected audioContext: AudioContext, initialProps: P) {
+		this.props = structuredClone(initialProps);
 		this.inputGainNode = audioContext.createGain();
 		this.outputGainNode = audioContext.createGain();
 	}
@@ -62,8 +61,8 @@ export abstract class GAudioNode<P = Record<string, unknown>> {
 type GInstrumentNodeSubscriber<S> = (state: S) => unknown;
 
 export abstract class GInstrumentNode<
-	P = Record<string, unknown>,
-	S = Record<string, unknown>,
+	P extends Record<string, unknown> = Record<string, unknown>,
+	S extends Record<string, unknown> = Record<string, unknown>,
 > extends GAudioNode<P> {
 	private subscribers: GInstrumentNodeSubscriber<S>[] = [];
 

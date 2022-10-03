@@ -18,7 +18,7 @@ export class GReverbNode extends GAudioNode<Props> {
 
 	constructor(
 		protected audioContext: AudioContext,
-		initialProps: Partial<Props>,
+		initialProps: Props,
 	) {
 		super(audioContext, initialProps);
 

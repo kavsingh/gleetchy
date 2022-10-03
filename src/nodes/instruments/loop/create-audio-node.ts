@@ -40,7 +40,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	positionBufferSource: AudioBufferSourceNode | null = null;
 	throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
 
-	constructor(protected audioContext: AudioContext, initProps: Partial<Props>) {
+	constructor(protected audioContext: AudioContext, initProps: Props) {
 		super(audioContext, initProps);
 
 		this.gainNode.connect(this.eq3Node.inNode);
@@ -170,7 +170,7 @@ export default curry(
 		new GLoopNode(audioContext, { ...defaultProps, ...initProps }),
 );
 
-interface PlaybackState {
+interface PlaybackState extends Record<string, unknown> {
 	playing: boolean;
 	positionRatio?: number;
 }
