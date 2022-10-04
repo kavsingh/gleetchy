@@ -145,8 +145,6 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 
 		this.positionBufferSource.loop = this.playbackBufferSource.loop = true;
 
-		this.propsUpdated(this.props, this.props);
-
 		if (this.worklet) this.positionBufferSource.connect(this.worklet);
 
 		this.updateSourceProps();
