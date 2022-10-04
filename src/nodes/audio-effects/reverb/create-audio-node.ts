@@ -16,10 +16,7 @@ export class GReverbNode extends GAudioNode<Props> {
 	private wetGainNode = this.audioContext.createGain();
 	private dryGainNode = this.audioContext.createGain();
 
-	constructor(
-		protected audioContext: AudioContext,
-		initialProps: Props,
-	) {
+	constructor(protected audioContext: AudioContext, initialProps: Props) {
 		super(audioContext, initialProps);
 
 		this.inNode.connect(this.dryGainNode);
