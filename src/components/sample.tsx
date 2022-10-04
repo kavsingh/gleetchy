@@ -1,4 +1,4 @@
-import { memo, useMemo } from "react";
+import { memo, useEffect, useMemo, useRef } from "react";
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import color from "color";
@@ -12,7 +12,7 @@ import type { FC } from "react";
 
 const Sample: FC<SampleProps> = ({
 	audioBuffer,
-	positionRatio = 0,
+	subscribeToPositionRatio,
 	loopStart = 0,
 	loopEnd = 1,
 	fromSaved = false,
@@ -22,6 +22,7 @@ const Sample: FC<SampleProps> = ({
 	selectAudioFile = noop,
 }) => {
 	const theme = useTheme();
+	const playheadRef = useRef<HTMLDivElement | null>(null);
 
 	const waveForm = useMemo(
 		() => (
@@ -33,6 +34,7 @@ const Sample: FC<SampleProps> = ({
 		),
 		[audioBuffer, theme.colors.text],
 	);
+
 	const loopRegion = useMemo(
 		() => (
 			<LoopRegion
@@ -46,13 +48,23 @@ const Sample: FC<SampleProps> = ({
 		[loopStart, loopEnd, onLoopStartDrag, onLoopEndDrag, onLoopRegionDrag],
 	);
 
+	useEffect(
+		() =>
+			subscribeToPositionRatio?.((ratio) => {
+				if (!playheadRef.current) return;
+
+				playheadRef.current.style.transform = `translateX(${ratio * 100}%)`;
+			}),
+		[subscribeToPositionRatio],
+	);
+
 	return (
 		<Container>
 			<WaveformContainer>{waveForm}</WaveformContainer>
 			{audioBuffer ? (
 				<>
 					<PlayheadContainer>
-						<Playhead position={positionRatio} />
+						<Playhead ref={playheadRef} />
 					</PlayheadContainer>
 					<LoopRegionContainer>{loopRegion}</LoopRegionContainer>
 				</>
@@ -102,10 +114,9 @@ const PlayheadContainer = styled.div`
 	pointer-events: none;
 `;
 
-const Playhead = styled.div<{ position: number }>`
+const Playhead = styled.div`
 	${layoutAbsoluteFill}
 	z-index: 2;
-	transform: translateX(${({ position }) => position * 100}%);
 	pointer-events: none;
 
 	&::before {
@@ -145,7 +156,6 @@ const InitLoadButon = styled.div`
 
 export interface SampleProps {
 	audioBuffer: Nullable<AudioBuffer>;
-	positionRatio?: number;
 	fromSaved?: boolean;
 	loopStart?: number;
 	loopEnd?: number;
@@ -153,4 +163,5 @@ export interface SampleProps {
 	onLoopEndDrag?(movement: number): unknown;
 	onLoopRegionDrag?(movement: number): unknown;
 	selectAudioFile?(): unknown;
+	subscribeToPositionRatio?(handler: (ratio: number) => void): () => void;
 }

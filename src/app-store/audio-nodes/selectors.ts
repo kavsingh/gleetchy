@@ -7,6 +7,7 @@ import { MAIN_OUT_ID } from "~/constants/audio";
 import { selectConnections } from "~/app-store/connections/selectors";
 
 import { createValueEqSelector } from "../lib/selector";
+import { selectAudioEngineSubscriptionData } from "../audio-engine/selectors";
 
 import type { AudioNodeMeta } from "~/types";
 import type { AppState } from "../configure-store";
@@ -73,3 +74,8 @@ export const selectConnectableTargets = createValueEqSelector(
 		out,
 	],
 );
+
+export const selectAudioNodeSubscriptionData = (
+	state: AppState,
+	nodeId: string,
+) => selectAudioEngineSubscriptionData(state)[nodeId];
