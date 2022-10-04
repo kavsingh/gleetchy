@@ -20,7 +20,13 @@ export default defineConfig({
 	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
 	plugins: [reactPlugin(), checker, legacyPlugin()],
-	resolve: { alias: { "~": path.resolve(__dirname, "./src") } },
+	resolve: {
+		alias: {
+			"react": "preact/compat",
+			"react-dom": "preact/compat",
+			"~": path.resolve(__dirname, "./src"),
+		},
+	},
 	css: { modules: { localsConvention: "camelCaseOnly" } },
 	esbuild: {
 		jsxFactory: "jsx",
