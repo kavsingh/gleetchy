@@ -1,10 +1,8 @@
 import { memo, useEffect } from "react";
-import Favicon from "react-favicon";
 import styled from "@emotion/styled";
 
 import { requireWindowWith } from "~/lib/env";
 import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
-import favicon from "~/assets/icons/48x48.png";
 import useAudioContext from "~/app-store/hooks/use-audio-context";
 
 import AudioEffectsRack from "./audio-effects-rack";
@@ -42,23 +40,20 @@ const UI: FC = () => {
 	}, [registerKeyPress, registerKeyRelease, initAudioContext]);
 
 	return (
-		<>
-			<Favicon url={favicon} />
-			<Container>
-				<Masthead />
-				<Divider />
-				<InstrumentsRack />
-				<Divider />
-				<ModifiersContainer>
-					<AudioEffectsRackContainer>
-						<AudioEffectsRack />
-					</AudioEffectsRackContainer>
-					<PatchBayContainer>
-						<PatchBay />
-					</PatchBayContainer>
-				</ModifiersContainer>
-			</Container>
-		</>
+		<Container>
+			<Masthead />
+			<Divider />
+			<InstrumentsRack />
+			<Divider />
+			<ModifiersContainer>
+				<AudioEffectsRackContainer>
+					<AudioEffectsRack />
+				</AudioEffectsRackContainer>
+				<PatchBayContainer>
+					<PatchBay />
+				</PatchBayContainer>
+			</ModifiersContainer>
+		</Container>
 	);
 };
 
