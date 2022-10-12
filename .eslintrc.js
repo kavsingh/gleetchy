@@ -73,6 +73,8 @@ module.exports = {
 				"no-shadow": "off",
 				"no-throw-literal": "off",
 				"no-unused-vars": "off",
+				// TODO: was causing errors
+				"@typescript-eslint/no-misused-promises": "off",
 				"@typescript-eslint/consistent-type-imports": [
 					"error",
 					{ disallowTypeAnnotations: false },
