@@ -1,19 +1,8 @@
 import { describe, it, expect } from "vitest";
 
-import { isNotNil, stableOmit } from "./object";
+import { stableOmit } from "./object";
 
 describe("util/Object", () => {
-	describe("isNotNil", () => {
-		it("determines if value is not nil", () => {
-			expect(isNotNil(undefined)).toBe(false);
-			expect(isNotNil(null)).toBe(false);
-			expect(isNotNil(0)).toBe(true);
-			expect(isNotNil({})).toBe(true);
-			expect(isNotNil([])).toBe(true);
-			expect(isNotNil(NaN)).toBe(true);
-		});
-	});
-
 	describe("stableOmit", () => {
 		it("returns same object if nothing to remove", () => {
 			const initialObject: {

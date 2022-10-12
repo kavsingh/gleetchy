@@ -1,6 +1,4 @@
-import { curry, isNil, has, __, omit } from "ramda";
-
-export const isNotNil = <T>(value: T): value is NonNullable<T> => !isNil(value);
+import { curry, has, __, omit } from "ramda";
 
 /**
  * Returns new object if there are items to be removed, otherwise
