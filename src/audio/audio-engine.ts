@@ -133,6 +133,8 @@ export default class AudioEngine {
 		}
 
 		if (isAnyOf(decodeAudioFile.fulfilled)(action)) {
+			if (!action.payload) return;
+
 			const { id, file } = action.payload;
 
 			this.updateNode({ id, audioProps: { ...file } });

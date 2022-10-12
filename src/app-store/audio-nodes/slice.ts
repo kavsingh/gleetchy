@@ -109,6 +109,8 @@ export const audioNodesSlice = createSlice({
 	},
 	extraReducers: (builder) => {
 		builder.addCase(decodeAudioFile.fulfilled, (state, action) => {
+			if (!action.payload) return;
+
 			const { id, file } = action.payload;
 			const existing = state.byId[id];
 

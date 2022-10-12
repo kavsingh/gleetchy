@@ -9,7 +9,6 @@ import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
 import { useAppDispatch } from "~/app-store/hooks/base";
-import useAudioContext from "~/app-store/hooks/use-audio-context";
 
 import type { FC } from "react";
 import type { NodeProps as Eq3Props } from "~/nodes/audio-effects/eq3";
@@ -26,24 +25,19 @@ const ConnectedLoop: FC<{ id: string }> = ({ id }) => {
 		duplicate,
 		remove,
 	} = useAudioNode<NodeProps>(id, validateNodeType(nodeType));
-	const { audioContext } = useAudioContext();
 
 	const dispatch = useAppDispatch();
 
 	const receiveAudioFile = useCallback(
 		(file: File) => {
-			if (!audioContext) return;
-
-			void dispatch(receiveAudioFileAction({ id, file, audioContext }));
+			void dispatch(receiveAudioFileAction({ id, file }));
 		},
-		[id, dispatch, audioContext],
+		[id, dispatch],
 	);
 
 	const selectAudioFile = useCallback(() => {
-		if (!audioContext) return;
-
-		void dispatch(selectAudioFileAction({ id, audioContext }));
-	}, [id, dispatch, audioContext]);
+		void dispatch(selectAudioFileAction({ id }));
+	}, [id, dispatch]);
 
 	const handleGainChange = useCallback(
 		(gain: number) => updateAudioProps({ gain }),

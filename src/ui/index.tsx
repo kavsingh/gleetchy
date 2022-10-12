@@ -18,7 +18,7 @@ const UI: FC = () => {
 	useEffect(() => {
 		if (!globalThis.window) return undefined;
 
-		const clickHandler = () => initAudioContext();
+		const clickHandler = () => void initAudioContext();
 
 		globalThis.window.addEventListener("keydown", registerKeyPress, true);
 		globalThis.window.addEventListener("keyup", registerKeyRelease, true);

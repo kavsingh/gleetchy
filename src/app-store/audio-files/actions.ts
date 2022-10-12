@@ -1,23 +1,31 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { head, pick } from "ramda";
+import { pick } from "ramda";
 
 import {
 	readFileToArrayBuffer,
 	loadAudioFilesToArrayBuffers,
 } from "~/apis/file";
 
+import { selectAudioContext } from "../audio-context/selectors";
+
+import type { AppState } from "../configure-store";
 import type { AudioFileData, DecodedAudioFileData } from "~/types";
 
 export const selectAudioFile = createAsyncThunk(
 	"audioFiles/select",
-	async ({ id, audioContext }: SelectAudioFileArg, { dispatch }) => {
+	async ({ id }: SelectAudioFileArg, { dispatch, getState }) => {
+		const audioContext = selectAudioContext(getState() as AppState);
+
+		if (!audioContext) return;
+
 		try {
-			const file = head(await loadAudioFilesToArrayBuffers());
+			const [file] = await loadAudioFilesToArrayBuffers();
 
 			if (!file) throw new Error("No file loaded");
+
 			const result = { id, file };
 
-			void dispatch(decodeAudioFile({ ...result, audioContext }));
+			void dispatch(decodeAudioFile({ ...result }));
 
 			return result;
 		} catch (e) {
@@ -28,12 +36,16 @@ export const selectAudioFile = createAsyncThunk(
 
 export const receiveAudioFile = createAsyncThunk(
 	"audioFiles/receive",
-	async ({ id, file, audioContext }: ReceiveAudioFileArg, { dispatch }) => {
+	async ({ id, file }: ReceiveAudioFileArg, { dispatch, getState }) => {
+		const audioContext = selectAudioContext(getState() as AppState);
+
+		if (!audioContext) return;
+
 		try {
 			const fileData = await readFileToArrayBuffer(file);
 			const result = { id, file: fileData };
 
-			void dispatch(decodeAudioFile({ ...result, audioContext }));
+			void dispatch(decodeAudioFile({ ...result }));
 
 			return result;
 		} catch (e) {
@@ -44,11 +56,14 @@ export const receiveAudioFile = createAsyncThunk(
 
 export const decodeAudioFile = createAsyncThunk(
 	"audioFiles/decode",
-	async ({
-		id,
-		file,
-		audioContext,
-	}: DecodeAudioFileArg): Promise<DecodeAudioFileReturn> => {
+	async (
+		{ id, file }: DecodeAudioFileArg,
+		{ getState },
+	): Promise<DecodeAudioFileReturn | undefined> => {
+		const audioContext = selectAudioContext(getState() as AppState);
+
+		if (!audioContext) return;
+
 		try {
 			const audioBuffer = await audioContext.decodeAudioData(file.buffer);
 
@@ -67,19 +82,16 @@ const errorFrom = (value: unknown) =>
 
 interface SelectAudioFileArg {
 	id: string;
-	audioContext: AudioContext;
 }
 
 interface ReceiveAudioFileArg {
 	id: string;
 	file: File;
-	audioContext: AudioContext;
 }
 
 interface DecodeAudioFileArg {
 	id: string;
 	file: AudioFileData;
-	audioContext: AudioContext;
 }
 
 interface DecodeAudioFileReturn {

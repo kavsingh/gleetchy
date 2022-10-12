@@ -42,6 +42,8 @@ export const audioFilesSlice = createSlice({
 		});
 
 		builder.addCase(decodeAudioFile.fulfilled, (state, action) => {
+			if (!action.payload) return;
+
 			state.decodingIds = stableWithout([action.payload.id], state.decodingIds);
 			state.files[action.payload.id] = Object.assign(
 				state.files[action.payload.id] ?? {},
@@ -74,6 +76,8 @@ export const audioFilesSlice = createSlice({
 		builder.addMatcher(
 			isFulfilled(selectAudioFile, receiveAudioFile),
 			(state, action) => {
+				if (!action.payload) return;
+
 				const { buffer: _, ...rest } = action.payload.file;
 
 				state.loadingIds = stableWithout([action.payload.id], state.loadingIds);
