@@ -1,6 +1,7 @@
 import { curry } from "ramda";
 
 import { GAudioNode } from "~/lib/g-audio-node";
+import { prodError } from "~/lib/dev";
 
 import nodeType from "./node-type";
 import { defaultProps } from "./node-props";
@@ -37,9 +38,11 @@ export class GReverbNode extends GAudioNode<Props> {
 		this.dryGainNode.gain.value = 1 - props.wetDryRatio;
 
 		if (props.impulse !== previousProps?.impulse) {
-			void loadImpulse(this.audioContext, props.impulse).then((buffer) => {
-				this.reverbNode.buffer = buffer;
-			});
+			void loadImpulse(this.audioContext, props.impulse)
+				.then((buffer) => {
+					this.reverbNode.buffer = buffer;
+				})
+				.catch(prodError);
 		}
 	}
 }
