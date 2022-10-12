@@ -3,7 +3,7 @@ import rafThrottle from "raf-throttle";
 import { pipe, tap } from "ramda";
 
 import { cancelEvent } from "~/lib/util";
-import { filterSupportedEvents, requireWindowWith } from "~/lib/env";
+import { filterSupportedEvents } from "~/lib/env";
 
 import type { MouseEventHandler, TouchEventHandler } from "react";
 
@@ -49,9 +49,7 @@ const usePointerDrag = ({
 
 	const handleDragEnd = useCallback(
 		(event: Event) => {
-			const WINDOW = requireWindowWith(["removeEventListener"]);
-
-			if (!WINDOW) return;
+			if (!globalThis.window) return;
 
 			let { clientX, clientY } = cancelAndNormalizeEvent(event);
 
@@ -59,7 +57,10 @@ const usePointerDrag = ({
 			if (clientY === undefined) clientY = stateRef.current.y;
 
 			moveEvents.forEach((eventName) =>
-				WINDOW.removeEventListener(eventName, throttledHandleDragMove),
+				globalThis.window.removeEventListener(
+					eventName,
+					throttledHandleDragMove,
+				),
 			);
 
 			stateRef.current = {
@@ -84,9 +85,7 @@ const usePointerDrag = ({
 
 	const registerDragStart = useCallback(
 		(normalisedEvent: NormalizedEvent) => {
-			const WINDOW = requireWindowWith(["addEventListener"]);
-
-			if (!WINDOW || stateRef.current.isDragging) return;
+			if (!globalThis.window || stateRef.current.isDragging) return;
 
 			const { currentTarget, clientX, clientY, timeStamp } = normalisedEvent;
 			const targetRect = currentTarget.getBoundingClientRect();
@@ -94,13 +93,13 @@ const usePointerDrag = ({
 			const targetStartY = clientY - targetRect.left;
 
 			moveEvents.forEach((eventName) =>
-				WINDOW.addEventListener(eventName, throttledHandleDragMove, {
+				globalThis.window.addEventListener(eventName, throttledHandleDragMove, {
 					passive: false,
 				}),
 			);
 
 			endEvents.forEach((eventName) =>
-				WINDOW.addEventListener(eventName, handleDragEnd, {
+				globalThis.window.addEventListener(eventName, handleDragEnd, {
 					passive: false,
 					once: true,
 				}),

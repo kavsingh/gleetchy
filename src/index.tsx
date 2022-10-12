@@ -1,15 +1,12 @@
 import { createRoot } from "react-dom/client";
 
-import { requireWindowWith } from "~/lib/env";
 import { createStore } from "~/app-store/configure-store";
 
 import App from "./app";
 
-const WINDOW = requireWindowWith(["document.getElementById"]);
+if (!globalThis.document) throw new Error("Could not access dom");
 
-if (!WINDOW) throw new Error("Could not access dom");
-
-const appRoot = WINDOW.document.getElementById("app-root");
+const appRoot = globalThis.document.getElementById("app-root");
 
 if (!appRoot) throw new Error("Could not find app mount at #app-root");
 

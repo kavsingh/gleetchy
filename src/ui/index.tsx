@@ -1,7 +1,6 @@
 import { memo, useEffect } from "react";
 import styled from "@emotion/styled";
 
-import { requireWindowWith } from "~/lib/env";
 import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
 import useAudioContext from "~/app-store/hooks/use-audio-context";
 
@@ -17,25 +16,20 @@ const UI: FC = () => {
 	const { registerKeyPress, registerKeyRelease } = useModifierKeys();
 
 	useEffect(() => {
-		const WINDOW = requireWindowWith([
-			"addEventListener",
-			"removeEventListener",
-		]);
-
-		if (!WINDOW) return undefined;
+		if (!globalThis.window) return undefined;
 
 		const clickHandler = () => initAudioContext();
 
-		WINDOW.addEventListener("keydown", registerKeyPress, true);
-		WINDOW.addEventListener("keyup", registerKeyRelease, true);
-		WINDOW.addEventListener("click", clickHandler, {
+		globalThis.window.addEventListener("keydown", registerKeyPress, true);
+		globalThis.window.addEventListener("keyup", registerKeyRelease, true);
+		globalThis.window.addEventListener("click", clickHandler, {
 			passive: true,
 			once: true,
 		});
 
 		return () => {
-			WINDOW.removeEventListener("keydown", registerKeyPress, true);
-			WINDOW.removeEventListener("keyup", registerKeyRelease, true);
+			globalThis.window.removeEventListener("keydown", registerKeyPress, true);
+			globalThis.window.removeEventListener("keyup", registerKeyRelease, true);
 		};
 	}, [registerKeyPress, registerKeyRelease, initAudioContext]);
 

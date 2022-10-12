@@ -3,8 +3,6 @@ import styled from "@emotion/styled";
 import colorFn from "color";
 import { range } from "ramda";
 
-import { requireWindowWith } from "~/lib/env";
-
 import type { FC } from "react";
 
 const drawTempWaveform = (
@@ -99,9 +97,7 @@ const Waveform: FC<WaveformProps> = ({
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
-		const WINDOW = requireWindowWith();
-
-		if (!WINDOW) return;
+		if (!globalThis.window) return;
 
 		const handleResize = () => {
 			if (canvasRef.current) {
@@ -110,15 +106,15 @@ const Waveform: FC<WaveformProps> = ({
 					baselineColor,
 					timeRegions,
 					buffer,
-					pixelRatio: WINDOW.devicePixelRatio || 1,
+					pixelRatio: globalThis.window.devicePixelRatio ?? 1,
 				});
 			}
 		};
 
 		handleResize();
-		WINDOW.addEventListener("resize", handleResize);
+		globalThis.window.addEventListener("resize", handleResize);
 
-		return () => WINDOW.removeEventListener("resize", handleResize);
+		return () => globalThis.window.removeEventListener("resize", handleResize);
 	}, [color, baselineColor, timeRegions, buffer]);
 
 	return (

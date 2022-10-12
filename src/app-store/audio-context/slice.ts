@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { requireWindowWith } from "~/lib/env";
-
 const initialState: AudioContextState = {};
 
 export const audioContextSlice = createSlice({
@@ -23,13 +21,12 @@ export const audioContextSlice = createSlice({
 });
 
 const getAudioContext = () => {
-	const WINDOW = requireWindowWith();
-
-	if (!WINDOW) throw new Error("Could not access dom");
+	if (!globalThis.document) throw new Error("Could not access dom");
 
 	const AudioContext =
+		// workaround for Safari
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
-		WINDOW.AudioContext || (WINDOW as any).webkitAudioContext;
+		globalThis.AudioContext || (globalThis as any).webkitAudioContext;
 
 	if (!AudioContext) throw new Error("No audio context available");
 
