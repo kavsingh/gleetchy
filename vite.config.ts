@@ -16,10 +16,10 @@ const checker = checkerPlugin({
 	},
 });
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
 	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
-	plugins: [reactPlugin(), checker, legacyPlugin()],
+	plugins: [reactPlugin(), command === "serve" && checker, legacyPlugin()],
 	resolve: {
 		alias: {
 			"react": "preact/compat",
@@ -39,4 +39,4 @@ export default defineConfig({
 		coverage: { reporter: ["text", "html"] },
 		includeSource: ["src/**/*.{js,ts}"],
 	},
-});
+}));
