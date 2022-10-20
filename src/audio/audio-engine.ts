@@ -1,5 +1,5 @@
 import { pick, tryCatch } from "ramda";
-import { isAnyOf } from "@reduxjs/toolkit";
+import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
 
 import { warn } from "~/lib/dev";
 import { noop } from "~/lib/util";
@@ -132,7 +132,7 @@ export default class AudioEngine {
 			return;
 		}
 
-		if (isAnyOf(decodeAudioFile.fulfilled)(action)) {
+		if (isFulfilled(decodeAudioFile)(action)) {
 			if (!action.payload) return;
 
 			const { id, file } = action.payload;
