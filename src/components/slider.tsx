@@ -26,15 +26,16 @@ const Slider: FC<{
 }> = ({
 	value,
 	defaultValue = 0.5,
-	orientation = "vertical",
+	orientation = "block",
 	label = "",
 	valueLabel = "",
 	title = "",
 	onChange = noop,
 }) => {
-	const moveMultiplierRef = useControlResponseRef(controlMultipliers);
-	const barRef = useRef<HTMLDivElement | null>(null);
 	const valueRef = useRef<number>(value);
+	const moveMultiplierRef = useControlResponseRef(controlMultipliers);
+	const barContainerRef = useRef<HTMLDivElement | null>(null);
+	const barRef = useRef<HTMLDivElement | null>(null);
 
 	const handleDoubleClick = useCallback(() => {
 		onChange(defaultValue);
@@ -42,11 +43,11 @@ const Slider: FC<{
 
 	const onDragMove = useCallback<PointerDragMoveHandler>(
 		({ movementX, movementY }) => {
-			const { current: bar } = barRef;
+			const { current: bar } = barContainerRef;
 
 			if (!bar) return;
 
-			const isVert = orientation === "vertical";
+			const isVert = orientation === "block";
 			const movement = isVert ? movementY : movementX;
 			const dim = isVert ? bar.offsetHeight * -1 : bar.offsetWidth;
 
@@ -61,11 +62,11 @@ const Slider: FC<{
 
 	const onDragEnd = useCallback<PointerDragEndHandler>(
 		({ duration, movementX, movementY, targetX, targetY }) => {
-			const { current: bar } = barRef;
+			const { current: bar } = barContainerRef;
 
 			if (!bar) return;
 
-			const isVert = orientation === "vertical";
+			const isVert = orientation === "block";
 			const movement = isVert ? movementY : movementX;
 
 			if (duration > 300 || movement > 4) return;
@@ -80,9 +81,12 @@ const Slider: FC<{
 
 	useEffect(() => {
 		valueRef.current = value;
-	}, [value]);
 
-	const offVal = `${(1 - value) * 100}%`;
+		if (barRef.current) {
+			barRef.current.style.transform =
+				orientation === "inline" ? `scaleX(${value})` : `scaleY(${value})`;
+		}
+	}, [value, orientation]);
 
 	const dragHandlers = usePointerDrag({ onDragMove, onDragEnd });
 
@@ -95,15 +99,10 @@ const Slider: FC<{
 				orientation={orientation}
 				role="presentation"
 				onDoubleClick={handleDoubleClick}
-				ref={barRef}
+				ref={barContainerRef}
 			>
 				<Track orientation={orientation} />
-				<Bar
-					orientation={orientation}
-					style={
-						orientation === "horizontal" ? { right: offVal } : { top: offVal }
-					}
-				/>
+				<Bar orientation={orientation} ref={barRef} />
 			</BarContainer>
 			<ValueLabel orientation={orientation}>{valueLabel}</ValueLabel>
 		</Container>
@@ -114,10 +113,10 @@ export default memo(Slider);
 
 const Container = styled.div<OrientationProps>`
 	display: flex;
-	width: 100%;
-	height: 100%;
+	inline-size: 100%;
+	block-size: 100%;
 	${({ orientation }) =>
-		orientation === "horizontal"
+		orientation === "inline"
 			? css`
 					flex-direction: row;
 					align-items: stretch;
@@ -138,28 +137,28 @@ const Text = styled.div`
 
 const Label = styled(Text)<OrientationProps>`
 	${({ orientation }) =>
-		orientation === "horizontal"
+		orientation === "inline"
 			? css`
 					display: flex;
 					align-items: center;
-					width: 3em;
+					inline-size: 3em;
 			  `
 			: css`
-					height: 1.4em;
+					block-size: 1.4em;
 			  `};
 `;
 
 const ValueLabel = styled(Text)<OrientationProps>`
 	display: flex;
 	${({ orientation }) =>
-		orientation === "horizontal"
+		orientation === "inline"
 			? css`
 					align-items: center;
-					width: 3em;
+					inline-size: 3em;
 			  `
 			: css`
 					align-items: flex-end;
-					height: 1.4em;
+					block-size: 1.4em;
 			  `};
 `;
 
@@ -167,14 +166,14 @@ const BarContainer = styled.div<OrientationProps>`
 	position: relative;
 	flex: 1 1;
 	${({ orientation }) =>
-		orientation === "horizontal"
+		orientation === "inline"
 			? css`
-					height: 100%;
+					block-size: 100%;
 					margin: auto 0.6em;
 					cursor: ew-resize;
 			  `
 			: css`
-					width: 100%;
+					inline-size: 100%;
 					margin: 0.4em auto 0.2em;
 					cursor: ns-resize;
 			  `}
@@ -185,18 +184,16 @@ const Track = styled.div<OrientationProps>`
 	z-index: 1;
 	background-color: ${({ theme }) => theme.colors.text[100]};
 	${({ orientation }) =>
-		orientation === "horizontal"
+		orientation === "inline"
 			? css`
-					top: 50%;
-					right: 0;
-					left: 0;
-					height: 1px;
+					inset-block-start: 50%;
+					inset-inline: 0;
+					block-size: 1px;
 			  `
 			: css`
-					top: 0;
-					bottom: 0;
-					left: 50%;
-					width: 1px;
+					inset-block: 0;
+					inset-inline-start: 50%;
+					inline-size: 1px;
 			  `};
 `;
 
@@ -205,18 +202,20 @@ const Bar = styled.div<OrientationProps>`
 	z-index: 2;
 	background-color: ${({ theme }) => theme.colors.text[600]};
 	${({ orientation }) =>
-		orientation === "horizontal"
+		orientation === "inline"
 			? css`
-					top: calc(50% - 1px);
-					right: 0;
-					left: 0;
-					height: 3px;
+					inset-block-start: calc(50% - 1px);
+					inset-inline: 0;
+					block-size: 3px;
+					transform: scaleX(0);
+					transform-origin: left;
 			  `
 			: css`
-					top: 0;
-					bottom: 0;
-					left: calc(50% - 1px);
-					width: 3px;
+					inset-block: 0;
+					inset-inline-start: calc(50% - 1px);
+					inline-size: 3px;
+					transform: scaleY(0);
+					transform-origin: bottom;
 			  `};
 `;
 
@@ -227,6 +226,6 @@ const controlMultipliers: ControlResponseMultipliers = {
 	fine: 0.4,
 };
 
-type Orientation = "vertical" | "horizontal";
+type Orientation = "inline" | "block";
 
 type OrientationProps = { orientation: Orientation };
