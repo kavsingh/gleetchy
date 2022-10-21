@@ -20,8 +20,7 @@ describe("util/Object", () => {
 
 		it("returns new object if items to remove", () => {
 			const initialObject = { a: 1, b: 2, c: 3 };
-			const omitKeys = stableOmit(["a", "c"]);
-			const result = omitKeys(initialObject);
+			const result = stableOmit(["a", "c"], initialObject);
 
 			expect(result).toEqual({ b: 2 });
 			expect(result).not.toBe(initialObject);

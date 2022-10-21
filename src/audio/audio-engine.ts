@@ -1,8 +1,7 @@
-import { pick, tryCatch } from "ramda";
+import { pick } from "lodash";
 import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
 
 import { warn } from "~/lib/dev";
-import { noop } from "~/lib/util";
 import { isInstrumentNode } from "~/lib/audio";
 import { MAIN_OUT_ID } from "~/constants/audio";
 import {
@@ -211,12 +210,14 @@ export default class AudioEngine {
 	};
 
 	private disconnectAllNodes() {
-		Object.values(this.audioNodes).forEach(
+		Object.values(this.audioNodes).forEach((node) => {
 			// Safari crashes if node not connected
-			tryCatch<AudioNodeEffect>((node) => {
+			try {
 				node.disconnect();
-			}, noop),
-		);
+			} catch {
+				// pass through
+			}
+		});
 	}
 
 	private updateAudioNodes(
@@ -228,7 +229,7 @@ export default class AudioEngine {
 		const nextNodeIds = Object.keys(nodes);
 
 		this.audioNodes = Object.entries(this.audioNodes).length
-			? pick(nextNodeIds, this.audioNodes)
+			? pick(this.audioNodes, nextNodeIds)
 			: { [MAIN_OUT_ID]: this.audioContext.destination };
 
 		nextNodeIds
@@ -280,11 +281,21 @@ export default class AudioEngine {
 	}
 }
 
-const setNodeProps = tryCatch<TrySet>(({ node, audioProps }) => {
-	const target = node as GAudioNode;
+const setNodeProps = ({
+	node,
+	audioProps,
+}: {
+	node: AudioEngineNode;
+	audioProps: Record<string, unknown>;
+}) => {
+	if (!(node instanceof GAudioNode)) return;
 
-	if (typeof target.set === "function") target.set(audioProps);
-}, warn);
+	try {
+		if (typeof node.set === "function") node.set(audioProps);
+	} catch (reason) {
+		warn(reason);
+	}
+};
 
 const createNewNode = (
 	context: AudioContext,
@@ -294,7 +305,7 @@ const createNewNode = (
 		case delayType:
 			return createDelayNode(context, state.audioProps);
 		case reverbType:
-			return createReverbNode(context, state.audioProps);
+			return createReverbNode(context, state.audioProps) as GAudioNode;
 		case loopType:
 			return createLoopNode(context, state.audioProps);
 		default:
@@ -318,13 +329,6 @@ const registerWorklets = async (context: AudioContext) => {
 
 type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode;
 
-type AudioNodeEffect = (node: AudioNode | GAudioNode) => void;
-
 type InstrumentNodeProcessor = (node: GInstrumentNode) => void;
-
-type TrySet = (args: {
-	node: AudioEngineNode;
-	audioProps: Record<string, unknown>;
-}) => void;
 
 type SubscriptionEventDispatcher = (nodeId: string, payload: unknown) => void;

@@ -1,44 +1,48 @@
-import { anyPass, pick, pipe } from "ramda";
-
 import type { AppState } from "~/app-store/configure-store";
 
 const isObjectLike = (value: unknown): value is { [key: string]: unknown } =>
 	typeof value === "object";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-const isInstanceOf = (ctor: Function) => (instance: unknown) =>
-	instance instanceof ctor;
+const isUnserializable = (value: unknown) =>
+	value instanceof AudioBuffer ||
+	value instanceof ArrayBuffer ||
+	value instanceof Error;
 
-const isUnserializable = anyPass([
-	isInstanceOf(AudioBuffer),
-	isInstanceOf(ArrayBuffer),
-	isInstanceOf(Error),
-]);
+const unsetUnserializable = (value: unknown): unknown => {
+	if (isUnserializable(value)) return undefined;
 
-const unsetUnserializable = (struct: unknown): unknown => {
-	if (isUnserializable(struct)) return undefined;
-
-	if (Array.isArray(struct)) {
-		return (struct as unknown[]).map(unsetUnserializable);
+	if (Array.isArray(value)) {
+		return (value as unknown[]).map(unsetUnserializable);
 	}
 
-	if (isObjectLike(struct)) {
-		const copy = { ...struct };
+	if (isObjectLike(value)) {
+		const copy = { ...value };
 
-		Object.entries(copy).forEach(([key, value]) => {
-			copy[key] = unsetUnserializable(value);
+		Object.entries(copy).forEach(([key, val]) => {
+			copy[key] = unsetUnserializable(val);
 		});
 
 		return copy;
 	}
 
-	return struct;
+	return value;
 };
 
-export const serialize: (state: AppState) => string = pipe(
-	pick<keyof AppState>(["audioNodes", "connections", "audioFiles"]),
-	(state: Partial<AppState>) => JSON.stringify(unsetUnserializable(state)),
-);
+const serializableStateKeys: (keyof AppState)[] = [
+	"audioNodes",
+	"connections",
+	"audioFiles",
+];
+
+export const serialize = (state: AppState) => {
+	const toSerialize: Record<string, unknown> = {};
+
+	for (const key of serializableStateKeys) {
+		toSerialize[key] = state[key];
+	}
+
+	return JSON.stringify(unsetUnserializable(toSerialize));
+};
 
 export const deserialize = <T>(stateString: string): T | undefined => {
 	try {

@@ -25,9 +25,9 @@
 		"color": "4.2.3",
 		"core-js": "3.25.5",
 		"cuid": "2.1.8",
+		"lodash": "4.17.21",
 		"preact": "10.11.2",
 		"raf-throttle": "2.0.5",
-		"ramda": "0.28.0",
 		"react": "18.2.0",
 		"react-dom": "18.2.0",
 		"react-input-autosize": "3.0.0",
@@ -41,8 +41,8 @@
 		"@testing-library/user-event": "14.4.3",
 		"@types/audioworklet": "0.0.33",
 		"@types/color": "3.0.3",
+		"@types/lodash": "4.14.186",
 		"@types/node": "18.11.3",
-		"@types/ramda": "0.28.18",
 		"@types/react": "18.0.21",
 		"@types/react-dom": "18.0.6",
 		"@types/react-input-autosize": "2.2.1",
@@ -75,6 +75,7 @@
 		"typescript-styled-plugin": "0.18.2",
 		"vite": "3.1.8",
 		"vite-plugin-checker": "0.5.1",
+		"vite-plugin-imp": "2.3.0",
 		"vitest": "0.24.3",
 		"web-audio-test-api": "0.5.2"
 	}

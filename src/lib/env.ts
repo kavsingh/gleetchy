@@ -1,4 +1,4 @@
-import { uniq } from "ramda";
+import { uniq } from "lodash";
 
 const asEventName = (name: string) =>
 	name.startsWith("on") ? name.slice(2) : name;

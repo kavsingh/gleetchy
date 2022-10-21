@@ -6,6 +6,7 @@ import { defineConfig } from "vite";
 import reactPlugin from "@vitejs/plugin-react";
 import legacyPlugin from "@vitejs/plugin-legacy";
 import checkerPlugin from "vite-plugin-checker";
+import impPlugin from "vite-plugin-imp";
 
 const checker = checkerPlugin({
 	overlay: { initialIsOpen: false },
@@ -16,10 +17,21 @@ const checker = checkerPlugin({
 	},
 });
 
+const imp = impPlugin({
+	libList: [
+		{ libName: "lodash", libDirectory: "", camel2DashComponentName: false },
+	],
+});
+
 export default defineConfig(({ command }) => ({
 	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
-	plugins: [reactPlugin(), command === "serve" && checker, legacyPlugin()],
+	plugins: [
+		imp,
+		reactPlugin(),
+		command === "serve" && checker,
+		command === "build" && legacyPlugin(),
+	],
 	resolve: {
 		alias: {
 			"react": "preact/compat",

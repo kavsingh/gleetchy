@@ -1,8 +1,8 @@
 import { memo, useCallback, useMemo } from "react";
 import styled from "@emotion/styled";
+import { noop } from "lodash";
 
 import { DELAY_UPPER_BOUND } from "~/constants/audio";
-import { noop } from "~/lib/util";
 import Knob from "~/components/knob";
 import TitleBar from "~/components/title-bar";
 

@@ -1,9 +1,8 @@
 import { memo, useState, useRef, useCallback, useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
-import { clamp } from "ramda";
+import { clamp, noop } from "lodash";
 
-import { noop } from "~/lib/util";
 import { layoutAbsoluteFill } from "~/style/layout";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
@@ -133,7 +132,7 @@ const KnobSVGContainer = styled.div`
 	${layoutAbsoluteFill}
 `;
 
-const clampMove = clamp(0, 1);
+const clampMove = (value: number) => clamp(value, 0, 1);
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,

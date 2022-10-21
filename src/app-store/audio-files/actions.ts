@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { pick } from "ramda";
+import { pick } from "lodash";
 
 import {
 	readFileToArrayBuffer,
@@ -69,7 +69,7 @@ export const decodeAudioFile = createAsyncThunk(
 
 			return {
 				id,
-				file: { ...pick(["fileName", "fileType"], file), audioBuffer },
+				file: { ...pick(file, ["fileName", "fileType"]), audioBuffer },
 			};
 		} catch (e) {
 			throw errorFrom(e);

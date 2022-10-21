@@ -1,5 +1,4 @@
 import rafThrottle from "raf-throttle";
-import { curry } from "ramda";
 
 import createEq3Node from "~/nodes/audio-effects/eq3/create-audio-node";
 import { GInstrumentNode } from "~/lib/g-audio-node";
@@ -163,10 +162,12 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	}
 }
 
-export default curry(
-	(audioContext: AudioContext, initProps: Partial<Props>) =>
-		new GLoopNode(audioContext, { ...defaultProps, ...initProps }),
-);
+const createAudioNode = (
+	audioContext: AudioContext,
+	initProps: Partial<Props>,
+) => new GLoopNode(audioContext, { ...defaultProps, ...initProps });
+
+export default createAudioNode;
 
 interface PlaybackState extends Record<string, unknown> {
 	playing: boolean;

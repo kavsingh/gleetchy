@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from "react";
 import styled from "@emotion/styled";
+import { noop } from "lodash";
 
-import { noop } from "~/lib/util";
 import Slider from "~/components/slider";
 
 import type { FC } from "react";

@@ -1,9 +1,8 @@
 import { useCallback, useRef, memo } from "react";
 import styled from "@emotion/styled";
-import { memoizeWith, identity } from "ramda";
+import { memoize, noop } from "lodash";
 import color from "color";
 
-import { noop } from "~/lib/util";
 import { layoutAbsoluteFill } from "~/style/layout";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
@@ -159,7 +158,7 @@ const ActiveRegion = styled(Region)<{
 	cursor: move;
 `;
 
-const inactiveOverlayColor = memoizeWith(identity, (baseColor: string) =>
+const inactiveOverlayColor = memoize((baseColor: string) =>
 	color(baseColor).alpha(0.8).string(),
 );
 

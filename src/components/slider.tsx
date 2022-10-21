@@ -1,9 +1,7 @@
 import { memo, useRef, useEffect, useCallback } from "react";
 import { css } from "@emotion/react";
 import styled from "@emotion/styled";
-import { clamp } from "ramda";
-
-import { noop } from "~/lib/util";
+import { clamp, noop } from "lodash";
 
 import useControlResponseRef from "./hooks/use-control-response-ref";
 import usePointerDrag from "./hooks/use-pointer-drag";
@@ -219,7 +217,7 @@ const Bar = styled.div<OrientationProps>`
 			  `};
 `;
 
-const clampValue = clamp(0, 1);
+const clampValue = (value: number) => clamp(value, 0, 1);
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,

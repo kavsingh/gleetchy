@@ -1,7 +1,7 @@
 import { useRef, useEffect, memo } from "react";
 import styled from "@emotion/styled";
 import colorFn from "color";
-import { range } from "ramda";
+import { range } from "lodash";
 
 import type { FC } from "react";
 
@@ -19,7 +19,7 @@ const drawTimeRegions = (
 	height: number,
 	timeRegions: number,
 ) => {
-	for (let i = 0; i < timeRegions; i += 1) {
+	for (let i = 0; i < timeRegions; i++) {
 		const x = Math.round(i * 0.25 * width);
 
 		context.moveTo(x, 0);

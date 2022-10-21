@@ -43,10 +43,10 @@ describe("lib/audio", () => {
 				isSameConnection({ from: "a", to: "b" }, { from: "a", to: "b" }),
 			).toBe(true);
 			expect(
-				isSameConnection({ from: "a", to: "b" })({ to: "b", from: "a" }),
+				isSameConnection({ from: "a", to: "b" }, { to: "b", from: "a" }),
 			).toBe(true);
 			expect(
-				isSameConnection({ from: "a", to: "b" })({ from: "b", to: "a" }),
+				isSameConnection({ from: "a", to: "b" }, { from: "b", to: "a" }),
 			).toBe(false);
 		});
 	});
@@ -63,12 +63,12 @@ describe("lib/audio", () => {
 			];
 
 			expect(getConnectionsFor("q", connections)).toEqual([]);
-			expect(getConnectionsFor("a")(connections)).toEqual([
+			expect(getConnectionsFor("a", connections)).toEqual([
 				{ from: "a", to: "b", color: "" },
 				{ from: "a", to: "d", color: "" },
 				{ from: "d", to: "a", color: "" },
 			]);
-			expect(getConnectionsFor("g")(connections)).toEqual([
+			expect(getConnectionsFor("g", connections)).toEqual([
 				{ from: "e", to: "g", color: "" },
 			]);
 		});
@@ -85,7 +85,7 @@ describe("lib/audio", () => {
 				{ from: "b", to: "c" },
 			];
 
-			const connectedToC = hasConnectionTo(connections, "c");
+			const connectedToC = hasConnectionTo.bind(null, connections, "c");
 
 			expect(connectedToC("a")).toBe(true);
 			expect(connectedToC("d")).toBe(true);
@@ -109,7 +109,7 @@ describe("lib/audio", () => {
 				{ from: "b", to: "a" },
 			];
 
-			const canConnectIn = canConnectNodes(connections);
+			const canConnectIn = canConnectNodes.bind(null, connections);
 
 			expect(canConnectIn({ id: "a" }, { id: "d" })).toBe(false);
 		});
@@ -122,7 +122,7 @@ describe("lib/audio", () => {
 				{ from: "a", to: "b", color: "white" },
 			];
 
-			const getConnection = getConnectionBetween(connections);
+			const getConnection = getConnectionBetween.bind(null, connections);
 
 			expect(getConnection({ id: "a" }, { id: "b" })).toEqual({
 				from: "a",

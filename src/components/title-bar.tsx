@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import styled from "@emotion/styled";
-
-import { noop } from "~/lib/util";
+import { noop } from "lodash";
 
 import TextInput from "./text-input";
 import Button from "./button";

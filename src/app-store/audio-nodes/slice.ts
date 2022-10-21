@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { pick } from "ramda";
+import { pick } from "lodash";
 
 import initialNodes from "~/app-store/default-nodes";
 import {
@@ -117,7 +117,7 @@ export const audioNodesSlice = createSlice({
 			if (existing) {
 				Object.assign(
 					existing.audioProps,
-					pick(Object.keys(existing.audioProps), file),
+					pick(file, Object.keys(existing.audioProps)),
 				);
 			}
 		});

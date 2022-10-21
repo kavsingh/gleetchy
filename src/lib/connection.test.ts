@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
+import { noop } from "lodash";
 
 import { makeConnectable } from "./connection";
-import { noop } from "./util";
 
 const context = new AudioContext();
 

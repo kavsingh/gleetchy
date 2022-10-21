@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import rafThrottle from "raf-throttle";
-import { pipe, tap } from "ramda";
 
 import { cancelEvent } from "~/lib/util";
 import { filterSupportedEvents } from "~/lib/env";
@@ -238,7 +237,11 @@ const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
 	};
 };
 
-const cancelAndNormalizeEvent = pipe(tap(cancelEvent), normalizeEvent);
+const cancelAndNormalizeEvent = (event: Event) => {
+	cancelEvent(event);
+
+	return normalizeEvent(event);
+};
 
 type MouseOrTouchEvent =
 	| Event

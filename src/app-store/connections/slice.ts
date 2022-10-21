@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { allPass, propEq } from "ramda";
 
 import { nodeColorPool } from "~/style/color";
 import { stableWithout } from "~/lib/util";
@@ -68,8 +67,10 @@ const createConnection = (
 	color: nodeColorPool[state.length % nodeColorPool.length]!,
 });
 
-const connectionIs = ({ fromId, toId }: ConnectionDescriptor) =>
-	allPass([propEq("from", fromId), propEq("to", toId)]);
+const connectionIs =
+	({ fromId, toId }: ConnectionDescriptor) =>
+	(connection: AudioNodeConnection) =>
+		connection.from === fromId && connection.to === toId;
 
 type ConnectionsState = AudioNodeConnection[];
 

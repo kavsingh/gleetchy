@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { equals } from "ramda";
+import { isEqual } from "lodash";
 
 import {
 	updateAudioNodeProps,
@@ -24,7 +24,7 @@ const useAudioNode = <T extends Record<string, unknown>>(
 ) => {
 	const node = useAppSelector(
 		(state) => selectAudioNodes(state)[id] as AudioNodeState<T>,
-		equals,
+		isEqual,
 	);
 	const isActive = useAppSelector((state) =>
 		selectActiveAudioNodeIds(state).includes(node.id),
@@ -64,7 +64,7 @@ const useAudioNode = <T extends Record<string, unknown>>(
 		setConnections((current) => {
 			const next = getConnectionsFor(id, allConnections);
 
-			return equals(current, next) ? current : next;
+			return isEqual(current, next) ? current : next;
 		});
 	}, [id, allConnections]);
 

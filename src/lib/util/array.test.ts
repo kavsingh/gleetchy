@@ -14,8 +14,7 @@ describe("util/array", () => {
 
 		it("returns new array if items to remove", () => {
 			const initialArray = [1, 2, 3, 3];
-			const withoutItems = stableWithout([1, 3, "q"]);
-			const result = withoutItems(initialArray);
+			const result = stableWithout([1, 3, "q"], initialArray);
 
 			expect(result).toEqual([2]);
 			expect(result).not.toBe(initialArray);
@@ -33,8 +32,10 @@ describe("util/array", () => {
 
 		it("returns new array if items to remove", () => {
 			const initialArray = [1, 2, 3, 3];
-			const withoutItems = stableFilter((item) => item !== 3 && item !== 1);
-			const result = withoutItems(initialArray);
+			const result = stableFilter(
+				(item) => item !== 3 && item !== 1,
+				initialArray,
+			);
 
 			expect(result).toEqual([2]);
 			expect(result).not.toBe(initialArray);
@@ -60,7 +61,7 @@ describe("util/array", () => {
 
 		it("removes other instances and appends to end of new array", () => {
 			const initialArray = [2, 1, 2, 3];
-			const appendItems = stableAppendUnique([2, 1, "c"]);
+			const appendItems = stableAppendUnique.bind(null, [2, 1, "c"]);
 			const result = appendItems(initialArray);
 
 			expect(result).toEqual([3, 2, 1, "c"]);

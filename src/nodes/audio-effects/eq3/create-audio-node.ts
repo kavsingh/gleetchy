@@ -1,5 +1,3 @@
-import { curry } from "ramda";
-
 import { GAudioNode } from "~/lib/g-audio-node";
 
 import nodeType from "./node-type";
@@ -46,7 +44,9 @@ export class GEq3Node extends GAudioNode<Props> {
 	}
 }
 
-export default curry(
-	(audioContext: AudioContext, initProps: Partial<Props>) =>
-		new GEq3Node(audioContext, { ...defaultProps, ...initProps }),
-);
+const createAudioNode = (
+	audioContext: AudioContext,
+	initProps: Partial<Props>,
+) => new GEq3Node(audioContext, { ...defaultProps, ...initProps });
+
+export default createAudioNode;

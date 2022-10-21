@@ -1,7 +1,7 @@
 import { memo, useCallback, useMemo } from "react";
 import styled from "@emotion/styled";
+import { noop } from "lodash";
 
-import { noop } from "~/lib/util";
 import Knob from "~/components/knob";
 import TitleBar from "~/components/title-bar";
 import SelectBox from "~/components/select-box";

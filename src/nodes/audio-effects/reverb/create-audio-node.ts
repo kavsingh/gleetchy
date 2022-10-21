@@ -1,5 +1,3 @@
-import { curry } from "ramda";
-
 import { GAudioNode } from "~/lib/g-audio-node";
 import { prodError } from "~/lib/dev";
 
@@ -47,7 +45,9 @@ export class GReverbNode extends GAudioNode<Props> {
 	}
 }
 
-export default curry(
-	(audioContext: AudioContext, initProps: Partial<Props>) =>
-		new GReverbNode(audioContext, { ...defaultProps, ...initProps }),
-);
+const createAudioNode = (
+	audioContext: AudioContext,
+	initProps: Partial<Props>,
+) => new GReverbNode(audioContext, { ...defaultProps, ...initProps });
+
+export default createAudioNode;

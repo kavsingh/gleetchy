@@ -1,4 +1,4 @@
-import { noop } from "./util/function";
+import { noop } from "lodash";
 
 /* eslint-disable no-console */
 const isDev = process.env.NODE_ENV !== "production";

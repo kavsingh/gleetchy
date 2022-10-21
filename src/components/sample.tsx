@@ -2,8 +2,8 @@ import { memo, useEffect, useMemo, useRef } from "react";
 import { useTheme } from "@emotion/react";
 import styled from "@emotion/styled";
 import color from "color";
+import { noop } from "lodash";
 
-import { noop } from "~/lib/util";
 import { layoutAbsoluteFill } from "~/style/layout";
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";

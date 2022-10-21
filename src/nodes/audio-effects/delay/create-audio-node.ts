@@ -1,5 +1,3 @@
-import { curry } from "ramda";
-
 import { DELAY_UPPER_BOUND } from "~/constants/audio";
 import { GAudioNode } from "~/lib/g-audio-node";
 
@@ -39,7 +37,9 @@ export class GDelayNode extends GAudioNode<Props> {
 	}
 }
 
-export default curry(
-	(audioContext: AudioContext, initProps: Partial<Props>) =>
-		new GDelayNode(audioContext, { ...defaultProps, ...initProps }),
-);
+const createAudioNode = (
+	audioContext: AudioContext,
+	initProps: Partial<Props>,
+) => new GDelayNode(audioContext, { ...defaultProps, ...initProps });
+
+export default createAudioNode;

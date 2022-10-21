@@ -1,8 +1,9 @@
 import { useCallback, memo } from "react";
 import AutosizeInput from "react-input-autosize";
 import styled from "@emotion/styled";
+import { noop } from "lodash";
 
-import { cancelReactEvent, noop } from "~/lib/util";
+import { cancelReactEvent } from "~/lib/util";
 
 import type { ChangeEventHandler, FC } from "react";
 

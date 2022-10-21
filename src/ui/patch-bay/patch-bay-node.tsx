@@ -1,6 +1,6 @@
 import { memo } from "react";
 import styled from "@emotion/styled";
-import { memoizeWith, identity } from "ramda";
+import { memoize } from "lodash";
 import color from "color";
 
 import useConnection from "~/app-store/hooks/use-connection";
@@ -37,7 +37,7 @@ const PatchBayNode: FC<{
 
 export default memo(PatchBayNode);
 
-const getActiveBorderColor = memoizeWith(identity, (activeColor: string) =>
+const getActiveBorderColor = memoize((activeColor: string) =>
 	color(activeColor).darken(0.06).hex(),
 );
 

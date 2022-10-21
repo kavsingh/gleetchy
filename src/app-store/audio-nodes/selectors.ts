@@ -46,7 +46,7 @@ export const selectActiveAudioNodeIds = createValueEqSelector(
 	selectConnections,
 	selectMainOutNode,
 	(meta, connections, mainOut) => {
-		const connectedToMain = hasConnectionTo(connections, mainOut.id);
+		const connectedToMain = hasConnectionTo.bind(null, connections, mainOut.id);
 
 		return meta.map(({ id }) => id).filter(connectedToMain);
 	},

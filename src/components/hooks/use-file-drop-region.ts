@@ -1,7 +1,7 @@
 import { useState, useCallback, useMemo } from "react";
-import { T } from "ramda";
+import { stubTrue, noop } from "lodash";
 
-import { noop, cancelReactEvent } from "~/lib/util";
+import { cancelReactEvent } from "~/lib/util";
 
 import type { DragEventHandler } from "react";
 
@@ -12,7 +12,7 @@ export interface UseFileDropRegionProps {
 }
 
 export default function useFileDropRegion({
-	fileFilter = T,
+	fileFilter = stubTrue,
 	onFiles = noop,
 	onNoFiles = noop,
 }: UseFileDropRegionProps): {

@@ -1,8 +1,7 @@
 import { memo, useCallback, useEffect, useRef } from "react";
-import { clamp } from "ramda";
+import { clamp, noop } from "lodash";
 import styled from "@emotion/styled";
 
-import { noop } from "~/lib/util";
 import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
 import useFileDropRegion from "~/components/hooks/use-file-drop-region";
 
@@ -54,9 +53,9 @@ const Loop: FC<LoopUIProps> = ({
 		(movement: number) => {
 			onLoopRegionChange(
 				clamp(
+					regionRef.current.loopStart + movement,
 					0,
 					regionRef.current.loopEnd - 0.0001,
-					regionRef.current.loopStart + movement,
 				),
 				regionRef.current.loopEnd,
 			);
@@ -69,9 +68,9 @@ const Loop: FC<LoopUIProps> = ({
 			onLoopRegionChange(
 				regionRef.current.loopStart,
 				clamp(
+					regionRef.current.loopEnd + movement,
 					regionRef.current.loopStart + 0.0001,
 					1,
-					regionRef.current.loopEnd + movement,
 				),
 			);
 		},
@@ -85,10 +84,10 @@ const Loop: FC<LoopUIProps> = ({
 			let nextEnd: number;
 
 			if (movement < 0) {
-				nextStart = clamp(0, 1 - gap, regionRef.current.loopStart + movement);
+				nextStart = clamp(regionRef.current.loopStart + movement, 0, 1 - gap);
 				nextEnd = nextStart + gap;
 			} else {
-				nextEnd = clamp(gap, 1, regionRef.current.loopEnd + movement);
+				nextEnd = clamp(regionRef.current.loopEnd + movement, gap, 1);
 				nextStart = nextEnd - gap;
 			}
 

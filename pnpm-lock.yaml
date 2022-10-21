@@ -10,8 +10,8 @@ specifiers:
   '@testing-library/user-event': 14.4.3
   '@types/audioworklet': 0.0.33
   '@types/color': 3.0.3
+  '@types/lodash': 4.14.186
   '@types/node': 18.11.3
-  '@types/ramda': 0.28.18
   '@types/react': 18.0.21
   '@types/react-dom': 18.0.6
   '@types/react-input-autosize': 2.2.1
@@ -36,11 +36,11 @@ specifiers:
   eslint-plugin-react-hooks: 4.6.0
   eslint-plugin-testing-library: 5.9.0
   jsdom: 20.0.1
+  lodash: 4.17.21
   preact: 10.11.2
   prettier: 2.7.1
   raf: 3.4.1
   raf-throttle: 2.0.5
-  ramda: 0.28.0
   react: 18.2.0
   react-dom: 18.2.0
   react-input-autosize: 3.0.0
@@ -55,6 +55,7 @@ specifiers:
   typescript-styled-plugin: 0.18.2
   vite: 3.1.8
   vite-plugin-checker: 0.5.1
+  vite-plugin-imp: 2.3.0
   vitest: 0.24.3
   web-audio-test-api: 0.5.2
 
@@ -65,9 +66,9 @@ dependencies:
   color: 4.2.3
   core-js: 3.25.5
   cuid: 2.1.8
+  lodash: 4.17.21
   preact: 10.11.2
   raf-throttle: 2.0.5
-  ramda: 0.28.0
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
   react-input-autosize: 3.0.0_react@18.2.0
@@ -81,8 +82,8 @@ devDependencies:
   '@testing-library/user-event': 14.4.3_aaq3sbffpfe3jnxzm2zngsddei
   '@types/audioworklet': 0.0.33
   '@types/color': 3.0.3
+  '@types/lodash': 4.14.186
   '@types/node': 18.11.3
-  '@types/ramda': 0.28.18
   '@types/react': 18.0.21
   '@types/react-dom': 18.0.6
   '@types/react-input-autosize': 2.2.1
@@ -115,6 +116,7 @@ devDependencies:
   typescript-styled-plugin: 0.18.2
   vite: 3.1.8_terser@5.15.1
   vite-plugin-checker: 0.5.1_a3sem35deylvx5zvkum7dluqum
+  vite-plugin-imp: 2.3.0_vite@3.1.8
   vitest: 0.24.3_jsdom@20.0.1+terser@5.15.1
   web-audio-test-api: 0.5.2
 
@@ -824,6 +826,10 @@ packages:
     resolution: {integrity: sha1-7ihweulOEdK4J7y+UnC86n8+ce4=}
     dev: true
 
+  /@types/lodash/4.14.186:
+    resolution: {integrity: sha512-eHcVlLXP0c2FlMPm56ITode2AgLMSa6aJ05JTTbYbI+7EMkCEE5qk2E41d5g2lCVTqRe0GnnRFurmlCsDODrPw==}
+    dev: true
+
   /@types/node/18.11.3:
     resolution: {integrity: sha512-fNjDQzzOsZeKZu5NATgXUPsaFaTxeRgFXoosrHivTl8RGeV733OLawXsGfEk9a8/tySyZUyiZ6E8LcjPFZ2y1A==}
     dev: true
@@ -834,12 +840,6 @@ packages:
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
-
-  /@types/ramda/0.28.18:
-    resolution: {integrity: sha512-DlhIC80d1ArfB1jz8C5OzavJfIj6hmEOQzCzy7Nt0FRqXJbmWTt05vI+f3rfC+3AR1VQwvyCMaCyZv++HGk+6w==}
-    dependencies:
-      ts-toolbelt: 6.15.5
-    dev: true
 
   /@types/react-dom/18.0.6:
     resolution: {integrity: sha512-/5OFZgfIPSwy+YuIBP/FgJnQnsxhZhjjrnxudMddeblOouIodEQ75X14Rr4wGSG/bknL+Omy9iWlLo1u/9GzAA==}
@@ -1691,6 +1691,13 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       webidl-conversions: 7.0.0
+    dev: true
+
+  /dot-case/3.0.4:
+    resolution: {integrity: sha512-Kv5nKlh6yRrdrGvxeJ2e5y2eRUpkUosIW4A2AS38zwSz27zu7ufDwQPi5Jhs3XAlGNetl3bmnGhQsMtkKJnj3w==}
+    dependencies:
+      no-case: 3.0.4
+      tslib: 2.4.0
     dev: true
 
   /eastasianwidth/0.2.0:
@@ -3040,6 +3047,10 @@ packages:
     resolution: {integrity: sha1-E2Xt9DFIBIHvDRxolXpe2Z1J984=}
     dev: true
 
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
   /loose-envify/1.4.0:
     resolution: {integrity: sha512-lyuxPGr/Wfhrlem2CL/UcnUc1zcqKAImBDzukY7Y5F/yQiNdko6+fRLevlw1HgMySw7f611UIY408EtxRSoK3Q==}
     hasBin: true
@@ -3050,6 +3061,12 @@ packages:
     resolution: {integrity: sha512-OvKfgCC2Ndby6aSTREl5aCCPTNIzlDfQZvZxNUrBrihDhL3xcrYegTblhmEiCrg2kKQz4XsFIaemE5BF4ybSaQ==}
     dependencies:
       get-func-name: 2.0.0
+    dev: true
+
+  /lower-case/2.0.2:
+    resolution: {integrity: sha512-7fm3l3NAF9WfN6W3JOmf5drwpVqX78JtoGJ3A6W0a6ZnldM41w2fV5D490psKFTpMds8TJse/eHLFFsNHHjHgg==}
+    dependencies:
+      tslib: 2.4.0
     dev: true
 
   /lru-cache/6.0.0:
@@ -3175,6 +3192,13 @@ packages:
   /negotiator/0.6.3:
     resolution: {integrity: sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg==}
     engines: {node: '>= 0.6'}
+    dev: true
+
+  /no-case/3.0.4:
+    resolution: {integrity: sha512-fgAN3jGAh+RoxUGZHTSOLJIqUc2wmoBwGR4tbpNAKmmovFoWq0OdRkb0VkldReO2a2iBT/OEulG9XSUc10r3zg==}
+    dependencies:
+      lower-case: 2.0.2
+      tslib: 2.4.0
     dev: true
 
   /node-releases/2.0.6:
@@ -3337,6 +3361,13 @@ packages:
     engines: {node: '>=4'}
     dev: true
 
+  /param-case/3.0.4:
+    resolution: {integrity: sha512-RXlj7zCYokReqWpOPH9oYivUzLYZ5vAPIfEmCTNViosC78F8F0H9y7T7gG2M39ymgutxF5gcFEsyZQSph9Bp3A==}
+    dependencies:
+      dot-case: 3.0.4
+      tslib: 2.4.0
+    dev: true
+
   /parent-module/1.0.1:
     resolution: {integrity: sha512-GQ2EWRpQV8/o+Aw8YqtfZZPfNRWZYkbidE9k5rpl/hC3vtHHBfGm2Ifi6qWV+coDGkrUKZAxE3Lot5kcsRlh+g==}
     engines: {node: '>=6'}
@@ -3357,6 +3388,13 @@ packages:
     resolution: {integrity: sha512-kwpuwzB+px5WUg9pyK0IcK/shltJN5/OVhQagxhCQNtT9Y9QRZqNY2e1cmbu/paRh5LMnz/oVTVLBpjFmMZhSg==}
     dependencies:
       entities: 4.4.0
+    dev: true
+
+  /pascal-case/3.1.2:
+    resolution: {integrity: sha512-uWlGT3YSnK9x3BQJaOdcZwrnV6hPpd8jFH1/ucpiLRPh/2zCVJKS19E4GvYHvaCcACn3foXZ0cLB9Wrx1KGe5g==}
+    dependencies:
+      no-case: 3.0.4
+      tslib: 2.4.0
     dev: true
 
   /path-exists/3.0.0:
@@ -3492,10 +3530,6 @@ packages:
     dependencies:
       performance-now: 2.1.0
     dev: true
-
-  /ramda/0.28.0:
-    resolution: {integrity: sha512-9QnLuG/kPVgWvMQ4aODhsBUFKOUmnbUnsSXACv+NCQZcHbeb+v8Lodp8OVxtRULN1/xOyYLLaL6npE6dMq5QTA==}
-    dev: false
 
   /range-parser/1.2.0:
     resolution: {integrity: sha512-kA5WQoNVo4t9lNx2kQNFCxKeBl5IbbSNBl1M/tLkw9WCn+hxNBAW5Qh8gdhs63CJnhjJ2zQWFoqPJP2sK1AV5A==}
@@ -4100,10 +4134,6 @@ packages:
       yn: 3.1.1
     dev: true
 
-  /ts-toolbelt/6.15.5:
-    resolution: {integrity: sha512-FZIXf1ksVyLcfr7M317jbB67XFJhOO1YqdTcuGaq9q5jLUoTikukZ+98TPjKiP2jC5CgmYdWWYs0s2nLSU0/1A==}
-    dev: true
-
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -4292,6 +4322,23 @@ packages:
       vscode-languageserver: 7.0.0
       vscode-languageserver-textdocument: 1.0.4
       vscode-uri: 3.0.3
+    dev: true
+
+  /vite-plugin-imp/2.3.0_vite@3.1.8:
+    resolution: {integrity: sha512-I7xSzptQw0yBxUmXawXqkzYvtZbqRF99ZeylmaTuYmJTVjZw5/TbKE7z3h95IKE4r/lkSWdKYmHEs3QwiXKS7g==}
+    peerDependencies:
+      vite: '>= 2.0.0-beta.5'
+    dependencies:
+      '@babel/core': 7.19.6
+      '@babel/generator': 7.19.6
+      '@babel/parser': 7.19.6
+      '@babel/traverse': 7.19.6
+      chalk: 4.1.2
+      param-case: 3.0.4
+      pascal-case: 3.1.2
+      vite: 3.1.8_terser@5.15.1
+    transitivePeerDependencies:
+      - supports-color
     dev: true
 
   /vite/3.1.8_terser@5.15.1:
