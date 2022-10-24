@@ -3,27 +3,33 @@ import styled from "@emotion/styled";
 import type { FC } from "react";
 
 const Button: FC<ButtonProps> = ({ handler, children }) => (
-	<Container
-		role="button"
-		tabIndex={0}
-		onClick={handler}
-		onKeyDown={(event) => {
-			if (event.key === "Enter") handler();
-		}}
-	>
+	<Container tabIndex={0} onClick={handler}>
 		[ {children} ]
 	</Container>
 );
 
 export default Button;
 
-const Container = styled.div`
+const Container = styled.button`
+	border: none;
+	background: none;
+	font: inherit;
 	font-size: 0.8rem;
+	color: currentcolor;
 	cursor: pointer;
 	transition: color 0.2s ease-out;
+	margin: 0;
+	padding: 0;
+	appearance: none;
 
-	&:hover,
-	&:active {
+	&:disabled {
+		cursor: default;
+		color: ${({ theme }) => theme.colors.text[100]};
+	}
+
+	&:not(:disabled):hover,
+	&:not(:disabled):active,
+	&:not(:disabled):focus-visible {
 		color: ${({ theme }) => theme.colors.text[600]};
 	}
 `;
