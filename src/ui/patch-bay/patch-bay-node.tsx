@@ -22,15 +22,11 @@ const PatchBayNode: FC<{
 
 	return (
 		<Container
-			role="button"
 			title={title}
 			activeColor={connection?.color}
-			blocked={!!isBlocked}
 			onClick={toggleConnection}
 			tabIndex={0}
-			onKeyUp={(e) => {
-				if (e.key === "Enter") toggleConnection();
-			}}
+			disabled={isBlocked}
 		/>
 	);
 };
@@ -41,9 +37,8 @@ const getActiveBorderColor = memoize((activeColor: string) =>
 	color(activeColor).darken(0.06).hex(),
 );
 
-const Container = styled.div<{
+const Container = styled.button<{
 	activeColor?: string;
-	blocked: boolean;
 }>`
 	inline-size: 0.8em;
 	block-size: 0.8em;
@@ -51,11 +46,10 @@ const Container = styled.div<{
 	border: 1px solid
 		${({ activeColor, theme }) =>
 			activeColor ? getActiveBorderColor(activeColor) : theme.colors.text[100]};
-	background-color: ${({ activeColor, blocked, theme }) =>
-		activeColor || (blocked ? theme.colors.text[100] : "transparent")};
-	transform: ${({ blocked }) =>
-		blocked ? "rotate(45deg) scale(0.5)" : "rotate(0deg) scale(1)"};
-	cursor: ${({ blocked }) => (blocked ? "default" : "pointer")};
+	background-color: ${({ activeColor, disabled, theme }) =>
+		activeColor || (disabled ? theme.colors.text[100] : "transparent")};
+	transform: ${({ disabled }) =>
+		disabled ? "rotate(45deg) scale(0.5)" : "rotate(0deg) scale(1)"};
 	transition: all 0.2s ease-out;
 
 	&:hover {
