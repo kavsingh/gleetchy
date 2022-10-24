@@ -64,7 +64,6 @@ const SideControlsContainer = styled.div`
 		cursor: pointer;
 		opacity: 0.4;
 		transition: opacity 0.2s ease-out;
-		appearance: none;
 
 		svg {
 			inline-size: 100%;
@@ -73,7 +72,8 @@ const SideControlsContainer = styled.div`
 	}
 
 	a:hover,
-	button:hover {
+	a:focus,
+	a:focus-visible {
 		opacity: 1;
 	}
 
