@@ -7,7 +7,7 @@ interface Fonts {
 interface Colors {
 	text: { 100: string; 400: string; 600: string };
 	surface: { 0: string };
-	semantic: { error: string };
+	semantic: { error: string; focus: string };
 }
 
 export interface UITheme {
@@ -31,7 +31,7 @@ export const themes: Record<ThemeName, UITheme> = {
 				400: "rgb(200 200 200)",
 				600: "rgb(255 255 255)",
 			},
-			semantic: { error: "rgb(236 103 100)" },
+			semantic: { error: "rgb(236 103 100)", focus: "rgb(200 200 200)" },
 		},
 	},
 	light: {
@@ -44,7 +44,7 @@ export const themes: Record<ThemeName, UITheme> = {
 				400: "rgb(34 34 34)",
 				600: "rgb(0 0 0)",
 			},
-			semantic: { error: "rgb(236 103 100)" },
+			semantic: { error: "rgb(236 103 100)", focus: "rgb(34 34 34)" },
 		},
 	},
 };

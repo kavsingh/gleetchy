@@ -33,6 +33,10 @@ const globalStyles = (theme: Theme) => css`
 		outline: none;
 	}
 
+	*:focus-visible {
+		outline: 1px solid ${theme.colors.semantic.focus};
+	}
+
 	a,
 	button {
 		cursor: initial;
