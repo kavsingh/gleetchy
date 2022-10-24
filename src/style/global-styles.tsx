@@ -28,6 +28,7 @@ const globalStyles = (theme: Theme) => css`
 		user-select: inherit;
 	}
 
+	/* resets */
 	*:focus,
 	*:active {
 		outline: none;
@@ -37,9 +38,20 @@ const globalStyles = (theme: Theme) => css`
 		outline: 1px solid ${theme.colors.semantic.focus};
 	}
 
-	a,
 	button {
-		cursor: initial;
+		margin: 0;
+		padding: 0;
+		border: none;
+		outline: none;
+		font: inherit;
+		line-height: inherit;
+		color: currentcolor;
+		background: none;
+		cursor: pointer;
+	}
+
+	button:disabled {
+		cursor: default;
 	}
 
 	html,

@@ -15,17 +15,10 @@ const Button: FC<ComponentProps<typeof Container>> = ({
 export default Button;
 
 const Container = styled.button<{ size?: ButtonSize }>`
-	border: none;
-	background: none;
-	font: inherit;
 	font-size: ${({ size = "small" }) =>
 		size === "small" ? "0.8rem" : "inherit"};
-	color: currentcolor;
 	cursor: pointer;
 	transition: color 0.2s ease-out;
-	margin: 0;
-	padding: 0;
-	appearance: none;
 
 	&:disabled {
 		cursor: default;
