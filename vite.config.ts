@@ -23,15 +23,10 @@ const imp = impPlugin({
 	],
 });
 
-export default defineConfig(({ command }) => ({
+export default defineConfig({
 	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
-	plugins: [
-		imp,
-		reactPlugin(),
-		command === "serve" && checker,
-		command === "build" && legacyPlugin(),
-	],
+	plugins: [imp, reactPlugin(), checker, legacyPlugin()],
 	resolve: {
 		alias: {
 			"react": "preact/compat",
@@ -51,4 +46,4 @@ export default defineConfig(({ command }) => ({
 		coverage: { reporter: ["text", "html"] },
 		includeSource: ["src/**/*.{js,ts}"],
 	},
-}));
+});
