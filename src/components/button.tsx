@@ -1,9 +1,12 @@
 import styled from "@emotion/styled";
 
-import type { FC } from "react";
+import type { ComponentProps, FC } from "react";
 
-const Button: FC<ButtonProps> = ({ handler, children }) => (
-	<Container tabIndex={0} onClick={handler}>
+const Button: FC<ComponentProps<typeof Container>> = ({
+	children,
+	...props
+}) => (
+	<Container tabIndex={0} {...props}>
 		[ {children} ]
 	</Container>
 );
@@ -33,8 +36,3 @@ const Container = styled.button`
 		color: ${({ theme }) => theme.colors.text[600]};
 	}
 `;
-
-export interface ButtonProps {
-	handler: () => unknown;
-	children: string | string[];
-}

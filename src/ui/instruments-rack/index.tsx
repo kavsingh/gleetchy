@@ -48,7 +48,7 @@ const AddInstrumentButtons: FC = () => {
 
 	return (
 		<ButtonGroup>
-			<Button handler={addLoop}>Add Loop</Button>
+			<Button onClick={addLoop}>Add Loop</Button>
 		</ButtonGroup>
 	);
 };

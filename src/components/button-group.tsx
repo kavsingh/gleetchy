@@ -2,8 +2,7 @@ import styled from "@emotion/styled";
 
 import Button from "./button";
 
-import type { ReactElement } from "react";
-import type { ButtonProps } from "./button";
+import type { ComponentProps, ReactElement } from "react";
 
 const ButtonGroup = styled.div<{
 	children: ReactElement<ButtonProps>[] | ReactElement<ButtonProps>;
@@ -19,3 +18,5 @@ const ButtonGroup = styled.div<{
 export { Button };
 
 export default ButtonGroup;
+
+type ButtonProps = ComponentProps<typeof Button>;

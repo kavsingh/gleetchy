@@ -44,7 +44,7 @@ const LoopTitleBar: FC<
 
 	const loadButton = useMemo(
 		() => (
-			<Button handler={selectAudioFile}>
+			<Button onClick={selectAudioFile}>
 				{`${audioBuffer ? "Replace" : "Load"}`} audio file
 			</Button>
 		),
@@ -62,7 +62,7 @@ const LoopTitleBar: FC<
 			<Title>
 				{fileInfo}
 				{loadButton}
-				{audioBuffer ? <Button handler={duplicate}>Clone</Button> : null}
+				{audioBuffer ? <Button onClick={duplicate}>Clone</Button> : null}
 			</Title>
 		</TitleBar>
 	);

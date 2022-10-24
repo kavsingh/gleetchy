@@ -57,8 +57,8 @@ const AddAudioEffectButtons: FC = () => {
 
 	return (
 		<ButtonGroup>
-			<Button handler={addReverb}>Add Reverb</Button>
-			<Button handler={addDelay}>Add Delay</Button>
+			<Button onClick={addReverb}>Add Reverb</Button>
+			<Button onClick={addDelay}>Add Delay</Button>
 		</ButtonGroup>
 	);
 };

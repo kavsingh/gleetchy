@@ -43,7 +43,7 @@ const TitleBar: FC<{
 			<InfoContainer>
 				<TypeLabel>{type} /</TypeLabel>
 				{children}
-				<Button handler={onRemoveClick}>Remove</Button>
+				<Button onClick={onRemoveClick}>Remove</Button>
 			</InfoContainer>
 		</Container>
 	);
