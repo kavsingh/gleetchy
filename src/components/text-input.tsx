@@ -52,5 +52,9 @@ const Container = styled.div`
 		&:focus {
 			border-bottom-color: currentColor;
 		}
+
+		&:focus-visible {
+			outline: none;
+		}
 	}
 `;
