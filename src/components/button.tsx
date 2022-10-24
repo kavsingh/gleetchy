@@ -1,22 +1,9 @@
+import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
-import type { ComponentProps, FC } from "react";
-
-const Button: FC<ComponentProps<typeof Container>> = ({
-	size = "small",
-	children,
-	...props
-}) => (
-	<Container tabIndex={0} size={size} {...props}>
-		[ {children} ]
-	</Container>
-);
-
-export default Button;
-
-const Container = styled.button<{ size?: ButtonSize }>`
-	font-size: ${({ size = "small" }) =>
-		size === "small" ? "0.8rem" : "inherit"};
+const Button = styled.button<{ variant?: Variant }>`
+	font-size: ${({ variant = "braced" }) =>
+		variant === "braced" ? "0.8rem" : "inherit"};
 	cursor: pointer;
 	transition: color 0.2s ease-out;
 
@@ -30,6 +17,26 @@ const Container = styled.button<{ size?: ButtonSize }>`
 	&:not(:disabled):focus-visible {
 		color: ${({ theme }) => theme.colors.text[600]};
 	}
+
+	${({ variant = "braced" }) =>
+		variant === "braced"
+			? css`
+					&::before,
+					&::after {
+						display: inline;
+					}
+
+					&::before {
+						content: "[ ";
+					}
+
+					&::after {
+						content: " ]";
+					}
+			  `
+			: ""}
 `;
 
-export type ButtonSize = "small" | "inherit";
+export default Button;
+
+export type Variant = "braced" | "text";

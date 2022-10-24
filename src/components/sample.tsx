@@ -146,7 +146,7 @@ const InitLoadButon = styled(Button)`
 	}
 `;
 
-InitLoadButon.defaultProps = { size: "inherit" };
+InitLoadButon.defaultProps = { variant: "text" };
 
 export interface SampleProps {
 	audioBuffer: Nullable<AudioBuffer>;

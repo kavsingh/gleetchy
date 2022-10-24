@@ -10,7 +10,7 @@ const PlayPauseButton: FC = () => {
 	const { isPlaying, togglePlayback } = useGlobalPlayback();
 
 	return (
-		<Container tabIndex={0} onClick={togglePlayback} size="inherit">
+		<Container tabIndex={0} onClick={togglePlayback} variant="text">
 			{isPlaying ? "Stop" : "Play"}
 		</Container>
 	);
