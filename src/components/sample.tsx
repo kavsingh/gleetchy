@@ -8,6 +8,8 @@ import { layoutAbsoluteFill } from "~/style/layout";
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
 
+import Button from "./button";
+
 import type { FC } from "react";
 
 const Sample: FC<SampleProps> = ({
@@ -69,16 +71,7 @@ const Sample: FC<SampleProps> = ({
 					<LoopRegionContainer>{loopRegion}</LoopRegionContainer>
 				</>
 			) : (
-				<InitLoadButon
-					role="button"
-					tabIndex={0}
-					onClick={selectAudioFile}
-					onKeyDown={({ key }) => {
-						if (key === "Enter") {
-							selectAudioFile();
-						}
-					}}
-				>
+				<InitLoadButon tabIndex={0} onClick={selectAudioFile}>
 					{fromSaved
 						? [
 								<span key="a">
@@ -136,7 +129,7 @@ const LoopRegionContainer = styled.div`
 	z-index: 3;
 `;
 
-const InitLoadButon = styled.div`
+const InitLoadButon = styled(Button)`
 	${layoutAbsoluteFill}
 	z-index: 3;
 	display: flex;
@@ -146,13 +139,14 @@ const InitLoadButon = styled.div`
 	padding: 3em;
 	background-color: ${({ theme }) =>
 		color(theme.colors.surface[0]).alpha(0.96).string()};
-	cursor: pointer;
 
 	span {
 		display: block;
 		text-align: center;
 	}
 `;
+
+InitLoadButon.defaultProps = { size: "inherit" };
 
 export interface SampleProps {
 	audioBuffer: Nullable<AudioBuffer>;

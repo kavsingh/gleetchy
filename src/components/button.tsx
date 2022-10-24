@@ -3,21 +3,23 @@ import styled from "@emotion/styled";
 import type { ComponentProps, FC } from "react";
 
 const Button: FC<ComponentProps<typeof Container>> = ({
+	size = "small",
 	children,
 	...props
 }) => (
-	<Container tabIndex={0} {...props}>
+	<Container tabIndex={0} size={size} {...props}>
 		[ {children} ]
 	</Container>
 );
 
 export default Button;
 
-const Container = styled.button`
+const Container = styled.button<{ size?: ButtonSize }>`
 	border: none;
 	background: none;
 	font: inherit;
-	font-size: 0.8rem;
+	font-size: ${({ size = "small" }) =>
+		size === "small" ? "0.8rem" : "inherit"};
 	color: currentcolor;
 	cursor: pointer;
 	transition: color 0.2s ease-out;
@@ -36,3 +38,5 @@ const Container = styled.button`
 		color: ${({ theme }) => theme.colors.text[600]};
 	}
 `;
+
+export type ButtonSize = "small" | "inherit";

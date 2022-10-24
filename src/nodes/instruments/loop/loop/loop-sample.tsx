@@ -17,7 +17,7 @@ const LoopSample: FC<SampleProps & { nodeId: string }> = ({
 	const subscribeToPositionRatio = useCallback(
 		(handler: (positionRatio: number) => void) =>
 			store.subscribe(() => {
-				// @ts-expect-error foo
+				// @ts-expect-error need to fix useAppStore types
 				const state: AppState = store.getState();
 				const positionRatio = selectAudioNodeSubscriptionData(
 					state,

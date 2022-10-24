@@ -1,21 +1,21 @@
 import { memo } from "react";
 import styled from "@emotion/styled";
 
-import useGlobalPlayback from "~/app-store/hooks/use-global-playback";
 import useUITheme from "~/app-store/hooks/use-ui-theme";
-import PlayPauseButton from "~/ui/masthead/play-pause-button";
+import Button from "~/components/button";
+
+import PlayPauseButton from "./play-pause-button";
 
 import type { FC } from "react";
 
 const Masthead: FC = () => {
-	const { isPlaying, togglePlayback } = useGlobalPlayback();
 	const { toggleTheme } = useUITheme();
 
 	return (
 		<Container>
-			<PlayPauseButton isPlaying={isPlaying} onClick={togglePlayback} />
+			<PlayPauseButton />
 			<SideControlsContainer>
-				<button onClick={toggleTheme}>L/D</button>
+				<Button onClick={toggleTheme}>L/D</Button>
 				<a
 					href="https://www.github.com/kavsingh/gleetchy"
 					target="_blank"
@@ -56,9 +56,9 @@ const SideControlsContainer = styled.div`
 	flex-flow: row nowrap;
 	align-items: center;
 	align-self: stretch;
+	gap: 0.4em;
 
-	a,
-	button {
+	a {
 		display: block;
 		color: ${({ theme }) => theme.colors.text[400]};
 		cursor: pointer;
@@ -68,17 +68,8 @@ const SideControlsContainer = styled.div`
 
 		svg {
 			inline-size: 100%;
-			block-size: 100%;
+			block-size: auto;
 		}
-	}
-
-	button {
-		margin: 0 1em 0 0;
-		padding: 0;
-		border: none;
-		font-size: 0.8em;
-		font-family: ${({ theme }) => theme.fonts.body};
-		background-color: transparent;
 	}
 
 	a:hover,
