@@ -6,7 +6,7 @@ import { GInstrumentNode } from "~/lib/g-audio-node";
 import nodeType from "./node-type";
 import { defaultProps } from "./node-props";
 // eslint-disable-next-line import/default
-import processor from "./processor.worklet?url";
+import processor from "./processor.worklet?worker&url";
 
 import type { Props } from "./node-props";
 
