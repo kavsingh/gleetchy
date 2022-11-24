@@ -14,15 +14,8 @@
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitReturns": true,
 		"noUncheckedIndexedAccess": true,
-		"paths": {
-			"~/*": ["./src/*"]
-		},
-		"plugins": [
-			{
-				"name": "typescript-styled-plugin",
-				"validate": false
-			}
-		],
+		"paths": { "~/*": ["./src/*"] },
+		"plugins": [{ "name": "typescript-styled-plugin", "validate": false }],
 		"skipLibCheck": true,
 		"sourceMap": true,
 		"strict": true,
@@ -30,5 +23,14 @@
 		"types": ["node", "audioworklet", "webaudioapi", "vitest/importMeta"]
 	},
 	"exclude": ["**/node_modules"],
-	"include": ["./src", "./scripts", "./*.ts"]
+	"include": ["./src", "./scripts", "./*.ts"],
+	"ts-node": {
+		"transpileOnly": true,
+		"compilerOptions": {
+			"isolatedModules": false,
+			"module": "commonjs",
+			"lib": ["esnext"],
+			"target": "es2022"
+		}
+	}
 }
