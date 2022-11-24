@@ -66,24 +66,20 @@ export abstract class GInstrumentNode<
 	P extends Record<string, unknown> = Record<string, unknown>,
 	S extends Record<string, unknown> = Record<string, unknown>,
 > extends GAudioNode<P> {
-	private subscribers: GInstrumentNodeSubscriber<S>[] = [];
+	private subscribers = new Set<GInstrumentNodeSubscriber<S>>();
 
 	subscribe(subscriber: GInstrumentNodeSubscriber<S>): () => void {
-		if (!this.subscribers.includes(subscriber)) {
-			this.subscribers.push(subscriber);
-		}
+		this.subscribers.add(subscriber);
 
 		return () => {
-			const idx = this.subscribers.indexOf(subscriber);
-
-			if (idx !== -1) this.subscribers.splice(idx, 1);
+			this.subscribers.delete(subscriber);
 		};
 	}
 
 	protected notifySubscribers = (state: S) => {
-		this.subscribers.forEach((subscriber) => {
+		for (const subscriber of this.subscribers) {
 			subscriber(state);
-		});
+		}
 	};
 
 	abstract play(): void;
