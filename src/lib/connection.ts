@@ -38,12 +38,12 @@ const createDisconnect = (getOutNode: AudioNodeReturn) =>
 
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-return */
 export const makeConnectable =
-	<N extends GAudioNode<any, any> | GInstrumentNode<any, any, any>>({
+	<N extends GAudioNode | GInstrumentNode>({
 		getInNode,
 		getOutNode,
 	}: GAudioNodeConnectors) =>
 	(
-		api: N extends GInstrumentNode<any, any, any>
+		api: N extends GInstrumentNode
 			? GInstrumentNodeApi<any, any, any>
 			: GAudioNodeApi<any, any>,
 	): N =>

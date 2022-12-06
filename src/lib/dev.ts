@@ -1,7 +1,7 @@
 import { noop } from "lodash";
 
 /* eslint-disable no-console */
-const isDev = process.env.NODE_ENV !== "production";
+const isDev = !import.meta.env.PROD;
 const cLog = console.log.bind(console);
 const cWarn = console.warn.bind(console);
 const cError = console.error.bind(console);

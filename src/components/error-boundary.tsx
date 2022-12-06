@@ -8,13 +8,13 @@ class ErrorBoundary extends PureComponent<
 	{ silent?: boolean; renderError?: ErrorRenderer; children: ReactNode },
 	State
 > {
-	public state: State = {};
+	public override state: State = {};
 
-	public componentDidCatch(error: Error): void {
+	public override componentDidCatch(error: Error): void {
 		this.setState(() => ({ error }));
 	}
 
-	public render(): ReactNode {
+	public override render(): ReactNode {
 		const {
 			children = null,
 			silent = false,

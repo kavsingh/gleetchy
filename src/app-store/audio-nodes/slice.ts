@@ -155,9 +155,8 @@ const getNewNodeState = (type: string) => {
 };
 
 interface AudioNodesState {
-	byId: {
-		[key: string]: AudioNodeState<KnownProps>;
-	};
+	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+	byId: { [key: string]: AudioNodeState<KnownProps> };
 	orderedIdentifierMeta: AudioNodeIdentifierMeta[];
 }
 

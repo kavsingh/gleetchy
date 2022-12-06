@@ -23,5 +23,5 @@ export const audioEngineSlice = createSlice({
 });
 
 interface AudioEngineState {
-	subscriptionData: { [nodeId: string]: { [key: string]: unknown } };
+	subscriptionData: Record<string, Record<string, unknown>>;
 }

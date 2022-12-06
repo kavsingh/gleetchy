@@ -21,6 +21,7 @@ export interface Eq3Props {
 	lowGain: number;
 	midGain: number;
 	highGain: number;
+	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 	onChange(eqProps: { [key: string]: number }): unknown;
 }
 

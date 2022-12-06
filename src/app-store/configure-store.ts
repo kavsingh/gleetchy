@@ -35,7 +35,7 @@ export const createStore = (
 			getDefaultMiddleware({ serializableCheck: false }).prepend(
 				listenerMiddleware.middleware,
 			),
-		devTools: process.env.NODE_ENV !== "production",
+		devTools: import.meta.env.DEV,
 	});
 
 	const audioEngine = new AudioEngine({

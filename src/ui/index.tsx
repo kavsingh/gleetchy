@@ -16,9 +16,10 @@ const UI: FC = () => {
 	const { registerKeyPress, registerKeyRelease } = useModifierKeys();
 
 	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!globalThis.window) return undefined;
 
-		const clickHandler = () => void initAudioContext();
+		const clickHandler = () => initAudioContext();
 
 		globalThis.window.addEventListener("keydown", registerKeyPress, true);
 		globalThis.window.addEventListener("keyup", registerKeyRelease, true);

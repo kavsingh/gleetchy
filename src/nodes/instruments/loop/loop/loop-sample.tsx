@@ -19,10 +19,9 @@ const LoopSample: FC<SampleProps & { nodeId: string }> = ({
 			store.subscribe(() => {
 				// @ts-expect-error need to fix useAppStore types
 				const state: AppState = store.getState();
-				const positionRatio = selectAudioNodeSubscriptionData(
-					state,
-					nodeId,
-				)?.positionRatio;
+				const positionRatio = selectAudioNodeSubscriptionData(state, nodeId)?.[
+					"positionRatio"
+				];
 
 				handler(isFiniteNumber(positionRatio) ? positionRatio : 0);
 			}),

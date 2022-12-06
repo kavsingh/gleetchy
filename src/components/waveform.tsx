@@ -97,6 +97,7 @@ const Waveform: FC<WaveformProps> = ({
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
+		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		if (!globalThis.window) return;
 
 		const handleResize = () => {
@@ -106,6 +107,7 @@ const Waveform: FC<WaveformProps> = ({
 					baselineColor,
 					timeRegions,
 					buffer,
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 					pixelRatio: globalThis.window.devicePixelRatio ?? 1,
 				});
 			}
@@ -141,5 +143,5 @@ export interface WaveformProps {
 	color: string;
 	baselineColor: string;
 	buffer: Nullable<AudioBuffer>;
-	timeRegions?: number;
+	timeRegions?: number | undefined;
 }

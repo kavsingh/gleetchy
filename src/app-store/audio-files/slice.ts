@@ -91,10 +91,10 @@ export const audioFilesSlice = createSlice({
 });
 
 interface AudioFilesState {
-	decodeErrors: { [key: string]: SerializedError };
+	decodeErrors: Record<string, SerializedError>;
 	decodingIds: string[];
-	files: { [key: string]: StoredAudioFileData };
-	loadErrors: { [key: string]: SerializedError };
+	files: Record<string, StoredAudioFileData>;
+	loadErrors: Record<string, SerializedError>;
 	loadingIds: string[];
 }
 

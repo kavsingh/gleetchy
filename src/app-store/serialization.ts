@@ -1,6 +1,6 @@
 import type { AppState } from "~/app-store/configure-store";
 
-const isObjectLike = (value: unknown): value is { [key: string]: unknown } =>
+const isObjectLike = (value: unknown): value is Record<PropertyKey, unknown> =>
 	typeof value === "object";
 
 const isUnserializable = (value: unknown) =>

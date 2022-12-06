@@ -226,4 +226,6 @@ const controlMultipliers: ControlResponseMultipliers = {
 
 type Orientation = "inline" | "block";
 
-type OrientationProps = { orientation: Orientation };
+interface OrientationProps {
+	orientation: Orientation;
+}

@@ -150,12 +150,14 @@ InitLoadButon.defaultProps = { variant: "text" };
 
 export interface SampleProps {
 	audioBuffer: Nullable<AudioBuffer>;
-	fromSaved?: boolean;
-	loopStart?: number;
-	loopEnd?: number;
-	onLoopStartDrag?(movement: number): unknown;
-	onLoopEndDrag?(movement: number): unknown;
-	onLoopRegionDrag?(movement: number): unknown;
-	selectAudioFile?(): unknown;
-	subscribeToPositionRatio?(handler: (ratio: number) => void): () => void;
+	fromSaved?: boolean | undefined;
+	loopStart?: number | undefined;
+	loopEnd?: number | undefined;
+	onLoopStartDrag?(movement: number): unknown | undefined;
+	onLoopEndDrag?(movement: number): unknown | undefined;
+	onLoopRegionDrag?(movement: number): unknown | undefined;
+	selectAudioFile?(): unknown | undefined;
+	subscribeToPositionRatio?(
+		handler: (ratio: number) => void,
+	): (() => void) | undefined;
 }

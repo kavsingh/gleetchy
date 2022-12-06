@@ -6,4 +6,5 @@ import UI from "./reverb";
 import type { Props } from "./node-props";
 
 export type NodeProps = Props;
+
 export { UI, nodeType, defaultProps, createAudioNode };

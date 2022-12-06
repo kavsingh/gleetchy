@@ -23,9 +23,14 @@ const useAudioNode = <T extends Record<string, unknown>>(
 	isValid: AudioNodeStateValidator,
 ) => {
 	const node = useAppSelector(
-		(state) => selectAudioNodes(state)[id] as AudioNodeState<T>,
+		(state) => selectAudioNodes(state)[id] as AudioNodeState<T> | undefined,
 		isEqual,
 	);
+
+	if (!node) throw new Error(`Audio node not found at id ${id}`);
+
+	if (!isValid(node)) throw new Error(`Audio node is invalid for ${id}`);
+
 	const isActive = useAppSelector((state) =>
 		selectActiveAudioNodeIds(state).includes(node.id),
 	);
@@ -54,11 +59,6 @@ const useAudioNode = <T extends Record<string, unknown>>(
 		(label: string) => dispatch(updateAudioNodeLabel({ id, label })),
 		[id, dispatch],
 	);
-
-	useEffect(() => {
-		if (!node) throw new Error(`Audio node not found at id ${id}`);
-		if (!isValid(node)) throw new Error(`Audio node is invalid for ${id}`);
-	}, [id, isValid, node]);
 
 	useEffect(() => {
 		setConnections((current) => {

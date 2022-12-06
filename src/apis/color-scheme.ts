@@ -2,11 +2,15 @@ import { useState, useCallback, useEffect } from "react";
 
 export type ColorSchemePreference = "no-preference" | "light" | "dark";
 
-export const darkSchemeQuery =
-	globalThis?.matchMedia?.("(prefers-color-scheme: dark)") ?? undefined;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const darkSchemeQuery = (globalThis.matchMedia?.(
+	"(prefers-color-scheme: dark)",
+) ?? undefined) as MediaQueryList | undefined;
 
-export const lightSchemeQuery =
-	globalThis?.matchMedia?.("(prefers-color-scheme: light)") ?? undefined;
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const lightSchemeQuery = (globalThis.matchMedia?.(
+	"(prefers-color-scheme: light)",
+) ?? undefined) as MediaQueryList | undefined;
 
 export const getPreferredColorScheme = (): ColorSchemePreference => {
 	if (darkSchemeQuery?.matches) return "dark";

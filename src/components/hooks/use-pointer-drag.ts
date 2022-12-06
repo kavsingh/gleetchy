@@ -48,12 +48,10 @@ const usePointerDrag = ({
 
 	const handleDragEnd = useCallback(
 		(event: Event) => {
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!globalThis.window) return;
 
-			let { clientX, clientY } = cancelAndNormalizeEvent(event);
-
-			if (clientX === undefined) clientX = stateRef.current.x;
-			if (clientY === undefined) clientY = stateRef.current.y;
+			const { clientX, clientY } = cancelAndNormalizeEvent(event);
 
 			moveEvents.forEach((eventName) =>
 				globalThis.window.removeEventListener(
@@ -84,6 +82,7 @@ const usePointerDrag = ({
 
 	const registerDragStart = useCallback(
 		(normalisedEvent: NormalizedEvent) => {
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 			if (!globalThis.window || stateRef.current.isDragging) return;
 
 			const { currentTarget, clientX, clientY, timeStamp } = normalisedEvent;
@@ -225,6 +224,7 @@ export interface UsePointerDragProps {
 
 const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
 	const { currentTarget, timeStamp } = event;
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	const { clientX = 0, clientY = 0 } = (event as TouchEvent).touches
 		? (event as TouchEvent).touches[0] ?? {}
 		: (event as MouseEvent);

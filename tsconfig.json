@@ -1,9 +1,8 @@
 {
+	"extends": "@tsconfig/node18-strictest/tsconfig.json",
 	"compilerOptions": {
 		"allowSyntheticDefaultImports": true,
-		"allowUnreachableCode": false,
 		"esModuleInterop": true,
-		"forceConsistentCasingInFileNames": true,
 		"isolatedModules": true,
 		"jsx": "preserve",
 		"jsxImportSource": "@emotion/react",
@@ -11,14 +10,9 @@
 		"module": "esnext",
 		"moduleResolution": "node",
 		"noEmit": true,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitReturns": true,
-		"noUncheckedIndexedAccess": true,
 		"paths": { "~/*": ["./src/*"] },
 		"plugins": [{ "name": "typescript-styled-plugin", "validate": false }],
-		"skipLibCheck": true,
 		"sourceMap": true,
-		"strict": true,
 		"target": "esnext",
 		"types": ["node", "audioworklet", "webaudioapi", "vitest/importMeta"]
 	},

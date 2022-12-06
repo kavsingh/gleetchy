@@ -52,7 +52,7 @@ const Reverb: FC<ReverbProps> = ({
 		(nextImpulse: string) => {
 			if (!isValidImpulse(nextImpulse)) return;
 
-			onImpulseChange?.(nextImpulse);
+			onImpulseChange(nextImpulse);
 		},
 		[onImpulseChange],
 	);

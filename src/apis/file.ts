@@ -1,8 +1,9 @@
 import type { AudioFileData } from "~/types";
 
-let fileInput: HTMLInputElement;
+let fileInput: HTMLInputElement | undefined;
 
 const getFileInput = () => {
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!globalThis?.document) return undefined;
 
 	if (!fileInput) {
@@ -27,8 +28,10 @@ export const loadAudioFiles = () => {
 		input.onchange = () => {
 			const { files } = input;
 
+			if (!files) return resolve([]);
+
 			resolve(
-				Array.from(files || []).filter(({ type }) => type.startsWith("audio/")),
+				Array.from(files).filter(({ type }) => type.startsWith("audio/")),
 			);
 
 			input.value = "";

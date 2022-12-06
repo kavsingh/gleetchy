@@ -59,9 +59,9 @@ export const selectConnectableSources = createValueEqSelector(
 	(nodes, instruments, effects): AudioNodeMeta[] => [
 		...instruments.map((meta) => ({
 			...meta,
-			label: nodes[meta.id]?.label || "",
+			label: nodes[meta.id]?.label ?? "",
 		})),
-		...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label || "" })),
+		...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label ?? "" })),
 	],
 );
 
@@ -70,7 +70,7 @@ export const selectConnectableTargets = createValueEqSelector(
 	selectAudioEffectsIdentifierMeta,
 	selectMainOutMeta,
 	(nodes, effects, out): AudioNodeMeta[] => [
-		...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label || "" })),
+		...effects.map((meta) => ({ ...meta, label: nodes[meta.id]?.label ?? "" })),
 		out,
 	],
 );

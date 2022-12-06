@@ -6,6 +6,7 @@ const asEventName = (name: string) =>
 const isSupportedEvent = (name: string) => {
 	const asHandlerName = name.startsWith("on") ? name : `on${name}`;
 
+	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	return globalThis.document
 		? asHandlerName in globalThis.document ||
 				asHandlerName in globalThis.document.documentElement

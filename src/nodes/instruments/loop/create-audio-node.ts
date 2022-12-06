@@ -39,7 +39,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	positionBufferSource: AudioBufferSourceNode | null = null;
 	throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
 
-	constructor(protected audioContext: AudioContext, initProps: Props) {
+	constructor(protected override audioContext: AudioContext, initProps: Props) {
 		super(audioContext, initProps);
 
 		this.gainNode.connect(this.eq3Node.inNode);
@@ -55,7 +55,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 		if (this.playbackState.playing) return;
 
 		this.playbackState.playing = true;
-		void this.replaceSource();
+		this.replaceSource();
 	}
 
 	stop(): void {
@@ -144,15 +144,12 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 
 		this.positionBufferSource.loop = this.playbackBufferSource.loop = true;
 
-		if (this.worklet) this.positionBufferSource.connect(this.worklet);
-
+		this.positionBufferSource.connect(this.worklet);
 		this.updateSourceProps();
 
 		if (!this.playbackState.playing) return;
 
-		if (this.worklet) {
-			this.worklet.port.onmessage = this.processWorkletPositionMessage;
-		}
+		this.worklet.port.onmessage = this.processWorkletPositionMessage;
 
 		this.playbackBufferSource.connect(this.gainNode);
 		this.playbackBufferSource.start(0, this.playbackBufferSource.loopStart);

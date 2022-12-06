@@ -16,7 +16,7 @@ export interface LoopUIProps {
 	audioBuffer: Nullable<AudioBuffer>;
 	onGainChange(gain: number): unknown;
 	onPlaybackRateChange(playbackRate: number): unknown;
-	onEqChange(props: { [key: string]: number }): unknown;
+	onEqChange(props: Record<string, number>): unknown;
 	selectAudioFile(): unknown;
 	receiveAudioFile(file: File): unknown;
 	onLoopRegionChange(start: number, end: number): unknown;

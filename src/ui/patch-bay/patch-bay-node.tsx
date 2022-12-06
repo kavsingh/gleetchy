@@ -38,7 +38,7 @@ const getActiveBorderColor = memoize((activeColor: string) =>
 );
 
 const Container = styled.button<{
-	activeColor?: string;
+	activeColor?: string | undefined;
 }>`
 	inline-size: 0.8em;
 	block-size: 0.8em;
@@ -47,13 +47,13 @@ const Container = styled.button<{
 		${({ activeColor, theme }) =>
 			activeColor ? getActiveBorderColor(activeColor) : theme.colors.text[100]};
 	background-color: ${({ activeColor, disabled, theme }) =>
-		activeColor || (disabled ? theme.colors.text[100] : "transparent")};
+		activeColor ?? (disabled ? theme.colors.text[100] : "transparent")};
 	transform: ${({ disabled }) =>
 		disabled ? "rotate(45deg) scale(0.5)" : "rotate(0deg) scale(1)"};
 	transition: all 0.2s ease-out;
 
 	&:hover {
 		border-color: ${({ activeColor, theme }) =>
-			activeColor || theme.colors.text[400]};
+			activeColor ?? theme.colors.text[400]};
 	}
 `;

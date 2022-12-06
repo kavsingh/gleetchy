@@ -2,10 +2,10 @@ import type { AudioNodeConnection, AudioNodeMeta } from "~/types";
 import type { GAudioNode, GInstrumentNode } from "~/lib/g-audio-node";
 
 export const hasAudioEffectType = <T extends { type?: string }>(item: T) =>
-	/^audio_effect_/i.test(item.type || "");
+	/^audio_effect_/i.test(item.type ?? "");
 
 export const hasInstrumentType = <T extends { type?: string }>(item: T) =>
-	/^instrument_/i.test(item.type || "");
+	/^instrument_/i.test(item.type ?? "");
 
 export const isAudioEffectNode = (
 	node: GAudioNode | GInstrumentNode | AudioNode,

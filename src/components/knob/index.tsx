@@ -49,7 +49,7 @@ const Knob: FC<{
 			if (!knob) return;
 
 			const moveAxis =
-				axis ||
+				axis ??
 				(Math.abs(movementX) > Math.abs(movementY) ? "horizontal" : "vertical");
 
 			const move =
@@ -117,7 +117,7 @@ const Label = styled.div`
 
 const KnobContainer = styled.div<{
 	radius: number | string;
-	axis?: MovementAxis;
+	axis?: MovementAxis | undefined;
 }>`
 	position: relative;
 	flex: 0 0 auto;
