@@ -1,4 +1,3 @@
-import { pick } from "lodash";
 import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
 
 import { warn } from "~/lib/dev";
@@ -41,11 +40,13 @@ import type { AudioNodeState } from "~/types";
 
 export default class AudioEngine {
 	private publishSubscriptionEvent: SubscriptionEventDispatcher;
-	private audioNodes: Record<string, GAudioNode | GInstrumentNode | AudioNode> =
-		{};
-	private subscriptions: Record<string, () => void> = {};
-	private audioContext?: AudioContext;
+	private audioNodes = new Map<
+		string,
+		GAudioNode | GInstrumentNode | AudioNode
+	>();
+	private unsubscribers = new Map<string, () => void>();
 	private workletsLoaded = false;
+	private audioContext?: AudioContext;
 
 	public constructor({
 		publishSubscriptionEvent,
@@ -78,12 +79,12 @@ export default class AudioEngine {
 		}
 
 		if (isAnyOf(togglePlayback)(action)) {
-			this.forEachInstrument((instrument) =>
+			this.forEachInstrument((instrument) => {
 				this.toggleInstrumentPlaybackAndSubscription(
 					instrument,
 					appState.globalPlayback.isPlaying,
-				),
-			);
+				);
+			});
 
 			return;
 		}
@@ -103,7 +104,7 @@ export default class AudioEngine {
 
 		if (isAnyOf(removeAudioNode)(action)) {
 			const id = action.payload;
-			const node = this.audioNodes[id];
+			const node = this.audioNodes.get(id);
 
 			if (!node) return;
 
@@ -118,7 +119,7 @@ export default class AudioEngine {
 				}
 			}
 
-			if (!appState.audioNodes.byId[id]) delete this.audioNodes[id];
+			if (!appState.audioNodes.byId[id]) this.audioNodes.delete(id);
 
 			this.updateAudioGraph(appState.connections);
 
@@ -161,30 +162,36 @@ export default class AudioEngine {
 		this.workletsLoaded = true;
 	};
 
-	private getInstrumentNodes = (): GInstrumentNode[] => {
-		return Object.values(this.audioNodes).filter(isInstrumentNode);
-	};
-
 	private forEachInstrument = (fn: InstrumentNodeProcessor) => {
-		this.getInstrumentNodes().forEach(fn);
+		for (const node of this.audioNodes.values()) {
+			if (isInstrumentNode(node)) fn(node);
+		}
 	};
 
-	private getNodeId = (node: GAudioNode | GInstrumentNode | AudioNode) =>
-		Object.entries(this.audioNodes).find(
-			([, registeredNode]) => registeredNode === node,
-		)?.[0];
+	private getNodeId = (
+		targetNode: GAudioNode | GInstrumentNode | AudioNode,
+	) => {
+		for (const [id, node] of this.audioNodes.entries()) {
+			if (node === targetNode) return id;
+		}
+
+		return undefined;
+	};
 
 	private playAndSubscribeInstrument = (node: GInstrumentNode) => {
 		const nodeId = this.getNodeId(node);
 
-		if (nodeId) {
-			this.subscriptions[nodeId]?.();
+		if (!nodeId) return;
 
-			if (typeof node.subscribe === "function") {
-				this.subscriptions[nodeId] = node.subscribe((payload: unknown) =>
+		this.unsubscribers.get(nodeId)?.();
+
+		if (typeof node.subscribe === "function") {
+			this.unsubscribers.set(
+				nodeId,
+				node.subscribe((payload: unknown) =>
 					this.publishSubscriptionEvent(nodeId, payload),
-				);
-			}
+				),
+			);
 		}
 
 		node.play();
@@ -194,8 +201,8 @@ export default class AudioEngine {
 		const nodeId = this.getNodeId(node);
 
 		if (nodeId) {
-			this.subscriptions[nodeId]?.();
-			delete this.subscriptions[nodeId];
+			this.unsubscribers.get(nodeId)?.();
+			this.unsubscribers.delete(nodeId);
 		}
 
 		node.stop();
@@ -210,60 +217,52 @@ export default class AudioEngine {
 	};
 
 	private disconnectAllNodes() {
-		Object.values(this.audioNodes).forEach((node) => {
+		for (const node of this.audioNodes.values()) {
 			// Safari crashes if node not connected
 			try {
 				node.disconnect();
 			} catch {
 				// pass through
 			}
-		});
+		}
 	}
 
 	private updateAudioNodes(
-		nodes: AppState["audioNodes"]["byId"],
+		nextNodes: AppState["audioNodes"]["byId"],
 		isPlaying: AppState["globalPlayback"]["isPlaying"],
 	) {
 		if (!this.audioContext) return;
 
-		const nextNodeIds = Object.keys(nodes);
+		for (const id of this.audioNodes.keys()) {
+			if (!(id in nextNodes)) this.audioNodes.delete(id);
+		}
 
-		this.audioNodes = Object.entries(this.audioNodes).length
-			? pick(this.audioNodes, nextNodeIds)
-			: { [MAIN_OUT_ID]: this.audioContext.destination };
+		for (const [id, nodeState] of Object.entries(nextNodes)) {
+			if (this.audioNodes.has(id)) continue;
 
-		nextNodeIds
-			.filter((id) => !this.audioNodes[id])
-			.forEach((id) => {
-				if (!this.audioContext) return;
+			const newNode = createNewNode(this.audioContext, nodeState);
 
-				const node = nodes[id];
+			if (!newNode) continue;
 
-				if (!node) return;
+			this.audioNodes.set(id, newNode);
 
-				const newNode = createNewNode(this.audioContext, node);
+			if (isPlaying && isInstrumentNode(newNode)) {
+				this.playAndSubscribeInstrument(newNode);
+			}
+		}
 
-				if (!newNode) return;
-
-				this.audioNodes[node.id] = newNode;
-
-				if (isPlaying && isInstrumentNode(newNode)) {
-					this.playAndSubscribeInstrument(newNode);
-				}
-			});
+		this.audioNodes.set(MAIN_OUT_ID, this.audioContext.destination);
 	}
 
 	private updateAudioGraph(connections: AppState["connections"]) {
 		this.disconnectAllNodes();
 
-		if (!connections.length) return;
-
-		connections.forEach(({ from, to }) => {
-			const fromNode = this.audioNodes[from];
-			const toNode = this.audioNodes[to];
+		for (const { from, to } of connections) {
+			const fromNode = this.audioNodes.get(from);
+			const toNode = this.audioNodes.get(to);
 
 			if (fromNode && toNode) (fromNode as GAudioNode).connect(toNode);
-		});
+		}
 	}
 
 	private updateNode({
@@ -273,7 +272,7 @@ export default class AudioEngine {
 		id: string;
 		audioProps: Record<string, unknown>;
 	}) {
-		const node = this.audioNodes[id];
+		const node = this.audioNodes.get(id);
 
 		if (!node) return;
 
