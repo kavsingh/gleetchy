@@ -18,6 +18,7 @@ const globalStyles = (theme: Theme) => css`
 		font-size: 14px;
 		cursor: default;
 		user-select: none;
+		background-color: ${theme.colors.surface[0]};
 	}
 
 	*,
@@ -54,12 +55,10 @@ const globalStyles = (theme: Theme) => css`
 		cursor: default;
 	}
 
-	html,
 	body {
 		inline-size: 100%;
 		margin: 0;
 		padding: 0;
-		background-color: ${theme.colors.surface[0]};
 		-webkit-font-smoothing: antialiased;
 	}
 
