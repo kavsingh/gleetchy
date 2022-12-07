@@ -147,7 +147,6 @@ export default memo(Loop);
 
 const Container = styled.div<{ isActive: boolean }>`
 	inline-size: 100%;
-	block-size: 12em;
 	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
 	transition: opacity 0.2s ease-out;
 `;

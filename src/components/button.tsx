@@ -2,10 +2,17 @@ import { css } from "@emotion/react";
 import styled from "@emotion/styled";
 
 const Button = styled.button<{ variant?: Variant }>`
-	font-size: ${({ variant = "braced" }) =>
-		variant === "braced" ? "0.8rem" : "inherit"};
+	margin: 0;
+	padding: 0;
+	border: none;
+	outline: none;
+	font: inherit;
+	color: currentcolor;
+	background: none;
 	cursor: pointer;
 	transition: color 0.2s ease-out;
+	font-size: ${({ variant = "braced" }) =>
+		variant === "braced" ? "0.8rem" : "inherit"};
 
 	&:disabled {
 		cursor: default;

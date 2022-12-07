@@ -54,19 +54,14 @@ const AddInstrumentButtons: FC = () => {
 };
 
 const RackMount: FC<{ children: ReactNode }> = ({ children }) => (
-	<InstrumentContainer>
+	<AnimIn>
 		<ErrorBoundary>{children}</ErrorBoundary>
-	</InstrumentContainer>
+	</AnimIn>
 );
 
 const Container = styled.div`
 	display: flex;
 	flex-direction: column;
 	inline-size: 100%;
-`;
-
-const InstrumentContainer = styled(AnimIn)`
-	&:not(:first-of-type) {
-		margin-top: 2em;
-	}
+	gap: 2em;
 `;

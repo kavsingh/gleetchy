@@ -15,9 +15,10 @@ export default memo(GlobalStyles);
 const globalStyles = (theme: Theme) => css`
 	html {
 		box-sizing: border-box;
-		font-size: 14px;
+		font: 14px/1.2 ${theme.fonts.body};
 		cursor: default;
 		user-select: none;
+		color: ${theme.colors.text[400]};
 		background-color: ${theme.colors.surface[0]};
 	}
 
@@ -29,7 +30,6 @@ const globalStyles = (theme: Theme) => css`
 		user-select: inherit;
 	}
 
-	/* resets */
 	*:focus,
 	*:active {
 		outline: none;
@@ -39,32 +39,10 @@ const globalStyles = (theme: Theme) => css`
 		outline: 1px solid ${theme.colors.semantic.focus};
 	}
 
-	button {
-		margin: 0;
-		padding: 0;
-		border: none;
-		outline: none;
-		font: inherit;
-		line-height: inherit;
-		color: currentcolor;
-		background: none;
-		cursor: pointer;
-	}
-
-	button:disabled {
-		cursor: default;
-	}
-
 	body {
 		inline-size: 100%;
 		margin: 0;
 		padding: 0;
 		-webkit-font-smoothing: antialiased;
-	}
-
-	/* TODO: move this back to UI root when audio engine refactored */
-	body {
-		color: ${theme.colors.text[400]};
-		font-family: ${theme.fonts.body};
 	}
 `;
