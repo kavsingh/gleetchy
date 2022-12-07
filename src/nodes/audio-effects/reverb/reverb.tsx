@@ -74,7 +74,7 @@ const Reverb: FC<ReverbProps> = ({
 
 export default memo(Reverb);
 
-export interface ReverbProps {
+export type ReverbProps = {
 	label: string;
 	wetDryRatio: number;
 	isActive: boolean;
@@ -84,7 +84,7 @@ export interface ReverbProps {
 	onLabelChange(label: string): unknown;
 	onImpulseChange(impulse: ImpulseName): unknown;
 	remove(): unknown;
-}
+};
 
 const Container = styled.div<{ isActive: boolean }>`
 	inline-size: 100%;

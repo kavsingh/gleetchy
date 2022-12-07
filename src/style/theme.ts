@@ -1,20 +1,20 @@
 export type ThemeName = "dark" | "light";
 
-interface Fonts {
+type Fonts = {
 	body: string;
-}
+};
 
-interface Colors {
+type Colors = {
 	text: { 100: string; 400: string; 600: string };
 	surface: { 0: string };
 	semantic: { error: string; focus: string };
-}
+};
 
-export interface UITheme {
+export type UITheme = {
 	name: ThemeName;
 	colors: Colors;
 	fonts: Fonts;
-}
+};
 
 const fonts: Fonts = {
 	body: "system-ui, -apple-system, BlinkMacSystemFont, sans-serif",

@@ -148,7 +148,7 @@ const InitLoadButon = styled(Button)`
 
 InitLoadButon.defaultProps = { variant: "text" };
 
-export interface SampleProps {
+export type SampleProps = {
 	audioBuffer: Nullable<AudioBuffer>;
 	fromSaved?: boolean | undefined;
 	loopStart?: number | undefined;
@@ -160,4 +160,4 @@ export interface SampleProps {
 	subscribeToPositionRatio?(
 		handler: (ratio: number) => void,
 	): (() => void) | undefined;
-}
+};

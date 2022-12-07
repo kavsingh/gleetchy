@@ -189,7 +189,7 @@ const initialState: PointerDragState = {
 	y: 0,
 };
 
-export interface PointerDragState {
+export type PointerDragState = {
 	displacementX: number;
 	displacementY: number;
 	duration: number;
@@ -208,7 +208,7 @@ export interface PointerDragState {
 	timeStamp: number;
 	x: number;
 	y: number;
-}
+};
 
 export type PointerDragStartHandler = (state: PointerDragState) => void;
 
@@ -216,11 +216,11 @@ export type PointerDragMoveHandler = (state: PointerDragState) => void;
 
 export type PointerDragEndHandler = (state: PointerDragState) => void;
 
-export interface UsePointerDragProps {
+export type UsePointerDragProps = {
 	onDragStart?: PointerDragStartHandler;
 	onDragMove?: PointerDragMoveHandler;
 	onDragEnd?: PointerDragEndHandler;
-}
+};
 
 const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
 	const { currentTarget, timeStamp } = event;
@@ -250,9 +250,9 @@ type MouseOrTouchEvent =
 	| React.MouseEvent
 	| React.TouchEvent;
 
-interface NormalizedEvent {
+type NormalizedEvent = {
 	currentTarget: HTMLElement;
 	clientX: number;
 	clientY: number;
 	timeStamp: number;
-}
+};

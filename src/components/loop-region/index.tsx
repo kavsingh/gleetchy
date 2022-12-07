@@ -115,7 +115,6 @@ const LoopRegion: FC<{
 	);
 };
 
-// eslint-disable-next-line react/display-name
 export default memo(
 	LoopRegion,
 	(prevProps, nextProps) =>

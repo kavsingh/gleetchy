@@ -24,7 +24,7 @@ const KnobContainer = styled.div`
 	flex: 0 0 3em;
 `;
 
-export interface DelayProps {
+export type DelayProps = {
 	label: string;
 	connections: AudioNodeConnection[];
 	wetDryRatio: number;
@@ -34,7 +34,7 @@ export interface DelayProps {
 	onWetDryRatioChange(wetDryRatio: number): unknown;
 	onLabelChange(label: string): unknown;
 	remove(): unknown;
-}
+};
 
 const Delay: FC<DelayProps> = ({
 	label = "Delay",

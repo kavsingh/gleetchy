@@ -17,13 +17,13 @@ const SliderContainer = styled.div`
 	block-size: 100%;
 `;
 
-export interface Eq3Props {
+export type Eq3Props = {
 	lowGain: number;
 	midGain: number;
 	highGain: number;
 	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 	onChange(eqProps: { [key: string]: number }): unknown;
-}
+};
 
 const Eq3: FC<Eq3Props> = ({
 	lowGain = 0,

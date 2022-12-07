@@ -90,14 +90,14 @@ export const audioFilesSlice = createSlice({
 	},
 });
 
-interface AudioFilesState {
+type AudioFilesState = {
 	decodeErrors: Record<string, SerializedError>;
 	decodingIds: string[];
 	files: Record<string, StoredAudioFileData>;
 	loadErrors: Record<string, SerializedError>;
 	loadingIds: string[];
-}
+};
 
-interface StoredAudioFileData extends Omit<AudioFileData, "buffer"> {
+type StoredAudioFileData = {
 	buffer?: DecodedAudioFileData["audioBuffer"];
-}
+} & Omit<AudioFileData, "buffer">;

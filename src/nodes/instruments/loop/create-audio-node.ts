@@ -166,7 +166,7 @@ const createAudioNode = (
 
 export default createAudioNode;
 
-interface PlaybackState extends Record<string, unknown> {
+type PlaybackState = {
 	playing: boolean;
 	positionRatio?: number;
-}
+} & Record<string, unknown>;

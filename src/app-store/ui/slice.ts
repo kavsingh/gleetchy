@@ -51,10 +51,10 @@ export const uiSlice = createSlice({
 	},
 });
 
-interface UIState {
+type UIState = {
 	currentThemeName: ThemeName;
 	modifierKeys: ModifierKey[];
-}
+};
 
 const isModifierKey = (key: string): key is ModifierKey =>
 	Object.values(ModifierKey).includes(key as ModifierKey);

@@ -5,10 +5,10 @@ import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
 
 import type { MutableRefObject } from "react";
 
-export interface ControlResponseMultipliers {
+export type ControlResponseMultipliers = {
 	normal: number;
 	fine: number;
-}
+};
 
 const useControlResponseRef = ({
 	normal,

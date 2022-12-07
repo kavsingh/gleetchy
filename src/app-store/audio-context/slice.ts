@@ -36,6 +36,6 @@ const getAudioContext = () => {
 	return new AudioContext();
 };
 
-interface AudioContextState {
+type AudioContextState = {
 	audioContext?: AudioContext;
-}
+};

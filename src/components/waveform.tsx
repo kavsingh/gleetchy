@@ -139,9 +139,9 @@ const Canvas = styled.canvas`
 	height: 100%;
 `;
 
-export interface WaveformProps {
+export type WaveformProps = {
 	color: string;
 	baselineColor: string;
 	buffer: Nullable<AudioBuffer>;
 	timeRegions?: number | undefined;
-}
+};

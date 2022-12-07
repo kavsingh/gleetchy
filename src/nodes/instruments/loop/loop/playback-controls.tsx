@@ -61,9 +61,9 @@ const Container = styled.div`
 	block-size: 100%;
 `;
 
-export interface PlaybackControlsProps {
+export type PlaybackControlsProps = {
 	gain: number;
 	playbackRate: number;
 	onGainChange(gain: number): unknown;
 	onPlaybackRateChange(playbackRate: number): unknown;
-}
+};

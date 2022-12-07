@@ -22,6 +22,6 @@ export const audioEngineSlice = createSlice({
 	},
 });
 
-interface AudioEngineState {
+type AudioEngineState = {
 	subscriptionData: Record<string, Record<string, unknown>>;
-}
+};

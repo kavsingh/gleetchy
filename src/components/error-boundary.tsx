@@ -34,6 +34,6 @@ const defaultRenderError: ErrorRenderer = (error) => (
 
 export type ErrorRenderer = <E extends Error>(error: E) => ReactNode;
 
-interface State {
+type State = {
 	error?: Error;
-}
+};

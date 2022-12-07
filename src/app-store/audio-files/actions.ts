@@ -80,21 +80,21 @@ export const decodeAudioFile = createAsyncThunk(
 const errorFrom = (value: unknown) =>
 	value instanceof Error ? value : new Error(String(value));
 
-interface SelectAudioFileArg {
+type SelectAudioFileArg = {
 	id: string;
-}
+};
 
-interface ReceiveAudioFileArg {
+type ReceiveAudioFileArg = {
 	id: string;
 	file: File;
-}
+};
 
-interface DecodeAudioFileArg {
+type DecodeAudioFileArg = {
 	id: string;
 	file: AudioFileData;
-}
+};
 
-interface DecodeAudioFileReturn {
+type DecodeAudioFileReturn = {
 	id: string;
 	file: DecodedAudioFileData;
-}
+};

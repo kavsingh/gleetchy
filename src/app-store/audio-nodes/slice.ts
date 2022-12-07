@@ -154,11 +154,11 @@ const getNewNodeState = (type: string) => {
 	}
 };
 
-interface AudioNodesState {
+type AudioNodesState = {
 	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 	byId: { [key: string]: AudioNodeState<KnownProps> };
 	orderedIdentifierMeta: AudioNodeIdentifierMeta[];
-}
+};
 
 type KnownProps =
 	| DelayNodeProps

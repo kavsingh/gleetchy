@@ -17,6 +17,7 @@ const testFilePatterns = (extensions = "*") =>
 
 module.exports = {
 	root: true,
+	reportUnusedDisableDirectives: true,
 	env: { es6: true, node: true, browser: false },
 	settings: {
 		"import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] },
@@ -74,6 +75,7 @@ module.exports = {
 				"no-shadow": "off",
 				"no-throw-literal": "off",
 				"no-unused-vars": "off",
+				"@typescript-eslint/consistent-type-definitions": ["warn", "type"],
 				"@typescript-eslint/consistent-type-imports": [
 					"error",
 					{ disallowTypeAnnotations: false },

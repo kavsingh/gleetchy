@@ -5,5 +5,4 @@ export const defaultProps: Props = {
 	impulse: "wide",
 };
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions
 export type Props = { wetDryRatio: number; impulse: ImpulseName };
