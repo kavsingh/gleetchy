@@ -35,15 +35,11 @@ export default defineConfig({
 		},
 	},
 	css: { modules: { localsConvention: "camelCaseOnly" } },
-	esbuild: {
-		jsxFactory: "jsx",
-		jsxInject: "import { jsx } from '@emotion/react'",
-	},
 	test: {
-		include: ["src/**/*.{test,spec}.{js,jsx,mjs,cjs,ts,tsx,mts,cts}"],
+		include: ["src/**/*.{test,spec}.{ts,tsx,mts,cts,js,jsx,mjs,cjs}"],
 		environment: "jsdom",
 		setupFiles: ["./vitest.setup.ts"],
 		coverage: { reporter: ["text", "html"] },
-		includeSource: ["src/**/*.{js,ts}"],
+		includeSource: ["src/**/*.{ts,tsx,js,jsx}"],
 	},
 });
