@@ -54,7 +54,7 @@ specifiers:
   typescript: 4.9.4
   typescript-styled-plugin: 0.18.2
   vite: 4.0.4
-  vite-plugin-checker: 0.5.3
+  vite-plugin-checker: 0.5.4
   vite-plugin-imp: 2.3.1
   vitest: 0.27.2
   web-audio-test-api: 0.5.2
@@ -115,7 +115,7 @@ devDependencies:
   typescript: 4.9.4
   typescript-styled-plugin: 0.18.2
   vite: 4.0.4_qfz55zahqkp66vn23sxaaw3yfe
-  vite-plugin-checker: 0.5.3_f44pu4hq42tn7dlrkrczp53h7a
+  vite-plugin-checker: 0.5.4_f44pu4hq42tn7dlrkrczp53h7a
   vite-plugin-imp: 2.3.1_vite@4.0.4
   vitest: 0.27.2_jsdom@21.0.0+terser@5.16.1
   web-audio-test-api: 0.5.2
@@ -4397,8 +4397,8 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-checker/0.5.3_f44pu4hq42tn7dlrkrczp53h7a:
-    resolution: {integrity: sha512-upPESKsQTypC2S7LPjxu9HknOymNSToAAHTYSFHb0at5GKLcN1QGMAR5Hb+7KqZclGMVniXAj7QdhZv+fTx83Q==}
+  /vite-plugin-checker/0.5.4_f44pu4hq42tn7dlrkrczp53h7a:
+    resolution: {integrity: sha512-T6y+OHXqwOjGrCErbhzg5x79NQZV46cgLwYTxuMQnDzAfA6skh2i8PIHcKks8ZlxopzbkvMb5vwc2DpNXiHJdg==}
     engines: {node: '>=14.16'}
     peerDependencies:
       eslint: '>=7'
@@ -4409,6 +4409,7 @@ packages:
       vite: '>=2.0.0'
       vls: '*'
       vti: '*'
+      vue-tsc: '*'
     peerDependenciesMeta:
       eslint:
         optional: true
@@ -4423,6 +4424,8 @@ packages:
       vls:
         optional: true
       vti:
+        optional: true
+      vue-tsc:
         optional: true
     dependencies:
       '@babel/code-frame': 7.18.6
