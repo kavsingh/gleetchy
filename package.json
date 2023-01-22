@@ -54,7 +54,7 @@
 		"@typescript-eslint/parser": "5.48.2",
 		"@vitejs/plugin-legacy": "3.0.1",
 		"@vitejs/plugin-react": "3.0.1",
-		"@vitest/coverage-c8": "0.27.2",
+		"@vitest/coverage-c8": "0.27.3",
 		"eslint": "8.32.0",
 		"eslint-config-prettier": "8.6.0",
 		"eslint-import-resolver-typescript": "3.5.3",
@@ -64,7 +64,7 @@
 		"eslint-plugin-react": "7.32.1",
 		"eslint-plugin-react-hooks": "4.6.0",
 		"eslint-plugin-testing-library": "5.9.1",
-		"jsdom": "21.0.0",
+		"jsdom": "21.1.0",
 		"prettier": "2.8.3",
 		"raf": "3.4.1",
 		"react-test-renderer": "18.2.0",
@@ -77,7 +77,7 @@
 		"vite": "4.0.4",
 		"vite-plugin-checker": "0.5.4",
 		"vite-plugin-imp": "2.3.1",
-		"vitest": "0.27.2",
+		"vitest": "0.27.3",
 		"web-audio-test-api": "0.5.2"
 	}
 }
