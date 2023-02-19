@@ -2,6 +2,7 @@ import { createRoot } from "react-dom/client";
 
 import { createStore } from "~/app-store/configure-store";
 
+import "./index.css";
 import App from "./app";
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
