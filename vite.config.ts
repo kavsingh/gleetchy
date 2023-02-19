@@ -1,11 +1,10 @@
 /// <reference types="vitest" />
 
-import path from "path";
-
 import { defineConfig } from "vite";
 import reactPlugin from "@vitejs/plugin-react";
 import checkerPlugin from "vite-plugin-checker";
 import importsPlugin from "vite-plugin-imp";
+import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
 const checker = checkerPlugin({
 	overlay: { initialIsOpen: false },
@@ -25,10 +24,9 @@ const imports = importsPlugin({
 export default defineConfig(({ mode }) => ({
 	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
-	plugins: [imports, reactPlugin(), checker],
+	plugins: [tsconfigPathsPlugin(), imports, reactPlugin(), checker],
 	resolve: {
 		alias: {
-			"~": path.resolve(__dirname, "./src"),
 			...(mode !== "test"
 				? {
 						"react": "preact/compat",

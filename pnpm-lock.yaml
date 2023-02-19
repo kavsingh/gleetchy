@@ -56,6 +56,7 @@ specifiers:
   vite: 4.1.2
   vite-plugin-checker: 0.5.6
   vite-plugin-imp: 2.3.1
+  vite-tsconfig-paths: 4.0.5
   vitest: 0.28.5
   web-audio-test-api: 0.5.2
 
@@ -117,6 +118,7 @@ devDependencies:
   vite: 4.1.2_@types+node@18.14.0
   vite-plugin-checker: 0.5.6_gkpcdygh3hbpydq37kg2w2vjgy
   vite-plugin-imp: 2.3.1_vite@4.1.2
+  vite-tsconfig-paths: 4.0.5_typescript@4.9.5
   vitest: 0.28.5_jsdom@21.1.0
   web-audio-test-api: 0.5.2
 
@@ -4149,6 +4151,19 @@ packages:
       yn: 3.1.1
     dev: true
 
+  /tsconfck/2.0.2_typescript@4.9.5:
+    resolution: {integrity: sha512-H3DWlwKpow+GpVLm/2cpmok72pwRr1YFROV3YzAmvzfGFiC1zEM/mc9b7+1XnrxuXtEbhJ7xUSIqjPFbedp7aQ==}
+    engines: {node: ^14.13.1 || ^16 || >=18, pnpm: ^7.18.0}
+    hasBin: true
+    peerDependencies:
+      typescript: ^4.3.5
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      typescript: 4.9.5
+    dev: true
+
   /tsconfig-paths/3.14.1:
     resolution: {integrity: sha512-fxDhWnFSLt3VuTwtvJt5fpwxBHg5AdKWMsgcPOOIilyjymcYVZoCQF8fvFRezCNfblEXmi+PcM1eYHeOAgXCOQ==}
     dependencies:
@@ -4383,6 +4398,17 @@ packages:
       vite: 4.1.2_@types+node@18.14.0
     transitivePeerDependencies:
       - supports-color
+    dev: true
+
+  /vite-tsconfig-paths/4.0.5_typescript@4.9.5:
+    resolution: {integrity: sha512-/L/eHwySFYjwxoYt1WRJniuK/jPv+WGwgRGBYx3leciR5wBeqntQpUE6Js6+TJemChc+ter7fDBKieyEWDx4yQ==}
+    dependencies:
+      debug: 4.3.4
+      globrex: 0.1.2
+      tsconfck: 2.0.2_typescript@4.9.5
+    transitivePeerDependencies:
+      - supports-color
+      - typescript
     dev: true
 
   /vite/4.1.2_@types+node@18.14.0:
