@@ -66,7 +66,7 @@ export default memo(function Eq3({
 	);
 
 	return (
-		<div className="flex bs-full mis-2">
+		<div className="flex gap-2 bs-full">
 			<SliderContainer key="lowGain">{lowGainSlider}</SliderContainer>
 			<SliderContainer key="midGain">{midGainSlider}</SliderContainer>
 			<SliderContainer key="highGain">{highGainSlider}</SliderContainer>

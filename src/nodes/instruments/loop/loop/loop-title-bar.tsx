@@ -1,25 +1,11 @@
 import { useMemo, memo } from "react";
-import styled from "@emotion/styled";
 
 import TitleBar from "~/components/title-bar";
 import Button from "~/components/button";
 
-import type { FC } from "react";
 import type { LoopUIProps } from "./types";
 
-const LoopTitleBar: FC<
-	Pick<
-		LoopUIProps,
-		| "fileName"
-		| "selectAudioFile"
-		| "audioBuffer"
-		| "label"
-		| "onLabelChange"
-		| "duplicate"
-		| "remove"
-		| "connections"
-	>
-> = ({
+export default memo(function LoopTitleBar({
 	label,
 	onLabelChange,
 	duplicate,
@@ -28,7 +14,7 @@ const LoopTitleBar: FC<
 	fileName,
 	audioBuffer,
 	selectAudioFile,
-}) => {
+}: Props) {
 	const fileInfo = useMemo(
 		() => (
 			<>
@@ -59,21 +45,23 @@ const LoopTitleBar: FC<
 			onRemoveClick={remove}
 			connections={connections}
 		>
-			<Title>
+			<div className="flex gap-1">
 				{fileInfo}
 				{loadButton}
 				{audioBuffer ? <Button onClick={duplicate}>Clone</Button> : null}
-			</Title>
+			</div>
 		</TitleBar>
 	);
-};
+});
 
-export default memo(LoopTitleBar);
-
-const Title = styled.div`
-	display: flex;
-
-	& span {
-		margin-inline-end: 0.3em;
-	}
-`;
+type Props = Pick<
+	LoopUIProps,
+	| "fileName"
+	| "selectAudioFile"
+	| "audioBuffer"
+	| "label"
+	| "onLabelChange"
+	| "duplicate"
+	| "remove"
+	| "connections"
+>;

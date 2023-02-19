@@ -6,13 +6,12 @@ import { selectAudioNodeSubscriptionData } from "~/app-store/audio-nodes/selecto
 import { useAppStore } from "~/app-store/hooks/base";
 
 import type { AppState } from "~/app-store/configure-store";
-import type { FC } from "react";
 import type { SampleProps } from "~/components/sample";
 
-const LoopSample: FC<SampleProps & { nodeId: string }> = ({
+export default function LoopSample({
 	nodeId,
 	...props
-}) => {
+}: SampleProps & { nodeId: string }) {
 	const store = useAppStore();
 	const subscribeToPositionRatio = useCallback(
 		(handler: (positionRatio: number) => void) =>
@@ -31,6 +30,4 @@ const LoopSample: FC<SampleProps & { nodeId: string }> = ({
 	return (
 		<Sample {...props} subscribeToPositionRatio={subscribeToPositionRatio} />
 	);
-};
-
-export default LoopSample;
+}
