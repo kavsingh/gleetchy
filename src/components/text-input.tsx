@@ -7,16 +7,15 @@ import { cancelReactEvent } from "~/lib/util";
 
 import type {
 	ChangeEventHandler,
-	FC,
 	FocusEventHandler,
 	KeyboardEventHandler,
 } from "react";
 
-const TextInput: FC<{
-	value: string | number;
-	placeholder?: string;
-	onChange?(value: string): unknown;
-}> = ({ value, placeholder = "", onChange = noop }) => {
+export default memo(function TextInput({
+	value,
+	placeholder = "",
+	onChange = noop,
+}: Props) {
 	const initialValueRef = useRef(value);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -61,9 +60,13 @@ const TextInput: FC<{
 			/>
 		</Container>
 	);
-};
+});
 
-export default memo(TextInput);
+type Props = {
+	value: string | number;
+	placeholder?: string;
+	onChange?(value: string | number): unknown;
+};
 
 const Container = styled.div`
 	input {

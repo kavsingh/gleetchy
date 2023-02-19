@@ -5,7 +5,6 @@ const Button = styled.button<{ variant?: Variant }>`
 	margin: 0;
 	padding: 0;
 	border: none;
-	outline: none;
 	font: inherit;
 	color: currentcolor;
 	background: none;

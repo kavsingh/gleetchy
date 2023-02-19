@@ -12,7 +12,7 @@ import LoopTitleBar from "./loop-title-bar";
 import type { FC, ReactNode } from "react";
 import type { LoopUIProps } from "./types";
 
-const Loop: FC<LoopUIProps> = ({
+export default memo(function Loop({
 	nodeId,
 	audioBuffer,
 	loopStart = 0,
@@ -20,7 +20,6 @@ const Loop: FC<LoopUIProps> = ({
 	label = "",
 	fileName = "",
 	connections = [],
-	isActive = true,
 	highGain = 0,
 	midGain = 0,
 	lowGain = 0,
@@ -35,7 +34,7 @@ const Loop: FC<LoopUIProps> = ({
 	remove = noop,
 	receiveAudioFile = noop,
 	onLoopRegionChange = noop,
-}) => {
+}: LoopUIProps) {
 	const regionRef = useRef({ loopStart, loopEnd });
 
 	useEffect(() => {
@@ -97,7 +96,7 @@ const Loop: FC<LoopUIProps> = ({
 	);
 
 	return (
-		<Container isActive={isActive}>
+		<div className="is-full">
 			<AudioFileDropRegion onFiles={handleFiles}>
 				<TitleBarContainer>
 					<LoopTitleBar
@@ -139,17 +138,9 @@ const Loop: FC<LoopUIProps> = ({
 					</ControlsContainer>
 				</MainContainer>
 			</AudioFileDropRegion>
-		</Container>
+		</div>
 	);
-};
-
-export default memo(Loop);
-
-const Container = styled.div<{ isActive: boolean }>`
-	inline-size: 100%;
-	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
-	transition: opacity 0.2s ease-out;
-`;
+});
 
 const TitleBarContainer = styled.div`
 	flex-grow: 0;

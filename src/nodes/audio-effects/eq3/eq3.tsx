@@ -1,36 +1,16 @@
 import { memo, useCallback, useMemo } from "react";
-import styled from "@emotion/styled";
 import { noop } from "lodash";
 
 import Slider from "~/components/slider";
 
-import type { FC } from "react";
+import type { PropsWithChildren } from "react";
 
-const Container = styled.div`
-	display: flex;
-	block-size: 100%;
-	margin-inline-start: 0.6em;
-`;
-
-const SliderContainer = styled.div`
-	inline-size: 2em;
-	block-size: 100%;
-`;
-
-export type Eq3Props = {
-	lowGain: number;
-	midGain: number;
-	highGain: number;
-	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
-	onChange(eqProps: { [key: string]: number }): unknown;
-};
-
-const Eq3: FC<Eq3Props> = ({
+export default memo(function Eq3({
 	lowGain = 0,
 	midGain = 0,
 	highGain = 0,
 	onChange = noop,
-}) => {
+}: Eq3Props) {
 	const handleLowGainChange = useCallback(
 		(val: number) => onChange({ lowGain: val * 2 - 1 }),
 		[onChange],
@@ -86,12 +66,22 @@ const Eq3: FC<Eq3Props> = ({
 	);
 
 	return (
-		<Container>
+		<div className="flex bs-full mis-2">
 			<SliderContainer key="lowGain">{lowGainSlider}</SliderContainer>
 			<SliderContainer key="midGain">{midGainSlider}</SliderContainer>
 			<SliderContainer key="highGain">{highGainSlider}</SliderContainer>
-		</Container>
+		</div>
 	);
-};
+});
 
-export default memo(Eq3);
+function SliderContainer({ children }: PropsWithChildren) {
+	return <div className="bs-full is-4">{children}</div>;
+}
+
+export type Eq3Props = {
+	lowGain: number;
+	midGain: number;
+	highGain: number;
+	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+	onChange(eqProps: { [key: string]: number }): unknown;
+};
