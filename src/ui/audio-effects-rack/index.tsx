@@ -1,7 +1,5 @@
 import { useCallback, memo } from "react";
-import styled from "@emotion/styled";
 
-import AnimIn from "~/components/anim-in";
 import { nodeType as delayType } from "~/nodes/audio-effects/delay";
 import { nodeType as reverbType } from "~/nodes/audio-effects/reverb";
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
@@ -65,13 +63,8 @@ function AddAudioEffectButtons() {
 
 function RackMount({ children }: PropsWithChildren) {
 	return (
-		<AudioEffectContainer>
+		<div className="flex shrink-0 grow basis-40 animate-appear opacity-0 plb-4">
 			<ErrorBoundary>{children}</ErrorBoundary>
-		</AudioEffectContainer>
+		</div>
 	);
 }
-
-const AudioEffectContainer = styled(AnimIn)`
-	flex: 1 0 10em;
-	padding: 1em 0;
-`;

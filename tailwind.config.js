@@ -12,6 +12,14 @@ module.exports = {
 				semanticError: "var(--color-semanticError)",
 				semanticFocus: "var(--color-semanticFocus)",
 			},
+			animation: {
+				appear: "fade-in 400ms ease-out forwards",
+			},
+			keyframes: {
+				"fade-in": {
+					to: { opacity: 1 },
+				},
+			},
 		},
 	},
 	plugins: [

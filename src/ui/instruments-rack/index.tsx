@@ -3,7 +3,6 @@ import { useCallback, memo } from "react";
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import useAddNode from "~/app-store/hooks/use-add-node";
 import { nodeType as loopType } from "~/nodes/instruments/loop";
-import AnimIn from "~/components/anim-in";
 import ErrorBoundary from "~/components/error-boundary";
 import ButtonGroup, { Button } from "~/components/button-group";
 
@@ -54,8 +53,8 @@ function AddInstrumentButtons() {
 
 function RackMount({ children }: PropsWithChildren) {
 	return (
-		<AnimIn>
+		<div className="animate-appear opacity-0">
 			<ErrorBoundary>{children}</ErrorBoundary>
-		</AnimIn>
+		</div>
 	);
 }
