@@ -43,6 +43,7 @@ const Container = styled.button<{
 	inline-size: 0.8em;
 	block-size: 0.8em;
 	margin: 0 auto;
+	padding: 0;
 	border: 1px solid
 		${({ activeColor, theme }) =>
 			activeColor ? getActiveBorderColor(activeColor) : theme.colors.text[100]};
