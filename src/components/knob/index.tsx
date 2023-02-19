@@ -1,7 +1,8 @@
 import { memo, useState, useRef, useCallback, useEffect } from "react";
 import { useTheme } from "@emotion/react";
 import { clamp, noop } from "lodash";
-import cx from "classnames";
+
+import { tcx } from "~/lib/css";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
 import SVGArc from "./svg-arc";
@@ -73,7 +74,7 @@ export default memo(function Knob({
 				onDoubleClick={handleDoubleClick}
 				ref={knobRef}
 				style={{ blockSize: radius, inlineSize: radius }}
-				className={cx("relative shrink-0 grow-0 mli-auto mbs-2 mbe-1", {
+				className={tcx("relative shrink-0 grow-0 mli-auto mbs-2 mbe-1", {
 					["cursor-ns-resize"]: axis === "vertical",
 					["cursor-ew-resize"]: axis === "horizontal",
 				})}

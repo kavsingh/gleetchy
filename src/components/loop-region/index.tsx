@@ -1,7 +1,8 @@
 import { useCallback, useRef, memo } from "react";
 import { noop } from "lodash";
 import { twMerge } from "tailwind-merge";
-import cx from "classnames";
+
+import { tcx } from "~/lib/css";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
 import LoopHandle from "./loop-handle";
@@ -133,7 +134,7 @@ function ActiveRegion({
 	return (
 		<Region
 			{...regionProps}
-			className={cx("z-0 cursor-move", { ["z-[2]"]: preferred })}
+			className={tcx("z-0 cursor-move", { ["z-[2]"]: preferred })}
 		/>
 	);
 }

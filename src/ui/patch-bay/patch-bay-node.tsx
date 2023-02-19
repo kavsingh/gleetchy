@@ -1,7 +1,7 @@
 import { memo } from "react";
-import cx from "classnames";
 
 import useConnection from "~/app-store/hooks/use-connection";
+import { tcx } from "~/lib/css";
 
 import type { AudioNodeMeta } from "~/types";
 
@@ -26,7 +26,7 @@ export default memo(function PatchBayNode({
 			title={title}
 			onClick={toggleConnection}
 			style={{ color: color ?? "currentcolor" }}
-			className={cx("border p-0 bs-3 is-3 mlb-0 mli-auto transition-all", {
+			className={tcx("border p-0 bs-3 is-3 mlb-0 mli-auto transition-all", {
 				["border-text100"]: !color,
 				["hover:border-text400"]: !color && !isBlocked,
 				["cursor-default transform rotate-45 scale-50"]: isBlocked,
