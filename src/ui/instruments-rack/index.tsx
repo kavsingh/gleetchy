@@ -1,5 +1,4 @@
 import { useCallback, memo } from "react";
-import styled from "@emotion/styled";
 
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import useAddNode from "~/app-store/hooks/use-add-node";
@@ -10,18 +9,18 @@ import ButtonGroup, { Button } from "~/components/button-group";
 
 import ConnectedLoop from "./connected-loop";
 
-import type { FC, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-const InstrumentsRack: FC = () => (
-	<Container>
-		<Rack />
-		<AddInstrumentButtons />
-	</Container>
-);
+export default memo(function InstrumentsRack() {
+	return (
+		<div className="flex flex-col gap-8 is-full">
+			<Rack />
+			<AddInstrumentButtons />
+		</div>
+	);
+});
 
-export default memo(InstrumentsRack);
-
-const Rack: FC = () => {
+function Rack() {
 	const { instruments } = useAudioNodesMeta();
 
 	return (
@@ -40,9 +39,9 @@ const Rack: FC = () => {
 			})}
 		</>
 	);
-};
+}
 
-const AddInstrumentButtons: FC = () => {
+function AddInstrumentButtons() {
 	const { addNode } = useAddNode();
 	const addLoop = useCallback(() => addNode(loopType), [addNode]);
 
@@ -51,17 +50,12 @@ const AddInstrumentButtons: FC = () => {
 			<Button onClick={addLoop}>Add Loop</Button>
 		</ButtonGroup>
 	);
-};
+}
 
-const RackMount: FC<{ children: ReactNode }> = ({ children }) => (
-	<AnimIn>
-		<ErrorBoundary>{children}</ErrorBoundary>
-	</AnimIn>
-);
-
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-	inline-size: 100%;
-	gap: 2em;
-`;
+function RackMount({ children }: PropsWithChildren) {
+	return (
+		<AnimIn>
+			<ErrorBoundary>{children}</ErrorBoundary>
+		</AnimIn>
+	);
+}

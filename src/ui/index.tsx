@@ -1,5 +1,4 @@
 import { memo, useEffect } from "react";
-import styled from "@emotion/styled";
 
 import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
 import useAudioContext from "~/app-store/hooks/use-audio-context";
@@ -9,9 +8,7 @@ import InstrumentsRack from "./instruments-rack";
 import PatchBay from "./patch-bay";
 import Masthead from "./masthead";
 
-import type { FC } from "react";
-
-const UI: FC = () => {
+export default memo(function UI() {
 	const { initAudioContext } = useAudioContext();
 	const { registerKeyPress, registerKeyRelease } = useModifierKeys();
 
@@ -35,48 +32,23 @@ const UI: FC = () => {
 	}, [registerKeyPress, registerKeyRelease, initAudioContext]);
 
 	return (
-		<Container>
+		<div className="p-8 max-is-[92em] mli-auto mlb-0">
 			<Masthead />
 			<Divider />
 			<InstrumentsRack />
 			<Divider />
-			<ModifiersContainer>
-				<AudioEffectsRackContainer>
+			<div className="flex flex-wrap">
+				<div className="shrink grow">
 					<AudioEffectsRack />
-				</AudioEffectsRackContainer>
-				<PatchBayContainer>
+				</div>
+				<div className="shrink-0 grow-0">
 					<PatchBay />
-				</PatchBayContainer>
-			</ModifiersContainer>
-		</Container>
+				</div>
+			</div>
+		</div>
 	);
-};
+});
 
-export default memo(UI);
-
-const Container = styled.div`
-	max-inline-size: 92em;
-	margin: 0 auto;
-	padding: 2em;
-`;
-
-const Divider = styled.div`
-	block-size: 1px;
-	margin: 1em 0;
-	background-color: ${({ theme }) => theme.colors.text[100]};
-`;
-
-const ModifiersContainer = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-`;
-
-const AudioEffectsRackContainer = styled.div`
-	flex-grow: 1;
-	flex-shrink: 1;
-`;
-
-const PatchBayContainer = styled.div`
-	flex-grow: 0;
-	flex-shrink: 0;
-`;
+function Divider() {
+	return <div className="bg-text100 bs-[1px] mlb-4"></div>;
+}

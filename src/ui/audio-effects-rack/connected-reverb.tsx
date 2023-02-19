@@ -5,11 +5,10 @@ import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
 
-import type { FC } from "react";
 import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
 import type { NodeProps } from "~/nodes/audio-effects/reverb";
 
-const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
+export default memo(function ConnectedReverb({ id }: { id: string }) {
 	const {
 		connections,
 		isActive,
@@ -43,6 +42,4 @@ const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
 			remove={remove}
 		/>
 	);
-};
-
-export default memo(ConnectedReverb);
+});

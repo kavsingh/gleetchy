@@ -12,18 +12,18 @@ import ErrorBoundary from "~/components/error-boundary";
 import ConnectedDelay from "./connected-delay";
 import ConnectedReverb from "./connected-reverb";
 
-import type { FC, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-const AudioEffectsRack: FC = () => (
-	<Container>
-		<Rack />
-		<AddAudioEffectButtons />
-	</Container>
-);
+export default memo(function AudioEffectsRack() {
+	return (
+		<div className="flex flex-wrap items-start is-full">
+			<Rack />
+			<AddAudioEffectButtons />
+		</div>
+	);
+});
 
-export default memo(AudioEffectsRack);
-
-const Rack: FC = () => {
+function Rack() {
 	const { audioEffects } = useAudioNodesMeta();
 
 	return (
@@ -48,9 +48,9 @@ const Rack: FC = () => {
 			})}
 		</>
 	);
-};
+}
 
-const AddAudioEffectButtons: FC = () => {
+function AddAudioEffectButtons() {
 	const { addNode } = useAddNode();
 	const addReverb = useCallback(() => addNode(reverbType), [addNode]);
 	const addDelay = useCallback(() => addNode(delayType), [addNode]);
@@ -61,20 +61,15 @@ const AddAudioEffectButtons: FC = () => {
 			<Button onClick={addDelay}>Add Delay</Button>
 		</ButtonGroup>
 	);
-};
+}
 
-const RackMount: FC<{ children: ReactNode }> = ({ children }) => (
-	<AudioEffectContainer>
-		<ErrorBoundary>{children}</ErrorBoundary>
-	</AudioEffectContainer>
-);
-
-const Container = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	inline-size: 100%;
-`;
+function RackMount({ children }: PropsWithChildren) {
+	return (
+		<AudioEffectContainer>
+			<ErrorBoundary>{children}</ErrorBoundary>
+		</AudioEffectContainer>
+	);
+}
 
 const AudioEffectContainer = styled(AnimIn)`
 	flex: 1 0 10em;

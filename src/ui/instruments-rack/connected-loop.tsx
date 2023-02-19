@@ -10,11 +10,10 @@ import useAudioNode, {
 } from "~/app-store/hooks/use-audio-node";
 import { useAppDispatch } from "~/app-store/hooks/base";
 
-import type { FC } from "react";
 import type { NodeProps as Eq3Props } from "~/nodes/audio-effects/eq3";
 import type { NodeProps } from "~/nodes/instruments/loop";
 
-const ConnectedLoop: FC<{ id: string }> = ({ id }) => {
+export default memo(function ConnectedLoop({ id }: { id: string }) {
 	const {
 		label,
 		connections,
@@ -86,6 +85,4 @@ const ConnectedLoop: FC<{ id: string }> = ({ id }) => {
 			remove={remove}
 		/>
 	);
-};
-
-export default memo(ConnectedLoop);
+});

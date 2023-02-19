@@ -5,10 +5,9 @@ import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
 
-import type { FC } from "react";
 import type { NodeProps } from "~/nodes/audio-effects/delay";
 
-const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
+export default memo(function ConnectedReverb({ id }: { id: string }) {
 	const {
 		connections,
 		isActive,
@@ -42,6 +41,4 @@ const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
 			remove={remove}
 		/>
 	);
-};
-
-export default memo(ConnectedReverb);
+});

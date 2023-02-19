@@ -1,26 +1,24 @@
 import { memo } from "react";
-import styled from "@emotion/styled";
 
-import useUITheme from "~/app-store/hooks/use-ui-theme";
+import useUITheme from "~/style/use-ui-theme";
 import Button from "~/components/button";
 
 import PlayPauseButton from "./play-pause-button";
 
-import type { FC } from "react";
-
-const Masthead: FC = () => {
+export default memo(function Masthead() {
 	const { toggleTheme } = useUITheme();
 
 	return (
-		<Container>
+		<div className="flex items-center justify-between is-full">
 			<PlayPauseButton />
-			<SideControlsContainer>
+			<div className="flex flex-nowrap items-center gap-2 self-stretch">
 				<Button onClick={toggleTheme}>L/D</Button>
 				<a
 					href="https://www.github.com/kavsingh/gleetchy"
 					target="_blank"
 					rel="noopener noreferrer"
 					title="view on github"
+					className="opacity-40 transition-opacity hover:opacity-100 focus:opacity-100 focus-visible:opacity-100"
 				>
 					<svg
 						width="15"
@@ -37,48 +35,7 @@ const Masthead: FC = () => {
 						/>
 					</svg>
 				</a>
-			</SideControlsContainer>
-		</Container>
+			</div>
+		</div>
 	);
-};
-
-export default memo(Masthead);
-
-const Container = styled.div`
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	inline-size: 100%;
-`;
-
-const SideControlsContainer = styled.div`
-	display: flex;
-	flex-flow: row nowrap;
-	align-items: center;
-	align-self: stretch;
-	gap: 0.4em;
-
-	a {
-		display: block;
-		color: ${({ theme }) => theme.colors.text[400]};
-		cursor: pointer;
-		opacity: 0.4;
-		transition: opacity 0.2s ease-out;
-
-		svg {
-			inline-size: 100%;
-			block-size: auto;
-		}
-	}
-
-	a:hover,
-	a:focus,
-	a:focus-visible {
-		opacity: 1;
-	}
-
-	a[href*="github"] {
-		inline-size: 1.2em;
-		block-size: 1.2em;
-	}
-`;
+});

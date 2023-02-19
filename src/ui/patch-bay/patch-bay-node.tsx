@@ -5,13 +5,15 @@ import color from "color";
 
 import useConnection from "~/app-store/hooks/use-connection";
 
-import type { FC } from "react";
 import type { AudioNodeMeta } from "~/types";
 
-const PatchBayNode: FC<{
+export default memo(function PatchBayNode({
+	source,
+	target,
+}: {
 	source: AudioNodeMeta;
 	target: AudioNodeMeta;
-}> = ({ source, target }) => {
+}) {
 	const { connection, isBlocked, toggleConnection } = useConnection(
 		source,
 		target,
@@ -27,23 +29,20 @@ const PatchBayNode: FC<{
 			onClick={toggleConnection}
 			tabIndex={0}
 			disabled={isBlocked}
+			className="p-0 bs-3 is-3 mlb-0 mli-auto"
 		/>
 	);
-};
+});
 
-export default memo(PatchBayNode);
-
-const getActiveBorderColor = memoize((activeColor: string) =>
-	color(activeColor).darken(0.06).hex(),
-);
+const getActiveBorderColor = memoize(function getActiveColor(
+	activeColor: string,
+) {
+	return color(activeColor).darken(0.06).hex();
+});
 
 const Container = styled.button<{
 	activeColor?: string | undefined;
 }>`
-	inline-size: 0.8em;
-	block-size: 0.8em;
-	margin: 0 auto;
-	padding: 0;
 	border: 1px solid
 		${({ activeColor, theme }) =>
 			activeColor ? getActiveBorderColor(activeColor) : theme.colors.text[100]};

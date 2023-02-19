@@ -11,9 +11,7 @@ import { useAppSelector } from "~/app-store/hooks/base";
 
 import PatchBayNode from "./patch-bay-node";
 
-import type { FC } from "react";
-
-const PatchBay: FC = () => {
+export default memo(function PatchBay() {
 	const sources = useAppSelector(selectConnectableSources);
 	const targets = useAppSelector(selectConnectableTargets);
 
@@ -32,8 +30,8 @@ const PatchBay: FC = () => {
 	);
 
 	return (
-		<ErrorBoundary>
-			<Container>
+		<div className="is-full">
+			<ErrorBoundary>
 				<tbody>
 					{sourceLabels}
 					{targets.map((target) => (
@@ -49,16 +47,10 @@ const PatchBay: FC = () => {
 						</Row>
 					))}
 				</tbody>
-			</Container>
-		</ErrorBoundary>
+			</ErrorBoundary>
+		</div>
 	);
-};
-
-export default memo(PatchBay);
-
-const Container = styled.table`
-	inline-size: 100%;
-`;
+});
 
 const labelStyle = css`
 	max-inline-size: 5.4em;
