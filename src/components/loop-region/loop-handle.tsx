@@ -9,13 +9,13 @@ export default memo(function LoopHandle({
 }) {
 	return (
 		<div
-			className={tcx("relative w-full h-full pointer-events-none", {
-				["transform translate-x-[-100%]"]: align === "right",
+			className={tcx("pointer-events-none relative h-full w-full", {
+				["translate-x-[-100%]"]: align === "right",
 			})}
 		>
 			<Tag align={align} verticalPosition="top" />
 			<div
-				className={tcx("absolute top-0 w-full h-full", {
+				className={tcx("absolute top-0 h-full w-full", {
 					["right-[-100%]"]: align === "right",
 					["border-l border-l-text600"]: align === "right",
 					["left-[-100%]"]: align === "left",
@@ -37,7 +37,7 @@ function Tag({
 	return (
 		<div
 			className={tcx(
-				"absolute w-[60%] h-[1px] pointer-events-auto bg-text600",
+				"pointer-events-auto absolute h-[1px] w-[60%] bg-text600",
 				{
 					["top-0"]: verticalPosition === "top",
 					["right-0"]: align === "right",

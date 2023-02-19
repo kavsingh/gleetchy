@@ -26,10 +26,10 @@ export default memo(function PatchBayNode({
 			title={title}
 			onClick={toggleConnection}
 			style={{ color: color ?? "currentcolor" }}
-			className={tcx("border p-0 bs-3 is-3 mlb-0 mli-auto transition-all", {
+			className={tcx("border p-0 transition-all bs-3 is-3 mlb-0 mli-auto", {
 				["border-text100"]: !color,
 				["hover:border-text400"]: !color && !isBlocked,
-				["cursor-default transform rotate-45 scale-50"]: isBlocked,
+				["cursor-default rotate-45 scale-50"]: isBlocked,
 				["bg-text100"]: isBlocked,
 				["bg-current"]: !!color && !isBlocked,
 				["border-current"]: !!color && !isBlocked,

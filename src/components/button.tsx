@@ -16,7 +16,7 @@ export default memo(function Button({
 		<button
 			{...props}
 			className={tcx(
-				"appearance-none block transition-colors hover:text-text600 active:text-text600 focus-visible:text-text600 disabled:cursor-default disabled:text-text100",
+				"block appearance-none transition-colors hover:text-text600 focus-visible:text-text600 active:text-text600 disabled:cursor-default disabled:text-text100",
 				{ ["text-xs"]: isBraced },
 				className,
 			)}

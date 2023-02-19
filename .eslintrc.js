@@ -114,7 +114,10 @@ module.exports = {
 		{
 			files: ["src/**/*"],
 			env: { node: false, browser: true },
-			settings: { react: { version: "detect" } },
+			settings: {
+				react: { version: "detect" },
+				tailwindcss: { callees: ["tcx"] },
+			},
 			extends: [
 				"plugin:react/recommended",
 				"plugin:react-hooks/recommended",
