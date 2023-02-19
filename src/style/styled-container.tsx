@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
 
-import useUITheme from "~/app-store/hooks/use-ui-theme";
+import useUITheme from "~/style/use-ui-theme";
 
 import type { FC, ReactNode } from "react";
 
