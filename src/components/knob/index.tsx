@@ -1,27 +1,17 @@
 import { memo, useState, useRef, useCallback, useEffect } from "react";
 import { useTheme } from "@emotion/react";
-import styled from "@emotion/styled";
 import { clamp, noop } from "lodash";
-
-import { layoutAbsoluteFill } from "~/style/layout";
+import cx from "classnames";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
 import SVGArc from "./svg-arc";
 import usePointerDrag from "../hooks/use-pointer-drag";
 
+import type { PropsWithChildren } from "react";
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type { ControlResponseMultipliers } from "../hooks/use-control-response-ref";
-import type { FC } from "react";
 
-const Knob: FC<{
-	value: number;
-	defaultValue?: number;
-	radius?: number | string;
-	title?: string;
-	label?: string;
-	valueLabel?: string;
-	onChange?(value: number): unknown;
-}> = ({
+export default memo(function Knob({
 	value,
 	defaultValue = 0.5,
 	radius = "2.4em",
@@ -29,7 +19,7 @@ const Knob: FC<{
 	label = "",
 	valueLabel = "",
 	onChange = noop,
-}) => {
+}: Props) {
 	const theme = useTheme();
 	const knobRef = useRef<HTMLDivElement | null>(null);
 	const valueRef = useRef<number>(value);
@@ -75,17 +65,20 @@ const Knob: FC<{
 	});
 
 	return (
-		<Container title={title}>
+		<div title={title} className="flex flex-col items-center bs-full is-full">
 			<Label>{label}</Label>
-			<KnobContainer
+			<div
 				{...dragHandlers}
-				radius={radius}
-				axis={axis}
-				onDoubleClick={handleDoubleClick}
 				role="presentation"
+				onDoubleClick={handleDoubleClick}
 				ref={knobRef}
+				style={{ blockSize: radius, inlineSize: radius }}
+				className={cx("relative shrink-0 grow-0 mli-auto mbs-2 mbe-1", {
+					["cursor-ns-resize"]: axis === "vertical",
+					["cursor-ew-resize"]: axis === "horizontal",
+				})}
 			>
-				<KnobSVGContainer>
+				<div className="absolute inset-0">
 					<SVGArc
 						endRatio={value}
 						strokeWidth={6}
@@ -93,50 +86,34 @@ const Knob: FC<{
 						strokeColor={theme.colors.text[600]}
 						backgroundStrokeColor={theme.colors.text[100]}
 					/>
-				</KnobSVGContainer>
-			</KnobContainer>
+				</div>
+			</div>
 			<Label>{valueLabel}</Label>
-		</Container>
+		</div>
 	);
-};
+});
 
-export default memo(Knob);
+function Label({ children }: PropsWithChildren) {
+	return <div className="flex shrink-0 grow-0 text-sm">{children}</div>;
+}
 
-const Container = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	inline-size: 100%;
-	block-size: 100%;
-`;
-
-const Label = styled.div`
-	flex: 0 0 auto;
-	font-size: 0.8em;
-`;
-
-const KnobContainer = styled.div<{
-	radius: number | string;
-	axis?: MovementAxis | undefined;
-}>`
-	position: relative;
-	flex: 0 0 auto;
-	inline-size: ${({ radius }) => radius};
-	block-size: ${({ radius }) => radius};
-	margin: 0.4em auto 0.3em;
-	cursor: ${({ axis }) =>
-		!axis ? "move" : axis === "vertical" ? "ns-resize" : "ew-resize"};
-`;
-
-const KnobSVGContainer = styled.div`
-	${layoutAbsoluteFill}
-`;
-
-const clampMove = (value: number) => clamp(value, 0, 1);
+function clampMove(value: number) {
+	return clamp(value, 0, 1);
+}
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,
 	fine: 0.2,
+};
+
+type Props = {
+	value: number;
+	defaultValue?: number;
+	radius?: number | string;
+	title?: string;
+	label?: string;
+	valueLabel?: string;
+	onChange?(value: number): unknown;
 };
 
 type MovementAxis = "vertical" | "horizontal";

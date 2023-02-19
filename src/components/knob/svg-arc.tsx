@@ -1,21 +1,13 @@
 import { memo } from "react";
 
-import type { FC } from "react";
-
 // Adapted from https://codepen.io/JMChristensen/pen/Ablch
-const SVGArc: FC<{
-	endRatio: number;
-	strokeColor: string;
-	strokeWidth?: number;
-	backgroundStrokeColor?: string;
-	backgroundStrokeWidth?: number;
-}> = ({
+export default memo(function SVGArc({
 	endRatio,
 	strokeColor,
 	strokeWidth = 4,
 	backgroundStrokeColor = "transparent",
 	backgroundStrokeWidth = 1,
-}) => {
+}: Props) {
 	const radius = 50 - strokeWidth / 2;
 	const circumference = 2 * Math.PI * radius;
 
@@ -42,6 +34,12 @@ const SVGArc: FC<{
 			/>
 		</svg>
 	);
-};
+});
 
-export default memo(SVGArc);
+type Props = {
+	endRatio: number;
+	strokeColor: string;
+	strokeWidth?: number;
+	backgroundStrokeColor?: string;
+	backgroundStrokeWidth?: number;
+};
