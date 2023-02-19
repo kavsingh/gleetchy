@@ -115,7 +115,11 @@ module.exports = {
 			files: ["src/**/*"],
 			env: { node: false, browser: true },
 			settings: { react: { version: "detect" } },
-			extends: ["plugin:react/recommended", "plugin:react-hooks/recommended"],
+			extends: [
+				"plugin:react/recommended",
+				"plugin:react-hooks/recommended",
+				"plugin:tailwindcss/recommended",
+			],
 			rules: {
 				"no-console": "error",
 				"import/no-extraneous-dependencies": ["error", srcDependencies],
