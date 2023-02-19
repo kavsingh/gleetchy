@@ -1,57 +1,48 @@
 import { memo } from "react";
-import styled from "@emotion/styled";
+import cx from "classnames";
 
-import type { FC } from "react";
-
-const LoopHandle: FC<{
+export default memo(function LoopHandle({
+	align = "left",
+}: {
 	align: Alignment;
-}> = ({ align = "left" }) => (
-	<Container align={align}>
-		<Tag align={align} />
-		<Bar align={align} />
-	</Container>
-);
+}) {
+	return (
+		<div
+			className={cx("relative w-full h-full pointer-events-none", {
+				["transform translate-x-[-100%]"]: align === "right",
+			})}
+		>
+			<Tag align={align} verticalPosition="top" />
+			<div
+				className={cx("absolute top-0 w-full h-full", {
+					["right-[-100%]"]: align === "right",
+					["border-l border-l-text600"]: align === "right",
+					["left-[-100%]"]: align === "left",
+					["border-r border-r-text600"]: align === "left",
+				})}
+			/>
+			<Tag align={align} verticalPosition="bottom" />
+		</div>
+	);
+});
 
-export default memo(LoopHandle);
-
-const Container = styled.div<{ align: Alignment }>`
-	position: relative;
-	width: 100%;
-	height: 100%;
-	transform: ${({ align }) =>
-		align === "right" ? "translateX(-100%)" : "initial"};
-	pointer-events: none;
-`;
-
-const Tag = styled.div<{
+function Tag({
+	align,
+	verticalPosition,
+}: {
 	align: Alignment;
 	verticalPosition?: "top" | "bottom";
-}>`
-	position: absolute;
-	top: ${({ verticalPosition = "top" }) =>
-		verticalPosition === "top" ? 0 : "initial"};
-	right: ${({ align }) => (align === "right" ? 0 : "initial")};
-	bottom: ${({ verticalPosition = "top" }) =>
-		verticalPosition === "bottom" ? 0 : "initial"};
-	left: ${({ align }) => (align === "left" ? 0 : "initial")};
-	width: 60%;
-	height: 1px;
-	background-color: ${({ theme }) => theme.colors.text[600]};
-	pointer-events: all;
-`;
-
-const Bar = styled.div<{ align: Alignment }>`
-	position: absolute;
-	top: 0;
-	right: ${({ align }) => (align === "right" ? "-100%" : "initial")};
-	left: ${({ align }) => (align === "left" ? "-100%" : "initial")};
-	width: 100%;
-	height: 100%;
-	border-right: ${({ align, theme }) =>
-		align === "left" ? `1px solid ${theme.colors.text[600]}` : "none"};
-	border-left: ${({ align, theme }) =>
-		align === "right" ? `1px solid ${theme.colors.text[600]}` : "none"};
-	pointer-events: all;
-`;
+}) {
+	return (
+		<div
+			className={cx("absolute w-[60%] h-[1px] pointer-events-auto bg-text600", {
+				["top-0"]: verticalPosition === "top",
+				["right-0"]: align === "right",
+				["bottom-0"]: verticalPosition === "bottom",
+				["left-0"]: align === "left",
+			})}
+		/>
+	);
+}
 
 type Alignment = "left" | "right";
