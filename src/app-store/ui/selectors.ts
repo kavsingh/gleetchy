@@ -2,9 +2,14 @@ import { themes } from "~/style/theme";
 
 import type { AppState } from "~/app-store/configure-store";
 
-export const selectThemeName = (state: AppState) => state.ui.currentThemeName;
+export function selectThemeName(state: AppState) {
+	return state.ui.currentThemeName;
+}
 
-export const selectTheme = (state: AppState) =>
-	themes[state.ui.currentThemeName];
+export function selectTheme(state: AppState) {
+	return themes[state.ui.currentThemeName];
+}
 
-export const selectModifierKeys = (state: AppState) => state.ui.modifierKeys;
+export function selectModifierKeys(state: AppState) {
+	return state.ui.modifierKeys;
+}

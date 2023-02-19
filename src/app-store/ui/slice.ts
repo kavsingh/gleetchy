@@ -8,13 +8,13 @@ import { stableAppendUnique, stableWithout } from "~/lib/util";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { ThemeName } from "~/style/theme";
 
-const getInitialTheme = (): ThemeName => {
+function getInitialTheme(): ThemeName {
 	const preferred = getPreferredColorScheme();
 
 	if (preferred === "no-preference") return defaultTheme.name;
 
 	return preferred === "light" ? "light" : "dark";
-};
+}
 
 const initialState: UIState = {
 	currentThemeName: getInitialTheme(),
@@ -56,5 +56,6 @@ type UIState = {
 	modifierKeys: ModifierKey[];
 };
 
-const isModifierKey = (key: string): key is ModifierKey =>
-	Object.values(ModifierKey).includes(key as ModifierKey);
+function isModifierKey(key: string): key is ModifierKey {
+	return Object.values(ModifierKey).includes(key as ModifierKey);
+}

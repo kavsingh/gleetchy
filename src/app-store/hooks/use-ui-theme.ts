@@ -7,10 +7,12 @@ import {
 	setLightTheme,
 	toggleTheme as toggleThemeAction,
 } from "~/app-store/ui/actions";
+import useApplyThemeClass from "~/ui/hooks/use-apply-theme-class";
 
 import { useAppDispatch, useAppSelector } from "./base";
 
 const useUITheme = () => {
+	useApplyThemeClass();
 	const dispatch = useAppDispatch();
 	const theme = useAppSelector(selectTheme);
 	const preferredColorScheme = usePreferredColorScheme();
