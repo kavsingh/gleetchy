@@ -5,7 +5,8 @@
 @tailwind utilities;
 
 html {
-	font: 14px/1.2;
+	font-size: 14px;
+	line-height: 1.2;
 	cursor: default;
 	user-select: none;
 	color: theme("colors.text400");
