@@ -139,7 +139,7 @@ module.exports = {
 		},
 		{
 			files: testFilePatterns("[jt]sx"),
-			extends: ["plugin:testing-library/react"],
+			extends: ["plugin:testing-library/react", "plugin:jest-dom/recommended"],
 		},
 		{
 			files: testFilePatterns("ts?(x)"),

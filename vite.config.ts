@@ -22,15 +22,19 @@ const imports = importsPlugin({
 	],
 });
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
 	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
 	plugins: [imports, reactPlugin(), checker],
 	resolve: {
 		alias: {
-			"react": "preact/compat",
-			"react-dom": "preact/compat",
 			"~": path.resolve(__dirname, "./src"),
+			...(mode !== "test"
+				? {
+						"react": "preact/compat",
+						"react-dom": "preact/compat",
+				  }
+				: {}),
 		},
 	},
 	css: { modules: { localsConvention: "camelCaseOnly" } },
@@ -41,4 +45,4 @@ export default defineConfig({
 		coverage: { reporter: ["text", "html"] },
 		includeSource: ["src/**/*.{ts,tsx,js,jsx}"],
 	},
-});
+}));
