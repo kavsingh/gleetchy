@@ -2,12 +2,10 @@ import { ThemeProvider } from "@emotion/react";
 
 import useUITheme from "~/style/use-ui-theme";
 
-import type { FC, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-const StyledContainer: FC<{ children: ReactNode }> = ({ children }) => {
+export default function StyledContainer({ children }: PropsWithChildren) {
 	const { theme } = useUITheme();
 
 	return <ThemeProvider theme={theme}>{children}</ThemeProvider>;
-};
-
-export default StyledContainer;
+}
