@@ -1,6 +1,4 @@
-import { memo, useMemo } from "react";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { PropsWithChildren, memo, useMemo } from "react";
 
 import {
 	selectConnectableSources,
@@ -17,14 +15,14 @@ export default memo(function PatchBay() {
 
 	const sourceLabels = useMemo(
 		() => (
-			<Row key="source-labels">
+			<tr key="source-labels">
 				<SourceLabel>To / From</SourceLabel>
 				{sources.map((source) => (
 					<SourceLabel title={`From ${source.label} to ...`} key={source.id}>
 						{source.label}
 					</SourceLabel>
 				))}
-			</Row>
+			</tr>
 		),
 		[sources],
 	);
@@ -35,7 +33,7 @@ export default memo(function PatchBay() {
 				<tbody>
 					{sourceLabels}
 					{targets.map((target) => (
-						<Row key={target.id}>
+						<tr key={target.id}>
 							<TargetLabel title={`From ... to ${target.label}`} key="rowLabel">
 								{target.label}
 							</TargetLabel>
@@ -44,7 +42,7 @@ export default memo(function PatchBay() {
 									<PatchBayNode source={source} target={target} />
 								</td>
 							))}
-						</Row>
+						</tr>
 					))}
 				</tbody>
 			</ErrorBoundary>
@@ -52,43 +50,10 @@ export default memo(function PatchBay() {
 	);
 });
 
-const labelStyle = css`
-	max-inline-size: 5.4em;
-	overflow: hidden;
-	font-weight: 400;
-	font-size: 0.68em;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-`;
+function SourceLabel(props: PropsWithChildren<{ title?: string }>) {
+	return <th title={props.title} className="mis-[5.4em] overflow-hidden font-normal text-[0.68em] whitespace-nowrap text-ellipsis text-center pie-[0.4em] first-of-type:text-left">{props.children}</th>;
+}
 
-const Row = styled.tr`
-	th,
-	td {
-		text-align: center;
-	}
-
-	th {
-		padding: 0 0 0.4em;
-	}
-
-	td {
-		padding: 0.4em 0;
-	}
-
-	th:first-of-type,
-	td:first-of-type {
-		text-align: left;
-	}
-
-	td:not(:first-of-type) {
-		padding: 0 0.4em;
-	}
-`;
-
-const SourceLabel = styled.th`
-	${labelStyle}
-`;
-
-const TargetLabel = styled.td`
-	${labelStyle}
-`;
+function TargetLabel(props: PropsWithChildren<{ title?: string }>) {
+	return <td title={props.title} className="mis-[5.4em] overflow-hidden font-normal text-[0.68em] whitespace-nowrap text-ellipsis text-center pb-[0.4em] first-of-type:text-left [&:not(:first-of-type)]:pb-0 [&:not(:first-of-type)]:pi-0">{props.children}</td>;
+}

@@ -24,6 +24,7 @@ module.exports = {
 	},
 	plugins: [
 		require("@tailwindcss/container-queries"),
+		// @ts-expect-error untyped
 		require("tailwindcss-logical"),
 	],
 };

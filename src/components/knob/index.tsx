@@ -1,5 +1,4 @@
 import { memo, useState, useRef, useCallback, useEffect } from "react";
-import { useTheme } from "@emotion/react";
 import { clamp, noop } from "lodash";
 
 import { tcx } from "~/lib/css";
@@ -21,7 +20,6 @@ export default memo(function Knob({
 	valueLabel = "",
 	onChange = noop,
 }: Props) {
-	const theme = useTheme();
 	const knobRef = useRef<HTMLDivElement | null>(null);
 	const valueRef = useRef<number>(value);
 	const [axis, setAxis] = useState<MovementAxis | undefined>();
@@ -84,8 +82,8 @@ export default memo(function Knob({
 						endRatio={value}
 						strokeWidth={6}
 						backgroundStrokeWidth={3}
-						strokeColor={theme.colors.text[600]}
-						backgroundStrokeColor={theme.colors.text[100]}
+						strokeColor="#fff"
+						backgroundStrokeColor="eee"
 					/>
 				</div>
 			</div>

@@ -1,6 +1,5 @@
 import { useCallback, memo, useRef } from "react";
 import AutosizeInput from "react-input-autosize";
-import styled from "@emotion/styled";
 import { noop } from "lodash";
 
 import { cancelReactEvent } from "~/lib/util";
@@ -47,8 +46,10 @@ export default memo(function TextInput({
 	);
 
 	return (
-		<Container>
+		<div>
 			<AutosizeInput
+				className="border-none border-be border-be-transparent text-current bg-transparent cursor-text transition-colors hover:text-text600 active:text-text600 focus:text-text600 focus:border-be-current focus-visible:outline-none"
+				style={{ font: "inherit" }}
 				value={value}
 				placeholder={placeholder}
 				onChange={handleChange}
@@ -58,7 +59,7 @@ export default memo(function TextInput({
 				// @ts-expect-error typing conflict AutoSize lib
 				ref={inputRef}
 			/>
-		</Container>
+		</div>
 	);
 });
 
@@ -67,29 +68,3 @@ type Props = {
 	placeholder?: string;
 	onChange?(value: string | number): unknown;
 };
-
-const Container = styled.div`
-	input {
-		border: none;
-		border-block-end: 1px solid transparent;
-		color: currentColor;
-		font: inherit;
-		background-color: transparent;
-		cursor: initial;
-		transition: color 0.2s ease-out, border-block-end-color 0.2s ease-out;
-
-		&:hover,
-		&:active,
-		&:focus {
-			color: ${({ theme }) => theme.colors.text[600]};
-		}
-
-		&:focus {
-			border-bottom-color: currentColor;
-		}
-
-		&:focus-visible {
-			outline: none;
-		}
-	}
-`;

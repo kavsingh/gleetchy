@@ -44,7 +44,6 @@ function Success() {
 function WithError() {
 	throw new Error("Render Error");
 
-	// @ts-expect-error testing error
 	return <div />;
 }
 

@@ -1,9 +1,9 @@
 import { memo, useEffect, useMemo, useRef } from "react";
-import { useTheme } from "@emotion/react";
 import { noop } from "lodash";
 
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
+import useTailwindValue from "~/style/use-tailwind-value";
 
 export default memo(function Sample({
 	audioBuffer,
@@ -16,18 +16,29 @@ export default memo(function Sample({
 	onLoopRegionDrag = noop,
 	selectAudioFile = noop,
 }: SampleProps) {
-	const theme = useTheme();
 	const playheadRef = useRef<HTMLDivElement | null>(null);
+	const text100 = useTailwindValue((theme) =>
+		typeof theme["colors"] === "object" &&
+		"text100" in theme["colors"] &&
+		typeof theme["colors"]['text100'] === "string"
+			? theme["colors"]['text100']
+			: undefined,
+	);
+	const text600 = useTailwindValue(
+		// @ts-expect-error shenanigans
+		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
+		(theme) => theme.colors?.text600,
+	);
 
 	const waveForm = useMemo(
 		() => (
 			<Waveform
-				color={theme.colors.text[600]}
-				baselineColor={theme.colors.text[100]}
+				color={text600 ?? ""}
+				baselineColor={text100 ?? ""}
 				buffer={audioBuffer}
 			/>
 		),
-		[audioBuffer, theme.colors.text],
+		[audioBuffer, text100, text600],
 	);
 
 	const loopRegion = useMemo(

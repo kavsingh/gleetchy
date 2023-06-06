@@ -2,22 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { getPreferredColorScheme } from "~/apis/color-scheme";
 import { ModifierKey } from "~/lib/constants";
-import { defaultTheme } from "~/style/theme";
 import { stableAppendUnique, stableWithout } from "~/lib/util";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ThemeName } from "~/style/theme";
 
-function getInitialTheme(): ThemeName {
+function getInitialTheme(): Theme {
 	const preferred = getPreferredColorScheme();
 
-	if (preferred === "no-preference") return defaultTheme.name;
+	if (preferred === "no-preference") return "dark";
 
 	return preferred === "light" ? "light" : "dark";
 }
 
 const initialState: UIState = {
-	currentThemeName: getInitialTheme(),
+	currentTheme: getInitialTheme(),
 	modifierKeys: [],
 };
 
@@ -26,14 +24,14 @@ export const uiSlice = createSlice({
 	name: "ui",
 	reducers: {
 		setDarkTheme: (state) => {
-			state.currentThemeName = "dark";
+			state.currentTheme = "dark";
 		},
 		setLightTheme: (state) => {
-			state.currentThemeName = "light";
+			state.currentTheme = "light";
 		},
 		toggleTheme: (state) => {
-			state.currentThemeName =
-				state.currentThemeName === "light" ? "dark" : "light";
+			state.currentTheme =
+				state.currentTheme === "light" ? "dark" : "light";
 		},
 		registerKeyPress: (state, action: PayloadAction<string>) => {
 			const key = action.payload;
@@ -51,11 +49,13 @@ export const uiSlice = createSlice({
 	},
 });
 
-type UIState = {
-	currentThemeName: ThemeName;
-	modifierKeys: ModifierKey[];
-};
-
 function isModifierKey(key: string): key is ModifierKey {
 	return Object.values(ModifierKey).includes(key as ModifierKey);
 }
+
+type UIState = {
+	currentTheme: Theme;
+	modifierKeys: ModifierKey[];
+};
+
+type Theme = "dark" | "light";
