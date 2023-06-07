@@ -72,7 +72,7 @@ export default memo(function Knob({
 				onDoubleClick={handleDoubleClick}
 				ref={knobRef}
 				style={{ blockSize: radius, inlineSize: radius }}
-				className={tcx("relative shrink-0 grow-0 mli-auto mbs-2 mbe-1", {
+				className={tcx("relative shrink-0 grow-0 mli-auto mbe-1 mbs-2", {
 					["cursor-ns-resize"]: axis === "vertical",
 					["cursor-ew-resize"]: axis === "horizontal",
 				})}
@@ -80,10 +80,10 @@ export default memo(function Knob({
 				<div className="absolute inset-0">
 					<SVGArc
 						endRatio={value}
-						strokeWidth={6}
+						foregroundStrokeWidth={6}
 						backgroundStrokeWidth={3}
-						strokeColor="#fff"
-						backgroundStrokeColor="eee"
+						foregroundClassName="stroke-text600"
+						backgroundClassName="stroke-text100"
 					/>
 				</div>
 			</div>
