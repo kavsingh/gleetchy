@@ -1,12 +1,4 @@
-:root {
-	--color-surface0: rgb(255, 255, 255);
-	--color-text100: rgb(232, 232, 232);
-	--color-text400: rgb(34, 34, 34);
-	--color-text600: rgb(0, 0, 0);
-	--color-semanticError: rgb(236 103 100);
-	--color-semanticFocus: rgb(34 34 34);
-}
-
+:root,
 .dark {
 	--color-surface0: rgb(16, 16, 16);
 	--color-text100: rgb(25, 85, 85);
@@ -14,4 +6,13 @@
 	--color-text600: rgb(255, 255, 255);
 	--color-semanticError: rgb(236 103 100);
 	--color-semanticFocus: rgb(200 200 200);
+}
+
+.light {
+	--color-surface0: rgb(255, 255, 255);
+	--color-text100: rgb(232, 232, 232);
+	--color-text400: rgb(34, 34, 34);
+	--color-text600: rgb(0, 0, 0);
+	--color-semanticError: rgb(236 103 100);
+	--color-semanticFocus: rgb(34 34 34);
 }

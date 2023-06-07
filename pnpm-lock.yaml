@@ -79,6 +79,9 @@ devDependencies:
   '@types/color':
     specifier: 3.0.3
     version: 3.0.3
+  '@types/css-tree':
+    specifier: 2.3.1
+    version: 2.3.1
   '@types/lodash':
     specifier: 4.14.195
     version: 4.14.195
@@ -118,6 +121,9 @@ devDependencies:
   autoprefixer:
     specifier: 10.4.14
     version: 10.4.14(postcss@8.4.24)
+  css-tree:
+    specifier: 2.3.1
+    version: 2.3.1
   eslint:
     specifier: 8.42.0
     version: 8.42.0
@@ -1005,6 +1011,10 @@ packages:
       '@types/color-convert': 2.0.0
     dev: true
 
+  /@types/css-tree@2.3.1:
+    resolution: {integrity: sha512-3m636Jz4d9d+lHVMp6FNLsUWQrfOx1xpm1SBxPbQYSNNgXMe+XswcsDeo1ldyULiuzYyWKk1kmvkLTgNq+215Q==}
+    dev: true
+
   /@types/hoist-non-react-statics@3.3.1:
     resolution: {integrity: sha512-iMIqiko6ooLrTh1joXodJK5X9xeEALT1kM5G3ZLhD3hszxBdIEd5C75U834D9mLcINgD4OyZf5uQXjkuYydWvA==}
     dependencies:
@@ -1773,6 +1783,14 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /css-tree@2.3.1:
+    resolution: {integrity: sha512-6Fv1DV/TYw//QF5IzQdqsNDjx/wc8TrMBZsqjL9eW01tWb7R7k/mq+/VXfJCl7SoD5emsJop9cOByJZfs8hYIw==}
+    engines: {node: ^10 || ^12.20.0 || ^14.13.0 || >=15.0.0}
+    dependencies:
+      mdn-data: 2.0.30
+      source-map-js: 1.0.2
     dev: true
 
   /css.escape@1.5.1:
@@ -3446,6 +3464,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       blueimp-md5: 2.19.0
+    dev: true
+
+  /mdn-data@2.0.30:
+    resolution: {integrity: sha512-GaqWWShW4kv/G9IEucWScBx9G1/vsFZZJUO+tD26M8J8z3Kw5RDQjaoZe03YAClgeS/SWPOcb4nkFBTEi5DUEA==}
     dev: true
 
   /merge-stream@2.0.0:
