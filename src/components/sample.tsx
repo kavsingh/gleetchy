@@ -16,19 +16,10 @@ export default memo(function Sample({
 	onLoopRegionDrag = noop,
 	selectAudioFile = noop,
 }: SampleProps) {
+	const containerRef = useRef<HTMLDivElement | null>(null);
 	const playheadRef = useRef<HTMLDivElement | null>(null);
-	const text100 = useTailwindValue((theme) =>
-		typeof theme["colors"] === "object" &&
-		"text100" in theme["colors"] &&
-		typeof theme["colors"]['text100'] === "string"
-			? theme["colors"]['text100']
-			: undefined,
-	);
-	const text600 = useTailwindValue(
-		// @ts-expect-error shenanigans
-		// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-		(theme) => theme.colors?.text600,
-	);
+	const text100 = useTailwindValue((theme) => theme["colors"]?.["text100"]);
+	const text600 = useTailwindValue((theme) => theme["colors"]?.["text600"]);
 
 	const waveForm = useMemo(
 		() => (
@@ -65,7 +56,7 @@ export default memo(function Sample({
 	);
 
 	return (
-		<div className="relative bs-full is-full">
+		<div className="relative bs-full is-full" ref={containerRef}>
 			<div className="absolute inset-0 z-[1]">{waveForm}</div>
 			{audioBuffer ? (
 				<>
