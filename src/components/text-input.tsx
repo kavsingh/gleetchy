@@ -48,7 +48,7 @@ export default memo(function TextInput({
 	return (
 		<div>
 			<AutosizeInput
-				className="border-none border-be border-be-transparent text-current bg-transparent cursor-text transition-colors hover:text-text600 active:text-text600 focus:text-text600 focus:border-be-current focus-visible:outline-none"
+				inputClassName="cursor-text border-none bg-transparent text-current transition-colors border-be border-be-transparent hover:text-text600 focus:text-text600 focus:border-be-current focus-visible:outline-none active:text-text600"
 				style={{ font: "inherit" }}
 				value={value}
 				placeholder={placeholder}

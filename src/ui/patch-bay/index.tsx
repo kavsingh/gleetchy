@@ -1,4 +1,4 @@
-import { PropsWithChildren, memo, useMemo } from "react";
+import { memo, useMemo } from "react";
 
 import {
 	selectConnectableSources,
@@ -8,6 +8,8 @@ import ErrorBoundary from "~/components/error-boundary";
 import { useAppSelector } from "~/app-store/hooks/base";
 
 import PatchBayNode from "./patch-bay-node";
+
+import type { PropsWithChildren } from "react";
 
 export default memo(function PatchBay() {
 	const sources = useAppSelector(selectConnectableSources);
@@ -38,7 +40,10 @@ export default memo(function PatchBay() {
 								{target.label}
 							</TargetLabel>
 							{sources.map((source) => (
-								<td key={`${source.id}-${target.id}`}>
+								<td
+									className="min-is-[1.4em]"
+									key={`${source.id}-${target.id}`}
+								>
 									<PatchBayNode source={source} target={target} />
 								</td>
 							))}
@@ -51,9 +56,23 @@ export default memo(function PatchBay() {
 });
 
 function SourceLabel(props: PropsWithChildren<{ title?: string }>) {
-	return <th title={props.title} className="mis-[5.4em] overflow-hidden font-normal text-[0.68em] whitespace-nowrap text-ellipsis text-center pie-[0.4em] first-of-type:text-left">{props.children}</th>;
+	return (
+		<th
+			title={props.title}
+			className="overflow-hidden text-ellipsis whitespace-nowrap text-center text-[0.68em] font-normal max-is-[5.4em] pie-[0.4em] first-of-type:text-left"
+		>
+			{props.children}
+		</th>
+	);
 }
 
 function TargetLabel(props: PropsWithChildren<{ title?: string }>) {
-	return <td title={props.title} className="mis-[5.4em] overflow-hidden font-normal text-[0.68em] whitespace-nowrap text-ellipsis text-center pb-[0.4em] first-of-type:text-left [&:not(:first-of-type)]:pb-0 [&:not(:first-of-type)]:pi-0">{props.children}</td>;
+	return (
+		<td
+			title={props.title}
+			className="overflow-hidden text-ellipsis whitespace-nowrap pb-[0.4em] text-center text-[0.68em] font-normal max-is-[5.4em] first-of-type:text-left [&:not(:first-of-type)]:plb-0 [&:not(:first-of-type)]:pli-0"
+		>
+			{props.children}
+		</td>
+	);
 }
