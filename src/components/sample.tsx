@@ -3,7 +3,7 @@ import { noop } from "lodash";
 
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
-import useTailwindValue from "~/style/use-tailwind-value";
+import useTailwindColor from "~/style/use-tailwind-color";
 
 export default memo(function Sample({
 	audioBuffer,
@@ -18,8 +18,8 @@ export default memo(function Sample({
 }: SampleProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const playheadRef = useRef<HTMLDivElement | null>(null);
-	const text100 = useTailwindValue((theme) => theme["colors"]?.["text100"]);
-	const text600 = useTailwindValue((theme) => theme[".colors"]?.["text600"]);
+	const text100 = useTailwindColor((colors) => colors?.["text100"]);
+	const text600 = useTailwindColor((colors) => colors?.["text600"]);
 
 	const waveForm = useMemo(
 		() => (

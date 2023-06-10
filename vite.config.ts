@@ -27,8 +27,8 @@ const imports = importsPlugin({
 export default defineConfig(async ({ mode }) => ({
 	define: {
 		"import.meta.vitest": "undefined",
-		"TAILWIND_CONFIG": JSON.stringify(resolveTailwindConfig()),
-		"THEME_CSS_VARS": JSON.stringify(await resolveCssVars()),
+		"TAILWIND_COLORS": JSON.stringify(resolveTailwindConfig().theme?.colors),
+		"THEME_COLOR_VARS": JSON.stringify(await resolveCssVars()),
 	},
 	build: { sourcemap: true },
 	plugins: [tsconfigPathsPlugin(), imports, reactPlugin()],
