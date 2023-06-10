@@ -44,7 +44,7 @@ function Success() {
 function WithError() {
 	throw new Error("Render Error");
 
-	return <div />;
+	return null;
 }
 
 const fallbackErrorRenderer: ErrorRenderer = (err) => (
