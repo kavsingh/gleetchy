@@ -1,6 +1,4 @@
 import { memo, useMemo } from "react";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
 
 import {
 	selectConnectableSources,
@@ -11,92 +9,70 @@ import { useAppSelector } from "~/app-store/hooks/base";
 
 import PatchBayNode from "./patch-bay-node";
 
-import type { FC } from "react";
+import type { PropsWithChildren } from "react";
 
-const PatchBay: FC = () => {
+export default memo(function PatchBay() {
 	const sources = useAppSelector(selectConnectableSources);
 	const targets = useAppSelector(selectConnectableTargets);
 
 	const sourceLabels = useMemo(
 		() => (
-			<Row key="source-labels">
+			<tr key="source-labels">
 				<SourceLabel>To / From</SourceLabel>
 				{sources.map((source) => (
 					<SourceLabel title={`From ${source.label} to ...`} key={source.id}>
 						{source.label}
 					</SourceLabel>
 				))}
-			</Row>
+			</tr>
 		),
 		[sources],
 	);
 
 	return (
-		<ErrorBoundary>
-			<Container>
+		<div className="is-full">
+			<ErrorBoundary>
 				<tbody>
 					{sourceLabels}
 					{targets.map((target) => (
-						<Row key={target.id}>
+						<tr key={target.id}>
 							<TargetLabel title={`From ... to ${target.label}`} key="rowLabel">
 								{target.label}
 							</TargetLabel>
 							{sources.map((source) => (
-								<td key={`${source.id}-${target.id}`}>
+								<td
+									className="min-is-[1.4em]"
+									key={`${source.id}-${target.id}`}
+								>
 									<PatchBayNode source={source} target={target} />
 								</td>
 							))}
-						</Row>
+						</tr>
 					))}
 				</tbody>
-			</Container>
-		</ErrorBoundary>
+			</ErrorBoundary>
+		</div>
 	);
-};
+});
 
-export default memo(PatchBay);
+function SourceLabel(props: PropsWithChildren<{ title?: string }>) {
+	return (
+		<th
+			title={props.title}
+			className="overflow-hidden text-ellipsis whitespace-nowrap text-center text-[0.68em] font-normal max-is-[5.4em] pie-[0.4em] first-of-type:text-left"
+		>
+			{props.children}
+		</th>
+	);
+}
 
-const Container = styled.table`
-	inline-size: 100%;
-`;
-
-const labelStyle = css`
-	max-inline-size: 5.4em;
-	overflow: hidden;
-	font-weight: 400;
-	font-size: 0.68em;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-`;
-
-const Row = styled.tr`
-	th,
-	td {
-		text-align: center;
-	}
-
-	th {
-		padding: 0 0 0.4em;
-	}
-
-	td {
-		padding: 0.4em 0;
-	}
-
-	th:first-of-type,
-	td:first-of-type {
-		text-align: left;
-	}
-
-	td:not(:first-of-type) {
-		padding: 0 0.4em;
-	}
-`;
-
-const SourceLabel = styled.th`
-	${labelStyle}
-`;
-
-const TargetLabel = styled.td`
-	${labelStyle}
-`;
+function TargetLabel(props: PropsWithChildren<{ title?: string }>) {
+	return (
+		<td
+			title={props.title}
+			className="overflow-hidden text-ellipsis whitespace-nowrap pb-[0.4em] text-center text-[0.68em] font-normal max-is-[5.4em] first-of-type:text-left [&:not(:first-of-type)]:plb-0 [&:not(:first-of-type)]:pli-0"
+		>
+			{props.children}
+		</td>
+	);
+}

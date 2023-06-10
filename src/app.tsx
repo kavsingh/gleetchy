@@ -3,22 +3,18 @@ import { Provider } from "react-redux";
 
 import UI from "~/ui";
 
-import StyledContainer from "./style/styled-container";
 import ErrorBoundary from "./components/error-boundary";
 
-import type { FC } from "react";
 import type { AppStore } from "~/app-store/configure-store";
 
-const App: FC<{ store: AppStore }> = ({ store }) => (
-	<StrictMode>
-		<Provider store={store}>
-			<StyledContainer>
+export default memo(function App({ store }: { store: AppStore }) {
+	return (
+		<StrictMode>
+			<Provider store={store}>
 				<ErrorBoundary>
 					<UI />
 				</ErrorBoundary>
-			</StyledContainer>
-		</Provider>
-	</StrictMode>
-);
-
-export default memo(App);
+			</Provider>
+		</StrictMode>
+	);
+});

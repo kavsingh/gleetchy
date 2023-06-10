@@ -9,12 +9,12 @@ import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
 import { useAppDispatch } from "~/app-store/hooks/base";
+import NodeWrapper from "~/components/node-wrapper";
 
-import type { FC } from "react";
 import type { NodeProps as Eq3Props } from "~/nodes/audio-effects/eq3";
 import type { NodeProps } from "~/nodes/instruments/loop";
 
-const ConnectedLoop: FC<{ id: string }> = ({ id }) => {
+export default memo(function ConnectedLoop({ id }: { id: string }) {
 	const {
 		label,
 		connections,
@@ -61,31 +61,31 @@ const ConnectedLoop: FC<{ id: string }> = ({ id }) => {
 	);
 
 	return (
-		<UI
-			nodeId={id}
-			loopStart={audioProps.loopStart}
-			loopEnd={audioProps.loopEnd}
-			label={label}
-			fileName={audioProps.fileName}
-			connections={connections}
-			isActive={isActive}
-			highGain={audioProps.highGain}
-			midGain={audioProps.midGain}
-			lowGain={audioProps.lowGain}
-			playbackRate={audioProps.playbackRate}
-			gain={audioProps.gain}
-			audioBuffer={audioProps.audioBuffer}
-			onGainChange={handleGainChange}
-			onPlaybackRateChange={handlePlaybackRateChange}
-			onEqChange={handleEqChange}
-			selectAudioFile={selectAudioFile}
-			receiveAudioFile={receiveAudioFile}
-			onLoopRegionChange={handleLoopRegionChange}
-			onLabelChange={updateLabel}
-			duplicate={duplicate}
-			remove={remove}
-		/>
+		<NodeWrapper isActive={isActive}>
+			<UI
+				nodeId={id}
+				loopStart={audioProps.loopStart}
+				loopEnd={audioProps.loopEnd}
+				label={label}
+				fileName={audioProps.fileName}
+				connections={connections}
+				isActive={isActive}
+				highGain={audioProps.highGain}
+				midGain={audioProps.midGain}
+				lowGain={audioProps.lowGain}
+				playbackRate={audioProps.playbackRate}
+				gain={audioProps.gain}
+				audioBuffer={audioProps.audioBuffer}
+				onGainChange={handleGainChange}
+				onPlaybackRateChange={handlePlaybackRateChange}
+				onEqChange={handleEqChange}
+				selectAudioFile={selectAudioFile}
+				receiveAudioFile={receiveAudioFile}
+				onLoopRegionChange={handleLoopRegionChange}
+				onLabelChange={updateLabel}
+				duplicate={duplicate}
+				remove={remove}
+			/>
+		</NodeWrapper>
 	);
-};
-
-export default memo(ConnectedLoop);
+});

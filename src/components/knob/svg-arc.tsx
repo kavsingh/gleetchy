@@ -1,22 +1,14 @@
 import { memo } from "react";
 
-import type { FC } from "react";
-
 // Adapted from https://codepen.io/JMChristensen/pen/Ablch
-const SVGArc: FC<{
-	endRatio: number;
-	strokeColor: string;
-	strokeWidth?: number;
-	backgroundStrokeColor?: string;
-	backgroundStrokeWidth?: number;
-}> = ({
+export default memo(function SVGArc({
 	endRatio,
-	strokeColor,
-	strokeWidth = 4,
-	backgroundStrokeColor = "transparent",
+	foregroundClassName,
+	foregroundStrokeWidth = 4,
+	backgroundClassName = "transparent",
 	backgroundStrokeWidth = 1,
-}) => {
-	const radius = 50 - strokeWidth / 2;
+}: Props) {
+	const radius = 50 - foregroundStrokeWidth / 2;
 	const circumference = 2 * Math.PI * radius;
 
 	return (
@@ -25,9 +17,9 @@ const SVGArc: FC<{
 				cx="50"
 				cy="50"
 				r={radius}
-				fill="transparent"
 				strokeWidth={backgroundStrokeWidth}
-				stroke={backgroundStrokeColor}
+				className={backgroundClassName}
+				fill="transparent"
 			/>
 			<circle
 				transform="rotate(-90, 50, 50)"
@@ -36,12 +28,18 @@ const SVGArc: FC<{
 				r={radius}
 				strokeDasharray={circumference}
 				strokeDashoffset={(1 - endRatio) * circumference}
+				strokeWidth={foregroundStrokeWidth}
+				className={foregroundClassName}
 				fill="transparent"
-				strokeWidth={strokeWidth}
-				stroke={strokeColor}
 			/>
 		</svg>
 	);
-};
+});
 
-export default memo(SVGArc);
+type Props = {
+	endRatio: number;
+	foregroundClassName: string;
+	foregroundStrokeWidth?: number;
+	backgroundClassName?: string;
+	backgroundStrokeWidth?: number;
+};

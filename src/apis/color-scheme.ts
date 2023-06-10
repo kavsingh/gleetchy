@@ -1,26 +1,14 @@
 import { useState, useCallback, useEffect } from "react";
 
-export type ColorSchemePreference = "no-preference" | "light" | "dark";
-
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-export const darkSchemeQuery = (globalThis.matchMedia?.(
-	"(prefers-color-scheme: dark)",
-) ?? undefined) as MediaQueryList | undefined;
-
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-export const lightSchemeQuery = (globalThis.matchMedia?.(
-	"(prefers-color-scheme: light)",
-) ?? undefined) as MediaQueryList | undefined;
-
-export const getPreferredColorScheme = (): ColorSchemePreference => {
+export function getPreferredColorScheme(): ColorSchemePreference {
 	if (darkSchemeQuery?.matches) return "dark";
 
 	if (lightSchemeQuery?.matches) return "light";
 
 	return "no-preference";
-};
+}
 
-export const usePreferredColorScheme = () => {
+export function usePreferredColorScheme() {
 	const [scheme, setScheme] = useState(getPreferredColorScheme());
 
 	const handleDarkSchemeQueryChange = useCallback(
@@ -54,4 +42,16 @@ export const usePreferredColorScheme = () => {
 	}, [handleDarkSchemeQueryChange, handleLightSchemeQueryChange]);
 
 	return scheme;
-};
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const darkSchemeQuery = (globalThis.matchMedia?.(
+	"(prefers-color-scheme: dark)",
+) ?? undefined) as MediaQueryList | undefined;
+
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const lightSchemeQuery = (globalThis.matchMedia?.(
+	"(prefers-color-scheme: light)",
+) ?? undefined) as MediaQueryList | undefined;
+
+export type ColorSchemePreference = "no-preference" | "light" | "dark";

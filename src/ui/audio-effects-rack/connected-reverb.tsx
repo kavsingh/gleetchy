@@ -4,12 +4,12 @@ import { nodeType, UI } from "~/nodes/audio-effects/reverb";
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
+import NodeWrapper from "~/components/node-wrapper";
 
-import type { FC } from "react";
 import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
 import type { NodeProps } from "~/nodes/audio-effects/reverb";
 
-const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
+export default memo(function ConnectedReverb({ id }: { id: string }) {
 	const {
 		connections,
 		isActive,
@@ -31,18 +31,18 @@ const ConnectedReverb: FC<{ id: string }> = ({ id }) => {
 	);
 
 	return (
-		<UI
-			connections={connections}
-			isActive={isActive}
-			label={label}
-			impulse={audioProps.impulse}
-			wetDryRatio={audioProps.wetDryRatio}
-			onLabelChange={updateLabel}
-			onWetDryRatioChange={handleWetDryRatioChange}
-			onImpulseChange={handleImpulseChange}
-			remove={remove}
-		/>
+		<NodeWrapper isActive={isActive}>
+			<UI
+				connections={connections}
+				isActive={isActive}
+				label={label}
+				impulse={audioProps.impulse}
+				wetDryRatio={audioProps.wetDryRatio}
+				onLabelChange={updateLabel}
+				onWetDryRatioChange={handleWetDryRatioChange}
+				onImpulseChange={handleImpulseChange}
+				remove={remove}
+			/>
+		</NodeWrapper>
 	);
-};
-
-export default memo(ConnectedReverb);
+});

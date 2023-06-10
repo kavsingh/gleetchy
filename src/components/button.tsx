@@ -1,49 +1,34 @@
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { memo } from "react";
 
-const Button = styled.button<{ variant?: Variant }>`
-	margin: 0;
-	padding: 0;
-	border: none;
-	outline: none;
-	font: inherit;
-	color: currentcolor;
-	background: none;
-	cursor: pointer;
-	transition: color 0.2s ease-out;
-	font-size: ${({ variant = "braced" }) =>
-		variant === "braced" ? "0.8rem" : "inherit"};
+import { tcx } from "~/lib/css";
 
-	&:disabled {
-		cursor: default;
-		color: ${({ theme }) => theme.colors.text[100]};
-	}
+import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
-	&:not(:disabled):hover,
-	&:not(:disabled):active,
-	&:not(:disabled):focus-visible {
-		color: ${({ theme }) => theme.colors.text[600]};
-	}
+export default memo(function Button({
+	children,
+	className,
+	variant = "braced",
+	...props
+}: Props) {
+	const isBraced = variant === "braced";
 
-	${({ variant = "braced" }) =>
-		variant === "braced"
-			? css`
-					&::before,
-					&::after {
-						display: inline;
-					}
+	return (
+		<button
+			{...props}
+			className={tcx(
+				"block appearance-none transition-colors hover:text-text600 focus-visible:text-text600 active:text-text600 disabled:cursor-default disabled:text-text100",
+				{ ["text-xs"]: isBraced },
+				className,
+			)}
+		>
+			{isBraced ? <>[ {children} ]</> : children}
+		</button>
+	);
+});
 
-					&::before {
-						content: "[ ";
-					}
-
-					&::after {
-						content: " ]";
-					}
-			  `
-			: ""}
-`;
-
-export default Button;
+type Props = DetailedHTMLProps<
+	HTMLAttributes<HTMLButtonElement>,
+	HTMLButtonElement
+> & { variant?: Variant };
 
 export type Variant = "braced" | "text";

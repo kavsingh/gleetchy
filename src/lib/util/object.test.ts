@@ -14,7 +14,7 @@ describe("util/Object", () => {
 			} = { a: 1, b: 2, c: 3 };
 			const result = stableOmit(["d", "e"], initialObject);
 
-			expect(result).toEqual({ a: 1, b: 2, c: 3 });
+			expect(result).toStrictEqual({ a: 1, b: 2, c: 3 });
 			expect(result).toBe(initialObject);
 		});
 
@@ -22,7 +22,7 @@ describe("util/Object", () => {
 			const initialObject = { a: 1, b: 2, c: 3 };
 			const result = stableOmit(["a", "c"], initialObject);
 
-			expect(result).toEqual({ b: 2 });
+			expect(result).toStrictEqual({ b: 2 });
 			expect(result).not.toBe(initialObject);
 		});
 	});

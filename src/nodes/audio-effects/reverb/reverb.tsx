@@ -1,5 +1,4 @@
 import { memo, useCallback, useMemo } from "react";
-import styled from "@emotion/styled";
 import { noop } from "lodash";
 
 import Knob from "~/components/knob";
@@ -7,20 +6,18 @@ import TitleBar from "~/components/title-bar";
 import SelectBox from "~/components/select-box";
 
 import type { ImpulseName } from "./impulses";
-import type { FC } from "react";
 import type { AudioNodeConnection } from "~/types";
 
-const Reverb: FC<ReverbProps> = ({
+export default memo(function Reverb({
 	label = "Reverb",
 	wetDryRatio = 0.5,
-	isActive = true,
 	connections = [],
 	impulse = "wide",
 	onWetDryRatioChange = noop,
 	onLabelChange = noop,
 	onImpulseChange = noop,
 	remove = noop,
-}) => {
+}: ReverbProps) {
 	const titleBar = useMemo(
 		() => (
 			<TitleBar
@@ -58,21 +55,19 @@ const Reverb: FC<ReverbProps> = ({
 	);
 
 	return (
-		<Container isActive={isActive}>
+		<div className="is-full">
 			{titleBar}
-			<ControlsContainer>
+			<div className="flex items-start gap-2 is-full">
 				<SelectBox
 					options={impulseOptions}
 					onChange={handleImpulseChange}
 					value={impulse}
 				/>
-				<KnobContainer key="wetDry">{wetDryKnob}</KnobContainer>
-			</ControlsContainer>
-		</Container>
+				<div className="shrink-0 grow-0 is-12">{wetDryKnob}</div>
+			</div>
+		</div>
 	);
-};
-
-export default memo(Reverb);
+});
 
 export type ReverbProps = {
 	label: string;
@@ -86,30 +81,13 @@ export type ReverbProps = {
 	remove(): unknown;
 };
 
-const Container = styled.div<{ isActive: boolean }>`
-	inline-size: 100%;
-	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
-	transition: opacity 0.2s ease-out;
-`;
-
-const ControlsContainer = styled.div`
-	display: flex;
-	inline-size: 100%;
-	gap: 0.4em;
-	align-items: flex-start;
-`;
-
-const KnobContainer = styled.div`
-	flex: 0 0 3em;
-`;
-
 const impulseOptions: { value: ImpulseName; label: string }[] = [
 	{ value: "wide", label: "Wide" },
 	{ value: "tight", label: "Tight" },
 ];
 
-const isValidImpulse = (value: string): value is ImpulseName => {
+function isValidImpulse(value: string): value is ImpulseName {
 	const names = impulseOptions.map((option) => option.value);
 
 	return names.includes(value as ImpulseName);
-};
+}

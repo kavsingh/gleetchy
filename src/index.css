@@ -1,0 +1,29 @@
+@import url("./style/colors.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+	font-size: 14px;
+	line-height: 1.2;
+	cursor: default;
+	user-select: none;
+	color: theme("colors.text400");
+	background-color: theme("colors.surface0");
+}
+
+*,
+*::before,
+*::after {
+	user-select: inherit;
+}
+
+*:focus:not(:focus-visible),
+*:active:not(:focus-visible) {
+	outline: none;
+}
+
+*:focus-visible {
+	outline: 1px solid theme("colors.semanticFocus");
+}

@@ -5,12 +5,6 @@ import { cancelReactEvent } from "~/lib/util";
 
 import type { DragEventHandler } from "react";
 
-export type UseFileDropRegionProps = {
-	fileFilter?(file: File, index: number, array: File[]): boolean;
-	onFiles?(files: File[]): unknown;
-	onNoFiles?(): unknown;
-};
-
 export default function useFileDropRegion({
 	fileFilter = stubTrue,
 	onFiles = noop,
@@ -69,3 +63,9 @@ export default function useFileDropRegion({
 
 	return { isDropActive, eventHandlers };
 }
+
+export type UseFileDropRegionProps = {
+	fileFilter?(file: File, index: number, array: File[]): boolean;
+	onFiles?(files: File[]): unknown;
+	onNoFiles?(): unknown;
+};

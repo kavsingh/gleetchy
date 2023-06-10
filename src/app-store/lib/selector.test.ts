@@ -13,12 +13,12 @@ describe("custom state selectors", () => {
 			const bSelector = createSelector(aSelector, (a) => a.b);
 			const b = bSelector(state);
 
-			expect(b).toEqual([1, 2]);
+			expect(b).toStrictEqual([1, 2]);
 
 			state = { a: { b: [1, 2] } };
 
 			expect(bSelector(state)).not.toBe(b);
-			expect(bSelector(state)).toEqual(b);
+			expect(bSelector(state)).toStrictEqual(b);
 		});
 	});
 
@@ -30,7 +30,7 @@ describe("custom state selectors", () => {
 			const bSelector = createValueEqSelector(aSelector, (a) => a.b);
 			const b = bSelector(state);
 
-			expect(b).toEqual([1, 2]);
+			expect(b).toStrictEqual([1, 2]);
 
 			state = { a: { b: [1, 2] } };
 

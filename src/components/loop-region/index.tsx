@@ -1,35 +1,39 @@
 import { useCallback, useRef, memo } from "react";
-import styled from "@emotion/styled";
-import { memoize, noop } from "lodash";
-import color from "color";
+import { noop } from "lodash";
+import { twMerge } from "tailwind-merge";
 
-import { layoutAbsoluteFill } from "~/style/layout";
+import { tcx } from "~/lib/css";
 
 import useControlResponseRef from "../hooks/use-control-response-ref";
 import LoopHandle from "./loop-handle";
 import usePointerDrag from "../hooks/use-pointer-drag";
 
+import type {
+	PropsWithChildren,
+	DetailedHTMLProps,
+	HTMLAttributes,
+} from "react";
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
-import type { FC } from "react";
+
+export default memo(
+	LoopRegion,
+	(prevProps, nextProps) =>
+		prevProps.loopStart === nextProps.loopStart &&
+		prevProps.loopEnd === nextProps.loopEnd,
+);
 
 const controlResponseMultipliers = {
 	normal: 1,
 	fine: 0.4,
 };
 
-const LoopRegion: FC<{
-	loopStart: number;
-	loopEnd: number;
-	onLoopStartDrag?(movement: number): unknown;
-	onLoopEndDrag?(movement: number): unknown;
-	onLoopRegionDrag?(movement: number): unknown;
-}> = ({
+function LoopRegion({
 	loopStart,
 	loopEnd,
 	onLoopStartDrag = noop,
 	onLoopEndDrag = noop,
 	onLoopRegionDrag = noop,
-}) => {
+}: Props) {
 	const moveMultiplierRef = useControlResponseRef(controlResponseMultipliers);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -83,23 +87,14 @@ const LoopRegion: FC<{
 	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
 
 	return (
-		<Container ref={containerRef}>
-			<HandleContainer
-				{...startDragListeners}
-				role="presentation"
-				offset={loopStart}
-			>
+		<div className="relative bs-full is-full" ref={containerRef}>
+			<HandleContainer {...startDragListeners} offset={loopStart}>
 				<LoopHandle align="left" />
 			</HandleContainer>
-
-			<HandleContainer
-				{...endDragListeners}
-				role="presentation"
-				offset={loopEnd}
-			>
+			<HandleContainer {...endDragListeners} offset={loopEnd}>
 				<LoopHandle align="right" />
 			</HandleContainer>
-			<RegionsContainer>
+			<div className="absolute inset-0">
 				<InactiveRegion start={0} end={loopStart} />
 				{regionRatio < 1 ? (
 					<ActiveRegion
@@ -110,59 +105,74 @@ const LoopRegion: FC<{
 					/>
 				) : null}
 				<InactiveRegion start={loopEnd} end={1} />
-			</RegionsContainer>
-		</Container>
+			</div>
+		</div>
 	);
+}
+
+function HandleContainer({
+	children,
+	offset,
+	...props
+}: PropsWithChildren<{ offset: number } & DivProps>) {
+	return (
+		<div
+			{...props}
+			className="absolute top-0 z-[1] h-full w-[10px] cursor-ew-resize"
+			role="presentation"
+			style={{ left: `${offset * 100}%` }}
+		>
+			{children}
+		</div>
+	);
+}
+
+function ActiveRegion({
+	preferred,
+	...regionProps
+}: RegionProps & { preferred: boolean }) {
+	return (
+		<Region
+			{...regionProps}
+			className={tcx("z-0 cursor-move", { ["z-[2]"]: preferred })}
+		/>
+	);
+}
+
+function InactiveRegion(props: RegionProps) {
+	return <Region {...props} className="z-0 bg-surface0 opacity-80" />;
+}
+
+const Region = memo(function Region({
+	start,
+	end,
+	className,
+	...divProps
+}: RegionProps) {
+	return (
+		<div
+			{...divProps}
+			style={{ left: `${start * 100}%`, right: `${(1 - end) * 100}%` }}
+			className={twMerge("absolute top-0 bottom-0", className)}
+		/>
+	);
+});
+
+type RegionProps = {
+	start: number;
+	end: number;
+	className?: string;
+} & DivProps;
+
+type DivProps = DetailedHTMLProps<
+	HTMLAttributes<HTMLDivElement>,
+	HTMLDivElement
+>;
+
+type Props = {
+	loopStart: number;
+	loopEnd: number;
+	onLoopStartDrag?(movement: number): unknown;
+	onLoopEndDrag?(movement: number): unknown;
+	onLoopRegionDrag?(movement: number): unknown;
 };
-
-export default memo(
-	LoopRegion,
-	(prevProps, nextProps) =>
-		prevProps.loopStart === nextProps.loopStart &&
-		prevProps.loopEnd === nextProps.loopEnd,
-);
-
-const Container = styled.div`
-	position: relative;
-	inline-size: 100%;
-	block-size: 100%;
-`;
-
-const HandleContainer = styled.div<{ offset: number }>`
-	position: absolute;
-	top: 0;
-	left: ${({ offset }) => offset * 100}%;
-	z-index: 1;
-	width: 10px;
-	height: 100%;
-	cursor: ew-resize;
-`;
-
-const RegionsContainer = styled.div`
-	${layoutAbsoluteFill}
-`;
-
-const Region = styled.div<{ start: number; end: number }>`
-	position: absolute;
-	top: 0;
-	right: ${({ end }) => `${(1 - end) * 100}%`};
-	bottom: 0;
-	left: ${({ start }) => `${start * 100}%`};
-`;
-
-const ActiveRegion = styled(Region)<{
-	preferred: boolean;
-}>`
-	z-index: ${({ preferred }) => (preferred ? 2 : 0)};
-	cursor: move;
-`;
-
-const inactiveOverlayColor = memoize((baseColor: string) =>
-	color(baseColor).alpha(0.8).string(),
-);
-
-const InactiveRegion = styled(Region)`
-	z-index: 0;
-	background-color: ${({ theme }) =>
-		inactiveOverlayColor(theme.colors.surface[0])};
-`;

@@ -1,5 +1,3 @@
-const tsconfig = require("./tsconfig.json");
-
 const srcDependencies = {
 	devDependencies: false,
 	optionalDependencies: false,
@@ -11,8 +9,6 @@ const devDependencies = {
 	optionalDependencies: false,
 	peerDependencies: false,
 };
-
-const tsconfigPathsPatterns = Object.keys(tsconfig.compilerOptions.paths);
 
 const testFilePatterns = (extensions = "*") =>
 	["**/*.test", "**/*.mock", "**/__test__/**/*", "**/__mocks__/**/*"].map(
@@ -58,12 +54,7 @@ module.exports = {
 					"index",
 					"type",
 				],
-				"pathGroups": [
-					...tsconfigPathsPatterns.map((pattern) => ({
-						pattern,
-						group: "internal",
-					})),
-				],
+				"pathGroups": [{ pattern: "~/*", group: "internal" }],
 				"pathGroupsExcludedImportTypes": ["type"],
 				"newlines-between": "always",
 			},
@@ -114,8 +105,15 @@ module.exports = {
 		{
 			files: ["src/**/*"],
 			env: { node: false, browser: true },
-			settings: { react: { version: "detect" } },
-			extends: ["plugin:react/recommended", "plugin:react-hooks/recommended"],
+			settings: {
+				react: { version: "detect" },
+				tailwindcss: { callees: ["tcx"] },
+			},
+			extends: [
+				"plugin:react/recommended",
+				"plugin:react-hooks/recommended",
+				"plugin:tailwindcss/recommended",
+			],
 			rules: {
 				"no-console": "error",
 				"import/no-extraneous-dependencies": ["error", srcDependencies],
@@ -131,10 +129,12 @@ module.exports = {
 		{
 			files: testFilePatterns(),
 			env: { node: true },
+			extends: ["plugin:vitest/all"],
 			rules: {
 				"no-console": "off",
 				"import/no-extraneous-dependencies": ["error", devDependencies],
 				"filenames/match-exported": ["error", "kebab", "\\.test$"],
+				"vitest/no-hooks": "off",
 			},
 		},
 		{

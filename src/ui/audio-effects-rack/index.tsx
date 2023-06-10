@@ -1,7 +1,5 @@
 import { useCallback, memo } from "react";
-import styled from "@emotion/styled";
 
-import AnimIn from "~/components/anim-in";
 import { nodeType as delayType } from "~/nodes/audio-effects/delay";
 import { nodeType as reverbType } from "~/nodes/audio-effects/reverb";
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
@@ -12,18 +10,18 @@ import ErrorBoundary from "~/components/error-boundary";
 import ConnectedDelay from "./connected-delay";
 import ConnectedReverb from "./connected-reverb";
 
-import type { FC, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 
-const AudioEffectsRack: FC = () => (
-	<Container>
-		<Rack />
-		<AddAudioEffectButtons />
-	</Container>
-);
+export default memo(function AudioEffectsRack() {
+	return (
+		<div className="flex flex-wrap items-start is-full">
+			<Rack />
+			<AddAudioEffectButtons />
+		</div>
+	);
+});
 
-export default memo(AudioEffectsRack);
-
-const Rack: FC = () => {
+function Rack() {
 	const { audioEffects } = useAudioNodesMeta();
 
 	return (
@@ -48,9 +46,9 @@ const Rack: FC = () => {
 			})}
 		</>
 	);
-};
+}
 
-const AddAudioEffectButtons: FC = () => {
+function AddAudioEffectButtons() {
 	const { addNode } = useAddNode();
 	const addReverb = useCallback(() => addNode(reverbType), [addNode]);
 	const addDelay = useCallback(() => addNode(delayType), [addNode]);
@@ -61,22 +59,12 @@ const AddAudioEffectButtons: FC = () => {
 			<Button onClick={addDelay}>Add Delay</Button>
 		</ButtonGroup>
 	);
-};
+}
 
-const RackMount: FC<{ children: ReactNode }> = ({ children }) => (
-	<AudioEffectContainer>
-		<ErrorBoundary>{children}</ErrorBoundary>
-	</AudioEffectContainer>
-);
-
-const Container = styled.div`
-	display: flex;
-	flex-wrap: wrap;
-	align-items: flex-start;
-	inline-size: 100%;
-`;
-
-const AudioEffectContainer = styled(AnimIn)`
-	flex: 1 0 10em;
-	padding: 1em 0;
-`;
+function RackMount({ children }: PropsWithChildren) {
+	return (
+		<div className="flex shrink-0 grow basis-40 animate-appear opacity-0 plb-4">
+			<ErrorBoundary>{children}</ErrorBoundary>
+		</div>
+	);
+}

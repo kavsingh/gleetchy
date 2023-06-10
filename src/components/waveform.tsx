@@ -1,24 +1,56 @@
 import { useRef, useEffect, memo } from "react";
-import styled from "@emotion/styled";
 import colorFn from "color";
 import { range } from "lodash";
 
-import type { FC } from "react";
+export default memo(function Waveform({
+	color,
+	baselineColor,
+	timeRegions,
+	buffer,
+}: WaveformProps) {
+	const canvasRef = useRef<HTMLCanvasElement>(null);
 
-const drawTempWaveform = (
+	useEffect(() => {
+		const handleResize = () => {
+			if (canvasRef.current) {
+				updateWaveform(canvasRef.current, {
+					color,
+					baselineColor,
+					timeRegions,
+					buffer,
+					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+					pixelRatio: globalThis.window.devicePixelRatio ?? 1,
+				});
+			}
+		};
+
+		handleResize();
+		globalThis.window.addEventListener("resize", handleResize);
+
+		return () => globalThis.window.removeEventListener("resize", handleResize);
+	}, [color, baselineColor, timeRegions, buffer]);
+
+	return (
+		<div className="overflow-hidden bs-full is-full">
+			<canvas className="bs-full is-full" ref={canvasRef} />
+		</div>
+	);
+});
+
+function drawTempWaveform(
 	context: CanvasRenderingContext2D,
 	width: number,
 	height: number,
-) => {
+) {
 	context.fillRect(0, height / 2, width, 1);
-};
+}
 
-const drawTimeRegions = (
+function drawTimeRegions(
 	context: CanvasRenderingContext2D,
 	width: number,
 	height: number,
 	timeRegions: number,
-) => {
+) {
 	for (let i = 0; i < timeRegions; i++) {
 		const x = Math.round(i * 0.25 * width);
 
@@ -27,14 +59,14 @@ const drawTimeRegions = (
 	}
 
 	context.stroke();
-};
+}
 
-const drawWaveform = (
+function drawWaveform(
 	context: CanvasRenderingContext2D,
 	width: number,
 	height: number,
 	buffer: AudioBuffer,
-) => {
+) {
 	const buffStep = buffer.length / width;
 	const channels = range(0, buffer.numberOfChannels).map((channel) =>
 		buffer.getChannelData(channel),
@@ -53,9 +85,9 @@ const drawWaveform = (
 			context.fillRect(x, mid - val, 1, val * 2);
 		}
 	}
-};
+}
 
-const updateWaveform = (
+function updateWaveform(
 	canvasNode: HTMLCanvasElement,
 	{
 		color,
@@ -64,7 +96,7 @@ const updateWaveform = (
 		timeRegions = 4,
 		buffer,
 	}: WaveformProps & { pixelRatio: number },
-) => {
+) {
 	const context = canvasNode.getContext("2d");
 
 	if (!context) return;
@@ -86,58 +118,7 @@ const updateWaveform = (
 	} else {
 		drawTempWaveform(context, width, height);
 	}
-};
-
-const Waveform: FC<WaveformProps> = ({
-	color,
-	baselineColor,
-	timeRegions,
-	buffer,
-}) => {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-
-	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (!globalThis.window) return;
-
-		const handleResize = () => {
-			if (canvasRef.current) {
-				updateWaveform(canvasRef.current, {
-					color,
-					baselineColor,
-					timeRegions,
-					buffer,
-					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-					pixelRatio: globalThis.window.devicePixelRatio ?? 1,
-				});
-			}
-		};
-
-		handleResize();
-		globalThis.window.addEventListener("resize", handleResize);
-
-		return () => globalThis.window.removeEventListener("resize", handleResize);
-	}, [color, baselineColor, timeRegions, buffer]);
-
-	return (
-		<Container>
-			<Canvas ref={canvasRef} />
-		</Container>
-	);
-};
-
-export default memo(Waveform);
-
-const Container = styled.div`
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-`;
-
-const Canvas = styled.canvas`
-	width: 100%;
-	height: 100%;
-`;
+}
 
 export type WaveformProps = {
 	color: string;

@@ -1,22 +1,20 @@
 import { useCallback, memo, useRef } from "react";
 import AutosizeInput from "react-input-autosize";
-import styled from "@emotion/styled";
 import { noop } from "lodash";
 
 import { cancelReactEvent } from "~/lib/util";
 
 import type {
 	ChangeEventHandler,
-	FC,
 	FocusEventHandler,
 	KeyboardEventHandler,
 } from "react";
 
-const TextInput: FC<{
-	value: string | number;
-	placeholder?: string;
-	onChange?(value: string): unknown;
-}> = ({ value, placeholder = "", onChange = noop }) => {
+export default memo(function TextInput({
+	value,
+	placeholder = "",
+	onChange = noop,
+}: Props) {
 	const initialValueRef = useRef(value);
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -48,8 +46,10 @@ const TextInput: FC<{
 	);
 
 	return (
-		<Container>
+		<div>
 			<AutosizeInput
+				inputClassName="cursor-text border-none bg-transparent text-current transition-colors border-be border-be-transparent hover:text-text600 focus:text-text600 focus:border-be-current focus-visible:outline-none active:text-text600"
+				style={{ font: "inherit" }}
 				value={value}
 				placeholder={placeholder}
 				onChange={handleChange}
@@ -59,34 +59,12 @@ const TextInput: FC<{
 				// @ts-expect-error typing conflict AutoSize lib
 				ref={inputRef}
 			/>
-		</Container>
+		</div>
 	);
+});
+
+type Props = {
+	value: string | number;
+	placeholder?: string;
+	onChange?(value: string | number): unknown;
 };
-
-export default memo(TextInput);
-
-const Container = styled.div`
-	input {
-		border: none;
-		border-block-end: 1px solid transparent;
-		color: currentColor;
-		font: inherit;
-		background-color: transparent;
-		cursor: initial;
-		transition: color 0.2s ease-out, border-block-end-color 0.2s ease-out;
-
-		&:hover,
-		&:active,
-		&:focus {
-			color: ${({ theme }) => theme.colors.text[600]};
-		}
-
-		&:focus {
-			border-bottom-color: currentColor;
-		}
-
-		&:focus-visible {
-			outline: none;
-		}
-	}
-`;

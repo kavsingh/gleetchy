@@ -1,52 +1,23 @@
 import { memo, useCallback, useMemo } from "react";
-import styled from "@emotion/styled";
 import { noop } from "lodash";
 
 import { DELAY_UPPER_BOUND } from "~/constants/audio";
 import Knob from "~/components/knob";
 import TitleBar from "~/components/title-bar";
 
-import type { FC } from "react";
+import type { PropsWithChildren } from "react";
 import type { AudioNodeConnection } from "~/types";
 
-const Container = styled.div<{ isActive: boolean }>`
-	inline-size: 100%;
-	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
-	transition: opacity 0.2s ease-out;
-`;
-
-const ControlsContainer = styled.div`
-	display: flex;
-	inline-size: 100%;
-`;
-
-const KnobContainer = styled.div`
-	flex: 0 0 3em;
-`;
-
-export type DelayProps = {
-	label: string;
-	connections: AudioNodeConnection[];
-	wetDryRatio: number;
-	delayTime: number;
-	isActive: boolean;
-	onDelayTimeChange(delayTime: number): unknown;
-	onWetDryRatioChange(wetDryRatio: number): unknown;
-	onLabelChange(label: string): unknown;
-	remove(): unknown;
-};
-
-const Delay: FC<DelayProps> = ({
+export default memo(function Delay({
 	label = "Delay",
 	connections = [],
 	wetDryRatio = 0.5,
 	delayTime = 1,
-	isActive = true,
 	onDelayTimeChange = noop,
 	onWetDryRatioChange = noop,
 	onLabelChange = noop,
 	remove = noop,
-}) => {
+}: DelayProps) {
 	const handleTimeKnobChange = useCallback(
 		(val: number) => {
 			onDelayTimeChange(val * DELAY_UPPER_BOUND);
@@ -96,14 +67,28 @@ const Delay: FC<DelayProps> = ({
 	);
 
 	return (
-		<Container isActive={isActive}>
+		<div className="is-full">
 			{titleBar}
-			<ControlsContainer>
+			<div className="flex is-full">
 				<KnobContainer key="time">{timeKnob}</KnobContainer>
 				<KnobContainer key="wetDry">{wetDryKnob}</KnobContainer>
-			</ControlsContainer>
-		</Container>
+			</div>
+		</div>
 	);
-};
+});
 
-export default memo(Delay);
+function KnobContainer({ children }: PropsWithChildren) {
+	return <div className="shrink-0 grow-0 is-12">{children}</div>;
+}
+
+export type DelayProps = {
+	label: string;
+	connections: AudioNodeConnection[];
+	wetDryRatio: number;
+	delayTime: number;
+	isActive: boolean;
+	onDelayTimeChange(delayTime: number): unknown;
+	onWetDryRatioChange(wetDryRatio: number): unknown;
+	onLabelChange(label: string): unknown;
+	remove(): unknown;
+};

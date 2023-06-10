@@ -1,18 +1,11 @@
 import { memo, useEffect, useMemo, useRef } from "react";
-import { useTheme } from "@emotion/react";
-import styled from "@emotion/styled";
-import color from "color";
 import { noop } from "lodash";
 
-import { layoutAbsoluteFill } from "~/style/layout";
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
+import useTailwindValue from "~/style/use-tailwind-value";
 
-import Button from "./button";
-
-import type { FC } from "react";
-
-const Sample: FC<SampleProps> = ({
+export default memo(function Sample({
 	audioBuffer,
 	subscribeToPositionRatio,
 	loopStart = 0,
@@ -22,19 +15,21 @@ const Sample: FC<SampleProps> = ({
 	onLoopEndDrag = noop,
 	onLoopRegionDrag = noop,
 	selectAudioFile = noop,
-}) => {
-	const theme = useTheme();
+}: SampleProps) {
+	const containerRef = useRef<HTMLDivElement | null>(null);
 	const playheadRef = useRef<HTMLDivElement | null>(null);
+	const text100 = useTailwindValue((theme) => theme["colors"]?.["text100"]);
+	const text600 = useTailwindValue((theme) => theme[".colors"]?.["text600"]);
 
 	const waveForm = useMemo(
 		() => (
 			<Waveform
-				color={theme.colors.text[600]}
-				baselineColor={theme.colors.text[100]}
+				color={text600 ?? ""}
+				baselineColor={text100 ?? ""}
 				buffer={audioBuffer}
 			/>
 		),
-		[audioBuffer, theme.colors.text],
+		[audioBuffer, text100, text600],
 	);
 
 	const loopRegion = useMemo(
@@ -61,92 +56,39 @@ const Sample: FC<SampleProps> = ({
 	);
 
 	return (
-		<Container>
-			<WaveformContainer>{waveForm}</WaveformContainer>
+		<div className="relative bs-full is-full" ref={containerRef}>
+			<div className="absolute inset-0 z-[1]">{waveForm}</div>
 			{audioBuffer ? (
 				<>
-					<PlayheadContainer>
-						<Playhead ref={playheadRef} />
-					</PlayheadContainer>
-					<LoopRegionContainer>{loopRegion}</LoopRegionContainer>
+					<div className="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+						<div
+							className="pointer-events-none absolute inset-0 z-[2] before:absolute before:inset-y-0 before:left-0 before:w-[1px] before:bg-text600"
+							ref={playheadRef}
+						/>
+					</div>
+					<div className="absolute inset-0 z-[3]">{loopRegion}</div>
 				</>
 			) : (
-				<InitLoadButon tabIndex={0} onClick={selectAudioFile}>
+				<button
+					className="absolute inset-0 z-[3] flex flex-col items-center justify-center gap-2 bg-surface0 p-12"
+					tabIndex={0}
+					onClick={selectAudioFile}
+				>
 					{fromSaved
 						? [
-								<span key="a">
+								<span className="text-center" key="a">
 									Unfortunately audio data is not saved with a project
 								</span>,
-								<span key="b">
+								<span className="text-center" key="b">
 									Click here (or drag and drop) to load files again
 								</span>,
 						  ]
 						: "Click to load audio file or drag it here"}
-				</InitLoadButon>
+				</button>
 			)}
-		</Container>
+		</div>
 	);
-};
-
-export default memo(Sample);
-
-const Container = styled.div`
-	position: relative;
-	inline-size: 100%;
-	block-size: 100%;
-`;
-
-const WaveformContainer = styled.div`
-	${layoutAbsoluteFill}
-	z-index: 1;
-`;
-
-const PlayheadContainer = styled.div`
-	${layoutAbsoluteFill}
-	overflow: hidden;
-	pointer-events: none;
-`;
-
-const Playhead = styled.div`
-	${layoutAbsoluteFill}
-	z-index: 2;
-	pointer-events: none;
-
-	&::before {
-		position: absolute;
-		top: 0;
-		bottom: 0;
-		left: 0;
-		display: block;
-		width: 1px;
-		background-color: ${({ theme }) => theme.colors.text[600]};
-		content: " ";
-	}
-`;
-
-const LoopRegionContainer = styled.div`
-	${layoutAbsoluteFill}
-	z-index: 3;
-`;
-
-const InitLoadButon = styled(Button)`
-	${layoutAbsoluteFill}
-	z-index: 3;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: space-around;
-	padding: 3em;
-	background-color: ${({ theme }) =>
-		color(theme.colors.surface[0]).alpha(0.96).string()};
-
-	span {
-		display: block;
-		text-align: center;
-	}
-`;
-
-InitLoadButon.defaultProps = { variant: "text" };
+});
 
 export type SampleProps = {
 	audioBuffer: Nullable<AudioBuffer>;

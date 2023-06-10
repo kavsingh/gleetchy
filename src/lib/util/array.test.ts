@@ -8,7 +8,7 @@ describe("util/array", () => {
 			const initialArray = [1, 2, 3];
 			const result = stableWithout([5, 6], initialArray);
 
-			expect(result).toEqual([1, 2, 3]);
+			expect(result).toStrictEqual([1, 2, 3]);
 			expect(result).toBe(initialArray);
 		});
 
@@ -16,7 +16,7 @@ describe("util/array", () => {
 			const initialArray = [1, 2, 3, 3];
 			const result = stableWithout([1, 3, "q"], initialArray);
 
-			expect(result).toEqual([2]);
+			expect(result).toStrictEqual([2]);
 			expect(result).not.toBe(initialArray);
 		});
 	});
@@ -26,18 +26,19 @@ describe("util/array", () => {
 			const initialArray = [1, 2, 3];
 			const result = stableFilter((item) => item !== 5, initialArray);
 
-			expect(result).toEqual([1, 2, 3]);
+			expect(result).toStrictEqual([1, 2, 3]);
 			expect(result).toBe(initialArray);
 		});
 
 		it("returns new array if items to remove", () => {
 			const initialArray = [1, 2, 3, 3];
 			const result = stableFilter(
+				// eslint-disable-next-line vitest/no-conditional-in-test, vitest/no-conditional-tests
 				(item) => item !== 3 && item !== 1,
 				initialArray,
 			);
 
-			expect(result).toEqual([2]);
+			expect(result).toStrictEqual([2]);
 			expect(result).not.toBe(initialArray);
 		});
 	});
@@ -47,7 +48,7 @@ describe("util/array", () => {
 			const initialArray = [1, 2, 3];
 			const result = stableAppendUnique([2, 3], initialArray);
 
-			expect(result).toEqual([1, 2, 3]);
+			expect(result).toStrictEqual([1, 2, 3]);
 			expect(result).toBe(initialArray);
 		});
 
@@ -55,7 +56,7 @@ describe("util/array", () => {
 			const initialArray = [1, 3, 2, 3];
 			const result = stableAppendUnique([3], initialArray);
 
-			expect(result).toEqual([1, 2, 3]);
+			expect(result).toStrictEqual([1, 2, 3]);
 			expect(result).not.toBe(initialArray);
 		});
 
@@ -64,7 +65,7 @@ describe("util/array", () => {
 			const appendItems = stableAppendUnique.bind(null, [2, 1, "c"]);
 			const result = appendItems(initialArray);
 
-			expect(result).toEqual([3, 2, 1, "c"]);
+			expect(result).toStrictEqual([3, 2, 1, "c"]);
 			expect(result).not.toBe(initialArray);
 		});
 	});

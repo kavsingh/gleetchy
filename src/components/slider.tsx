@@ -1,27 +1,23 @@
-import { memo, useRef, useEffect, useCallback } from "react";
-import { css } from "@emotion/react";
-import styled from "@emotion/styled";
+import { memo, useRef, useEffect, useCallback, forwardRef } from "react";
 import { clamp, noop } from "lodash";
+
+import { tcx } from "~/lib/css";
 
 import useControlResponseRef from "./hooks/use-control-response-ref";
 import usePointerDrag from "./hooks/use-pointer-drag";
 
-import type { FC } from "react";
+import type {
+	DetailedHTMLProps,
+	HTMLAttributes,
+	PropsWithChildren,
+} from "react";
 import type {
 	PointerDragEndHandler,
 	PointerDragMoveHandler,
 } from "./hooks/use-pointer-drag";
 import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
 
-const Slider: FC<{
-	value: number;
-	defaultValue?: number;
-	orientation?: Orientation;
-	label?: string;
-	valueLabel?: string;
-	title?: string;
-	onChange?(value: number): unknown;
-}> = ({
+export default memo(function Slider({
 	value,
 	defaultValue = 0.5,
 	orientation = "block",
@@ -29,7 +25,7 @@ const Slider: FC<{
 	valueLabel = "",
 	title = "",
 	onChange = noop,
-}) => {
+}: Props) {
 	const valueRef = useRef<number>(value);
 	const moveMultiplierRef = useControlResponseRef(controlMultipliers);
 	const barContainerRef = useRef<HTMLDivElement | null>(null);
@@ -89,143 +85,125 @@ const Slider: FC<{
 	const dragHandlers = usePointerDrag({ onDragMove, onDragEnd });
 
 	return (
-		<Container orientation={orientation} title={title}>
-			<Label orientation={orientation}>{label}</Label>
-
+		<div
+			title={title}
+			className={tcx("flex items-stretch bs-full is-full", {
+				["flex-col items-center"]: orientation === "block",
+			})}
+		>
+			<LabelText
+				className={tcx({
+					["flex items-center is-12"]: orientation === "inline",
+					["bs-6"]: orientation === "block",
+				})}
+			>
+				{label}
+			</LabelText>
 			<BarContainer
 				{...dragHandlers}
 				orientation={orientation}
-				role="presentation"
 				onDoubleClick={handleDoubleClick}
 				ref={barContainerRef}
 			>
 				<Track orientation={orientation} />
 				<Bar orientation={orientation} ref={barRef} />
 			</BarContainer>
-			<ValueLabel orientation={orientation}>{valueLabel}</ValueLabel>
-		</Container>
+			<LabelText
+				className={tcx({
+					["items-center is-12"]: orientation === "inline",
+					["items-end bs-6"]: orientation === "block",
+				})}
+			>
+				{valueLabel}
+			</LabelText>
+		</div>
 	);
-};
+});
 
-export default memo(Slider);
+function LabelText({
+	className,
+	children,
+}: PropsWithChildren<{ className: string }>) {
+	return (
+		<div
+			className={tcx(
+				"shrink-0 grow-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm",
+				className,
+			)}
+		>
+			{children}
+		</div>
+	);
+}
 
-const Container = styled.div<OrientationProps>`
-	display: flex;
-	inline-size: 100%;
-	block-size: 100%;
-	${({ orientation }) =>
-		orientation === "inline"
-			? css`
-					flex-direction: row;
-					align-items: stretch;
-			  `
-			: css`
-					flex-direction: column;
-					align-items: center;
-			  `}
-`;
+const BarContainer = forwardRef<
+	HTMLDivElement,
+	DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> &
+		OrientationProps
+>(function BarContainer({ orientation, children, ...props }, ref) {
+	return (
+		<div
+			{...props}
+			ref={ref}
+			role="presentation"
+			className={tcx("relative grow", {
+				["is-full mbs-2 mbe-1 mli-auto cursor-ew-resize "]:
+					orientation === "inline",
+				["bs-full mlb-auto mli-2 cursor-ns-resize"]: orientation === "block",
+			})}
+		>
+			{children}
+		</div>
+	);
+});
 
-const Text = styled.div`
-	flex: 0 0 auto;
-	overflow: hidden;
-	font-size: 0.8em;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-`;
+function Track({ orientation }: OrientationProps) {
+	return (
+		<div
+			className={tcx("absolute z-[1] bg-text100", {
+				["block-start-1/2 inset-inline-0 bs-[1px]"]: orientation === "inline",
+				["inset-block-0 inline-start-1/2 is-[1px]"]: orientation === "block",
+			})}
+		/>
+	);
+}
 
-const Label = styled(Text)<OrientationProps>`
-	${({ orientation }) =>
-		orientation === "inline"
-			? css`
-					display: flex;
-					align-items: center;
-					inline-size: 3em;
-			  `
-			: css`
-					block-size: 1.4em;
-			  `};
-`;
+const Bar = forwardRef<HTMLDivElement, OrientationProps>(function Bar(
+	{ orientation },
+	ref,
+) {
+	return (
+		<div
+			ref={ref}
+			className={tcx("absolute z-[2] bg-text600", {
+				["origin-left scale-x-0 bs-[3px] inset-inline-0 block-start-[calc(50%-1px)]"]:
+					orientation === "inline",
+				["origin-bottom scale-y-0 is-[3px] inset-block-0 inline-start-[calc(50%-1px)]"]:
+					orientation === "block",
+			})}
+		/>
+	);
+});
 
-const ValueLabel = styled(Text)<OrientationProps>`
-	display: flex;
-	${({ orientation }) =>
-		orientation === "inline"
-			? css`
-					align-items: center;
-					inline-size: 3em;
-			  `
-			: css`
-					align-items: flex-end;
-					block-size: 1.4em;
-			  `};
-`;
-
-const BarContainer = styled.div<OrientationProps>`
-	position: relative;
-	flex: 1 1;
-	${({ orientation }) =>
-		orientation === "inline"
-			? css`
-					block-size: 100%;
-					margin: auto 0.6em;
-					cursor: ew-resize;
-			  `
-			: css`
-					inline-size: 100%;
-					margin: 0.4em auto 0.2em;
-					cursor: ns-resize;
-			  `}
-`;
-
-const Track = styled.div<OrientationProps>`
-	position: absolute;
-	z-index: 1;
-	background-color: ${({ theme }) => theme.colors.text[100]};
-	${({ orientation }) =>
-		orientation === "inline"
-			? css`
-					inset-block-start: 50%;
-					inset-inline: 0;
-					block-size: 1px;
-			  `
-			: css`
-					inset-block: 0;
-					inset-inline-start: 50%;
-					inline-size: 1px;
-			  `};
-`;
-
-const Bar = styled.div<OrientationProps>`
-	position: absolute;
-	z-index: 2;
-	background-color: ${({ theme }) => theme.colors.text[600]};
-	${({ orientation }) =>
-		orientation === "inline"
-			? css`
-					inset-block-start: calc(50% - 1px);
-					inset-inline: 0;
-					block-size: 3px;
-					transform: scaleX(0);
-					transform-origin: left;
-			  `
-			: css`
-					inset-block: 0;
-					inset-inline-start: calc(50% - 1px);
-					inline-size: 3px;
-					transform: scaleY(0);
-					transform-origin: bottom;
-			  `};
-`;
-
-const clampValue = (value: number) => clamp(value, 0, 1);
+function clampValue(value: number) {
+	return clamp(value, 0, 1);
+}
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,
 	fine: 0.4,
 };
 
-type Orientation = "inline" | "block";
-
-type OrientationProps = {
-	orientation: Orientation;
+type Props = {
+	value: number;
+	defaultValue?: number;
+	orientation?: Orientation;
+	label?: string;
+	valueLabel?: string;
+	title?: string;
+	onChange?(value: number): unknown;
 };
+
+type OrientationProps = { orientation: Orientation };
+
+type Orientation = "inline" | "block";

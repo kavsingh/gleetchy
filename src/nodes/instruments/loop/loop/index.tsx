@@ -1,6 +1,5 @@
 import { memo, useCallback, useEffect, useRef } from "react";
 import { clamp, noop } from "lodash";
-import styled from "@emotion/styled";
 
 import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
 import useFileDropRegion from "~/components/hooks/use-file-drop-region";
@@ -9,10 +8,10 @@ import LoopSample from "./loop-sample";
 import PlaybackControls from "./playback-controls";
 import LoopTitleBar from "./loop-title-bar";
 
-import type { FC, ReactNode } from "react";
+import type { PropsWithChildren } from "react";
 import type { LoopUIProps } from "./types";
 
-const Loop: FC<LoopUIProps> = ({
+export default memo(function Loop({
 	nodeId,
 	audioBuffer,
 	loopStart = 0,
@@ -20,7 +19,6 @@ const Loop: FC<LoopUIProps> = ({
 	label = "",
 	fileName = "",
 	connections = [],
-	isActive = true,
 	highGain = 0,
 	midGain = 0,
 	lowGain = 0,
@@ -35,7 +33,7 @@ const Loop: FC<LoopUIProps> = ({
 	remove = noop,
 	receiveAudioFile = noop,
 	onLoopRegionChange = noop,
-}) => {
+}: LoopUIProps) {
 	const regionRef = useRef({ loopStart, loopEnd });
 
 	useEffect(() => {
@@ -97,97 +95,60 @@ const Loop: FC<LoopUIProps> = ({
 	);
 
 	return (
-		<Container isActive={isActive}>
+		<div className="is-full">
+			<LoopTitleBar
+				label={label}
+				fileName={fileName}
+				audioBuffer={audioBuffer}
+				connections={connections}
+				onLabelChange={onLabelChange}
+				duplicate={duplicate}
+				remove={remove}
+				selectAudioFile={selectAudioFile}
+			/>
 			<AudioFileDropRegion onFiles={handleFiles}>
-				<TitleBarContainer>
-					<LoopTitleBar
-						label={label}
-						fileName={fileName}
-						audioBuffer={audioBuffer}
-						connections={connections}
-						onLabelChange={onLabelChange}
-						duplicate={duplicate}
-						remove={remove}
-						selectAudioFile={selectAudioFile}
+				<LoopSample
+					nodeId={nodeId}
+					fromSaved={!!(fileName && !audioBuffer)}
+					audioBuffer={audioBuffer}
+					loopStart={loopStart}
+					loopEnd={loopEnd}
+					onLoopStartDrag={handleLoopStartDrag}
+					onLoopEndDrag={handleLoopEndDrag}
+					onLoopRegionDrag={handleLoopRegionDrag}
+					selectAudioFile={selectAudioFile}
+				/>
+				<div className="flex shrink-0 grow-0 gap-3 bs-full">
+					<PlaybackControls
+						gain={gain}
+						playbackRate={playbackRate}
+						onGainChange={onGainChange}
+						onPlaybackRateChange={onPlaybackRateChange}
 					/>
-				</TitleBarContainer>
-				<MainContainer>
-					<LoopSample
-						nodeId={nodeId}
-						fromSaved={!!(fileName && !audioBuffer)}
-						audioBuffer={audioBuffer}
-						loopStart={loopStart}
-						loopEnd={loopEnd}
-						onLoopStartDrag={handleLoopStartDrag}
-						onLoopEndDrag={handleLoopEndDrag}
-						onLoopRegionDrag={handleLoopRegionDrag}
-						selectAudioFile={selectAudioFile}
+					<Eq3
+						lowGain={lowGain}
+						midGain={midGain}
+						highGain={highGain}
+						onChange={onEqChange}
 					/>
-					<ControlsContainer>
-						<PlaybackControls
-							gain={gain}
-							playbackRate={playbackRate}
-							onGainChange={onGainChange}
-							onPlaybackRateChange={onPlaybackRateChange}
-						/>
-						<Eq3
-							lowGain={lowGain}
-							midGain={midGain}
-							highGain={highGain}
-							onChange={onEqChange}
-						/>
-					</ControlsContainer>
-				</MainContainer>
+				</div>
 			</AudioFileDropRegion>
-		</Container>
+		</div>
 	);
-};
+});
 
-export default memo(Loop);
-
-const Container = styled.div<{ isActive: boolean }>`
-	inline-size: 100%;
-	opacity: ${({ isActive }) => (isActive ? 1 : 0.4)};
-	transition: opacity 0.2s ease-out;
-`;
-
-const TitleBarContainer = styled.div`
-	flex-grow: 0;
-	flex-shrink: 0;
-	inline-size: 100%;
-`;
-
-const MainContainer = styled.div`
-	display: flex;
-	flex: 1 0 10em;
-	flex-wrap: nowrap;
-	inline-size: 100%;
-	padding-inline-start: 0.2em;
-`;
-
-const ControlsContainer = styled.div`
-	display: flex;
-	block-size: 100%;
-	margin-inline-start: 1.2em;
-`;
-
-const AudioFileDropRegion: FC<{
-	children: ReactNode;
-	onFiles(files: File[]): unknown;
-}> = ({ children, onFiles }) => {
+function AudioFileDropRegion({
+	children,
+	onFiles,
+}: PropsWithChildren<{ onFiles(files: File[]): unknown }>) {
 	const { eventHandlers } = useFileDropRegion({
 		onFiles,
 		fileFilter: ({ type }) => type.startsWith("audio"),
 	});
 
-	return <FileDropWrapper {...eventHandlers}>{children}</FileDropWrapper>;
-};
-
-const FileDropWrapper = styled.div`
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
-	justify-content: stretch;
-	inline-size: 100%;
-	block-size: 100%;
-`;
+	return (
+		<div className="flex gap-5 bs-44 is-full" {...eventHandlers}>
+			{children}
+		</div>
+	);
+}

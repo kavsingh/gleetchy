@@ -1,11 +1,9 @@
-import styled from "@emotion/styled";
+import type { PropsWithChildren } from "react";
 
-const ErrorMessage = styled.div`
-	inline-size: 100%;
-	padding: 2em;
-	color: ${({ theme }) => theme.colors.text[600]};
-	font-size: 0.9em;
-	background-color: ${({ theme }) => theme.colors.semantic.error};
-`;
-
-export default ErrorMessage;
+export default function ErrorMessage({ children }: PropsWithChildren) {
+	return (
+		<div className="bg-semanticError p-4 text-sm text-text600 is-full">
+			{children}
+		</div>
+	);
+}

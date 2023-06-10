@@ -2,18 +2,21 @@
 
 import { defineConfig } from "vite";
 import reactPlugin from "@vitejs/plugin-react";
-import checkerPlugin from "vite-plugin-checker";
+// import checkerPlugin from "vite-plugin-checker";
 import importsPlugin from "vite-plugin-imp";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
-const checker = checkerPlugin({
-	overlay: { initialIsOpen: false },
-	typescript: true,
-	eslint: {
-		lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
-		dev: { logLevel: ["error"] },
-	},
-});
+import resolveCssVars from "./scripts/resolve-css-vars";
+import resolveTailwindConfig from "./scripts/resolve-tailwind-config";
+
+// const checker = checkerPlugin({
+// 	overlay: { initialIsOpen: false },
+// 	typescript: true,
+// 	eslint: {
+// 		lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+// 		dev: { logLevel: ["error"] },
+// 	},
+// });
 
 const imports = importsPlugin({
 	libList: [
@@ -21,10 +24,14 @@ const imports = importsPlugin({
 	],
 });
 
-export default defineConfig(({ mode }) => ({
-	define: { "import.meta.vitest": "undefined" },
+export default defineConfig(async ({ mode }) => ({
+	define: {
+		"import.meta.vitest": "undefined",
+		"TAILWIND_CONFIG": JSON.stringify(resolveTailwindConfig()),
+		"THEME_CSS_VARS": JSON.stringify(await resolveCssVars()),
+	},
 	build: { sourcemap: true },
-	plugins: [tsconfigPathsPlugin(), imports, reactPlugin(), checker],
+	plugins: [tsconfigPathsPlugin(), imports, reactPlugin()],
 	resolve: {
 		alias: {
 			...(mode !== "test"

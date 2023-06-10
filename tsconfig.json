@@ -1,27 +1,28 @@
 {
-	"extends": "@tsconfig/node18-strictest/tsconfig.json",
+	"extends": [
+		"@tsconfig/node20/tsconfig.json",
+		"@tsconfig/strictest/tsconfig.json"
+	],
 	"compilerOptions": {
-		"allowSyntheticDefaultImports": true,
-		"esModuleInterop": true,
-		"isolatedModules": true,
-		"jsx": "preserve",
-		"jsxImportSource": "@emotion/react",
+		"jsx": "react-jsx",
 		"lib": ["esnext", "dom"],
 		"module": "esnext",
-		"moduleResolution": "node",
 		"noEmit": true,
 		"paths": { "~/*": ["./src/*"] },
-		"plugins": [{ "name": "typescript-styled-plugin", "validate": false }],
 		"sourceMap": true,
-		"target": "esnext",
-		"types": ["node", "audioworklet", "webaudioapi", "vitest/importMeta"]
+		"types": ["node", "audioworklet", "webaudioapi", "vitest/importMeta"],
+		// leave the following to eslint
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		// leave to eslint: some extensions delete
+		// unreachable code detected via ts too eagerly
+		"allowUnreachableCode": true
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./src", "./scripts", "./*.ts"],
 	"ts-node": {
 		"transpileOnly": true,
 		"compilerOptions": {
-			"isolatedModules": false,
 			"module": "commonjs",
 			"lib": ["esnext"],
 			"target": "es2022"
