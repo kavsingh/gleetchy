@@ -33,7 +33,7 @@
 		"react-input-autosize": "3.0.0",
 		"react-redux": "8.0.7",
 		"reselect": "4.1.8",
-		"tailwind-merge": "1.13.0"
+		"tailwind-merge": "1.13.1"
 	},
 	"devDependencies": {
 		"@tailwindcss/container-queries": "0.1.1",
@@ -47,8 +47,8 @@
 		"@types/color": "3.0.3",
 		"@types/css-tree": "2.3.1",
 		"@types/lodash": "4.14.195",
-		"@types/node": "20.2.5",
-		"@types/react": "18.2.8",
+		"@types/node": "20.2.6",
+		"@types/react": "18.2.10",
 		"@types/react-dom": "18.2.4",
 		"@types/react-input-autosize": "2.2.1",
 		"@types/react-redux": "7.1.25",
