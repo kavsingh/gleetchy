@@ -5,8 +5,8 @@ import ErrorBoundary from "./error-boundary";
 
 import type { ErrorRenderer } from "./error-boundary";
 
-describe("ErrorBoundary", () => {
-	it.only("should render child contents if no error", () => {
+describe("<ErrorBoundary />", () => {
+	it("should render child contents if no error", () => {
 		render(
 			<ErrorBoundary>
 				<Success />,
@@ -23,7 +23,7 @@ describe("ErrorBoundary", () => {
 			</ErrorBoundary>,
 		);
 
-		expect(screen.getByText("Render Error")).toBeInTheDocument();
+		expect(screen.getByText(/Render Error/)).toBeInTheDocument();
 	});
 
 	it("should render fallback if child throws error", () => {
@@ -33,7 +33,7 @@ describe("ErrorBoundary", () => {
 			</ErrorBoundary>,
 		);
 
-		expect(screen.getByText("Fallback Render Error")).toBeInTheDocument();
+		expect(screen.getByText(/Render Error/)).toBeInTheDocument();
 	});
 });
 

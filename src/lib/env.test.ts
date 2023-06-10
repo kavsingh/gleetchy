@@ -16,7 +16,7 @@ describe("lib/env", () => {
 					"zigzam",
 					"onzigzam",
 				]),
-			).toEqual(["mousedown", "mouseup"]);
+			).toStrictEqual(["mousedown", "mouseup"]);
 		});
 	});
 });

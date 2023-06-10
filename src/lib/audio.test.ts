@@ -1,3 +1,4 @@
+/* eslint-disable vitest/max-expects */
 import { describe, it, expect } from "vitest";
 
 import {
@@ -13,27 +14,27 @@ import {
 describe("lib/audio", () => {
 	describe("isAudioEffect", () => {
 		it("determines if node is an audio effect", () => {
-			expect(hasAudioEffectType({})).toBe(false);
-			expect(hasAudioEffectType({ type: "not_effect" })).toBe(false);
-			expect(hasAudioEffectType({ type: "audio_effect" })).toBe(false);
-			expect(hasAudioEffectType({ type: "AUDIO_EFFECT" })).toBe(false);
-			expect(hasAudioEffectType({ type: "audio_effect_" })).toBe(true);
-			expect(hasAudioEffectType({ type: "AUDIO_EFFECT_" })).toBe(true);
-			expect(hasAudioEffectType({ type: "audio-effect_" })).toBe(false);
-			expect(hasAudioEffectType({ type: "AUDIO_EFFECT-" })).toBe(false);
+			expect(hasAudioEffectType({})).toBeFalsy();
+			expect(hasAudioEffectType({ type: "not_effect" })).toBeFalsy();
+			expect(hasAudioEffectType({ type: "audio_effect" })).toBeFalsy();
+			expect(hasAudioEffectType({ type: "AUDIO_EFFECT" })).toBeFalsy();
+			expect(hasAudioEffectType({ type: "audio_effect_" })).toBeTruthy();
+			expect(hasAudioEffectType({ type: "AUDIO_EFFECT_" })).toBeTruthy();
+			expect(hasAudioEffectType({ type: "audio-effect_" })).toBeFalsy();
+			expect(hasAudioEffectType({ type: "AUDIO_EFFECT-" })).toBeFalsy();
 		});
 	});
 
 	describe("isInstrument", () => {
 		it("determines if node is an instrument", () => {
-			expect(hasInstrumentType({})).toBe(false);
-			expect(hasInstrumentType({ type: "not_instrument" })).toBe(false);
-			expect(hasInstrumentType({ type: "instrument" })).toBe(false);
-			expect(hasInstrumentType({ type: "INSTRUMENT" })).toBe(false);
-			expect(hasInstrumentType({ type: "instrument_" })).toBe(true);
-			expect(hasInstrumentType({ type: "INSTRUMENT_" })).toBe(true);
-			expect(hasInstrumentType({ type: "instrument-" })).toBe(false);
-			expect(hasInstrumentType({ type: "INSTRUMENT-" })).toBe(false);
+			expect(hasInstrumentType({})).toBeFalsy();
+			expect(hasInstrumentType({ type: "not_instrument" })).toBeFalsy();
+			expect(hasInstrumentType({ type: "instrument" })).toBeFalsy();
+			expect(hasInstrumentType({ type: "INSTRUMENT" })).toBeFalsy();
+			expect(hasInstrumentType({ type: "instrument_" })).toBeTruthy();
+			expect(hasInstrumentType({ type: "INSTRUMENT_" })).toBeTruthy();
+			expect(hasInstrumentType({ type: "instrument-" })).toBeFalsy();
+			expect(hasInstrumentType({ type: "INSTRUMENT-" })).toBeFalsy();
 		});
 	});
 
@@ -41,13 +42,13 @@ describe("lib/audio", () => {
 		it("determines if two connections are the same", () => {
 			expect(
 				isSameConnection({ from: "a", to: "b" }, { from: "a", to: "b" }),
-			).toBe(true);
+			).toBeTruthy();
 			expect(
 				isSameConnection({ from: "a", to: "b" }, { to: "b", from: "a" }),
-			).toBe(true);
+			).toBeTruthy();
 			expect(
 				isSameConnection({ from: "a", to: "b" }, { from: "b", to: "a" }),
-			).toBe(false);
+			).toBeFalsy();
 		});
 	});
 
@@ -62,20 +63,20 @@ describe("lib/audio", () => {
 				{ from: "b", to: "c", color: "" },
 			];
 
-			expect(getConnectionsFor("q", connections)).toEqual([]);
-			expect(getConnectionsFor("a", connections)).toEqual([
+			expect(getConnectionsFor("q", connections)).toStrictEqual([]);
+			expect(getConnectionsFor("a", connections)).toStrictEqual([
 				{ from: "a", to: "b", color: "" },
 				{ from: "a", to: "d", color: "" },
 				{ from: "d", to: "a", color: "" },
 			]);
-			expect(getConnectionsFor("g", connections)).toEqual([
+			expect(getConnectionsFor("g", connections)).toStrictEqual([
 				{ from: "e", to: "g", color: "" },
 			]);
 		});
 	});
 
 	describe("hasConnectionTo", () => {
-		it("Should determine if from id is connected to id", () => {
+		it("should determine if from id is connected to id", () => {
 			const connections = [
 				{ from: "a", to: "b" },
 				{ from: "a", to: "d" },
@@ -87,20 +88,20 @@ describe("lib/audio", () => {
 
 			const connectedToC = hasConnectionTo.bind(null, connections, "c");
 
-			expect(connectedToC("a")).toBe(true);
-			expect(connectedToC("d")).toBe(true);
-			expect(connectedToC("e")).toBe(false);
-			expect(hasConnectionTo(connections, "f", "e")).toBe(true);
+			expect(connectedToC("a")).toBeTruthy();
+			expect(connectedToC("d")).toBeTruthy();
+			expect(connectedToC("e")).toBeFalsy();
+			expect(hasConnectionTo(connections, "f", "e")).toBeTruthy();
 		});
 	});
 
 	describe("canConnectNodes", () => {
 		it("returns true if nodes are unconnected", () => {
-			expect(canConnectNodes([], { id: "a" }, { id: "b" })).toBe(true);
+			expect(canConnectNodes([], { id: "a" }, { id: "b" })).toBeTruthy();
 		});
 
 		it("returns false if same node", () => {
-			expect(canConnectNodes([], { id: "a" }, { id: "a" })).toBe(false);
+			expect(canConnectNodes([], { id: "a" }, { id: "a" })).toBeFalsy();
 		});
 
 		it("returns false if to node is connected to from node", () => {
@@ -111,7 +112,7 @@ describe("lib/audio", () => {
 
 			const canConnectIn = canConnectNodes.bind(null, connections);
 
-			expect(canConnectIn({ id: "a" }, { id: "d" })).toBe(false);
+			expect(canConnectIn({ id: "a" }, { id: "d" })).toBeFalsy();
 		});
 	});
 
@@ -124,7 +125,7 @@ describe("lib/audio", () => {
 
 			const getConnection = getConnectionBetween.bind(null, connections);
 
-			expect(getConnection({ id: "a" }, { id: "b" })).toEqual({
+			expect(getConnection({ id: "a" }, { id: "b" })).toStrictEqual({
 				from: "a",
 				to: "b",
 				color: "black",

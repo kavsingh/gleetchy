@@ -32,7 +32,7 @@ export default memo(function UI() {
 	}, [registerKeyPress, registerKeyRelease, initAudioContext]);
 
 	return (
-		<div className="p-8 max-is-[92em] mli-auto mlb-0">
+		<div className="p-8 max-is-[92em] mlb-0 mli-auto">
 			<Masthead />
 			<Divider />
 			<InstrumentsRack />

@@ -14,9 +14,9 @@ describe("util/event", () => {
 
 			const result = cancelEvent(mockEvent as unknown as Event);
 
-			expect(mockEvent.preventDefault).toHaveBeenCalled();
-			expect(mockEvent.stopPropagation).toHaveBeenCalled();
-			expect(result).toBe(false);
+			expect(mockEvent.preventDefault).toHaveBeenCalledWith();
+			expect(mockEvent.stopPropagation).toHaveBeenCalledWith();
+			expect(result).toBeFalsy();
 		});
 	});
 
@@ -28,9 +28,9 @@ describe("util/event", () => {
 				nativeEvent: mockEvent as unknown as Event,
 			});
 
-			expect(mockEvent.preventDefault).toHaveBeenCalled();
-			expect(mockEvent.stopPropagation).toHaveBeenCalled();
-			expect(result).toBe(false);
+			expect(mockEvent.preventDefault).toHaveBeenCalledWith();
+			expect(mockEvent.stopPropagation).toHaveBeenCalledWith();
+			expect(result).toBeFalsy();
 		});
 	});
 });

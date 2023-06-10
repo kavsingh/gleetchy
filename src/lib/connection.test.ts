@@ -10,7 +10,7 @@ describe("lib/connection", () => {
 		it("creates a connectable node", () => {
 			const { node } = createConnectableFromGainNodes();
 
-			expect(node).toEqual(
+			expect(node).toStrictEqual(
 				expect.objectContaining({
 					connect: expect.any(Function),
 					disconnect: expect.any(Function),

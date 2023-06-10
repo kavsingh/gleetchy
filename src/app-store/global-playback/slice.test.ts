@@ -7,10 +7,10 @@ describe("globalPlaybackSlice", () => {
 	it("should toggle playback", () => {
 		expect(
 			globalPlaybackSlice.reducer({ isPlaying: false }, togglePlayback),
-		).toEqual({ isPlaying: true });
+		).toStrictEqual({ isPlaying: true });
 
 		expect(
 			globalPlaybackSlice.reducer({ isPlaying: true }, togglePlayback),
-		).toEqual({ isPlaying: false });
+		).toStrictEqual({ isPlaying: false });
 	});
 });

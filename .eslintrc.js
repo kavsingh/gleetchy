@@ -129,10 +129,12 @@ module.exports = {
 		{
 			files: testFilePatterns(),
 			env: { node: true },
+			extends: ["plugin:vitest/all"],
 			rules: {
 				"no-console": "off",
 				"import/no-extraneous-dependencies": ["error", devDependencies],
 				"filenames/match-exported": ["error", "kebab", "\\.test$"],
+				"vitest/no-hooks": "off",
 			},
 		},
 		{

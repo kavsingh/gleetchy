@@ -71,6 +71,7 @@
 		"eslint-plugin-react-hooks": "4.6.0",
 		"eslint-plugin-tailwindcss": "3.12.1",
 		"eslint-plugin-testing-library": "5.11.0",
+		"eslint-plugin-vitest": "0.2.6",
 		"jsdom": "22.1.0",
 		"postcss": "8.4.24",
 		"prettier": "2.8.8",
