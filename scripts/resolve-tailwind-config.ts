@@ -7,3 +7,7 @@ export default function resolveTailwindConfig() {
 }
 
 export type ResolvedTailwindConfig = ReturnType<typeof resolveTailwindConfig>;
+
+if (require.main === module) {
+	console.log(resolveTailwindConfig());
+}

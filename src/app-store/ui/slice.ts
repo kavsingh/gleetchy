@@ -30,8 +30,7 @@ export const uiSlice = createSlice({
 			state.currentTheme = "light";
 		},
 		toggleTheme: (state) => {
-			state.currentTheme =
-				state.currentTheme === "light" ? "dark" : "light";
+			state.currentTheme = state.currentTheme === "light" ? "dark" : "light";
 		},
 		registerKeyPress: (state, action: PayloadAction<string>) => {
 			const key = action.payload;

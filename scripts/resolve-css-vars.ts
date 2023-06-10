@@ -59,6 +59,10 @@ function parseCss(content: string) {
 	return output;
 }
 
+if (require.main === module) {
+	void resolveCssVars().then(console.log);
+}
+
 /*
 sample plain object:
 {

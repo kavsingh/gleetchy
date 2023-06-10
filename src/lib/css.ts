@@ -7,16 +7,20 @@ export function tcx(...args: Parameters<typeof classNames>) {
 }
 
 export function resolveCssTokenValue(token: string, el?: HTMLElement) {
-	const cleaned = token.startsWith("var(")
-		? token.replace(/^var\(/, "").replace(/\)$/, "")
-		: token;
+	const cssVar = extractCssVar(token);
 
-	if (!cleaned.startsWith("--")) return token;
+	if (!cssVar) return token;
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	return globalThis.document.documentElement
 		? getComputedStyle(el ?? globalThis.document.documentElement)
-				.getPropertyValue(cleaned)
+				.getPropertyValue(cssVar)
 				.trim()
 		: "";
+}
+
+export function extractCssVar(token: string) {
+	const extracted = token.replace(/^var\(/, "").replace(/\)$/, "");
+
+	if (extracted.startsWith("--")) return extracted;
 }

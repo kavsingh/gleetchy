@@ -2,10 +2,11 @@
 
 import { defineConfig } from "vite";
 import reactPlugin from "@vitejs/plugin-react";
-import checkerPlugin from "vite-plugin-checker";
+// import checkerPlugin from "vite-plugin-checker";
 import importsPlugin from "vite-plugin-imp";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
+import resolveCssVars from "./scripts/resolve-css-vars";
 import resolveTailwindConfig from "./scripts/resolve-tailwind-config";
 
 // const checker = checkerPlugin({
@@ -23,10 +24,11 @@ const imports = importsPlugin({
 	],
 });
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(async ({ mode }) => ({
 	define: {
 		"import.meta.vitest": "undefined",
 		"TAILWIND_CONFIG": JSON.stringify(resolveTailwindConfig()),
+		"THEME_CSS_VARS": JSON.stringify(await resolveCssVars()),
 	},
 	build: { sourcemap: true },
 	plugins: [tsconfigPathsPlugin(), imports, reactPlugin()],

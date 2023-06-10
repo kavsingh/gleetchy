@@ -18,8 +18,8 @@ export default memo(function Sample({
 }: SampleProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const playheadRef = useRef<HTMLDivElement | null>(null);
-	const text100 = useTailwindValue((theme) => theme["colors"]?.["text100"]);
-	const text600 = useTailwindValue((theme) => theme["colors"]?.["text600"]);
+	const text100 = useTailwindValue((theme) => theme.colors.text100);
+	const text600 = useTailwindValue((theme) => theme.colors.text600);
 
 	const waveForm = useMemo(
 		() => (

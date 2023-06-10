@@ -1,23 +1,20 @@
 import { useMemo } from "react";
 
-import { usePreferredColorScheme } from "~/apis/color-scheme";
-import { resolveCssTokenValue } from "~/lib/css";
+import { extractCssVar } from "~/lib/css";
+
+import useUITheme from "./use-ui-theme";
 
 export default function useTailwindValue(
 	selector: (config: (typeof TAILWIND_CONFIG)["theme"]) => unknown,
 ): string | undefined {
-	const preferredScheme = usePreferredColorScheme();
+	const { theme } = useUITheme();
 
-	return useMemo(
-		() => {
-			const value = selector(TAILWIND_CONFIG.theme);
+	return useMemo(() => {
+		const value = selector(TAILWIND_CONFIG.theme);
+		const cssVar = extractCssVar(String(value));
 
-			if (!value) return;
+		if (!cssVar) return;
 
-			return resolveCssTokenValue(String(value));
-		},
-		// force re-evaluation if color scheme changes
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[preferredScheme],
-	);
+		return THEME_CSS_VARS[theme]?.[cssVar];
+	}, [selector, theme]);
 }
