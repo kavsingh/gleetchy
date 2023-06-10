@@ -23,7 +23,7 @@
 	"ts-node": {
 		"transpileOnly": true,
 		"compilerOptions": {
-			// "module": "commonjs",
+			"module": "commonjs",
 			"lib": ["esnext"],
 			"target": "es2022"
 		}

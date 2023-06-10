@@ -33,14 +33,13 @@ function parseCss(content: string) {
 
 			const selectorChild = pchild.children[0];
 
-			if (selectorChild.type === "ClassSelector") {
+			if (selectorChild?.type === "ClassSelector") {
 				classSelector = selectorChild;
 			}
 		}
 
 		if (!classSelector) continue;
 
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 		const selectorBlock = output[classSelector.name] ?? {};
 
 		for (const bchild of block.children) {

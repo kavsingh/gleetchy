@@ -22,5 +22,5 @@ export function resolveCssTokenValue(token: string, el?: HTMLElement) {
 export function extractCssVar(token: string) {
 	const extracted = token.replace(/^var\(/, "").replace(/\)$/, "");
 
-	if (extracted.startsWith("--")) return extracted;
+	return extracted.startsWith("--") ? extracted : undefined;
 }
