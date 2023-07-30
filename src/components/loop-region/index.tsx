@@ -51,10 +51,11 @@ function LoopRegion({
 		({ movementX }) => {
 			if (!(onLoopEndDrag && containerRef.current)) return;
 
-			onLoopEndDrag(
+			const movement =
 				(movementX * moveMultiplierRef.current) /
-					containerRef.current.offsetWidth,
-			);
+				containerRef.current.offsetWidth;
+
+			onLoopEndDrag(movement);
 		},
 		[onLoopEndDrag, moveMultiplierRef],
 	);
@@ -63,10 +64,11 @@ function LoopRegion({
 		({ movementX }) => {
 			if (!(onLoopRegionDrag && containerRef.current)) return;
 
-			onLoopRegionDrag(
+			const movement =
 				(movementX * moveMultiplierRef.current) /
-					containerRef.current.offsetWidth,
-			);
+				containerRef.current.offsetWidth;
+
+			onLoopRegionDrag(movement);
 		},
 		[onLoopRegionDrag, moveMultiplierRef],
 	);

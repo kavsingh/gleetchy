@@ -84,18 +84,16 @@ export default memo(function Loop({
 			if (movement < 0) {
 				const minStart = 0;
 				const maxStart = 1 - span;
+				const val = regionRef.current.loopStart + movement;
 
-				nextStart = clamp(
-					minStart,
-					maxStart,
-					regionRef.current.loopStart + movement,
-				);
+				nextStart = clamp(val, minStart, maxStart);
 				nextEnd = nextStart + span;
 			} else {
 				const minEnd = span;
 				const maxEnd = 1;
+				const val = regionRef.current.loopEnd + movement;
 
-				nextEnd = clamp(minEnd, maxEnd, regionRef.current.loopEnd + movement);
+				nextEnd = clamp(val, minEnd, maxEnd);
 				nextStart = nextEnd - span;
 			}
 
