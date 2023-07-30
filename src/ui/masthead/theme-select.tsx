@@ -17,13 +17,11 @@ export default function ThemeSelect() {
 		(event) => {
 			event.preventDefault();
 
-			const { target: input } = event;
+			const { target } = event;
 
-			if (!(input instanceof HTMLInputElement && isValidTheme(input.value))) {
-				return;
+			if (target instanceof HTMLInputElement && isValidTheme(target.value)) {
+				dispatch(setTheme(target.value));
 			}
-
-			dispatch(setTheme(input.value));
 		},
 		[dispatch],
 	);
