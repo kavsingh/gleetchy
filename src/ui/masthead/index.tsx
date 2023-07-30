@@ -1,18 +1,14 @@
 import { memo } from "react";
 
-import Button from "~/components/button";
-import useUITheme from "~/style/use-ui-theme";
-
 import PlayPauseButton from "./play-pause-button";
+import ThemeSelect from "./theme-select";
 
 export default memo(function Masthead() {
-	const { toggleTheme } = useUITheme();
-
 	return (
 		<div className="flex w-full items-center justify-between">
 			<PlayPauseButton />
 			<div className="flex flex-nowrap items-center gap-2 self-stretch">
-				<Button onClick={toggleTheme}>L/D</Button>
+				<ThemeSelect />
 				<a
 					href="https://www.github.com/kavsingh/gleetchy"
 					target="_blank"

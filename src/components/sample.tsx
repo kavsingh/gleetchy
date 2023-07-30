@@ -2,7 +2,6 @@ import { memo, useEffect, useMemo, useRef } from "react";
 
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
-import useTailwindColor from "~/style/use-tailwind-color";
 
 export default memo(function Sample({
 	audioBuffer,
@@ -17,18 +16,10 @@ export default memo(function Sample({
 }: SampleProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const playheadRef = useRef<HTMLDivElement | null>(null);
-	const text100 = useTailwindColor((colors) => colors?.["text100"]);
-	const text600 = useTailwindColor((colors) => colors?.["text600"]);
 
 	const waveForm = useMemo(
-		() => (
-			<Waveform
-				color={text600 ?? ""}
-				baselineColor={text100 ?? ""}
-				buffer={audioBuffer}
-			/>
-		),
-		[audioBuffer, text100, text600],
+		() => <Waveform buffer={audioBuffer} />,
+		[audioBuffer],
 	);
 
 	const loopRegion = useMemo(

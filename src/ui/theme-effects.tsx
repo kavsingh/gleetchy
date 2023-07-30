@@ -7,11 +7,31 @@ export default memo(function ThemeEffects() {
 	const theme = useAppSelector(selectTheme);
 
 	useEffect(() => {
-		const root = globalThis.document.documentElement;
+		const doc = globalThis.document.documentElement;
 
-		root.classList.toggle("dark", theme === "dark");
-		root.classList.toggle("light", theme === "light");
+		if (theme !== "system") {
+			doc.classList.toggle("dark", theme === "dark");
+
+			return;
+		}
+
+		function handleChange() {
+			doc.classList.toggle("dark", darkSchemeQuery?.matches);
+		}
+
+		darkSchemeQuery?.addEventListener("change", handleChange);
+
+		handleChange();
+
+		return function cleanup() {
+			darkSchemeQuery?.removeEventListener("change", handleChange);
+		};
 	}, [theme]);
 
 	return null;
 });
+
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const darkSchemeQuery = (globalThis.matchMedia?.(
+	"(prefers-color-scheme: dark)",
+) ?? undefined) as MediaQueryList | undefined;

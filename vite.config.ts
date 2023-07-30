@@ -5,15 +5,8 @@ import { defineConfig } from "vite";
 import checkerPlugin from "vite-plugin-checker";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
-import resolveCssVars from "./scripts/resolve-css-vars";
-import resolveTailwindConfig from "./scripts/resolve-tailwind-config";
-
-export default defineConfig(async ({ mode }) => ({
-	define: {
-		"import.meta.vitest": "undefined",
-		"TAILWIND_COLORS": JSON.stringify(resolveTailwindConfig().theme?.colors),
-		"THEME_COLOR_VARS": JSON.stringify(await resolveCssVars()),
-	},
+export default defineConfig(({ mode }) => ({
+	define: { "import.meta.vitest": "undefined" },
 	build: { sourcemap: true },
 	plugins: [tsconfigPathsPlugin(), reactPlugin(), checker(mode)],
 	resolve: {

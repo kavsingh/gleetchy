@@ -1,25 +1,28 @@
 import { useRef, useEffect, memo } from "react";
 
+import { useAppSelector } from "~/app-store/hooks/base";
+import { selectTheme } from "~/app-store/ui/selectors";
+
 export default memo(function Waveform({
-	color,
-	baselineColor,
 	timeRegions,
 	buffer,
-}: WaveformProps) {
+}: WaveformProps & { className?: string | undefined }) {
+	const theme = useAppSelector(selectTheme);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 
 	useEffect(() => {
 		const handleResize = () => {
-			if (canvasRef.current) {
-				updateWaveform(canvasRef.current, {
-					color,
-					baselineColor,
-					timeRegions,
-					buffer,
-					// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-					pixelRatio: globalThis.window.devicePixelRatio ?? 1,
-				});
-			}
+			const canvas = canvasRef.current;
+
+			if (!canvas) return;
+
+			canvas.setAttribute("data-theme", theme);
+			updateWaveform(canvas, {
+				timeRegions,
+				buffer,
+				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+				pixelRatio: globalThis.window.devicePixelRatio ?? 1,
+			});
 		};
 
 		handleResize();
@@ -28,11 +31,14 @@ export default memo(function Waveform({
 		return () => {
 			globalThis.window.removeEventListener("resize", handleResize);
 		};
-	}, [color, baselineColor, timeRegions, buffer]);
+	}, [timeRegions, buffer, theme]);
 
 	return (
 		<div className="h-full w-full overflow-hidden">
-			<canvas className="h-full w-full" ref={canvasRef} />
+			<canvas
+				className={"h-full w-full border-0 border-text100 text-text600"}
+				ref={canvasRef}
+			/>
 		</div>
 	);
 });
@@ -90,8 +96,6 @@ function drawWaveform(
 function updateWaveform(
 	canvasNode: HTMLCanvasElement,
 	{
-		color,
-		baselineColor,
 		pixelRatio = 1,
 		timeRegions = 4,
 		buffer,
@@ -101,6 +105,7 @@ function updateWaveform(
 
 	if (!context) return;
 
+	const style = getComputedStyle(canvasNode);
 	const width = canvasNode.offsetWidth;
 	const height = canvasNode.offsetHeight;
 
@@ -109,8 +114,8 @@ function updateWaveform(
 
 	context.scale(pixelRatio, pixelRatio);
 	context.clearRect(0, 0, width, height);
-	context.fillStyle = color;
-	context.strokeStyle = baselineColor;
+	context.fillStyle = style.color;
+	context.strokeStyle = style.borderColor;
 
 	if (buffer) {
 		drawTimeRegions(context, width, height, timeRegions);
@@ -121,8 +126,6 @@ function updateWaveform(
 }
 
 export type WaveformProps = {
-	color: string;
-	baselineColor: string;
 	buffer: Nullable<AudioBuffer>;
 	timeRegions?: number | undefined;
 };
