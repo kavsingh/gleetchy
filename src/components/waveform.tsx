@@ -1,5 +1,4 @@
 import colorFn from "color";
-import { range } from "lodash";
 import { useRef, useEffect, memo } from "react";
 
 export default memo(function Waveform({
@@ -70,9 +69,9 @@ function drawWaveform(
 	buffer: AudioBuffer,
 ) {
 	const buffStep = buffer.length / width;
-	const channels = range(0, buffer.numberOfChannels).map((channel) =>
-		buffer.getChannelData(channel),
-	);
+	const channels = Array.from({ length: buffer.numberOfChannels }, (_, i) => {
+		return buffer.getChannelData(i);
+	});
 	const channelHeight = height / channels.length;
 	const mids = channels.map((_, i) => (i + 0.5) * channelHeight);
 	const valueMult = channelHeight / 2;
