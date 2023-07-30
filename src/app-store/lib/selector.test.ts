@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";
+import { createSelector } from "@reduxjs/toolkit";
 import { describe, it, expect } from "vitest";
 
 import { createDeepEqualSelector } from "./selector";
@@ -22,7 +22,7 @@ describe("custom state selectors", () => {
 		});
 	});
 
-	describe("createValueEqSelector", () => {
+	describe("createDeepEqualSelector", () => {
 		it("only results in new value if state value has changed", () => {
 			let state = { a: { b: [1, 2] } };
 			const aSelector = (s: typeof state) => s.a;

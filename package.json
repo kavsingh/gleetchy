@@ -22,8 +22,6 @@
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "1.9.5",
-		"color": "4.2.3",
-		"core-js": "3.32.0",
 		"cuid": "2.1.8",
 		"fast-equals": "5.0.1",
 		"preact": "10.16.0",

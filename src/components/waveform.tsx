@@ -1,4 +1,3 @@
-import colorFn from "color";
 import { useRef, useEffect, memo } from "react";
 
 export default memo(function Waveform({
@@ -111,7 +110,7 @@ function updateWaveform(
 	context.scale(pixelRatio, pixelRatio);
 	context.clearRect(0, 0, width, height);
 	context.fillStyle = color;
-	context.strokeStyle = colorFn(baselineColor).darken(0.06).hex();
+	context.strokeStyle = baselineColor;
 
 	if (buffer) {
 		drawTimeRegions(context, width, height, timeRegions);
