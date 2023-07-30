@@ -1,6 +1,7 @@
-import { clamp } from "lodash";
 import { memo, useState, useRef, useCallback, useEffect } from "react";
 import { twMerge } from "tailwind-merge";
+
+import { clamp } from "~/lib/util/number";
 
 import SVGArc from "./svg-arc";
 import useControlResponseRef from "../hooks/use-control-response-ref";

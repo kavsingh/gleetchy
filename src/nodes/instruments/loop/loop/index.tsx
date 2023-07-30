@@ -1,7 +1,7 @@
-import { clamp } from "lodash";
 import { memo, useCallback, useEffect, useRef } from "react";
 
 import useFileDropRegion from "~/components/hooks/use-file-drop-region";
+import { clamp } from "~/lib/util/number";
 import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
 
 import LoopSample from "./loop-sample";
@@ -77,16 +77,26 @@ export default memo(function Loop({
 
 	const handleLoopRegionDrag = useCallback(
 		(movement: number) => {
-			const gap = regionRef.current.loopEnd - regionRef.current.loopStart;
+			const span = regionRef.current.loopEnd - regionRef.current.loopStart;
 			let nextStart: number;
 			let nextEnd: number;
 
 			if (movement < 0) {
-				nextStart = clamp(regionRef.current.loopStart + movement, 0, 1 - gap);
-				nextEnd = nextStart + gap;
+				const minStart = 0;
+				const maxStart = 1 - span;
+
+				nextStart = clamp(
+					minStart,
+					maxStart,
+					regionRef.current.loopStart + movement,
+				);
+				nextEnd = nextStart + span;
 			} else {
-				nextEnd = clamp(regionRef.current.loopEnd + movement, gap, 1);
-				nextStart = nextEnd - gap;
+				const minEnd = span;
+				const maxEnd = 1;
+
+				nextEnd = clamp(minEnd, maxEnd, regionRef.current.loopEnd + movement);
+				nextStart = nextEnd - span;
 			}
 
 			onLoopRegionChange(nextStart, nextEnd);

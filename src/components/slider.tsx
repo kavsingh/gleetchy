@@ -1,6 +1,7 @@
-import { clamp } from "lodash";
 import { memo, useRef, useEffect, useCallback, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
+
+import { clamp } from "~/lib/util/number";
 
 import useControlResponseRef from "./hooks/use-control-response-ref";
 import usePointerDrag from "./hooks/use-pointer-drag";
