@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { pick } from "lodash";
 
 import initialNodes from "~/app-store/default-nodes";
 import { prefixedId } from "~/lib/id";
@@ -114,11 +113,16 @@ export const audioNodesSlice = createSlice({
 			const { id, file } = action.payload;
 			const existing = state.byId[id];
 
-			if (existing) {
-				Object.assign(
-					existing.audioProps,
-					pick(file, Object.keys(existing.audioProps)),
-				);
+			if (!existing) return;
+
+			// TODO: clean this up. specific prop types etc.
+
+			const keys = Object.keys(
+				existing.audioProps,
+			) as (keyof typeof existing.audioProps)[];
+
+			for (const key of keys) {
+				if (key in file) existing.audioProps[key] = file[key];
 			}
 		});
 	},

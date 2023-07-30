@@ -1,5 +1,4 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { pick } from "lodash";
 
 import {
 	readFileToArrayBuffer,
@@ -71,12 +70,10 @@ export const decodeAudioFile = createAsyncThunk(
 		if (!audioContext) return;
 
 		try {
+			const { fileName, fileType } = file;
 			const audioBuffer = await audioContext.decodeAudioData(file.buffer);
 
-			return {
-				id,
-				file: { ...pick(file, ["fileName", "fileType"]), audioBuffer },
-			};
+			return { id, file: { fileName, fileType, audioBuffer } };
 		} catch (e) {
 			throw errorFrom(e);
 		}
