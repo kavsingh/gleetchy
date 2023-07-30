@@ -5,7 +5,7 @@ import { selectIsPlaying } from "~/app-store/global-playback/selectors";
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-const useGlobalPlayback = () => {
+export default function useGlobalPlayback() {
 	const dispatch = useAppDispatch();
 	const isPlaying = useAppSelector(selectIsPlaying);
 	const togglePlayback = useCallback(
@@ -14,6 +14,4 @@ const useGlobalPlayback = () => {
 	);
 
 	return { isPlaying, togglePlayback } as const;
-};
-
-export default useGlobalPlayback;
+}

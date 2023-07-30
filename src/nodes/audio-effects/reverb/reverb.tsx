@@ -1,9 +1,9 @@
-import { memo, useCallback, useMemo } from "react";
 import { noop } from "lodash";
+import { memo, useCallback, useMemo } from "react";
 
 import Knob from "~/components/knob";
-import TitleBar from "~/components/title-bar";
 import SelectBox from "~/components/select-box";
+import TitleBar from "~/components/title-bar";
 
 import type { ImpulseName } from "./impulses";
 import type { AudioNodeConnection } from "~/types";
@@ -55,15 +55,15 @@ export default memo(function Reverb({
 	);
 
 	return (
-		<div className="is-full">
+		<div className="w-full">
 			{titleBar}
-			<div className="flex items-start gap-2 is-full">
+			<div className="flex w-full items-start gap-2">
 				<SelectBox
 					options={impulseOptions}
 					onChange={handleImpulseChange}
 					value={impulse}
 				/>
-				<div className="shrink-0 grow-0 is-12">{wetDryKnob}</div>
+				<div className="w-12 shrink-0 grow-0">{wetDryKnob}</div>
 			</div>
 		</div>
 	);

@@ -13,7 +13,10 @@ import type { AudioFileData, DecodedAudioFileData } from "~/types";
 
 export const selectAudioFile = createAsyncThunk(
 	"audioFiles/select",
-	async ({ id }: SelectAudioFileArg, { dispatch, getState }) => {
+	async function selectFile(
+		{ id }: SelectAudioFileArg,
+		{ dispatch, getState },
+	) {
 		const audioContext = selectAudioContext(getState() as AppState);
 
 		if (!audioContext) return;
@@ -36,7 +39,10 @@ export const selectAudioFile = createAsyncThunk(
 
 export const receiveAudioFile = createAsyncThunk(
 	"audioFiles/receive",
-	async ({ id, file }: ReceiveAudioFileArg, { dispatch, getState }) => {
+	async function receiveFile(
+		{ id, file }: ReceiveAudioFileArg,
+		{ dispatch, getState },
+	) {
 		const audioContext = selectAudioContext(getState() as AppState);
 
 		if (!audioContext) return;
@@ -56,10 +62,10 @@ export const receiveAudioFile = createAsyncThunk(
 
 export const decodeAudioFile = createAsyncThunk(
 	"audioFiles/decode",
-	async (
+	async function decodeFile(
 		{ id, file }: DecodeAudioFileArg,
 		{ getState },
-	): Promise<DecodeAudioFileReturn | undefined> => {
+	): Promise<DecodeAudioFileReturn | undefined> {
 		const audioContext = selectAudioContext(getState() as AppState);
 
 		if (!audioContext) return;
@@ -77,8 +83,9 @@ export const decodeAudioFile = createAsyncThunk(
 	},
 );
 
-const errorFrom = (value: unknown) =>
-	value instanceof Error ? value : new Error(String(value));
+function errorFrom(value: unknown) {
+	return value instanceof Error ? value : new Error(String(value));
+}
 
 type SelectAudioFileArg = {
 	id: string;

@@ -1,9 +1,18 @@
-import { uniq } from "lodash";
+export function filterSupportedEvents(eventNames: string[]) {
+	const supported = new Set<string>();
 
-const asEventName = (name: string) =>
-	name.startsWith("on") ? name.slice(2) : name;
+	for (const eventName of eventNames) {
+		if (isSupportedEvent(eventName)) supported.add(asEventName(eventName));
+	}
 
-const isSupportedEvent = (name: string) => {
+	return Array.from(supported);
+}
+
+function asEventName(name: string) {
+	return name.startsWith("on") ? name.slice(2) : name;
+}
+
+function isSupportedEvent(name: string) {
 	const asHandlerName = name.startsWith("on") ? name : `on${name}`;
 
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
@@ -11,12 +20,4 @@ const isSupportedEvent = (name: string) => {
 		? asHandlerName in globalThis.document ||
 				asHandlerName in globalThis.document.documentElement
 		: false;
-};
-
-export const filterSupportedEvents = (eventNames: string[]) =>
-	uniq(
-		eventNames.reduce((acc: string[], name) => {
-			if (isSupportedEvent(name)) acc.push(asEventName(name));
-			return acc;
-		}, []),
-	);
+}

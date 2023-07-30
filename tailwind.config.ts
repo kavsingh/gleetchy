@@ -1,5 +1,8 @@
-/** @type {import('tailwindcss').Config} */
-module.exports = {
+import containerQueriesPlugin from "@tailwindcss/container-queries";
+
+import type { Config } from "tailwindcss";
+
+const config: Config = {
 	darkMode: "class",
 	content: ["./index.html", "./src/**/*.tsx"],
 	theme: {
@@ -17,14 +20,15 @@ module.exports = {
 			},
 			keyframes: {
 				"fade-in": {
-					to: { opacity: 1 },
+					to: { opacity: "1" },
 				},
 			},
 		},
 	},
 	plugins: [
-		require("@tailwindcss/container-queries"),
-		// @ts-expect-error untyped
-		require("tailwindcss-logical"),
+		// @ts-expect-error upstream exactOptionals incompat
+		containerQueriesPlugin,
 	],
 };
+
+export default config;

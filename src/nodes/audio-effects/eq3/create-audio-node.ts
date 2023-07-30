@@ -1,7 +1,7 @@
 import { GAudioNode } from "~/lib/g-audio-node";
 
-import nodeType from "./node-type";
 import { defaultProps } from "./node-props";
+import nodeType from "./node-type";
 
 import type { Props } from "./node-props";
 
@@ -12,7 +12,10 @@ export class GEq3Node extends GAudioNode<Props> {
 	midNode = this.audioContext.createBiquadFilter();
 	highNode = this.audioContext.createBiquadFilter();
 
-	constructor(protected override audioContext: AudioContext, props: Props) {
+	constructor(
+		protected override audioContext: AudioContext,
+		props: Props,
+	) {
 		super(audioContext, props);
 
 		this.lowNode.type = "lowshelf";

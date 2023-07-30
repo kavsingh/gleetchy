@@ -1,5 +1,5 @@
-import { memo, useCallback, useMemo } from "react";
 import { noop } from "lodash";
+import { memo, useCallback, useMemo } from "react";
 
 import Slider from "~/components/slider";
 
@@ -66,7 +66,7 @@ export default memo(function Eq3({
 	);
 
 	return (
-		<div className="flex gap-2 bs-full">
+		<div className="flex h-full gap-2">
 			<SliderContainer key="lowGain">{lowGainSlider}</SliderContainer>
 			<SliderContainer key="midGain">{midGainSlider}</SliderContainer>
 			<SliderContainer key="highGain">{highGainSlider}</SliderContainer>
@@ -75,7 +75,7 @@ export default memo(function Eq3({
 });
 
 function SliderContainer({ children }: PropsWithChildren) {
-	return <div className="bs-full is-4">{children}</div>;
+	return <div className="h-full w-4">{children}</div>;
 }
 
 export type Eq3Props = {

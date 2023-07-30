@@ -1,15 +1,15 @@
 import { useCallback, memo } from "react";
 
-import { nodeType, UI } from "~/nodes/instruments/loop";
 import {
 	receiveAudioFile as receiveAudioFileAction,
 	selectAudioFile as selectAudioFileAction,
 } from "~/app-store/audio-files/actions";
+import { useAppDispatch } from "~/app-store/hooks/base";
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
-import { useAppDispatch } from "~/app-store/hooks/base";
 import NodeWrapper from "~/components/node-wrapper";
+import { nodeType, UI } from "~/nodes/instruments/loop";
 
 import type { NodeProps as Eq3Props } from "~/nodes/audio-effects/eq3";
 import type { NodeProps } from "~/nodes/instruments/loop";

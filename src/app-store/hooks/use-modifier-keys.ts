@@ -1,13 +1,13 @@
 import { useCallback } from "react";
 
+import { useAppDispatch, useAppSelector } from "./base";
 import {
 	registerKeyPress as registerKeyPressAction,
 	registerKeyRelease as registerKeyReleaseAction,
 } from "../ui/actions";
 import { selectModifierKeys } from "../ui/selectors";
-import { useAppDispatch, useAppSelector } from "./base";
 
-const useModifierKeys = () => {
+export default function useModifierKeys() {
 	const dispatch = useAppDispatch();
 	const activeKeys = useAppSelector(selectModifierKeys);
 	const registerKeyPress = useCallback(
@@ -24,6 +24,4 @@ const useModifierKeys = () => {
 	);
 
 	return { activeKeys, registerKeyPress, registerKeyRelease } as const;
-};
-
-export default useModifierKeys;
+}

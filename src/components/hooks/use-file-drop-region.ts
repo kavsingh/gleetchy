@@ -1,5 +1,5 @@
-import { useState, useCallback, useMemo } from "react";
 import { stubTrue, noop } from "lodash";
+import { useState, useCallback, useMemo } from "react";
 
 import { cancelReactEvent } from "~/lib/util";
 
@@ -8,7 +8,6 @@ import type { DragEventHandler } from "react";
 export default function useFileDropRegion({
 	fileFilter = stubTrue,
 	onFiles = noop,
-	onNoFiles = noop,
 }: UseFileDropRegionProps): {
 	isDropActive: boolean;
 	eventHandlers: {
@@ -35,17 +34,13 @@ export default function useFileDropRegion({
 
 	const onDrop = useCallback<DragEventHandler>(
 		(event) => {
-			const receivable = Array.from(event.dataTransfer.files).filter(
-				fileFilter,
-			);
+			const filtered = Array.from(event.dataTransfer.files).filter(fileFilter);
 
 			cancelReactEvent(event);
 			setIsDropActive(false);
-
-			if (receivable.length) onFiles(receivable);
-			else onNoFiles();
+			onFiles(filtered);
 		},
-		[fileFilter, onFiles, onNoFiles],
+		[fileFilter, onFiles],
 	);
 
 	const eventHandlers = useMemo(
@@ -65,7 +60,6 @@ export default function useFileDropRegion({
 }
 
 export type UseFileDropRegionProps = {
-	fileFilter?(file: File, index: number, array: File[]): boolean;
+	fileFilter?(file: File, index: number, files: File[]): boolean;
 	onFiles?(files: File[]): unknown;
-	onNoFiles?(): unknown;
 };

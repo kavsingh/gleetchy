@@ -1,21 +1,20 @@
-import { memo, useRef, useEffect, useCallback, forwardRef } from "react";
 import { clamp, noop } from "lodash";
-
-import { tcx } from "~/lib/css";
+import { memo, useRef, useEffect, useCallback, forwardRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 import useControlResponseRef from "./hooks/use-control-response-ref";
 import usePointerDrag from "./hooks/use-pointer-drag";
 
+import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
+import type {
+	PointerDragEndHandler,
+	PointerDragMoveHandler,
+} from "./hooks/use-pointer-drag";
 import type {
 	DetailedHTMLProps,
 	HTMLAttributes,
 	PropsWithChildren,
 } from "react";
-import type {
-	PointerDragEndHandler,
-	PointerDragMoveHandler,
-} from "./hooks/use-pointer-drag";
-import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
 
 export default memo(function Slider({
 	value,
@@ -87,15 +86,16 @@ export default memo(function Slider({
 	return (
 		<div
 			title={title}
-			className={tcx("flex items-stretch bs-full is-full", {
-				["flex-col items-center"]: orientation === "block",
-			})}
+			className={twMerge(
+				"flex h-full w-full items-stretch",
+				orientation === "block" && "flex-col items-center",
+			)}
 		>
 			<LabelText
-				className={tcx({
-					["flex items-center is-12"]: orientation === "inline",
-					["bs-6"]: orientation === "block",
-				})}
+				className={twMerge(
+					orientation === "inline" && "flex w-12 items-center",
+					orientation === "block" && "h-6",
+				)}
 			>
 				{label}
 			</LabelText>
@@ -109,10 +109,10 @@ export default memo(function Slider({
 				<Bar orientation={orientation} ref={barRef} />
 			</BarContainer>
 			<LabelText
-				className={tcx({
-					["items-center is-12"]: orientation === "inline",
-					["items-end bs-6"]: orientation === "block",
-				})}
+				className={twMerge(
+					orientation === "inline" && "w-12 items-center",
+					orientation === "block" && "h-6 items-end",
+				)}
 			>
 				{valueLabel}
 			</LabelText>
@@ -125,12 +125,7 @@ function LabelText({
 	children,
 }: PropsWithChildren<{ className: string }>) {
 	return (
-		<div
-			className={tcx(
-				"shrink-0 grow-0 overflow-hidden text-ellipsis whitespace-nowrap text-sm",
-				className,
-			)}
-		>
+		<div className={twMerge("shrink-0 grow-0 truncate text-sm", className)}>
 			{children}
 		</div>
 	);
@@ -146,11 +141,12 @@ const BarContainer = forwardRef<
 			{...props}
 			ref={ref}
 			role="presentation"
-			className={tcx("relative grow", {
-				["is-full mbs-2 mbe-1 mli-auto cursor-ew-resize "]:
-					orientation === "inline",
-				["bs-full mlb-auto mli-2 cursor-ns-resize"]: orientation === "block",
-			})}
+			className={twMerge(
+				"relative grow",
+				orientation === "inline" &&
+					"mx-auto mb-1 mt-2 w-full cursor-ew-resize ",
+				orientation === "block" && "mx-2 my-auto h-full cursor-ns-resize",
+			)}
 		>
 			{children}
 		</div>
@@ -160,10 +156,11 @@ const BarContainer = forwardRef<
 function Track({ orientation }: OrientationProps) {
 	return (
 		<div
-			className={tcx("absolute z-[1] bg-text100", {
-				["block-start-1/2 inset-inline-0 bs-[1px]"]: orientation === "inline",
-				["inset-block-0 inline-start-1/2 is-[1px]"]: orientation === "block",
-			})}
+			className={twMerge(
+				"absolute z-[1] bg-text100",
+				orientation === "inline" && "inset-x-0 top-1/2 h-[1px]",
+				orientation === "block" && "inset-y-0 start-1/2 w-[1px]",
+			)}
 		/>
 	);
 }
@@ -175,12 +172,13 @@ const Bar = forwardRef<HTMLDivElement, OrientationProps>(function Bar(
 	return (
 		<div
 			ref={ref}
-			className={tcx("absolute z-[2] bg-text600", {
-				["origin-left scale-x-0 bs-[3px] inset-inline-0 block-start-[calc(50%-1px)]"]:
-					orientation === "inline",
-				["origin-bottom scale-y-0 is-[3px] inset-block-0 inline-start-[calc(50%-1px)]"]:
-					orientation === "block",
-			})}
+			className={twMerge(
+				"absolute z-[2] bg-text600",
+				orientation === "inline" &&
+					"inset-x-0 top-[calc(50%-1px)] h-[3px] origin-left scale-x-0",
+				orientation === "block" &&
+					"inset-y-0 start-[calc(50%-1px)] w-[3px] origin-bottom scale-y-0",
+			)}
 		/>
 	);
 });

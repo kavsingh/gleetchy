@@ -1,9 +1,9 @@
 import { GAudioNode } from "~/lib/g-audio-node";
-import { prodError } from "~/lib/dev";
+import { logError } from "~/lib/log";
 
-import nodeType from "./node-type";
-import { defaultProps } from "./node-props";
 import { loadImpulse } from "./impulses";
+import { defaultProps } from "./node-props";
+import nodeType from "./node-type";
 
 import type { Props } from "./node-props";
 
@@ -43,7 +43,7 @@ export class GReverbNode extends GAudioNode<Props> {
 				.then((buffer) => {
 					this.reverbNode.buffer = buffer;
 				})
-				.catch(prodError);
+				.catch(logError);
 		}
 	}
 }

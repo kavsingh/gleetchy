@@ -1,8 +1,8 @@
-import { useMemo } from "react";
 import { noop } from "lodash";
+import { useMemo } from "react";
 
-import TextInput from "./text-input";
 import Button from "./button";
+import TextInput from "./text-input";
 
 import type { PropsWithChildren } from "react";
 import type { AudioNodeConnection } from "~/types";
@@ -20,7 +20,7 @@ export default function TitleBar({
 			<>
 				{connections.map(({ color, from, to }) => (
 					<div
-						className="shrink-0 grow-0 border-current bg-current bs-3 is-3 mie-1"
+						className="me-1 h-3 w-3 shrink-0 grow-0 border-current bg-current"
 						style={{ color }}
 						key={`${from}${to}`}
 					/>
@@ -31,13 +31,13 @@ export default function TitleBar({
 	);
 
 	return (
-		<div className="text-xs mbe-2">
+		<div className="mb-2 text-xs">
 			<div className="flex items-center justify-start">
-				<div className="flex bs-full">{connectionIndicators}</div>
+				<div className="flex h-full">{connectionIndicators}</div>
 				<TextInput onChange={onLabelChange} value={label} />
 			</div>
 			<div className="flex items-center">
-				<div className="mie-1">{type} /</div>
+				<div className="me-1">{type} /</div>
 				{children}
 				<Button onClick={onRemoveClick}>Remove</Button>
 			</div>

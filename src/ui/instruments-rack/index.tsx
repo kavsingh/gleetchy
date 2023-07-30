@@ -1,10 +1,10 @@
 import { useCallback, memo } from "react";
 
-import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import useAddNode from "~/app-store/hooks/use-add-node";
-import { nodeType as loopType } from "~/nodes/instruments/loop";
-import ErrorBoundary from "~/components/error-boundary";
+import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import ButtonGroup, { Button } from "~/components/button-group";
+import ErrorBoundary from "~/components/error-boundary";
+import { nodeType as loopType } from "~/nodes/instruments/loop";
 
 import ConnectedLoop from "./connected-loop";
 
@@ -12,7 +12,7 @@ import type { PropsWithChildren } from "react";
 
 export default memo(function InstrumentsRack() {
 	return (
-		<div className="flex flex-col gap-8 is-full">
+		<div className="flex w-full flex-col gap-8">
 			<Rack />
 			<AddInstrumentButtons />
 		</div>
@@ -41,7 +41,7 @@ function Rack() {
 }
 
 function AddInstrumentButtons() {
-	const { addNode } = useAddNode();
+	const addNode = useAddNode();
 	const addLoop = useCallback(() => addNode(loopType), [addNode]);
 
 	return (

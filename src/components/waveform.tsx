@@ -1,6 +1,6 @@
-import { useRef, useEffect, memo } from "react";
 import colorFn from "color";
 import { range } from "lodash";
+import { useRef, useEffect, memo } from "react";
 
 export default memo(function Waveform({
 	color,
@@ -27,12 +27,14 @@ export default memo(function Waveform({
 		handleResize();
 		globalThis.window.addEventListener("resize", handleResize);
 
-		return () => globalThis.window.removeEventListener("resize", handleResize);
+		return () => {
+			globalThis.window.removeEventListener("resize", handleResize);
+		};
 	}, [color, baselineColor, timeRegions, buffer]);
 
 	return (
-		<div className="overflow-hidden bs-full is-full">
-			<canvas className="bs-full is-full" ref={canvasRef} />
+		<div className="h-full w-full overflow-hidden">
+			<canvas className="h-full w-full" ref={canvasRef} />
 		</div>
 	);
 });

@@ -1,6 +1,5 @@
 import { memo } from "react";
-
-import { tcx } from "~/lib/css";
+import { twMerge } from "tailwind-merge";
 
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
 
@@ -15,9 +14,9 @@ export default memo(function Button({
 	return (
 		<button
 			{...props}
-			className={tcx(
+			className={twMerge(
 				"block appearance-none transition-colors hover:text-text600 focus-visible:text-text600 active:text-text600 disabled:cursor-default disabled:text-text100",
-				{ ["text-xs"]: isBraced },
+				isBraced && "text-xs",
 				className,
 			)}
 		>

@@ -1,2 +1,3 @@
-export const isFiniteNumber = (value: unknown): value is number =>
-	Number.isFinite(value);
+export function isFiniteNumber(value: unknown): value is number {
+	return Number.isFinite(value);
+}

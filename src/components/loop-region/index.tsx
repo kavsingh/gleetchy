@@ -1,19 +1,16 @@
 import { useCallback, useRef, memo } from "react";
-import { noop } from "lodash";
 import { twMerge } from "tailwind-merge";
 
-import { tcx } from "~/lib/css";
-
-import useControlResponseRef from "../hooks/use-control-response-ref";
 import LoopHandle from "./loop-handle";
+import useControlResponseRef from "../hooks/use-control-response-ref";
 import usePointerDrag from "../hooks/use-pointer-drag";
 
+import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type {
 	PropsWithChildren,
 	DetailedHTMLProps,
 	HTMLAttributes,
 } from "react";
-import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 
 export default memo(
 	LoopRegion,
@@ -30,45 +27,46 @@ const controlResponseMultipliers = {
 function LoopRegion({
 	loopStart,
 	loopEnd,
-	onLoopStartDrag = noop,
-	onLoopEndDrag = noop,
-	onLoopRegionDrag = noop,
+	onLoopStartDrag,
+	onLoopEndDrag,
+	onLoopRegionDrag,
 }: Props) {
 	const moveMultiplierRef = useControlResponseRef(controlResponseMultipliers);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	const handleStartHandleDrag = useCallback<PointerDragMoveHandler>(
 		({ movementX }) => {
-			if (containerRef.current) {
-				onLoopStartDrag(
-					(movementX * moveMultiplierRef.current) /
-						containerRef.current.offsetWidth,
-				);
-			}
+			if (!(onLoopStartDrag && containerRef.current)) return;
+
+			const movement =
+				(movementX * moveMultiplierRef.current) /
+				containerRef.current.offsetWidth;
+
+			onLoopStartDrag(movement);
 		},
 		[onLoopStartDrag, moveMultiplierRef],
 	);
 
 	const handleEndHandleDrag = useCallback<PointerDragMoveHandler>(
 		({ movementX }) => {
-			if (containerRef.current) {
-				onLoopEndDrag(
-					(movementX * moveMultiplierRef.current) /
-						containerRef.current.offsetWidth,
-				);
-			}
+			if (!(onLoopEndDrag && containerRef.current)) return;
+
+			onLoopEndDrag(
+				(movementX * moveMultiplierRef.current) /
+					containerRef.current.offsetWidth,
+			);
 		},
 		[onLoopEndDrag, moveMultiplierRef],
 	);
 
 	const handleLoopRegionDrag = useCallback<PointerDragMoveHandler>(
 		({ movementX }) => {
-			if (containerRef.current) {
-				onLoopRegionDrag(
-					(movementX * moveMultiplierRef.current) /
-						containerRef.current.offsetWidth,
-				);
-			}
+			if (!(onLoopRegionDrag && containerRef.current)) return;
+
+			onLoopRegionDrag(
+				(movementX * moveMultiplierRef.current) /
+					containerRef.current.offsetWidth,
+			);
 		},
 		[onLoopRegionDrag, moveMultiplierRef],
 	);
@@ -87,12 +85,12 @@ function LoopRegion({
 	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
 
 	return (
-		<div className="relative bs-full is-full" ref={containerRef}>
+		<div className="relative h-full w-full" ref={containerRef}>
 			<HandleContainer {...startDragListeners} offset={loopStart}>
-				<LoopHandle align="left" />
+				<LoopHandle align="start" />
 			</HandleContainer>
 			<HandleContainer {...endDragListeners} offset={loopEnd}>
-				<LoopHandle align="right" />
+				<LoopHandle align="end" />
 			</HandleContainer>
 			<div className="absolute inset-0">
 				<InactiveRegion start={0} end={loopStart} />
@@ -134,7 +132,7 @@ function ActiveRegion({
 	return (
 		<Region
 			{...regionProps}
-			className={tcx("z-0 cursor-move", { ["z-[2]"]: preferred })}
+			className={twMerge("z-0 cursor-move", preferred && "z-[2]")}
 		/>
 	);
 }
@@ -153,7 +151,7 @@ const Region = memo(function Region({
 		<div
 			{...divProps}
 			style={{ left: `${start * 100}%`, right: `${(1 - end) * 100}%` }}
-			className={twMerge("absolute top-0 bottom-0", className)}
+			className={twMerge("absolute inset-y-0", className)}
 		/>
 	);
 });
@@ -172,7 +170,7 @@ type DivProps = DetailedHTMLProps<
 type Props = {
 	loopStart: number;
 	loopEnd: number;
-	onLoopStartDrag?(movement: number): unknown;
-	onLoopEndDrag?(movement: number): unknown;
-	onLoopRegionDrag?(movement: number): unknown;
+	onLoopStartDrag?: ((movement: number) => unknown) | undefined;
+	onLoopEndDrag?: ((movement: number) => unknown) | undefined;
+	onLoopRegionDrag?: ((movement: number) => unknown) | undefined;
 };

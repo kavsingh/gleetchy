@@ -44,6 +44,8 @@ function Success() {
 function WithError() {
 	throw new Error("Render Error");
 
+	// satisfy typecheck for component
+	// eslint-disable-next-line no-unreachable
 	return null;
 }
 

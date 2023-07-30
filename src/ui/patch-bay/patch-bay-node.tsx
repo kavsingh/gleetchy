@@ -1,7 +1,7 @@
 import { memo } from "react";
+import { twMerge } from "tailwind-merge";
 
 import useConnection from "~/app-store/hooks/use-connection";
-import { tcx } from "~/lib/css";
 
 import type { AudioNodeMeta } from "~/types";
 
@@ -26,14 +26,13 @@ export default memo(function PatchBayNode({
 			title={title}
 			onClick={toggleConnection}
 			style={{ color: color ?? "currentcolor" }}
-			className={tcx("border p-0 transition-all bs-3 is-3 mlb-0 mli-auto", {
-				["border-text100"]: !color,
-				["hover:border-text400"]: !color && !isBlocked,
-				["cursor-default rotate-45 scale-50"]: isBlocked,
-				["bg-text100"]: isBlocked,
-				["bg-current"]: !!color && !isBlocked,
-				["border-current"]: !!color && !isBlocked,
-			})}
+			className={twMerge(
+				"mx-auto mb-0 h-3 w-3 border p-0 transition-all",
+				!color && "border-text100",
+				!color && !isBlocked && "hover:border-text400",
+				isBlocked && "rotate-45 scale-50 cursor-default bg-text100",
+				!!color && !isBlocked && "border-current bg-current",
+			)}
 		/>
 	);
 });

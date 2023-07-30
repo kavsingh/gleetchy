@@ -1,6 +1,6 @@
+import { noop } from "lodash";
 import { useCallback, memo, useRef } from "react";
 import AutosizeInput from "react-input-autosize";
-import { noop } from "lodash";
 
 import { cancelReactEvent } from "~/lib/util";
 

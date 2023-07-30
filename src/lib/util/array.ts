@@ -1,27 +1,32 @@
 import { isEqual, without } from "lodash";
 
-const origIfEqual = <T>(next: T[], orig: T[]) =>
-	isEqual(next, orig) ? orig : next;
+/**
+ * Returns new array if there are items to be removed, otherwise
+ * returns original array
+ */
+export function stableWithout<T>(items: T[], arr: T[]) {
+	return originalIfEqual(without(arr, ...items), arr);
+}
 
 /**
  * Returns new array if there are items to be removed, otherwise
  * returns original array
  */
-export const stableWithout = <T>(items: T[], arr: T[]) =>
-	origIfEqual(without(arr, ...items), arr);
-
-/**
- * Returns new array if there are items to be removed, otherwise
- * returns original array
- */
-export const stableFilter = <T>(
+export function stableFilter<T>(
 	predicate: (item: T) => boolean,
 	arr: T[],
-): T[] => origIfEqual(arr.filter(predicate), arr);
+): T[] {
+	return originalIfEqual(arr.filter(predicate), arr);
+}
 
 /**
  * Returns new array if items are modified, otherwise
  * returns original array
  */
-export const stableAppendUnique = <T>(items: T[], arr: T[]): T[] =>
-	origIfEqual(without(arr, ...items).concat(items), arr);
+export function stableAppendUnique<T>(items: T[], arr: T[]): T[] {
+	return originalIfEqual(without(arr, ...items).concat(items), arr);
+}
+
+function originalIfEqual<T>(next: T[], orig: T[]) {
+	return isEqual(next, orig) ? orig : next;
+}

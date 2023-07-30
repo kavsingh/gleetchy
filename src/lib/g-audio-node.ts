@@ -7,7 +7,10 @@ export abstract class GAudioNode<
 
 	abstract type: string;
 
-	constructor(protected audioContext: AudioContext, initialProps: P) {
+	constructor(
+		protected audioContext: AudioContext,
+		initialProps: P,
+	) {
 		this.props = { ...initialProps };
 		this.inputGainNode = audioContext.createGain();
 		this.outputGainNode = audioContext.createGain();
@@ -60,8 +63,6 @@ export abstract class GAudioNode<
 	protected abstract propsUpdated(props: P, previousProps: P): void;
 }
 
-type GInstrumentNodeSubscriber<S> = (state: S) => unknown;
-
 export abstract class GInstrumentNode<
 	P extends Record<string, unknown> = Record<string, unknown>,
 	S extends Record<string, unknown> = Record<string, unknown>,
@@ -86,3 +87,5 @@ export abstract class GInstrumentNode<
 
 	abstract stop(): void;
 }
+
+type GInstrumentNodeSubscriber<S> = (state: S) => unknown;

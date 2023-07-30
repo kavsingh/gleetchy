@@ -1,15 +1,14 @@
+import { clamp } from "lodash";
 import { memo, useState, useRef, useCallback, useEffect } from "react";
-import { clamp, noop } from "lodash";
+import { twMerge } from "tailwind-merge";
 
-import { tcx } from "~/lib/css";
-
-import useControlResponseRef from "../hooks/use-control-response-ref";
 import SVGArc from "./svg-arc";
+import useControlResponseRef from "../hooks/use-control-response-ref";
 import usePointerDrag from "../hooks/use-pointer-drag";
 
-import type { PropsWithChildren } from "react";
-import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type { ControlResponseMultipliers } from "../hooks/use-control-response-ref";
+import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
+import type { PropsWithChildren } from "react";
 
 export default memo(function Knob({
 	value,
@@ -18,17 +17,19 @@ export default memo(function Knob({
 	title = "",
 	label = "",
 	valueLabel = "",
-	onChange = noop,
+	onChange,
 }: Props) {
 	const knobRef = useRef<HTMLDivElement | null>(null);
 	const valueRef = useRef<number>(value);
 	const [axis, setAxis] = useState<MovementAxis | undefined>();
 	const moveMultiplierRef = useControlResponseRef(controlMultipliers);
 
-	const resetAxis = useCallback(() => setAxis(undefined), []);
+	const resetAxis = useCallback(() => {
+		setAxis(undefined);
+	}, []);
 
 	const handleDoubleClick = useCallback(() => {
-		onChange(defaultValue);
+		onChange?.(defaultValue);
 	}, [onChange, defaultValue]);
 
 	const onDragMove = useCallback<PointerDragMoveHandler>(
@@ -46,7 +47,9 @@ export default memo(function Knob({
 					? movementX / knob.offsetWidth
 					: -movementY / knob.offsetHeight;
 
-			onChange(clampMove(valueRef.current + move * moveMultiplierRef.current));
+			onChange?.(
+				clampMove(valueRef.current + move * moveMultiplierRef.current),
+			);
 
 			if (!axis) setAxis(moveAxis);
 		},
@@ -64,7 +67,7 @@ export default memo(function Knob({
 	});
 
 	return (
-		<div title={title} className="flex flex-col items-center bs-full is-full">
+		<div title={title} className="flex h-full w-full flex-col items-center">
 			<Label>{label}</Label>
 			<div
 				{...dragHandlers}
@@ -72,10 +75,11 @@ export default memo(function Knob({
 				onDoubleClick={handleDoubleClick}
 				ref={knobRef}
 				style={{ blockSize: radius, inlineSize: radius }}
-				className={tcx("relative shrink-0 grow-0 mli-auto mbe-1 mbs-2", {
-					["cursor-ns-resize"]: axis === "vertical",
-					["cursor-ew-resize"]: axis === "horizontal",
-				})}
+				className={twMerge(
+					"relative my-auto mb-1 mt-2 shrink-0 grow-0",
+					axis === "vertical" && "cursor-ns-resize",
+					axis === "horizontal" && "cursor-ew-resize",
+				)}
 			>
 				<div className="absolute inset-0">
 					<SVGArc

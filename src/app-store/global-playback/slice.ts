@@ -6,7 +6,7 @@ export const globalPlaybackSlice = createSlice({
 	initialState,
 	name: "globalPlayback",
 	reducers: {
-		togglePlayback: (state) => {
+		togglePlayback(state) {
 			state.isPlaying = !state.isPlaying;
 		},
 	},

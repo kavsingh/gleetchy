@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 
-import { globalPlaybackSlice } from "./slice";
 import { togglePlayback } from "./actions";
+import { globalPlaybackSlice } from "./slice";
 
 describe("globalPlaybackSlice", () => {
 	it("should toggle playback", () => {

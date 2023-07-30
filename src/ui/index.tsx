@@ -1,54 +1,35 @@
-import { memo, useEffect } from "react";
-
-import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
-import useAudioContext from "~/app-store/hooks/use-audio-context";
+import { memo } from "react";
 
 import AudioEffectsRack from "./audio-effects-rack";
 import InstrumentsRack from "./instruments-rack";
-import PatchBay from "./patch-bay";
+import KeyboardListeners from "./keyboard-listeners";
 import Masthead from "./masthead";
+import PatchBay from "./patch-bay";
+import ThemeEffects from "./theme-effects";
 
 export default memo(function UI() {
-	const { initAudioContext } = useAudioContext();
-	const { registerKeyPress, registerKeyRelease } = useModifierKeys();
-
-	useEffect(() => {
-		// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-		if (!globalThis.window) return undefined;
-
-		const clickHandler = () => initAudioContext();
-
-		globalThis.window.addEventListener("keydown", registerKeyPress, true);
-		globalThis.window.addEventListener("keyup", registerKeyRelease, true);
-		globalThis.window.addEventListener("click", clickHandler, {
-			passive: true,
-			once: true,
-		});
-
-		return () => {
-			globalThis.window.removeEventListener("keydown", registerKeyPress, true);
-			globalThis.window.removeEventListener("keyup", registerKeyRelease, true);
-		};
-	}, [registerKeyPress, registerKeyRelease, initAudioContext]);
-
 	return (
-		<div className="p-8 max-is-[92em] mlb-0 mli-auto">
-			<Masthead />
-			<Divider />
-			<InstrumentsRack />
-			<Divider />
-			<div className="flex flex-wrap">
-				<div className="shrink grow">
-					<AudioEffectsRack />
-				</div>
-				<div className="shrink-0 grow-0">
-					<PatchBay />
+		<>
+			<ThemeEffects />
+			<KeyboardListeners />
+			<div className="mx-auto my-0 max-w-[92em] p-8">
+				<Masthead />
+				<Divider />
+				<InstrumentsRack />
+				<Divider />
+				<div className="flex flex-wrap">
+					<div className="shrink grow">
+						<AudioEffectsRack />
+					</div>
+					<div className="shrink-0 grow-0">
+						<PatchBay />
+					</div>
 				</div>
 			</div>
-		</div>
+		</>
 	);
 });
 
 function Divider() {
-	return <div className="bg-text100 bs-[1px] mlb-4"></div>;
+	return <hr className="mx-0 my-4 border-text100 p-0" />;
 }

@@ -14,7 +14,7 @@ export default memo(function SelectBox({ options, value, onChange }: Props) {
 		<select
 			value={value ?? options[0]?.value}
 			onChange={handleChange}
-			className="relative m-0 appearance-none border-0 bg-transparent p-0 font-sans text-sm text-current underline transition-colors border-be-text600 focus:text-text600"
+			className="relative m-0 appearance-none border-0 border-b-text600 bg-transparent p-0 font-sans text-sm text-current underline transition-colors focus:text-text600"
 		>
 			{options.map((option) => (
 				<option className="" key={option.value} value={option.value}>

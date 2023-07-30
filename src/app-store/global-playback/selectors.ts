@@ -1,4 +1,5 @@
 import type { AppState } from "../configure-store";
 
-export const selectIsPlaying = (state: AppState) =>
-	state.globalPlayback.isPlaying;
+export function selectIsPlaying(state: AppState) {
+	return state.globalPlayback.isPlaying;
+}

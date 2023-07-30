@@ -9,7 +9,11 @@ const spawnAsync = (
 ) =>
 	new Promise((resolve, reject) => {
 		const proc = spawn(cmd, args, Object.assign({ stdio: "inherit" }, opts));
-		proc.on("close", (code) => (code === 0 ? resolve(code) : reject(code)));
+
+		proc.on("close", (code) => {
+			if (code === 0) resolve(code);
+			else reject(code);
+		});
 	});
 
 export default spawnAsync;

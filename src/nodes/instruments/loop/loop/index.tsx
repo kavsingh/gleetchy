@@ -1,15 +1,15 @@
-import { memo, useCallback, useEffect, useRef } from "react";
 import { clamp, noop } from "lodash";
+import { memo, useCallback, useEffect, useRef } from "react";
 
-import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
 import useFileDropRegion from "~/components/hooks/use-file-drop-region";
+import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
 
 import LoopSample from "./loop-sample";
-import PlaybackControls from "./playback-controls";
 import LoopTitleBar from "./loop-title-bar";
+import PlaybackControls from "./playback-controls";
 
-import type { PropsWithChildren } from "react";
 import type { LoopUIProps } from "./types";
+import type { PropsWithChildren } from "react";
 
 export default memo(function Loop({
 	nodeId,
@@ -95,7 +95,7 @@ export default memo(function Loop({
 	);
 
 	return (
-		<div className="is-full">
+		<div className="w-full">
 			<LoopTitleBar
 				label={label}
 				fileName={fileName}
@@ -118,7 +118,7 @@ export default memo(function Loop({
 					onLoopRegionDrag={handleLoopRegionDrag}
 					selectAudioFile={selectAudioFile}
 				/>
-				<div className="flex shrink-0 grow-0 gap-3 bs-full">
+				<div className="flex h-full shrink-0 grow-0 gap-3">
 					<PlaybackControls
 						gain={gain}
 						playbackRate={playbackRate}
@@ -147,7 +147,7 @@ function AudioFileDropRegion({
 	});
 
 	return (
-		<div className="flex gap-5 bs-44 is-full" {...eventHandlers}>
+		<div className="flex h-44 w-full gap-5" {...eventHandlers}>
 			{children}
 		</div>
 	);

@@ -1,9 +1,10 @@
-export const cancelEvent = (event: Event) => {
+export function cancelEvent(event: Event) {
 	event.preventDefault();
 	event.stopPropagation();
 
 	return false;
-};
+}
 
-export const cancelReactEvent = <T extends { nativeEvent: Event }>(event: T) =>
-	cancelEvent(event.nativeEvent);
+export function cancelReactEvent<T extends { nativeEvent: Event }>(event: T) {
+	return cancelEvent(event.nativeEvent);
+}

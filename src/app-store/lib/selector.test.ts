@@ -1,5 +1,5 @@
-import { describe, it, expect } from "vitest";
 import { createSelector } from "reselect";
+import { describe, it, expect } from "vitest";
 
 import { createValueEqSelector } from "./selector";
 

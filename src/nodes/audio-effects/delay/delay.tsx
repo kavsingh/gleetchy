@@ -1,9 +1,9 @@
-import { memo, useCallback, useMemo } from "react";
 import { noop } from "lodash";
+import { memo, useCallback, useMemo } from "react";
 
-import { DELAY_UPPER_BOUND } from "~/constants/audio";
 import Knob from "~/components/knob";
 import TitleBar from "~/components/title-bar";
+import { DELAY_UPPER_BOUND } from "~/constants/audio";
 
 import type { PropsWithChildren } from "react";
 import type { AudioNodeConnection } from "~/types";
@@ -67,9 +67,9 @@ export default memo(function Delay({
 	);
 
 	return (
-		<div className="is-full">
+		<div className="w-full">
 			{titleBar}
-			<div className="flex is-full">
+			<div className="flex w-full">
 				<KnobContainer key="time">{timeKnob}</KnobContainer>
 				<KnobContainer key="wetDry">{wetDryKnob}</KnobContainer>
 			</div>
@@ -78,7 +78,7 @@ export default memo(function Delay({
 });
 
 function KnobContainer({ children }: PropsWithChildren) {
-	return <div className="shrink-0 grow-0 is-12">{children}</div>;
+	return <div className="w-12 shrink-0 grow-0">{children}</div>;
 }
 
 export type DelayProps = {

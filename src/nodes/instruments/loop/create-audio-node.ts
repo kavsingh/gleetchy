@@ -1,10 +1,10 @@
 import rafThrottle from "raf-throttle";
 
-import createEq3Node from "~/nodes/audio-effects/eq3/create-audio-node";
 import { GInstrumentNode } from "~/lib/g-audio-node";
+import createEq3Node from "~/nodes/audio-effects/eq3/create-audio-node";
 
-import nodeType from "./node-type";
 import { defaultProps } from "./node-props";
+import nodeType from "./node-type";
 // eslint-disable-next-line import/default
 import processor from "./processor.worklet?worker&url";
 
@@ -39,7 +39,10 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	positionBufferSource: AudioBufferSourceNode | null = null;
 	throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
 
-	constructor(protected override audioContext: AudioContext, initProps: Props) {
+	constructor(
+		protected override audioContext: AudioContext,
+		initProps: Props,
+	) {
 		super(audioContext, initProps);
 
 		this.gainNode.connect(this.eq3Node.inNode);

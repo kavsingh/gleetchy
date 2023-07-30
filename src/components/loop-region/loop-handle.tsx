@@ -1,26 +1,25 @@
 import { memo } from "react";
-
-import { tcx } from "~/lib/css";
+import { twMerge } from "tailwind-merge";
 
 export default memo(function LoopHandle({
-	align = "left",
+	align = "start",
 }: {
 	align: Alignment;
 }) {
 	return (
 		<div
-			className={tcx("pointer-events-none relative h-full w-full", {
-				["translate-x-[-100%]"]: align === "right",
-			})}
+			className={twMerge(
+				"pointer-events-none relative h-full w-full",
+				align === "end" && "translate-x-[-100%]",
+			)}
 		>
 			<Tag align={align} verticalPosition="top" />
 			<div
-				className={tcx("absolute top-0 h-full w-full", {
-					["right-[-100%]"]: align === "right",
-					["border-l border-l-text600"]: align === "right",
-					["left-[-100%]"]: align === "left",
-					["border-r border-r-text600"]: align === "left",
-				})}
+				className={twMerge(
+					"absolute top-0 h-full w-full",
+					align === "start" && "start-[-100%] border-r border-r-text600",
+					align === "end" && "end-[-100%] border-l border-l-text600",
+				)}
 			/>
 			<Tag align={align} verticalPosition="bottom" />
 		</div>
@@ -36,17 +35,15 @@ function Tag({
 }) {
 	return (
 		<div
-			className={tcx(
+			className={twMerge(
 				"pointer-events-auto absolute h-[1px] w-[60%] bg-text600",
-				{
-					["top-0"]: verticalPosition === "top",
-					["right-0"]: align === "right",
-					["bottom-0"]: verticalPosition === "bottom",
-					["left-0"]: align === "left",
-				},
+				verticalPosition === "top" && "top-0",
+				verticalPosition === "bottom" && "bottom-0",
+				align === "start" && "start-0",
+				align === "end" && "end-0",
 			)}
 		/>
 	);
 }
 
-type Alignment = "left" | "right";
+type Alignment = "start" | "end";

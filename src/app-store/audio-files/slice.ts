@@ -24,7 +24,7 @@ export const audioFilesSlice = createSlice({
 	initialState,
 	name: "audioFiles",
 	reducers: {},
-	extraReducers: (builder) => {
+	extraReducers(builder) {
 		builder.addCase(decodeAudioFile.pending, (state, action) => {
 			state.decodingIds = stableAppendUnique(
 				[action.meta.arg.id],

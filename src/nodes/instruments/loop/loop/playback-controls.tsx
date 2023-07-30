@@ -1,5 +1,5 @@
-import { memo, useMemo, useCallback } from "react";
 import { noop } from "lodash";
+import { memo, useMemo, useCallback } from "react";
 
 import Knob from "~/components/knob";
 
@@ -41,7 +41,7 @@ export default memo(function PlaybackControls({
 	);
 
 	return (
-		<div className="flex flex-col items-center justify-between bs-full">
+		<div className="flex h-full flex-col items-center justify-between">
 			<div key="gain">{gainKnob}</div>
 			<div key="speed">{speedKnob}</div>
 		</div>

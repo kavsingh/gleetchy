@@ -6,7 +6,7 @@ export const audioContextSlice = createSlice({
 	initialState,
 	name: "audioContext",
 	reducers: {
-		initAudioContext: (state) => {
+		initAudioContext(state) {
 			const context = state.audioContext;
 
 			if (!context || context.state === "closed") {
@@ -20,7 +20,7 @@ export const audioContextSlice = createSlice({
 	},
 });
 
-const getAudioContext = () => {
+function getAudioContext() {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!globalThis.document) throw new Error("Could not access dom");
 
@@ -34,7 +34,7 @@ const getAudioContext = () => {
 
 	// NOTE: https://developer.chrome.com/blog/autoplay/#web-audio
 	return new AudioContext();
-};
+}
 
 type AudioContextState = {
 	audioContext?: AudioContext;

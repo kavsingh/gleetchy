@@ -1,38 +1,49 @@
-import type { AudioNodeConnection, AudioNodeMeta } from "~/types";
 import type { GAudioNode, GInstrumentNode } from "~/lib/g-audio-node";
+import type { AudioNodeConnection, AudioNodeMeta } from "~/types";
 
-export const hasAudioEffectType = <T extends { type?: string }>(item: T) =>
-	/^audio_effect_/i.test(item.type ?? "");
+export function hasAudioEffectType<T extends { type?: string }>(item: T) {
+	return /^audio_effect_/i.test(item.type ?? "");
+}
 
-export const hasInstrumentType = <T extends { type?: string }>(item: T) =>
-	/^instrument_/i.test(item.type ?? "");
+export function hasInstrumentType<T extends { type?: string }>(item: T) {
+	return /^instrument_/i.test(item.type ?? "");
+}
 
-export const isAudioEffectNode = (
+export function isAudioEffectNode(
 	node: GAudioNode | GInstrumentNode | AudioNode,
-): node is GAudioNode => hasAudioEffectType(node as GAudioNode);
+): node is GAudioNode {
+	return hasAudioEffectType(node as GAudioNode);
+}
 
-export const isInstrumentNode = (
+export function isInstrumentNode(
 	node: GAudioNode | GInstrumentNode | AudioNode,
-): node is GInstrumentNode => hasInstrumentType(node as GAudioNode);
+): node is GInstrumentNode {
+	return hasInstrumentType(node as GAudioNode);
+}
 
 type Connection = Omit<AudioNodeConnection, "color">;
 
-export const isSameConnection = (
+export function isSameConnection(
 	connection1: Connection,
 	connection2: Connection,
-) => connection1.from === connection2.from && connection1.to === connection2.to;
+) {
+	return (
+		connection1.from === connection2.from && connection1.to === connection2.to
+	);
+}
 
-export const getConnectionsFor = (
+export function getConnectionsFor(
 	id: string,
 	connections: AudioNodeConnection[],
-): AudioNodeConnection[] =>
-	connections.filter(({ from, to }) => from === id || to === id);
+) {
+	return connections.filter(({ from, to }) => from === id || to === id);
+}
 
-export const hasConnectionTo = (
+export function hasConnectionTo(
 	connections: Connection[],
 	toId: string,
 	fromId: string,
-) => {
+) {
 	if (!connections.length) return false;
 
 	const checkDownstreamConnection = (innerFromId: string): boolean => {
@@ -51,17 +62,22 @@ export const hasConnectionTo = (
 	};
 
 	return checkDownstreamConnection(fromId);
-};
+}
 
-export const canConnectNodes = (
+export function canConnectNodes(
 	connections: Connection[],
 	{ id: fromId }: Pick<AudioNodeMeta, "id">,
 	{ id: toId }: Pick<AudioNodeMeta, "id">,
-) => fromId !== toId && !hasConnectionTo(connections, fromId, toId);
+) {
+	return fromId !== toId && !hasConnectionTo(connections, fromId, toId);
+}
 
-export const getConnectionBetween = (
+export function getConnectionBetween(
 	connections: AudioNodeConnection[],
 	{ id: from }: Pick<AudioNodeMeta, "id">,
 	{ id: to }: Pick<AudioNodeMeta, "id">,
-) =>
-	connections.find((connection) => isSameConnection({ from, to }, connection));
+) {
+	return connections.find((connection) =>
+		isSameConnection({ from, to }, connection),
+	);
+}

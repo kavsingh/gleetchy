@@ -1,5 +1,5 @@
-import impulseWide from "./impulse-wide.wav";
 import impulseTight from "./impulse-tight.wav";
+import impulseWide from "./impulse-wide.wav";
 
 export const loadImpulse = async (
 	audioContext: AudioContext,

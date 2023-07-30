@@ -1,13 +1,13 @@
 import { memo, useCallback } from "react";
 
-import { nodeType, UI } from "~/nodes/audio-effects/reverb";
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
 import NodeWrapper from "~/components/node-wrapper";
+import { nodeType, UI } from "~/nodes/audio-effects/reverb";
 
-import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
 import type { NodeProps } from "~/nodes/audio-effects/reverb";
+import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
 
 export default memo(function ConnectedReverb({ id }: { id: string }) {
 	const {

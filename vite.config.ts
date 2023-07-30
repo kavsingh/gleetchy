@@ -1,28 +1,13 @@
 /// <reference types="vitest" />
 
-import { defineConfig } from "vite";
 import reactPlugin from "@vitejs/plugin-react";
-// import checkerPlugin from "vite-plugin-checker";
+import { defineConfig } from "vite";
+import checkerPlugin from "vite-plugin-checker";
 import importsPlugin from "vite-plugin-imp";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
 import resolveCssVars from "./scripts/resolve-css-vars";
 import resolveTailwindConfig from "./scripts/resolve-tailwind-config";
-
-// const checker = checkerPlugin({
-// 	overlay: { initialIsOpen: false },
-// 	typescript: true,
-// 	eslint: {
-// 		lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
-// 		dev: { logLevel: ["error"] },
-// 	},
-// });
-
-const imports = importsPlugin({
-	libList: [
-		{ libName: "lodash", libDirectory: "", camel2DashComponentName: false },
-	],
-});
 
 export default defineConfig(async ({ mode }) => ({
 	define: {
@@ -31,7 +16,7 @@ export default defineConfig(async ({ mode }) => ({
 		"THEME_COLOR_VARS": JSON.stringify(await resolveCssVars()),
 	},
 	build: { sourcemap: true },
-	plugins: [tsconfigPathsPlugin(), imports, reactPlugin()],
+	plugins: [tsconfigPathsPlugin(), imports(), reactPlugin(), checker(mode)],
 	resolve: {
 		alias: {
 			...(mode !== "test"
@@ -51,3 +36,24 @@ export default defineConfig(async ({ mode }) => ({
 		includeSource: ["src/**/*.{ts,tsx,js,jsx}"],
 	},
 }));
+
+function imports() {
+	return importsPlugin({
+		libList: [
+			{ libName: "lodash", libDirectory: "", camel2DashComponentName: false },
+		],
+	});
+}
+
+function checker(mode: string) {
+	if (mode !== "development") return;
+
+	return checkerPlugin({
+		overlay: { initialIsOpen: false },
+		typescript: true,
+		eslint: {
+			lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+			dev: { logLevel: ["error"] },
+		},
+	});
+}

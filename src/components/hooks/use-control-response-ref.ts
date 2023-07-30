@@ -1,7 +1,7 @@
 import { useRef, useEffect } from "react";
 
-import { ModifierKey } from "~/lib/constants";
 import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
+import { MODIFIER_KEYS } from "~/lib/constants";
 
 import type { MutableRefObject } from "react";
 
@@ -13,7 +13,7 @@ export default function useControlResponseRef({
 	const multiplierRef = useRef(normal);
 
 	useEffect(() => {
-		multiplierRef.current = activeKeys.includes(ModifierKey.Shift)
+		multiplierRef.current = activeKeys.includes(MODIFIER_KEYS.Shift)
 			? fine
 			: normal;
 	}, [activeKeys, normal, fine]);

@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { nodeColorPool } from "~/style/color";
 import { stableWithout } from "~/lib/util";
+import { nodeColorPool } from "~/style/color";
 
-import defaultNodes from "../default-nodes";
 import { removeAudioNode } from "../audio-nodes/actions";
+import defaultNodes from "../default-nodes";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { AudioNodeConnection } from "~/types";
@@ -24,30 +24,24 @@ export const connectionsSlice = createSlice({
 	initialState,
 	name: "connections",
 	reducers: {
-		addConnection: (state, { payload: { fromId, toId } }: ConnectionAction) => {
+		addConnection(state, { payload: { fromId, toId } }: ConnectionAction) {
 			if (!state.find(connectionIs({ fromId, toId }))) {
 				state.push(createConnection(state, { fromId, toId }));
 			}
 		},
-		removeConnection: (
-			state,
-			{ payload: { fromId, toId } }: ConnectionAction,
-		) => {
+		removeConnection(state, { payload: { fromId, toId } }: ConnectionAction) {
 			const idx = state.findIndex(connectionIs({ fromId, toId }));
 
 			if (idx !== -1) state.splice(idx, 1);
 		},
-		toggleConnection: (
-			state,
-			{ payload: { fromId, toId } }: ConnectionAction,
-		) => {
+		toggleConnection(state, { payload: { fromId, toId } }: ConnectionAction) {
 			const idx = state.findIndex(connectionIs({ fromId, toId }));
 
-			if (idx > -1) state.splice(idx, 1);
+			if (idx !== -1) state.splice(idx, 1);
 			else state.push(createConnection(state, { fromId, toId }));
 		},
 	},
-	extraReducers: (builder) => {
+	extraReducers(builder) {
 		builder.addCase(removeAudioNode, (state, { payload: id }) => {
 			state = stableWithout(
 				state.filter(({ from, to }) => from === id || to === id),
@@ -57,20 +51,23 @@ export const connectionsSlice = createSlice({
 	},
 });
 
-const createConnection = (
+function createConnection(
 	state: AudioNodeConnection[],
 	{ fromId, toId }: ConnectionDescriptor,
-): AudioNodeConnection => ({
-	from: fromId,
-	to: toId,
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	color: nodeColorPool[state.length % nodeColorPool.length]!,
-});
+): AudioNodeConnection {
+	return {
+		from: fromId,
+		to: toId,
+		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		color: nodeColorPool[state.length % nodeColorPool.length]!,
+	};
+}
 
-const connectionIs =
-	({ fromId, toId }: ConnectionDescriptor) =>
-	(connection: AudioNodeConnection) =>
-		connection.from === fromId && connection.to === toId;
+function connectionIs({ fromId, toId }: ConnectionDescriptor) {
+	return function matchConnection({ from, to }: AudioNodeConnection) {
+		return from === fromId && to === toId;
+	};
+}
 
 type ConnectionsState = AudioNodeConnection[];
 

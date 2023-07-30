@@ -2,6 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { pick } from "lodash";
 
 import initialNodes from "~/app-store/default-nodes";
+import { prefixedId } from "~/lib/id";
+import { stableOmit, stableFilter } from "~/lib/util";
 import {
 	defaultProps as delayDefaultProps,
 	nodeType as delayNodeType,
@@ -14,16 +16,14 @@ import {
 	defaultProps as loopDefaultProps,
 	nodeType as loopNodeType,
 } from "~/nodes/instruments/loop";
-import { prefixedId } from "~/lib/id";
-import { stableOmit, stableFilter } from "~/lib/util";
 
 import { decodeAudioFile } from "../audio-files/actions";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { AudioNodeIdentifierMeta, AudioNodeState } from "~/types";
 import type { NodeProps as DelayNodeProps } from "~/nodes/audio-effects/delay";
 import type { NodeProps as ReverbNodeProps } from "~/nodes/audio-effects/reverb";
 import type { NodeProps as LoopNodeProps } from "~/nodes/instruments/loop";
+import type { AudioNodeIdentifierMeta, AudioNodeState } from "~/types";
 
 const initialState: AudioNodesState = initialNodes.reduce(
 	(acc: AudioNodesState, instrument) => {
@@ -41,7 +41,7 @@ export const audioNodesSlice = createSlice({
 	initialState,
 	name: "audioNodes",
 	reducers: {
-		addAudioNode: (state, { payload: id }: PayloadAction<string>) => {
+		addAudioNode(state, { payload: id }: PayloadAction<string>) {
 			const newNodeState = getNewNodeState(id);
 
 			if (newNodeState) {
@@ -52,14 +52,14 @@ export const audioNodesSlice = createSlice({
 				});
 			}
 		},
-		removeAudioNode: (state, { payload: id }: PayloadAction<string>) => {
+		removeAudioNode(state, { payload: id }: PayloadAction<string>) {
 			state.byId = stableOmit([id], state.byId);
 			state.orderedIdentifierMeta = stableFilter(
 				(meta) => meta.id !== id,
 				state.orderedIdentifierMeta,
 			);
 		},
-		duplicateAudioNode: (state, { payload: id }: PayloadAction<string>) => {
+		duplicateAudioNode(state, { payload: id }: PayloadAction<string>) {
 			const exisiting = state.byId[id];
 
 			if (!exisiting) return;
@@ -85,29 +85,29 @@ export const audioNodesSlice = createSlice({
 				state.orderedIdentifierMeta.splice(existingMetaIndex + 1, 0, duplicate);
 			}
 		},
-		updateAudioNodeProps: (
+		updateAudioNodeProps(
 			state,
 			action: PayloadAction<{
 				id: string;
 				audioProps: Record<string, unknown>;
 			}>,
-		) => {
+		) {
 			const { id, audioProps } = action.payload;
 			const existing = state.byId[id];
 
 			if (existing) Object.assign(existing.audioProps, audioProps);
 		},
-		updateAudioNodeLabel: (
+		updateAudioNodeLabel(
 			state,
 			action: PayloadAction<{ id: string; label: string }>,
-		) => {
+		) {
 			const { id, label } = action.payload;
 			const existing = state.byId[id];
 
 			if (existing) existing.label = label;
 		},
 	},
-	extraReducers: (builder) => {
+	extraReducers(builder) {
 		builder.addCase(decodeAudioFile.fulfilled, (state, action) => {
 			if (!action.payload) return;
 
@@ -124,7 +124,7 @@ export const audioNodesSlice = createSlice({
 	},
 });
 
-const getNewNodeState = (type: string) => {
+function getNewNodeState(type: string) {
 	switch (type) {
 		case delayNodeType:
 			return {
@@ -152,7 +152,7 @@ const getNewNodeState = (type: string) => {
 		default:
 			return null;
 	}
-};
+}
 
 type AudioNodesState = {
 	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style

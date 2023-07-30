@@ -2,11 +2,6 @@ import { describe, it, expect, vi } from "vitest";
 
 import { cancelEvent, cancelReactEvent } from "./event";
 
-const createMockEvent = () => ({
-	preventDefault: vi.fn(),
-	stopPropagation: vi.fn(),
-});
-
 describe("util/event", () => {
 	describe("cancelEvent", () => {
 		it("cancels event default behaviours", () => {
@@ -34,3 +29,10 @@ describe("util/event", () => {
 		});
 	});
 });
+
+function createMockEvent() {
+	return {
+		preventDefault: vi.fn(),
+		stopPropagation: vi.fn(),
+	};
+}

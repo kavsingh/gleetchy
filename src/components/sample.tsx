@@ -1,5 +1,4 @@
 import { memo, useEffect, useMemo, useRef } from "react";
-import { noop } from "lodash";
 
 import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
@@ -8,13 +7,13 @@ import useTailwindColor from "~/style/use-tailwind-color";
 export default memo(function Sample({
 	audioBuffer,
 	subscribeToPositionRatio,
+	onLoopStartDrag,
+	onLoopEndDrag,
+	onLoopRegionDrag,
+	selectAudioFile,
 	loopStart = 0,
 	loopEnd = 1,
 	fromSaved = false,
-	onLoopStartDrag = noop,
-	onLoopEndDrag = noop,
-	onLoopRegionDrag = noop,
-	selectAudioFile = noop,
 }: SampleProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const playheadRef = useRef<HTMLDivElement | null>(null);
@@ -56,7 +55,7 @@ export default memo(function Sample({
 	);
 
 	return (
-		<div className="relative bs-full is-full" ref={containerRef}>
+		<div className="relative h-full w-full" ref={containerRef}>
 			<div className="absolute inset-0 z-[1]">{waveForm}</div>
 			{audioBuffer ? (
 				<>
@@ -95,11 +94,11 @@ export type SampleProps = {
 	fromSaved?: boolean | undefined;
 	loopStart?: number | undefined;
 	loopEnd?: number | undefined;
-	onLoopStartDrag?(movement: number): unknown | undefined;
-	onLoopEndDrag?(movement: number): unknown | undefined;
-	onLoopRegionDrag?(movement: number): unknown | undefined;
-	selectAudioFile?(): unknown | undefined;
-	subscribeToPositionRatio?(
-		handler: (ratio: number) => void,
-	): (() => void) | undefined;
+	onLoopStartDrag?: ((movement: number) => unknown) | undefined;
+	onLoopEndDrag?: ((movement: number) => unknown) | undefined;
+	onLoopRegionDrag?: ((movement: number) => unknown) | undefined;
+	selectAudioFile?: (() => unknown) | undefined;
+	subscribeToPositionRatio?:
+		| ((handler: (ratio: number) => void) => () => void)
+		| undefined;
 };

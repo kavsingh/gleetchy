@@ -8,7 +8,7 @@ export default function ButtonGroup({
 	children: ReactElement<ButtonProps>[] | ReactElement<ButtonProps>;
 }) {
 	return (
-		<div className="flex items-center justify-center min-bs-[5rem] is-full plb-3 pli-0">
+		<div className="flex min-h-[5rem] w-full items-center justify-center px-0 py-3">
 			{children}
 		</div>
 	);

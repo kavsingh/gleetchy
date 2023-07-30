@@ -1,15 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import { getPreferredColorScheme } from "~/apis/color-scheme";
-import { ModifierKey } from "~/lib/constants";
+import { MODIFIER_KEYS } from "~/lib/constants";
 import { stableAppendUnique, stableWithout } from "~/lib/util";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { ModifierKey } from "~/lib/constants";
 
 function getInitialTheme(): Theme {
 	const preferred = getPreferredColorScheme();
 
-	if (preferred === "no-preference") return "dark";
+	if (preferred === "system") return "dark";
 
 	return preferred === "light" ? "light" : "dark";
 }
@@ -49,7 +50,7 @@ export const uiSlice = createSlice({
 });
 
 function isModifierKey(key: string): key is ModifierKey {
-	return Object.values(ModifierKey).includes(key as ModifierKey);
+	return Object.values(MODIFIER_KEYS).includes(key as ModifierKey);
 }
 
 type UIState = {

@@ -1,4 +1,4 @@
-import { tcx } from "~/lib/css";
+import { twMerge } from "tailwind-merge";
 
 import type { PropsWithChildren } from "react";
 
@@ -8,9 +8,10 @@ export default function NodeWrapper({
 }: PropsWithChildren<{ isActive: boolean }>) {
 	return (
 		<div
-			className={tcx("opacity-40 transition-opacity", {
-				["opacity-100"]: isActive,
-			})}
+			className={twMerge(
+				"opacity-40 transition-opacity",
+				isActive && "opacity-100",
+			)}
 		>
 			{children}
 		</div>

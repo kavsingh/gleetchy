@@ -2,7 +2,7 @@ import type { AudioFileData } from "~/types";
 
 let fileInput: HTMLInputElement | undefined;
 
-const getFileInput = () => {
+function getFileInput() {
 	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 	if (!globalThis?.document) return undefined;
 
@@ -15,20 +15,22 @@ const getFileInput = () => {
 	}
 
 	return fileInput;
-};
+}
 
-export const loadAudioFiles = () => {
+export function loadAudioFiles() {
 	const input = getFileInput();
 
-	if (!input) {
-		return Promise.reject(new Error("Cannot load files"));
-	}
+	if (!input) return Promise.reject(new Error("Cannot load files"));
 
 	return new Promise<File[]>((resolve, reject) => {
 		input.onchange = () => {
 			const { files } = input;
 
-			if (!files) return resolve([]);
+			if (!files) {
+				resolve([]);
+
+				return;
+			}
 
 			resolve(
 				Array.from(files).filter(({ type }) => type.startsWith("audio/")),
@@ -45,15 +47,18 @@ export const loadAudioFiles = () => {
 
 		input.click();
 	});
-};
+}
 
-export const readFileToArrayBuffer = (file: File): Promise<AudioFileData> =>
-	file
-		.arrayBuffer()
-		.then((buffer) => ({ buffer, fileName: file.name, fileType: file.type }));
+export async function readFileToArrayBuffer(
+	file: File,
+): Promise<AudioFileData> {
+	const buffer = await file.arrayBuffer();
 
-export const readFilesToArrayBuffer = (files: File[]) =>
-	Promise.all(files.map(readFileToArrayBuffer));
+	return { buffer, fileName: file.name, fileType: file.type };
+}
 
-export const loadAudioFilesToArrayBuffers = () =>
-	loadAudioFiles().then(readFilesToArrayBuffer);
+export async function loadAudioFilesToArrayBuffers() {
+	const files = await loadAudioFiles();
+
+	return Promise.all(files.map(readFileToArrayBuffer));
+}

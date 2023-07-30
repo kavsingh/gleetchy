@@ -1,7 +1,7 @@
 import createAudioNode from "./create-audio-node";
+import UI from "./eq3";
 import { defaultProps } from "./node-props";
 import nodeType from "./node-type";
-import UI from "./eq3";
 
 import type { Props } from "./node-props";
 

@@ -4,14 +4,11 @@ import { addAudioNode } from "~/app-store/audio-nodes/actions";
 
 import { useAppDispatch } from "./base";
 
-const useAddNode = () => {
+export default function useAddNode() {
 	const dispatch = useAppDispatch();
-	const addNode = useCallback(
+
+	return useCallback(
 		(type: string) => dispatch(addAudioNode(type)),
 		[dispatch],
 	);
-
-	return { addNode } as const;
-};
-
-export default useAddNode;
+}

@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
 import { isEqual } from "lodash";
+import { useCallback, useEffect, useState } from "react";
 
 import {
 	updateAudioNodeProps,
@@ -9,19 +9,19 @@ import {
 } from "~/app-store/audio-nodes/actions";
 import { getConnectionsFor } from "~/lib/audio";
 
+import { useAppDispatch, useAppSelector } from "./base";
 import {
 	selectAudioNodes,
 	selectActiveAudioNodeIds,
 } from "../audio-nodes/selectors";
 import { selectConnections } from "../connections/selectors";
-import { useAppDispatch, useAppSelector } from "./base";
 
 import type { AudioNodeState, AudioNodeConnection } from "~/types";
 
-const useAudioNode = <T extends Record<string, unknown>>(
+export default function useAudioNode<T extends Record<string, unknown>>(
 	id: string,
-	isValid: AudioNodeStateValidator,
-) => {
+	isValid: ReturnType<typeof validateNodeType>,
+) {
 	const node = useAppSelector(
 		(state) => selectAudioNodes(state)[id] as AudioNodeState<T> | undefined,
 		isEqual,
@@ -78,17 +78,12 @@ const useAudioNode = <T extends Record<string, unknown>>(
 		label: node.label,
 		audioProps: node.audioProps,
 	} as const;
-};
+}
 
-export default useAudioNode;
-
-export type AudioNodeStateValidator = (
-	node: AudioNodeState<Record<string, unknown>>,
-) => boolean;
-
-export const validateNodeType =
-	(
-		type: AudioNodeState<Record<string, unknown>>["type"],
-	): AudioNodeStateValidator =>
-	(node: AudioNodeState<Record<string, unknown>>) =>
-		node.type === type;
+export function validateNodeType(
+	type: AudioNodeState<Record<string, unknown>>["type"],
+) {
+	return function validate(node: AudioNodeState<Record<string, unknown>>) {
+		return node.type === type;
+	};
+}

@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import rafThrottle from "raf-throttle";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { cancelEvent } from "~/lib/util";
 import { filterSupportedEvents } from "~/lib/env";
+import { cancelEvent } from "~/lib/util";
 
 import type { MouseEventHandler, TouchEventHandler } from "react";
 
@@ -53,12 +53,12 @@ const usePointerDrag = ({
 
 			const { clientX, clientY } = cancelAndNormalizeEvent(event);
 
-			moveEvents.forEach((eventName) =>
+			moveEvents.forEach((eventName) => {
 				globalThis.window.removeEventListener(
 					eventName,
 					throttledHandleDragMove,
-				),
-			);
+				);
+			});
 
 			stateRef.current = {
 				...stateRef.current,
@@ -90,18 +90,18 @@ const usePointerDrag = ({
 			const targetStartX = clientX - targetRect.top;
 			const targetStartY = clientY - targetRect.left;
 
-			moveEvents.forEach((eventName) =>
+			moveEvents.forEach((eventName) => {
 				globalThis.window.addEventListener(eventName, throttledHandleDragMove, {
 					passive: false,
-				}),
-			);
+				});
+			});
 
-			endEvents.forEach((eventName) =>
+			endEvents.forEach((eventName) => {
 				globalThis.window.addEventListener(eventName, handleDragEnd, {
 					passive: false,
 					once: true,
-				}),
-			);
+				});
+			});
 
 			stateRef.current = {
 				displacementX: 0,
@@ -200,6 +200,8 @@ export type PointerDragState = {
 	startX: number;
 	startY: number;
 	target: HTMLElement | null;
+	// TODO: check if can drop ClientRect
+	// eslint-disable-next-line deprecation/deprecation
 	targetRect: ClientRect | DOMRect | null;
 	targetStartX: number;
 	targetStartY: number;

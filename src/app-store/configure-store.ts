@@ -3,14 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { AudioEngine, setupAudioEngineListeners } from "~/audio";
 
 import { audioContextSlice } from "./audio-context/slice";
+import { publishSubscriptionEvent } from "./audio-engine/actions";
 import { audioEngineSlice } from "./audio-engine/slice";
-import { globalPlaybackSlice } from "./global-playback/slice";
 import { audioFilesSlice } from "./audio-files/slice";
 import { audioNodesSlice } from "./audio-nodes/slice";
 import { connectionsSlice } from "./connections/slice";
-import { uiSlice } from "./ui/slice";
+import { globalPlaybackSlice } from "./global-playback/slice";
 import { appStartListening, listenerMiddleware } from "./listener-middleware";
-import { publishSubscriptionEvent } from "./audio-engine/actions";
+import { uiSlice } from "./ui/slice";
 
 import type { StateFromReducersMapObject } from "@reduxjs/toolkit";
 
@@ -24,9 +24,9 @@ const reducer = {
 	[uiSlice.name]: uiSlice.reducer,
 } as const;
 
-export const createStore = (
+export function createStore(
 	preloadedState: Partial<StateFromReducersMapObject<typeof reducer>> = {},
-) => {
+) {
 	const store = configureStore({
 		reducer,
 		preloadedState,
@@ -48,12 +48,12 @@ export const createStore = (
 		appStartListening,
 	);
 
-	const dispose = () => {
+	function dispose() {
 		removeAudioEngineListeners();
-	};
+	}
 
 	return { store, dispose };
-};
+}
 
 export type AppStore = ReturnType<typeof createStore>["store"];
 export type AppState = ReturnType<AppStore["getState"]>;

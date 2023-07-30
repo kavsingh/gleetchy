@@ -8,12 +8,12 @@ export const audioEngineSlice = createSlice({
 	initialState,
 	name: "audioEngine",
 	reducers: {
-		publishSubscriptionEvent: (
+		publishSubscriptionEvent(
 			state,
 			{
 				payload: { nodeId, subscriptionPayload },
 			}: PayloadAction<{ nodeId: string; subscriptionPayload: unknown }>,
-		) => {
+		) {
 			state.subscriptionData[nodeId] = Object.assign(
 				state.subscriptionData[nodeId] ?? {},
 				subscriptionPayload,

@@ -1,37 +1,37 @@
 import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
 
-import { warn } from "~/lib/dev";
-import { isInstrumentNode } from "~/lib/audio";
-import { MAIN_OUT_ID } from "~/constants/audio";
-import {
-	createAudioNode as createDelayNode,
-	nodeType as delayType,
-} from "~/nodes/audio-effects/delay";
-import {
-	createAudioNode as createReverbNode,
-	nodeType as reverbType,
-} from "~/nodes/audio-effects/reverb";
-import {
-	createAudioNode as createLoopNode,
-	nodeType as loopType,
-} from "~/nodes/instruments/loop";
-import { GAudioNode } from "~/lib/g-audio-node";
-import { togglePlayback } from "~/app-store/global-playback/actions";
-import {
-	addConnection,
-	removeConnection,
-	toggleConnection,
-} from "~/app-store/connections/actions";
+import { decodeAudioFile } from "~/app-store/audio-files/actions";
 import {
 	addAudioNode,
 	duplicateAudioNode,
 	removeAudioNode,
 	updateAudioNodeProps,
 } from "~/app-store/audio-nodes/actions";
-import { decodeAudioFile } from "~/app-store/audio-files/actions";
-import { GLoopNode } from "~/nodes/instruments/loop/create-audio-node";
+import {
+	addConnection,
+	removeConnection,
+	toggleConnection,
+} from "~/app-store/connections/actions";
+import { togglePlayback } from "~/app-store/global-playback/actions";
+import { MAIN_OUT_ID } from "~/constants/audio";
+import { isInstrumentNode } from "~/lib/audio";
+import { GAudioNode } from "~/lib/g-audio-node";
+import { logWarn } from "~/lib/log";
+import {
+	createAudioNode as createDelayNode,
+	nodeType as delayType,
+} from "~/nodes/audio-effects/delay";
 import { GDelayNode } from "~/nodes/audio-effects/delay/create-audio-node";
+import {
+	createAudioNode as createReverbNode,
+	nodeType as reverbType,
+} from "~/nodes/audio-effects/reverb";
 import { GReverbNode } from "~/nodes/audio-effects/reverb/create-audio-node";
+import {
+	createAudioNode as createLoopNode,
+	nodeType as loopType,
+} from "~/nodes/instruments/loop";
+import { GLoopNode } from "~/nodes/instruments/loop/create-audio-node";
 
 import type { AnyAction } from "@reduxjs/toolkit";
 import type { AppState } from "~/app-store/configure-store";
@@ -56,20 +56,23 @@ export default class AudioEngine {
 		this.publishSubscriptionEvent = publishSubscriptionEvent;
 	}
 
-	public update = async (appState: AppState, action: AnyAction) => {
+	public async update(appState: AppState, action: AnyAction) {
 		const didUpdate = await this.updateAudioContext(
 			appState.audioContext.audioContext,
 		);
 
 		if (!(this.audioContext && this.workletsLoaded)) return;
 
-		const updateNodes = () =>
+		const updateNodes = () => {
 			this.updateAudioNodes(
 				appState.audioNodes.byId,
 				appState.globalPlayback.isPlaying,
 			);
+		};
 
-		const updateGraph = () => this.updateAudioGraph(appState.connections);
+		const updateGraph = () => {
+			this.updateAudioGraph(appState.connections);
+		};
 
 		if (didUpdate) {
 			updateNodes();
@@ -139,46 +142,48 @@ export default class AudioEngine {
 
 			this.updateNode({ id, audioProps: { ...file } });
 		}
-	};
+	}
 
 	// TODO: clean this shit up
-	private updateAudioContext = async (
+	private async updateAudioContext(
 		nextContext: AppState["audioContext"]["audioContext"],
-	) => {
+	) {
 		if (!nextContext || this.audioContext === nextContext) return false;
 
 		this.audioContext = nextContext;
 		await this.loadWorklets();
 
 		return true;
-	};
+	}
 
-	private loadWorklets = async () => {
+	private async loadWorklets() {
 		this.workletsLoaded = false;
 
-		if (!this.audioContext) return;
+		if (!this.audioContext) {
+			logWarn("attempted to load worklets without audio context");
+
+			return;
+		}
 
 		await registerWorklets(this.audioContext);
 		this.workletsLoaded = true;
-	};
+	}
 
-	private forEachInstrument = (fn: InstrumentNodeProcessor) => {
+	private forEachInstrument(fn: InstrumentNodeProcessor) {
 		for (const node of this.audioNodes.values()) {
 			if (isInstrumentNode(node)) fn(node);
 		}
-	};
+	}
 
-	private getNodeId = (
-		targetNode: GAudioNode | GInstrumentNode | AudioNode,
-	) => {
+	private getNodeId(targetNode: GAudioNode | GInstrumentNode | AudioNode) {
 		for (const [id, node] of this.audioNodes.entries()) {
 			if (node === targetNode) return id;
 		}
 
 		return undefined;
-	};
+	}
 
-	private playAndSubscribeInstrument = (node: GInstrumentNode) => {
+	private playAndSubscribeInstrument(node: GInstrumentNode) {
 		const nodeId = this.getNodeId(node);
 
 		if (!nodeId) return;
@@ -188,16 +193,16 @@ export default class AudioEngine {
 		if (typeof node.subscribe === "function") {
 			this.unsubscribers.set(
 				nodeId,
-				node.subscribe((payload: unknown) =>
-					this.publishSubscriptionEvent(nodeId, payload),
-				),
+				node.subscribe((payload: unknown) => {
+					this.publishSubscriptionEvent(nodeId, payload);
+				}),
 			);
 		}
 
 		node.play();
-	};
+	}
 
-	private stopAndUnsubscribeInstrument = (node: GInstrumentNode) => {
+	private stopAndUnsubscribeInstrument(node: GInstrumentNode) {
 		const nodeId = this.getNodeId(node);
 
 		if (nodeId) {
@@ -206,15 +211,15 @@ export default class AudioEngine {
 		}
 
 		node.stop();
-	};
+	}
 
-	private toggleInstrumentPlaybackAndSubscription = (
+	private toggleInstrumentPlaybackAndSubscription(
 		node: GInstrumentNode,
 		isPlaying: boolean,
-	) => {
+	) {
 		if (isPlaying) this.playAndSubscribeInstrument(node);
 		else this.stopAndUnsubscribeInstrument(node);
-	};
+	}
 
 	private disconnectAllNodes() {
 		for (const node of this.audioNodes.values()) {
@@ -292,14 +297,14 @@ const setNodeProps = ({
 	try {
 		if (typeof node.set === "function") node.set(audioProps);
 	} catch (reason) {
-		warn(reason);
+		logWarn(reason);
 	}
 };
 
-const createNewNode = (
+function createNewNode(
 	context: AudioContext,
 	state: AudioNodeState<Record<string, unknown>>,
-): GAudioNode | GInstrumentNode | undefined => {
+): GAudioNode | GInstrumentNode | undefined {
 	switch (state.type) {
 		case delayType:
 			return createDelayNode(context, state.audioProps);
@@ -310,9 +315,9 @@ const createNewNode = (
 		default:
 			return;
 	}
-};
+}
 
-const registerWorklets = async (context: AudioContext) => {
+async function registerWorklets(context: AudioContext) {
 	const sources = (
 		await Promise.all([
 			GLoopNode.getWorklets(),
@@ -324,7 +329,7 @@ const registerWorklets = async (context: AudioContext) => {
 	await Promise.all(
 		sources.map((source) => context.audioWorklet.addModule(source)),
 	);
-};
+}
 
 type AudioEngineNode = AudioNode | GAudioNode | GInstrumentNode;
 

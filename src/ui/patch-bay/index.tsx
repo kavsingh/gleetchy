@@ -4,8 +4,8 @@ import {
 	selectConnectableSources,
 	selectConnectableTargets,
 } from "~/app-store/audio-nodes/selectors";
-import ErrorBoundary from "~/components/error-boundary";
 import { useAppSelector } from "~/app-store/hooks/base";
+import ErrorBoundary from "~/components/error-boundary";
 
 import PatchBayNode from "./patch-bay-node";
 
@@ -30,7 +30,7 @@ export default memo(function PatchBay() {
 	);
 
 	return (
-		<div className="is-full">
+		<div className="w-full">
 			<ErrorBoundary>
 				<tbody>
 					{sourceLabels}
@@ -40,10 +40,7 @@ export default memo(function PatchBay() {
 								{target.label}
 							</TargetLabel>
 							{sources.map((source) => (
-								<td
-									className="min-is-[1.4em]"
-									key={`${source.id}-${target.id}`}
-								>
+								<td className="min-w-[1.4em]" key={`${source.id}-${target.id}`}>
 									<PatchBayNode source={source} target={target} />
 								</td>
 							))}
@@ -59,7 +56,7 @@ function SourceLabel(props: PropsWithChildren<{ title?: string }>) {
 	return (
 		<th
 			title={props.title}
-			className="overflow-hidden text-ellipsis whitespace-nowrap text-center text-[0.68em] font-normal max-is-[5.4em] pie-[0.4em] first-of-type:text-left"
+			className="max-w-[5.4em] truncate pe-[0.4em] text-center text-[0.68em] font-normal first-of-type:text-start"
 		>
 			{props.children}
 		</th>
@@ -70,7 +67,7 @@ function TargetLabel(props: PropsWithChildren<{ title?: string }>) {
 	return (
 		<td
 			title={props.title}
-			className="overflow-hidden text-ellipsis whitespace-nowrap pb-[0.4em] text-center text-[0.68em] font-normal max-is-[5.4em] first-of-type:text-left [&:not(:first-of-type)]:plb-0 [&:not(:first-of-type)]:pli-0"
+			className="max-w-[5.4em] truncate pb-[0.4em] text-center text-[0.68em] font-normal first-of-type:text-start [&:not(:first-of-type)]:p-0"
 		>
 			{props.children}
 		</td>

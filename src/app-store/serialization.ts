@@ -1,14 +1,44 @@
 import type { AppState } from "~/app-store/configure-store";
 
-const isObjectLike = (value: unknown): value is Record<PropertyKey, unknown> =>
-	typeof value === "object";
+const serializableStateKeys: (keyof AppState)[] = [
+	"audioNodes",
+	"connections",
+	"audioFiles",
+];
 
-const isUnserializable = (value: unknown) =>
-	value instanceof AudioBuffer ||
-	value instanceof ArrayBuffer ||
-	value instanceof Error;
+export function serialize(state: AppState) {
+	const toSerialize: Record<string, unknown> = {};
 
-const unsetUnserializable = (value: unknown): unknown => {
+	for (const key of serializableStateKeys) {
+		toSerialize[key] = state[key];
+	}
+
+	return JSON.stringify(unsetUnserializable(toSerialize));
+}
+
+export function deserialize<T>(stateString: string) {
+	try {
+		const parsed: unknown = JSON.parse(stateString);
+
+		return parsed as T;
+	} catch (_e) {
+		return undefined;
+	}
+}
+
+function isObjectLike(value: unknown): value is Record<PropertyKey, unknown> {
+	return typeof value === "object";
+}
+
+function isUnserializable(value: unknown) {
+	return (
+		value instanceof AudioBuffer ||
+		value instanceof ArrayBuffer ||
+		value instanceof Error
+	);
+}
+
+function unsetUnserializable(value: unknown): unknown {
 	if (isUnserializable(value)) return undefined;
 
 	if (Array.isArray(value)) {
@@ -26,30 +56,4 @@ const unsetUnserializable = (value: unknown): unknown => {
 	}
 
 	return value;
-};
-
-const serializableStateKeys: (keyof AppState)[] = [
-	"audioNodes",
-	"connections",
-	"audioFiles",
-];
-
-export const serialize = (state: AppState) => {
-	const toSerialize: Record<string, unknown> = {};
-
-	for (const key of serializableStateKeys) {
-		toSerialize[key] = state[key];
-	}
-
-	return JSON.stringify(unsetUnserializable(toSerialize));
-};
-
-export const deserialize = <T>(stateString: string): T | undefined => {
-	try {
-		const parsed: unknown = JSON.parse(stateString);
-
-		return parsed as T | undefined;
-	} catch (_e) {
-		return undefined;
-	}
-};
+}

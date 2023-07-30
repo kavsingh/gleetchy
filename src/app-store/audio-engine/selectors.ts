@@ -1,4 +1,5 @@
 import type { AppState } from "../configure-store";
 
-export const selectAudioEngineSubscriptionData = (state: AppState) =>
-	state.audioEngine.subscriptionData;
+export function selectAudioEngineSubscriptionData(state: AppState) {
+	return state.audioEngine.subscriptionData;
+}

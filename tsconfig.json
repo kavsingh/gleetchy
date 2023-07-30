@@ -1,16 +1,39 @@
 {
-	"extends": [
-		"@tsconfig/node20/tsconfig.json",
-		"@tsconfig/strictest/tsconfig.json"
-	],
+	// latest ts-node release does not support extends array
+	// TODO: enables extends array when supported by ts-node
+	"extends": "@tsconfig/node20/tsconfig.json",
+	// "extends": [
+	// 	"@tsconfig/node20/tsconfig.json",
+	// 	"@tsconfig/strictest/tsconfig.json"
+	// ],
 	"compilerOptions": {
+		"allowJs": true,
 		"jsx": "react-jsx",
 		"lib": ["esnext", "dom"],
 		"module": "esnext",
+		"moduleResolution": "bundler",
 		"noEmit": true,
 		"paths": { "~/*": ["./src/*"] },
 		"sourceMap": true,
 		"types": ["node", "audioworklet", "webaudioapi", "vitest/importMeta"],
+
+		// latest ts-node release does not support extends array
+		// manually add strictect config here
+		// TODO: replace with "@tsconfig/strictest/tsconfig.json" in extends
+		// array when supported by ts-node
+		"strict": true,
+		"allowUnusedLabels": false,
+		"exactOptionalPropertyTypes": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitOverride": true,
+		"noImplicitReturns": true,
+		"noPropertyAccessFromIndexSignature": true,
+		"noUncheckedIndexedAccess": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+
 		// leave the following to eslint
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
@@ -19,13 +42,9 @@
 		"allowUnreachableCode": true
 	},
 	"exclude": ["**/node_modules"],
-	"include": ["./src", "./scripts", "./*.ts"],
+	"include": ["./src", "./scripts", "./*.ts", "./*.*.cjs"],
 	"ts-node": {
-		"transpileOnly": true,
-		"compilerOptions": {
-			"module": "commonjs",
-			"lib": ["esnext"],
-			"target": "es2022"
-		}
+		"esm": true,
+		"transpileOnly": true
 	}
 }
