@@ -1,7 +1,7 @@
 import { createSelector } from "reselect";
 import { describe, it, expect } from "vitest";
 
-import { createValueEqSelector } from "./selector";
+import { createDeepEqualSelector } from "./selector";
 
 describe("custom state selectors", () => {
 	// Check assumptions for default createSelector
@@ -27,7 +27,7 @@ describe("custom state selectors", () => {
 			let state = { a: { b: [1, 2] } };
 			const aSelector = (s: typeof state) => s.a;
 
-			const bSelector = createValueEqSelector(aSelector, (a) => a.b);
+			const bSelector = createDeepEqualSelector(aSelector, (a) => a.b);
 			const b = bSelector(state);
 
 			expect(b).toStrictEqual([1, 2]);

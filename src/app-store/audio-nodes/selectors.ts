@@ -7,7 +7,7 @@ import {
 } from "~/lib/audio";
 
 import { selectAudioEngineSubscriptionData } from "../audio-engine/selectors";
-import { createValueEqSelector } from "../lib/selector";
+import { createDeepEqualSelector } from "../lib/selector";
 
 import type { AppState } from "../configure-store";
 import type { AudioNodeMeta } from "~/types";
@@ -19,12 +19,12 @@ export function selectNodesIdentifierMeta(state: AppState) {
 	return state.audioNodes.orderedIdentifierMeta;
 }
 
-export const selectInstrumentsIdentifierMeta = createValueEqSelector(
+export const selectInstrumentsIdentifierMeta = createDeepEqualSelector(
 	selectNodesIdentifierMeta,
 	(meta) => meta.filter(hasInstrumentType),
 );
 
-export const selectAudioEffectsIdentifierMeta = createValueEqSelector(
+export const selectAudioEffectsIdentifierMeta = createDeepEqualSelector(
 	selectNodesIdentifierMeta,
 	(meta) => meta.filter(hasAudioEffectType),
 );
@@ -37,12 +37,12 @@ export function selectMainOutNode(state: AppState) {
 	return mainOut;
 }
 
-export const selectMainOutMeta = createValueEqSelector(
+export const selectMainOutMeta = createDeepEqualSelector(
 	selectMainOutNode,
 	({ id, type, label }): AudioNodeMeta => ({ id, type, label }),
 );
 
-export const selectActiveAudioNodeIds = createValueEqSelector(
+export const selectActiveAudioNodeIds = createDeepEqualSelector(
 	selectNodesIdentifierMeta,
 	selectConnections,
 	selectMainOutNode,
@@ -53,7 +53,7 @@ export const selectActiveAudioNodeIds = createValueEqSelector(
 	},
 );
 
-export const selectConnectableSources = createValueEqSelector(
+export const selectConnectableSources = createDeepEqualSelector(
 	selectAudioNodes,
 	selectInstrumentsIdentifierMeta,
 	selectAudioEffectsIdentifierMeta,
@@ -66,7 +66,7 @@ export const selectConnectableSources = createValueEqSelector(
 	],
 );
 
-export const selectConnectableTargets = createValueEqSelector(
+export const selectConnectableTargets = createDeepEqualSelector(
 	selectAudioNodes,
 	selectAudioEffectsIdentifierMeta,
 	selectMainOutMeta,

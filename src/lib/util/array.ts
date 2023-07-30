@@ -1,11 +1,13 @@
-import { isEqual, without } from "lodash";
+import { deepEqual } from "fast-equals";
+
+// TODO: drop these helpers (or only allow primitive value arrays)
 
 /**
  * Returns new array if there are items to be removed, otherwise
  * returns original array
  */
 export function stableWithout<T>(items: T[], arr: T[]) {
-	return originalIfEqual(without(arr, ...items), arr);
+	return originalIfEqual(without(items, arr), arr);
 }
 
 /**
@@ -24,9 +26,19 @@ export function stableFilter<T>(
  * returns original array
  */
 export function stableAppendUnique<T>(items: T[], arr: T[]): T[] {
-	return originalIfEqual(without(arr, ...items).concat(items), arr);
+	return originalIfEqual(without(items, arr).concat(items), arr);
+}
+
+function without<T>(items: T[], arr: T[]) {
+	const next: T[] = [];
+
+	for (const arrItem of arr) {
+		if (!items.includes(arrItem)) next.push(arrItem);
+	}
+
+	return next;
 }
 
 function originalIfEqual<T>(next: T[], orig: T[]) {
-	return isEqual(next, orig) ? orig : next;
+	return deepEqual(next, orig) ? orig : next;
 }

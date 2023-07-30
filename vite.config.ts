@@ -3,7 +3,6 @@
 import reactPlugin from "@vitejs/plugin-react";
 import { defineConfig } from "vite";
 import checkerPlugin from "vite-plugin-checker";
-import importsPlugin from "vite-plugin-imp";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
 import resolveCssVars from "./scripts/resolve-css-vars";
@@ -16,7 +15,7 @@ export default defineConfig(async ({ mode }) => ({
 		"THEME_COLOR_VARS": JSON.stringify(await resolveCssVars()),
 	},
 	build: { sourcemap: true },
-	plugins: [tsconfigPathsPlugin(), imports(), reactPlugin(), checker(mode)],
+	plugins: [tsconfigPathsPlugin(), reactPlugin(), checker(mode)],
 	resolve: {
 		alias: {
 			...(mode !== "test"
@@ -36,14 +35,6 @@ export default defineConfig(async ({ mode }) => ({
 		includeSource: ["src/**/*.{ts,tsx,js,jsx}"],
 	},
 }));
-
-function imports() {
-	return importsPlugin({
-		libList: [
-			{ libName: "lodash", libDirectory: "", camel2DashComponentName: false },
-		],
-	});
-}
 
 function checker(mode: string) {
 	if (mode !== "development") return;

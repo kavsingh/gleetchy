@@ -1,4 +1,4 @@
-import { isEqual } from "lodash";
+import { deepEqual } from "fast-equals";
 import { useCallback, useEffect, useState } from "react";
 
 import {
@@ -24,7 +24,7 @@ export default function useAudioNode<T extends Record<string, unknown>>(
 ) {
 	const node = useAppSelector(
 		(state) => selectAudioNodes(state)[id] as AudioNodeState<T> | undefined,
-		isEqual,
+		deepEqual,
 	);
 
 	if (!node) throw new Error(`Audio node not found at id ${id}`);
@@ -64,7 +64,7 @@ export default function useAudioNode<T extends Record<string, unknown>>(
 		setConnections((current) => {
 			const next = getConnectionsFor(id, allConnections);
 
-			return isEqual(current, next) ? current : next;
+			return deepEqual(current, next) ? current : next;
 		});
 	}, [id, allConnections]);
 

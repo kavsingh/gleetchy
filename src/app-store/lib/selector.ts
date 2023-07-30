@@ -1,7 +1,7 @@
-import { isEqual } from "lodash";
+import { deepEqual } from "fast-equals";
 import { createSelectorCreator, defaultMemoize } from "reselect";
 
-export const createValueEqSelector = createSelectorCreator(
+export const createDeepEqualSelector = createSelectorCreator(
 	defaultMemoize,
-	isEqual,
+	deepEqual,
 );
