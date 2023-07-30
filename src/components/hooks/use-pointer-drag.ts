@@ -1,26 +1,17 @@
-import rafThrottle from "raf-throttle";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 
-import { filterSupportedEvents } from "~/lib/env";
-import { cancelEvent } from "~/lib/util";
+import type { PointerEventHandler } from "react";
 
-import type { MouseEventHandler, TouchEventHandler } from "react";
-
-const usePointerDrag = ({
+export default function usePointerDrag({
 	onDragStart,
 	onDragMove,
 	onDragEnd,
-}: UsePointerDragProps) => {
+}: UsePointerDragProps) {
 	const stateRef = useRef(initialState);
-	const [eventNames, setEventNames] = useState<{
-		moveEvents: string[];
-		endEvents: string[];
-	}>({ moveEvents: [], endEvents: [] });
-	const { moveEvents, endEvents } = eventNames;
 
 	const handleDragMove = useCallback(
-		(event: Event) => {
-			const { clientX, clientY, timeStamp } = cancelAndNormalizeEvent(event);
+		(event: PointerEvent) => {
+			const { clientX, clientY, timeStamp } = event;
 
 			stateRef.current = {
 				...stateRef.current,
@@ -41,24 +32,14 @@ const usePointerDrag = ({
 		[onDragMove],
 	);
 
-	const throttledHandleDragMove = useMemo(
-		() => rafThrottle(handleDragMove),
-		[handleDragMove],
-	);
-
 	const handleDragEnd = useCallback(
-		(event: Event) => {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			if (!globalThis.window) return;
+		(event: PointerEvent) => {
+			event.preventDefault();
+			globalThis.window.removeEventListener("pointermove", handleDragMove);
+			globalThis.window.removeEventListener("pointerup", handleDragEnd);
+			globalThis.window.removeEventListener("pointercancel", handleDragEnd);
 
-			const { clientX, clientY } = cancelAndNormalizeEvent(event);
-
-			moveEvents.forEach((eventName) => {
-				globalThis.window.removeEventListener(
-					eventName,
-					throttledHandleDragMove,
-				);
-			});
+			const { clientX, clientY } = event;
 
 			stateRef.current = {
 				...stateRef.current,
@@ -77,30 +58,32 @@ const usePointerDrag = ({
 
 			onDragEnd?.(stateRef.current);
 		},
-		[moveEvents, onDragEnd, throttledHandleDragMove],
+		[onDragEnd, handleDragMove],
 	);
 
-	const registerDragStart = useCallback(
-		(normalisedEvent: NormalizedEvent) => {
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			if (!globalThis.window || stateRef.current.isDragging) return;
+	const registerDragStart = useCallback<PointerEventHandler<HTMLElement>>(
+		(event) => {
+			event.preventDefault();
 
-			const { currentTarget, clientX, clientY, timeStamp } = normalisedEvent;
+			if (stateRef.current.isDragging) return;
+
+			const { currentTarget, clientX, clientY, timeStamp } = event;
 			const targetRect = currentTarget.getBoundingClientRect();
 			const targetStartX = clientX - targetRect.top;
 			const targetStartY = clientY - targetRect.left;
 
-			moveEvents.forEach((eventName) => {
-				globalThis.window.addEventListener(eventName, throttledHandleDragMove, {
-					passive: false,
-				});
+			globalThis.window.addEventListener("pointermove", handleDragMove, {
+				passive: false,
 			});
 
-			endEvents.forEach((eventName) => {
-				globalThis.window.addEventListener(eventName, handleDragEnd, {
-					passive: false,
-					once: true,
-				});
+			globalThis.window.addEventListener("pointerup", handleDragEnd, {
+				passive: false,
+				once: true,
+			});
+
+			globalThis.window.addEventListener("pointercancel", handleDragEnd, {
+				passive: false,
+				once: true,
 			});
 
 			stateRef.current = {
@@ -126,47 +109,11 @@ const usePointerDrag = ({
 
 			onDragStart?.(stateRef.current);
 		},
-		[
-			moveEvents,
-			endEvents,
-			onDragStart,
-			throttledHandleDragMove,
-			handleDragEnd,
-		],
+		[onDragStart, handleDragMove, handleDragEnd],
 	);
 
-	const onMouseDown = useCallback<MouseEventHandler<HTMLElement>>(
-		(event) => {
-			registerDragStart(normalizeEvent(event));
-		},
-		[registerDragStart],
-	);
-
-	const onTouchStart = useCallback<TouchEventHandler<HTMLElement>>(
-		(event) => {
-			registerDragStart(normalizeEvent(event));
-		},
-		[registerDragStart],
-	);
-
-	useEffect(() => {
-		if (typeof window === "undefined") return;
-
-		const mouseMoveEvents = filterSupportedEvents(["mousemove"]);
-		const mouseEndEvents = filterSupportedEvents(["mouseup"]);
-		const touchMoveEvents = filterSupportedEvents(["touchmove"]);
-		const touchEndEvents = filterSupportedEvents(["touchend", "touchcancel"]);
-
-		setEventNames({
-			moveEvents: [...mouseMoveEvents, ...touchMoveEvents],
-			endEvents: [...mouseEndEvents, ...touchEndEvents],
-		});
-	}, []);
-
-	return { onMouseDown, onTouchStart } as const;
-};
-
-export default usePointerDrag;
+	return { onPointerDown: registerDragStart } as const;
+}
 
 const initialState: PointerDragState = {
 	displacementX: 0,
@@ -200,9 +147,7 @@ export type PointerDragState = {
 	startX: number;
 	startY: number;
 	target: HTMLElement | null;
-	// TODO: check if can drop ClientRect
-	// eslint-disable-next-line deprecation/deprecation
-	targetRect: ClientRect | DOMRect | null;
+	targetRect: DOMRect | null;
 	targetStartX: number;
 	targetStartY: number;
 	targetX: number;
@@ -222,39 +167,4 @@ export type UsePointerDragProps = {
 	onDragStart?: PointerDragStartHandler;
 	onDragMove?: PointerDragMoveHandler;
 	onDragEnd?: PointerDragEndHandler;
-};
-
-const normalizeEvent = (event: MouseOrTouchEvent): NormalizedEvent => {
-	const { currentTarget, timeStamp } = event;
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	const { clientX = 0, clientY = 0 } = (event as TouchEvent).touches
-		? (event as TouchEvent).touches[0] ?? {}
-		: (event as MouseEvent);
-
-	return {
-		clientX,
-		clientY,
-		timeStamp,
-		currentTarget: currentTarget as HTMLElement,
-	};
-};
-
-const cancelAndNormalizeEvent = (event: Event) => {
-	cancelEvent(event);
-
-	return normalizeEvent(event);
-};
-
-type MouseOrTouchEvent =
-	| Event
-	| MouseEvent
-	| TouchEvent
-	| React.MouseEvent
-	| React.TouchEvent;
-
-type NormalizedEvent = {
-	currentTarget: HTMLElement;
-	clientX: number;
-	clientY: number;
-	timeStamp: number;
 };
