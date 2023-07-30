@@ -116,7 +116,7 @@ type Props = {
 	title?: string;
 	label?: string;
 	valueLabel?: string;
-	onChange?(value: number): unknown;
+	onChange?: ((value: number) => unknown) | undefined;
 };
 
 type MovementAxis = "vertical" | "horizontal";

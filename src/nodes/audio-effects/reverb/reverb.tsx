@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { memo, useCallback, useMemo } from "react";
 
 import Knob from "~/components/knob";
@@ -9,14 +8,14 @@ import type { ImpulseName } from "./impulses";
 import type { AudioNodeConnection } from "~/types";
 
 export default memo(function Reverb({
-	label = "Reverb",
-	wetDryRatio = 0.5,
-	connections = [],
-	impulse = "wide",
-	onWetDryRatioChange = noop,
-	onLabelChange = noop,
-	onImpulseChange = noop,
-	remove = noop,
+	label,
+	wetDryRatio,
+	connections,
+	impulse,
+	onWetDryRatioChange,
+	onLabelChange,
+	onImpulseChange,
+	remove,
 }: ReverbProps) {
 	const titleBar = useMemo(
 		() => (

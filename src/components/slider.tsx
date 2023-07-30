@@ -1,4 +1,4 @@
-import { clamp, noop } from "lodash";
+import { clamp } from "lodash";
 import { memo, useRef, useEffect, useCallback, forwardRef } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -18,12 +18,12 @@ import type {
 
 export default memo(function Slider({
 	value,
+	onChange,
 	defaultValue = 0.5,
 	orientation = "block",
 	label = "",
 	valueLabel = "",
 	title = "",
-	onChange = noop,
 }: Props) {
 	const valueRef = useRef<number>(value);
 	const moveMultiplierRef = useControlResponseRef(controlMultipliers);
@@ -31,14 +31,14 @@ export default memo(function Slider({
 	const barRef = useRef<HTMLDivElement | null>(null);
 
 	const handleDoubleClick = useCallback(() => {
-		onChange(defaultValue);
+		onChange?.(defaultValue);
 	}, [onChange, defaultValue]);
 
 	const onDragMove = useCallback<PointerDragMoveHandler>(
 		({ movementX, movementY }) => {
 			const { current: bar } = barContainerRef;
 
-			if (!bar) return;
+			if (!(bar && onChange)) return;
 
 			const isVert = orientation === "block";
 			const movement = isVert ? movementY : movementX;
@@ -57,7 +57,7 @@ export default memo(function Slider({
 		({ duration, movementX, movementY, targetX, targetY }) => {
 			const { current: bar } = barContainerRef;
 
-			if (!bar) return;
+			if (!(bar && onChange)) return;
 
 			const isVert = orientation === "block";
 			const movement = isVert ? movementY : movementX;
@@ -199,7 +199,7 @@ type Props = {
 	label?: string;
 	valueLabel?: string;
 	title?: string;
-	onChange?(value: number): unknown;
+	onChange?: ((value: number) => unknown) | undefined;
 };
 
 type OrientationProps = { orientation: Orientation };

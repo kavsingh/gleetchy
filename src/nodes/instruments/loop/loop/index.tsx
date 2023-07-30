@@ -1,4 +1,4 @@
-import { clamp, noop } from "lodash";
+import { clamp } from "lodash";
 import { memo, useCallback, useEffect, useRef } from "react";
 
 import useFileDropRegion from "~/components/hooks/use-file-drop-region";
@@ -12,27 +12,27 @@ import type { LoopUIProps } from "./types";
 import type { PropsWithChildren } from "react";
 
 export default memo(function Loop({
+	loopStart,
+	loopEnd,
+	label,
+	fileName,
+	connections,
+	highGain,
+	midGain,
+	lowGain,
+	playbackRate,
+	gain,
 	nodeId,
 	audioBuffer,
-	loopStart = 0,
-	loopEnd = 1,
-	label = "",
-	fileName = "",
-	connections = [],
-	highGain = 0,
-	midGain = 0,
-	lowGain = 0,
-	playbackRate = 1,
-	gain = 0.5,
-	onGainChange = noop,
-	onPlaybackRateChange = noop,
-	onEqChange = noop,
-	selectAudioFile = noop,
-	onLabelChange = noop,
-	duplicate = noop,
-	remove = noop,
-	receiveAudioFile = noop,
-	onLoopRegionChange = noop,
+	onGainChange,
+	onPlaybackRateChange,
+	onEqChange,
+	selectAudioFile,
+	onLabelChange,
+	duplicate,
+	remove,
+	receiveAudioFile,
+	onLoopRegionChange,
 }: LoopUIProps) {
 	const regionRef = useRef({ loopStart, loopEnd });
 

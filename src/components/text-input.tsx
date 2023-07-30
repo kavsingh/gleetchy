@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { useCallback, memo, useRef } from "react";
 import AutosizeInput from "react-input-autosize";
 
@@ -12,8 +11,8 @@ import type {
 
 export default memo(function TextInput({
 	value,
+	onChange,
 	placeholder = "",
-	onChange = noop,
 }: Props) {
 	const initialValueRef = useRef(value);
 	const inputRef = useRef<HTMLInputElement | null>(null);
@@ -28,7 +27,7 @@ export default memo(function TextInput({
 	const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
 		(event) => {
 			cancelReactEvent(event);
-			onChange(event.currentTarget.value);
+			onChange?.(event.currentTarget.value);
 		},
 		[onChange],
 	);
@@ -40,7 +39,7 @@ export default memo(function TextInput({
 			event.preventDefault();
 			inputRef.current?.blur();
 
-			if (event.key === "Escape") onChange(initialValueRef.current);
+			if (onChange && event.key === "Escape") onChange(initialValueRef.current);
 		},
 		[onChange],
 	);
@@ -64,7 +63,7 @@ export default memo(function TextInput({
 });
 
 type Props = {
-	value: string | number;
-	placeholder?: string;
-	onChange?(value: string | number): unknown;
+	value: string;
+	placeholder?: string | undefined;
+	onChange?: ((value: string) => unknown) | undefined;
 };

@@ -1,16 +1,17 @@
-import { noop } from "lodash";
 import { memo, useMemo, useCallback } from "react";
 
 import Knob from "~/components/knob";
 
 export default memo(function PlaybackControls({
-	gain = 1,
-	playbackRate = 1,
-	onGainChange = noop,
-	onPlaybackRateChange = noop,
+	gain,
+	playbackRate,
+	onGainChange,
+	onPlaybackRateChange,
 }: Props) {
 	const handlePlaybackRateChange = useCallback(
-		(val: number) => onPlaybackRateChange(val * 2),
+		(val: number) => {
+			onPlaybackRateChange(val * 2);
+		},
 		[onPlaybackRateChange],
 	);
 

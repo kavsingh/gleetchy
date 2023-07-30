@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { memo, useCallback, useMemo } from "react";
 
 import Knob from "~/components/knob";
@@ -9,14 +8,14 @@ import type { PropsWithChildren } from "react";
 import type { AudioNodeConnection } from "~/types";
 
 export default memo(function Delay({
-	label = "Delay",
-	connections = [],
-	wetDryRatio = 0.5,
-	delayTime = 1,
-	onDelayTimeChange = noop,
-	onWetDryRatioChange = noop,
-	onLabelChange = noop,
-	remove = noop,
+	label,
+	connections,
+	wetDryRatio,
+	delayTime,
+	onDelayTimeChange,
+	onWetDryRatioChange,
+	onLabelChange,
+	remove,
 }: DelayProps) {
 	const handleTimeKnobChange = useCallback(
 		(val: number) => {

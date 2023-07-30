@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { memo, useCallback, useMemo } from "react";
 
 import Slider from "~/components/slider";
@@ -6,10 +5,10 @@ import Slider from "~/components/slider";
 import type { PropsWithChildren } from "react";
 
 export default memo(function Eq3({
-	lowGain = 0,
-	midGain = 0,
-	highGain = 0,
-	onChange = noop,
+	onChange,
+	lowGain,
+	midGain,
+	highGain,
 }: Eq3Props) {
 	const handleLowGainChange = useCallback(
 		(val: number) => onChange({ lowGain: val * 2 - 1 }),
@@ -82,6 +81,5 @@ export type Eq3Props = {
 	lowGain: number;
 	midGain: number;
 	highGain: number;
-	// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
-	onChange(eqProps: { [key: string]: number }): unknown;
+	onChange(eqProps: Record<string, number>): unknown;
 };

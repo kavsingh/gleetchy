@@ -1,4 +1,3 @@
-import { noop } from "lodash";
 import { useMemo } from "react";
 
 import Button from "./button";
@@ -10,8 +9,8 @@ import type { AudioNodeConnection } from "~/types";
 export default function TitleBar({
 	label,
 	type,
-	onLabelChange = noop,
-	onRemoveClick = noop,
+	onLabelChange,
+	onRemoveClick,
 	connections = [],
 	children,
 }: Props) {
@@ -49,6 +48,6 @@ type Props = PropsWithChildren<{
 	label: string;
 	type: string;
 	connections?: AudioNodeConnection[];
-	onLabelChange?(label: string): unknown;
-	onRemoveClick?(): unknown;
+	onLabelChange?: ((label: string) => unknown) | undefined;
+	onRemoveClick?: (() => unknown) | undefined;
 }>;
