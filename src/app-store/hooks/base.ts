@@ -1,9 +1,11 @@
 import { createMemo, createSignal, onCleanup } from "solid-js";
 
-import { useAppStore } from "./context";
+import { useAppStore } from "../context";
 
-import type { AppState } from "./create";
+import type { AppState } from "../create";
 import type { MemoOptions } from "solid-js";
+
+export { useAppStore };
 
 export function useAppSelector<T>(
 	selector: (state: AppState) => T,

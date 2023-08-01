@@ -1,7 +1,5 @@
 import { createSignal } from "solid-js";
 
-import { cancelReactEvent } from "~/lib/util";
-
 import type { JSX } from "solid-js";
 
 type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;
@@ -9,18 +7,23 @@ type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;
 export default function useFileDropRegion(props: UseFileDropRegionProps) {
 	const [isDropActive, setIsDropActive] = createSignal(false);
 
-	const eventSetDropActive: DragEventHandler = (event) => {
+	const cancelEvent: DragEventHandler = (event) => {
 		event.preventDefault();
+		event.stopPropagation();
+	};
+
+	const eventSetDropActive: DragEventHandler = (event) => {
+		cancelEvent(event);
 		setIsDropActive(true);
 	};
 
 	const eventSetDropInactive: DragEventHandler = (event) => {
-		event.preventDefault();
+		cancelEvent(event);
 		setIsDropActive(false);
 	};
 
 	const onDrop: DragEventHandler = (event) => {
-		event.preventDefault();
+		cancelEvent(event);
 		setIsDropActive(false);
 
 		if (!props.onFiles) return;
@@ -34,9 +37,9 @@ export default function useFileDropRegion(props: UseFileDropRegionProps) {
 
 	const eventHandlers = {
 		onDrop,
-		onDrag: cancelReactEvent,
-		onDragOver: cancelReactEvent,
-		onDragStart: cancelReactEvent,
+		onDrag: cancelEvent,
+		onDragOver: cancelEvent,
+		onDragStart: cancelEvent,
 		onDragEnter: eventSetDropActive,
 		onDragLeave: eventSetDropInactive,
 		onDragEnd: eventSetDropInactive,

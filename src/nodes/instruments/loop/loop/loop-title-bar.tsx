@@ -1,58 +1,33 @@
-import { useMemo, memo } from "react";
-
 import Button from "~/components/button";
 import TitleBar from "~/components/title-bar";
 
 import type { LoopUIProps } from "./types";
 
-export default memo(function LoopTitleBar({
-	label,
-	onLabelChange,
-	duplicate,
-	remove,
-	connections,
-	fileName,
-	audioBuffer,
-	selectAudioFile,
-}: Props) {
-	const fileInfo = useMemo(
-		() => (
-			<>
-				{fileName ? <span>{fileName}</span> : null}
-				{fileName && audioBuffer ? (
-					<span> - {audioBuffer.duration.toFixed(2)}s</span>
-				) : null}
-				{fileName ? <span>/</span> : null}
-			</>
-		),
-		[audioBuffer, fileName],
-	);
-
-	const loadButton = useMemo(
-		() => (
-			<Button onClick={selectAudioFile}>
-				{`${audioBuffer ? "Replace" : "Load"}`} audio file
-			</Button>
-		),
-		[audioBuffer, selectAudioFile],
-	);
-
+export default function LoopTitleBar(props: Props) {
 	return (
 		<TitleBar
 			type="Loop"
-			label={label}
-			onLabelChange={onLabelChange}
-			onRemoveClick={remove}
-			connections={connections}
+			label={props.label}
+			onLabelChange={props.onLabelChange}
+			onRemoveClick={props.remove}
+			connections={props.connections}
 		>
-			<div className="flex gap-1">
-				{fileInfo}
-				{loadButton}
-				{audioBuffer ? <Button onClick={duplicate}>Clone</Button> : null}
+			<div class="flex gap-1">
+				{props.fileName ? <span>{props.fileName}</span> : null}
+				{props.fileName && props.audioBuffer ? (
+					<span> - {props.audioBuffer.duration.toFixed(2)}s</span>
+				) : null}
+				{props.fileName ? <span>/</span> : null}
+				<Button onClick={props.selectAudioFile}>
+					{`${props.audioBuffer ? "Replace" : "Load"}`} audio file
+				</Button>
+				{props.audioBuffer ? (
+					<Button onClick={props.duplicate}>Clone</Button>
+				) : null}
 			</div>
 		</TitleBar>
 	);
-});
+}
 
 type Props = Pick<
 	LoopUIProps,

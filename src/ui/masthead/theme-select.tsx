@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+import { For } from "solid-js";
 
 import { useAppDispatch, useAppSelector } from "~/app-store/hooks/base";
 import { setTheme } from "~/app-store/ui/actions";
@@ -27,20 +28,22 @@ export default function ThemeSelect() {
 	);
 
 	return (
-		<fieldset className="flex items-center gap-2 text-sm">
-			<legend className="sr-only">Theme select</legend>
-			{THEMES.map((theme) => (
-				<RadioInput
-					key={theme}
-					label={theme.charAt(0).toUpperCase()}
-					title={theme}
-					name="theme-select"
-					id={theme}
-					value={theme}
-					checked={selected === theme}
-					onChange={handleChange}
-				/>
-			))}
+		<fieldset class="flex items-center gap-2 text-sm">
+			<legend class="sr-only">Theme select</legend>
+			<For each={THEMES}>
+				{(theme) => (
+					<RadioInput
+						key={theme}
+						label={theme.charAt(0).toUpperCase()}
+						title={theme}
+						name="theme-select"
+						id={theme}
+						value={theme}
+						checked={selected === theme}
+						onChange={handleChange}
+					/>
+				)}
+			</For>
 		</fieldset>
 	);
 }
