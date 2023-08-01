@@ -1,5 +1,3 @@
-import { memo, useCallback } from "react";
-
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
@@ -9,7 +7,7 @@ import { nodeType, UI } from "~/nodes/audio-effects/reverb";
 import type { NodeProps } from "~/nodes/audio-effects/reverb";
 import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
 
-export default memo(function ConnectedReverb({ id }: { id: string }) {
+export default function ConnectedReverb(props: { id: string }) {
 	const {
 		connections,
 		isActive,
@@ -18,26 +16,25 @@ export default memo(function ConnectedReverb({ id }: { id: string }) {
 		updateLabel,
 		updateAudioProps,
 		remove,
-	} = useAudioNode<NodeProps>(id, validateNodeType(nodeType));
+		// eslint-disable-next-line solid/reactivity
+	} = useAudioNode<NodeProps>(props.id, validateNodeType(nodeType));
 
-	const handleWetDryRatioChange = useCallback(
-		(wetDryRatio: number) => updateAudioProps({ wetDryRatio }),
-		[updateAudioProps],
-	);
+	function handleWetDryRatioChange(wetDryRatio: number) {
+		updateAudioProps({ wetDryRatio });
+	}
 
-	const handleImpulseChange = useCallback(
-		(impulse: ImpulseName) => updateAudioProps({ impulse }),
-		[updateAudioProps],
-	);
+	function handleImpulseChange(impulse: ImpulseName) {
+		updateAudioProps({ impulse });
+	}
 
 	return (
-		<NodeWrapper isActive={isActive}>
+		<NodeWrapper isActive={isActive()}>
 			<UI
-				connections={connections}
-				isActive={isActive}
-				label={label}
-				impulse={audioProps.impulse}
-				wetDryRatio={audioProps.wetDryRatio}
+				connections={connections()}
+				isActive={isActive()}
+				label={label()}
+				impulse={audioProps().impulse}
+				wetDryRatio={audioProps().wetDryRatio}
 				onLabelChange={updateLabel}
 				onWetDryRatioChange={handleWetDryRatioChange}
 				onImpulseChange={handleImpulseChange}
@@ -45,4 +42,4 @@ export default memo(function ConnectedReverb({ id }: { id: string }) {
 			/>
 		</NodeWrapper>
 	);
-});
+}
