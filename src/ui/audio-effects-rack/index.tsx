@@ -1,9 +1,9 @@
 import { useCallback, memo } from "react";
+import { ErrorBoundary } from "solid-js";
 
 import useAddNode from "~/app-store/hooks/use-add-node";
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import ButtonGroup, { Button } from "~/components/button-group";
-import ErrorBoundary from "~/components/error-boundary";
 import { nodeType as delayType } from "~/nodes/audio-effects/delay";
 import { nodeType as reverbType } from "~/nodes/audio-effects/reverb";
 
@@ -14,7 +14,7 @@ import type { PropsWithChildren } from "react";
 
 export default memo(function AudioEffectsRack() {
 	return (
-		<div className="flex w-full flex-wrap items-start">
+		<div class="flex w-full flex-wrap items-start">
 			<Rack />
 			<AddAudioEffectButtons />
 		</div>
@@ -26,18 +26,18 @@ function Rack() {
 
 	return (
 		<>
-			{audioEffects.map(({ id, type }) => {
-				switch (type) {
+			{audioEffects.map((props) => {
+				switch (props.type) {
 					case delayType:
 						return (
-							<RackMount key={id}>
-								<ConnectedDelay id={id} />
+							<RackMount key={props.id}>
+								<ConnectedDelay id={props.id} />
 							</RackMount>
 						);
 					case reverbType:
 						return (
-							<RackMount key={id}>
-								<ConnectedReverb id={id} />
+							<RackMount key={props.id}>
+								<ConnectedReverb id={props.id} />
 							</RackMount>
 						);
 					default:
@@ -61,10 +61,10 @@ function AddAudioEffectButtons() {
 	);
 }
 
-function RackMount({ children }: PropsWithChildren) {
+function RackMount(props: PropsWithChildren) {
 	return (
-		<div className="flex shrink-0 grow basis-40 animate-appear py-4 opacity-0">
-			<ErrorBoundary>{children}</ErrorBoundary>
+		<div class="flex shrink-0 grow basis-40 animate-appear py-4 opacity-0">
+			<ErrorBoundary>{props.children}</ErrorBoundary>
 		</div>
 	);
 }

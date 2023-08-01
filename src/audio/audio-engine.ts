@@ -34,7 +34,7 @@ import {
 import { GLoopNode } from "~/nodes/instruments/loop/create-audio-node";
 
 import type { AnyAction } from "@reduxjs/toolkit";
-import type { AppState } from "~/app-store/configure-store";
+import type { AppState } from "~/app-store/create";
 import type { GInstrumentNode } from "~/lib/g-audio-node";
 import type { AudioNodeState } from "~/types";
 

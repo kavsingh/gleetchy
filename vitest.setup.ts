@@ -1,10 +1,7 @@
-// fucking balls, this pulls global jest into types as well
-/// <reference types="@types/testing-library__jest-dom" />
-
 import "web-audio-test-api";
 import "raf/polyfill";
 import matchers from "@testing-library/jest-dom/matchers";
-import { cleanup } from "@testing-library/react";
+import { cleanup } from "solid-testing-library";
 import { afterEach, expect } from "vitest";
 
 import type { TestingLibraryMatchers } from "@testing-library/jest-dom/matchers";

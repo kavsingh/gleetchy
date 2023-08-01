@@ -1,4 +1,4 @@
-import type { AppState } from "~/app-store/configure-store";
+import type { AppState } from "~/app-store/create";
 
 export function selectTheme(state: AppState) {
 	return state.ui.currentTheme;

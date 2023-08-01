@@ -1,66 +1,49 @@
-import { useCallback, memo, useRef } from "react";
-import AutosizeInput from "react-input-autosize";
+import type { JSX } from "solid-js/jsx-runtime";
 
-import { cancelReactEvent } from "~/lib/util";
+export default function TextInput(props: Props) {
+	let inputRef: HTMLInputElement | undefined;
+	// eslint-disable-next-line solid/reactivity
+	let initialValue = props.value;
 
-import type {
-	ChangeEventHandler,
-	FocusEventHandler,
-	KeyboardEventHandler,
-} from "react";
+	const handleFocus: JSX.FocusEventHandlerUnion<
+		HTMLInputElement,
+		FocusEvent
+	> = (event) => {
+		initialValue = event.currentTarget.value;
+	};
 
-export default memo(function TextInput({
-	value,
-	onChange,
-	placeholder = "",
-}: Props) {
-	const initialValueRef = useRef(value);
-	const inputRef = useRef<HTMLInputElement | null>(null);
+	const handleChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
+		event,
+	) => {
+		event.preventDefault();
+		props.onChange?.(event.currentTarget.value);
+	};
 
-	const handleFocus = useCallback<FocusEventHandler<HTMLInputElement>>(
-		(event) => {
-			initialValueRef.current = event.currentTarget.value;
-		},
-		[],
-	);
+	const handleKeyDown: JSX.EventHandlerUnion<
+		HTMLInputElement,
+		KeyboardEvent
+	> = (event) => {
+		if (!["Enter", "Escape"].includes(event.key)) return;
 
-	const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(event) => {
-			cancelReactEvent(event);
-			onChange?.(event.currentTarget.value);
-		},
-		[onChange],
-	);
+		event.preventDefault();
+		inputRef?.blur();
 
-	const handleKeyDown = useCallback<KeyboardEventHandler>(
-		(event) => {
-			if (!["Enter", "Escape"].includes(event.key)) return;
-
-			event.preventDefault();
-			inputRef.current?.blur();
-
-			if (onChange && event.key === "Escape") onChange(initialValueRef.current);
-		},
-		[onChange],
-	);
+		if (props.onChange && event.key === "Escape") props.onChange(initialValue);
+	};
 
 	return (
-		<div>
-			<AutosizeInput
-				inputClassName="cursor-text border-none bg-transparent text-current transition-colors border-be border-be-transparent hover:text-text600 focus:text-text600 focus:border-be-current focus-visible:outline-none active:text-text600"
-				style={{ font: "inherit" }}
-				value={value}
-				placeholder={placeholder}
-				onChange={handleChange}
-				onFocus={handleFocus}
-				onKeyDown={handleKeyDown}
-				// TODO: investigate a fix
-				// @ts-expect-error typing conflict AutoSize lib
-				ref={inputRef}
-			/>
-		</div>
+		<input
+			type="text"
+			class="cursor-text border-b border-none border-b-transparent bg-transparent text-current transition-colors hover:text-text600 focus:border-b-current focus:text-text600 focus-visible:outline-none active:text-text600"
+			ref={inputRef}
+			value={props.value}
+			placeholder={props.placeholder}
+			onChange={handleChange}
+			onFocus={handleFocus}
+			onKeyDown={handleKeyDown}
+		/>
 	);
-});
+}
 
 type Props = {
 	value: string;

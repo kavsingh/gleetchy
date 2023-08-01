@@ -2,7 +2,7 @@ import { useCallback, useRef, memo } from "react";
 import { twMerge } from "tailwind-merge";
 
 import LoopHandle from "./loop-handle";
-import useControlResponseRef from "../hooks/use-control-response-ref";
+import useControlResponseMultiplier from "../hooks/use-control-response-multiplier";
 import usePointerDrag from "../hooks/use-pointer-drag";
 
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
@@ -24,56 +24,52 @@ const controlResponseMultipliers = {
 	fine: 0.4,
 };
 
-function LoopRegion({
-	loopStart,
-	loopEnd,
-	onLoopStartDrag,
-	onLoopEndDrag,
-	onLoopRegionDrag,
-}: Props) {
-	const moveMultiplierRef = useControlResponseRef(controlResponseMultipliers);
+function LoopRegion(props: Props) {
+	const moveMultiplierRef = useControlResponseMultiplier(
+		controlResponseMultipliers,
+	);
 	const containerRef = useRef<HTMLDivElement | null>(null);
 
 	const handleStartHandleDrag = useCallback<PointerDragMoveHandler>(
 		({ movementX }) => {
-			if (!(onLoopStartDrag && containerRef.current)) return;
+			if (!(props.onLoopStartDrag && containerRef.current)) return;
 
 			const movement =
 				(movementX * moveMultiplierRef.current) /
 				containerRef.current.offsetWidth;
 
-			onLoopStartDrag(movement);
+			props.onLoopStartDrag(movement);
 		},
-		[onLoopStartDrag, moveMultiplierRef],
+		[props.onLoopStartDrag, moveMultiplierRef],
 	);
 
 	const handleEndHandleDrag = useCallback<PointerDragMoveHandler>(
 		({ movementX }) => {
-			if (!(onLoopEndDrag && containerRef.current)) return;
+			if (!(props.onLoopEndDrag && containerRef.current)) return;
 
 			const movement =
 				(movementX * moveMultiplierRef.current) /
 				containerRef.current.offsetWidth;
 
-			onLoopEndDrag(movement);
+			props.onLoopEndDrag(movement);
 		},
-		[onLoopEndDrag, moveMultiplierRef],
+		[props.onLoopEndDrag, moveMultiplierRef],
 	);
 
 	const handleLoopRegionDrag = useCallback<PointerDragMoveHandler>(
 		({ movementX }) => {
-			if (!(onLoopRegionDrag && containerRef.current)) return;
+			if (!(props.onLoopRegionDrag && containerRef.current)) return;
 
 			const movement =
 				(movementX * moveMultiplierRef.current) /
 				containerRef.current.offsetWidth;
 
-			onLoopRegionDrag(movement);
+			props.onLoopRegionDrag(movement);
 		},
-		[onLoopRegionDrag, moveMultiplierRef],
+		[props.onLoopRegionDrag, moveMultiplierRef],
 	);
 
-	const regionRatio = loopEnd - loopStart;
+	const regionRatio = props.loopEnd - props.loopStart;
 	const preferRegionDrag = containerRef.current
 		? regionRatio * containerRef.current.offsetWidth < 30
 		: false;
@@ -87,54 +83,51 @@ function LoopRegion({
 	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
 
 	return (
-		<div className="relative h-full w-full" ref={containerRef}>
-			<HandleContainer {...startDragListeners} offset={loopStart}>
+		<div class="relative h-full w-full" ref={containerRef}>
+			<HandleContainer {...startDragListeners} offset={props.loopStart}>
 				<LoopHandle align="start" />
 			</HandleContainer>
-			<HandleContainer {...endDragListeners} offset={loopEnd}>
+			<HandleContainer {...endDragListeners} offset={props.loopEnd}>
 				<LoopHandle align="end" />
 			</HandleContainer>
-			<div className="absolute inset-0">
-				<InactiveRegion start={0} end={loopStart} />
+			<div class="absolute inset-0">
+				<InactiveRegion start={0} end={props.loopStart} />
 				{regionRatio < 1 ? (
 					<ActiveRegion
 						{...regionDragListeners}
-						start={loopStart}
-						end={loopEnd}
+						start={props.loopStart}
+						end={props.loopEnd}
 						preferred={preferRegionDrag}
 					/>
 				) : null}
-				<InactiveRegion start={loopEnd} end={1} />
+				<InactiveRegion start={props.loopEnd} end={1} />
 			</div>
 		</div>
 	);
 }
 
-function HandleContainer({
-	children,
-	offset,
-	...props
-}: PropsWithChildren<{ offset: number } & DivProps>) {
+function HandleContainer(
+	_props: PropsWithChildren<{ offset: number } & DivProps>,
+) {
+	const [props, props] = splitProps(_props, ["children", "offset"]);
 	return (
 		<div
 			{...props}
 			className="absolute top-0 z-[1] h-full w-[10px] cursor-ew-resize"
 			role="presentation"
-			style={{ left: `${offset * 100}%` }}
+			style={{ left: `${props.offset * 100}%` }}
 		>
-			{children}
+			{props.children}
 		</div>
 	);
 }
 
-function ActiveRegion({
-	preferred,
-	...regionProps
-}: RegionProps & { preferred: boolean }) {
+function ActiveRegion(_props: RegionProps & { preferred: boolean }) {
+	const [props, regionProps] = splitProps(_props, ["preferred"]);
 	return (
 		<Region
 			{...regionProps}
-			className={twMerge("z-0 cursor-move", preferred && "z-[2]")}
+			className={twMerge("z-0 cursor-move", props.preferred && "z-[2]")}
 		/>
 	);
 }
@@ -143,12 +136,8 @@ function InactiveRegion(props: RegionProps) {
 	return <Region {...props} className="z-0 bg-surface0 opacity-80" />;
 }
 
-const Region = memo(function Region({
-	start,
-	end,
-	className,
-	...divProps
-}: RegionProps) {
+const Region = memo(function Region(_props: RegionProps) {
+	const [props, divProps] = splitProps(_props, ["start", "end", "className"]);
 	return (
 		<div
 			{...divProps}

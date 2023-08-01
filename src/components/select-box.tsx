@@ -1,29 +1,26 @@
-import { memo, useCallback } from "react";
+import { For } from "solid-js";
 
-import type { ChangeEventHandler } from "react";
+import type { JSX } from "solid-js";
 
-export default memo(function SelectBox({ options, value, onChange }: Props) {
-	const handleChange = useCallback<ChangeEventHandler<HTMLSelectElement>>(
-		(event) => {
-			onChange?.(event.target.value);
-		},
-		[onChange],
-	);
+export default function SelectBox(props: Props) {
+	const handleChange: JSX.ChangeEventHandlerUnion<HTMLSelectElement, Event> = (
+		event,
+	) => {
+		props.onChange?.(event.target.value);
+	};
 
 	return (
 		<select
-			value={value ?? options[0]?.value}
+			value={props.value ?? props.options[0]?.value}
 			onChange={handleChange}
-			className="relative m-0 appearance-none border-0 border-b-text600 bg-transparent p-0 font-sans text-sm text-current underline transition-colors focus:text-text600"
+			class="relative m-0 appearance-none border-0 border-b-text600 bg-transparent p-0 font-sans text-sm text-current underline transition-colors focus:text-text600"
 		>
-			{options.map((option) => (
-				<option className="" key={option.value} value={option.value}>
-					{option.label}
-				</option>
-			))}
+			<For each={props.options}>
+				{(option) => <option value={option.value}>{option.label}</option>}
+			</For>
 		</select>
 	);
-});
+}
 
 type Props = {
 	options: { value: string; label: string }[];

@@ -1,9 +1,9 @@
 import { useCallback, memo } from "react";
+import { ErrorBoundary } from "solid-js";
 
 import useAddNode from "~/app-store/hooks/use-add-node";
 import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
 import ButtonGroup, { Button } from "~/components/button-group";
-import ErrorBoundary from "~/components/error-boundary";
 import { nodeType as loopType } from "~/nodes/instruments/loop";
 
 import ConnectedLoop from "./connected-loop";
@@ -12,7 +12,7 @@ import type { PropsWithChildren } from "react";
 
 export default memo(function InstrumentsRack() {
 	return (
-		<div className="flex w-full flex-col gap-8">
+		<div class="flex w-full flex-col gap-8">
 			<Rack />
 			<AddInstrumentButtons />
 		</div>
@@ -24,12 +24,12 @@ function Rack() {
 
 	return (
 		<>
-			{instruments.map(({ id, type }) => {
-				switch (type) {
+			{instruments.map((props) => {
+				switch (props.type) {
 					case loopType:
 						return (
-							<RackMount key={id}>
-								<ConnectedLoop id={id} />
+							<RackMount key={props.id}>
+								<ConnectedLoop id={props.id} />
 							</RackMount>
 						);
 					default:
@@ -51,10 +51,10 @@ function AddInstrumentButtons() {
 	);
 }
 
-function RackMount({ children }: PropsWithChildren) {
+function RackMount(props: PropsWithChildren) {
 	return (
-		<div className="animate-appear opacity-0">
-			<ErrorBoundary>{children}</ErrorBoundary>
+		<div class="animate-appear opacity-0">
+			<ErrorBoundary>{props.children}</ErrorBoundary>
 		</div>
 	);
 }

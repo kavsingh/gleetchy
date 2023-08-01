@@ -1,47 +1,51 @@
-import { useRef, useEffect, memo } from "react";
+import { createEffect, onCleanup } from "solid-js";
 
 import { useAppSelector } from "~/app-store/hooks/base";
 import { selectTheme } from "~/app-store/ui/selectors";
 
-export default memo(function Waveform({
-	timeRegions,
-	buffer,
-}: WaveformProps & { className?: string | undefined }) {
+import type { Theme } from "~/app-store/ui/slice";
+
+export default function Waveform(
+	props: WaveformProps & { class?: string | undefined },
+) {
 	const theme = useAppSelector(selectTheme);
-	const canvasRef = useRef<HTMLCanvasElement>(null);
+	let canvasRef: HTMLCanvasElement | undefined;
 
-	useEffect(() => {
-		const handleResize = () => {
-			const canvas = canvasRef.current;
+	function update(appTheme: Theme) {
+		if (!canvasRef) return;
 
-			if (!canvas) return;
+		canvasRef.setAttribute("data-theme", appTheme);
+		updateWaveform(canvasRef, {
+			timeRegions: props.timeRegions,
+			buffer: props.buffer,
+			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+			pixelRatio: globalThis.window.devicePixelRatio ?? 1,
+		});
+	}
 
-			canvas.setAttribute("data-theme", theme);
-			updateWaveform(canvas, {
-				timeRegions,
-				buffer,
-				// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-				pixelRatio: globalThis.window.devicePixelRatio ?? 1,
-			});
-		};
+	function handleResize() {
+		update(theme());
+	}
 
-		handleResize();
-		globalThis.window.addEventListener("resize", handleResize);
+	createEffect(() => {
+		update(theme());
+	});
 
-		return () => {
-			globalThis.window.removeEventListener("resize", handleResize);
-		};
-	}, [timeRegions, buffer, theme]);
+	globalThis.window.addEventListener("resize", handleResize);
+
+	onCleanup(() => {
+		globalThis.window.removeEventListener("resize", handleResize);
+	});
 
 	return (
-		<div className="h-full w-full overflow-hidden">
+		<div class="h-full w-full overflow-hidden">
 			<canvas
-				className={"h-full w-full border-0 border-text100 text-text600"}
+				class={"h-full w-full border-0 border-text100 text-text600"}
 				ref={canvasRef}
 			/>
 		</div>
 	);
-});
+}
 
 function drawTempWaveform(
 	context: CanvasRenderingContext2D,

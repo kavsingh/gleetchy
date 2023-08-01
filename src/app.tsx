@@ -1,20 +1,20 @@
-import { memo, StrictMode } from "react";
-import { Provider } from "react-redux";
+import { ErrorBoundary } from "solid-js";
 
 import UI from "~/ui";
 
-import ErrorBoundary from "./components/error-boundary";
+import { AppStoreProvider } from "./app-store/context";
+import ErrorMessage from "./components/error-message";
 
-import type { AppStore } from "~/app-store/configure-store";
+import type { AppStore } from "~/app-store/create";
 
-export default memo(function App({ store }: { store: AppStore }) {
+export default function App(props: { store: AppStore }) {
 	return (
-		<StrictMode>
-			<Provider store={store}>
-				<ErrorBoundary>
-					<UI />
-				</ErrorBoundary>
-			</Provider>
-		</StrictMode>
+		<AppStoreProvider store={props.store}>
+			<ErrorBoundary
+				fallback={(err) => <ErrorMessage>{String(err)}</ErrorMessage>}
+			>
+				<UI />
+			</ErrorBoundary>
+		</AppStoreProvider>
 	);
-});
+}

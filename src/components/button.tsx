@@ -1,33 +1,30 @@
-import { memo } from "react";
+import { createMemo, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import type { DetailedHTMLProps, HTMLAttributes } from "react";
+import type { JSX, ParentProps } from "solid-js";
 
-export default memo(function Button({
-	children,
-	className,
-	variant = "braced",
-	...props
-}: Props) {
-	const isBraced = variant === "braced";
+export default function Button(props: Props) {
+	const [local, buttonProps] = splitProps(props, ["class", "variant"]);
+	const isBraced = createMemo(() => local.variant === "braced");
 
 	return (
 		<button
-			{...props}
-			className={twMerge(
+			{...buttonProps}
+			class={twMerge(
 				"block appearance-none transition-colors hover:text-text600 focus-visible:text-text600 active:text-text600 disabled:cursor-default disabled:text-text100",
-				isBraced && "text-xs",
-				className,
+				isBraced() && "text-xs",
+				local.class,
 			)}
 		>
-			{isBraced ? <>[ {children} ]</> : children}
+			{isBraced() ? <>[ {props.children} ]</> : props.children}
 		</button>
 	);
-});
+}
 
-type Props = DetailedHTMLProps<
-	HTMLAttributes<HTMLButtonElement>,
-	HTMLButtonElement
-> & { variant?: Variant };
+type Props = ParentProps<
+	Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "classList"> & {
+		variant?: Variant;
+	}
+>;
 
 export type Variant = "braced" | "text";

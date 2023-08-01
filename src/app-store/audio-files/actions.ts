@@ -7,7 +7,7 @@ import {
 
 import { selectAudioContext } from "../audio-context/selectors";
 
-import type { AppState } from "../configure-store";
+import type { AppState } from "../create";
 import type { AudioFileData, DecodedAudioFileData } from "~/types";
 
 export const selectAudioFile = createAsyncThunk(
