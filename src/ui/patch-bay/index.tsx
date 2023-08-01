@@ -1,4 +1,3 @@
-import { memo, useMemo } from "react";
 import { ErrorBoundary, For } from "solid-js";
 
 import {
@@ -6,46 +5,37 @@ import {
 	selectConnectableTargets,
 } from "~/app-store/audio-nodes/selectors";
 import { useAppSelector } from "~/app-store/hooks/base";
+import ErrorMessage from "~/components/error-message";
 
 import PatchBayNode from "./patch-bay-node";
 
-import type { PropsWithChildren } from "react";
+import type { ParentProps } from "solid-js";
 
-export default memo(function PatchBay() {
+export default function PatchBay() {
 	const sources = useAppSelector(selectConnectableSources);
 	const targets = useAppSelector(selectConnectableTargets);
 
-	const sourceLabels = useMemo(
-		() => (
-			<tr>
-				<SourceLabel>To / From</SourceLabel>
-				<For each={sources}>
-					{(source) => (
-						<SourceLabel title={`From ${source.label} to ...`} key={source.id}>
-							{source.label}
-						</SourceLabel>
-					)}
-				</For>
-			</tr>
-		),
-		[sources],
-	);
-
 	return (
 		<div class="w-full">
-			<ErrorBoundary>
+			<ErrorBoundary fallback={(e) => <ErrorMessage>{String(e)}</ErrorMessage>}>
 				<tbody>
-					{sourceLabels}
-					<For each={targets}>
+					<tr>
+						<SourceLabel>To / From</SourceLabel>
+						<For each={sources()}>
+							{(source) => (
+								<SourceLabel title={`From ${source.label} to ...`}>
+									{source.label}
+								</SourceLabel>
+							)}
+						</For>
+					</tr>
+					<For each={targets()}>
 						{(target) => (
 							<tr>
-								<TargetLabel
-									title={`From ... to ${target.label}`}
-									key="rowLabel"
-								>
+								<TargetLabel title={`From ... to ${target.label}`}>
 									{target.label}
 								</TargetLabel>
-								<For each={sources}>
+								<For each={sources()}>
 									{(source) => (
 										<td class="min-w-[1.4em]">
 											<PatchBayNode source={source} target={target} />
@@ -59,9 +49,9 @@ export default memo(function PatchBay() {
 			</ErrorBoundary>
 		</div>
 	);
-});
+}
 
-function SourceLabel(props: PropsWithChildren<{ title?: string }>) {
+function SourceLabel(props: ParentProps<{ title?: string }>) {
 	return (
 		<th
 			title={props.title}
@@ -72,7 +62,7 @@ function SourceLabel(props: PropsWithChildren<{ title?: string }>) {
 	);
 }
 
-function TargetLabel(props: PropsWithChildren<{ title?: string }>) {
+function TargetLabel(props: ParentProps<{ title?: string }>) {
 	return (
 		<td
 			title={props.title}
