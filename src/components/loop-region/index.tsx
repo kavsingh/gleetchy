@@ -83,28 +83,28 @@ export default function LoopRegion(props: Props) {
 	);
 }
 
-function HandleContainer(props: ParentProps<{ offset: number } & DivProps>) {
-	const [local, ...divProps] = splitProps(props, ["children", "offset"]);
+function HandleContainer(_props: ParentProps<{ offset: number } & DivProps>) {
+	const [props, divProps] = splitProps(_props, ["children", "offset"]);
 
 	return (
 		<div
 			{...divProps}
 			class="absolute top-0 z-[1] h-full w-[10px] cursor-ew-resize"
 			role="presentation"
-			style={{ left: `${local.offset * 100}%` }}
+			style={{ left: `${props.offset * 100}%` }}
 		>
-			{props.children}
+			{_props.children}
 		</div>
 	);
 }
 
-function ActiveRegion(props: RegionProps & { preferred: boolean }) {
-	const [local, regionProps] = splitProps(props, ["preferred"]);
+function ActiveRegion(_props: RegionProps & { preferred: boolean }) {
+	const [props, regionProps] = splitProps(_props, ["preferred"]);
 
 	return (
 		<Region
 			{...regionProps}
-			class={twMerge("z-0 cursor-move", local.preferred && "z-[2]")}
+			class={twMerge("z-0 cursor-move", props.preferred && "z-[2]")}
 		/>
 	);
 }
@@ -113,17 +113,17 @@ function InactiveRegion(props: RegionProps) {
 	return <Region {...props} class="z-0 bg-surface0 opacity-80" />;
 }
 
-function Region(props: RegionProps) {
-	const [local, divProps] = splitProps(props, ["start", "end", "class"]);
+function Region(_props: RegionProps) {
+	const [props, divProps] = splitProps(_props, ["start", "end", "class"]);
 
 	return (
 		<div
 			{...divProps}
 			style={{
-				left: `${local.start * 100}%`,
-				right: `${(1 - local.end) * 100}%`,
+				left: `${props.start * 100}%`,
+				right: `${(1 - props.end) * 100}%`,
 			}}
-			class={twMerge("absolute inset-y-0", local.class)}
+			class={twMerge("absolute inset-y-0", props.class)}
 		/>
 	);
 }

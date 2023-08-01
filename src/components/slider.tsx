@@ -127,7 +127,7 @@ function LabelText(props: ParentProps<{ class: string }>) {
 function BarContainer(
 	props: JSX.HTMLAttributes<HTMLDivElement> & OrientationProps,
 ) {
-	const [local, ...divProps] = splitProps(props, ["ref", "orientation"]);
+	const [local, divProps] = splitProps(props, ["ref", "orientation"]);
 
 	return (
 		<div
