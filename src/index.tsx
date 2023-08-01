@@ -9,4 +9,4 @@ const appRoot = globalThis.document.getElementById("app-root");
 
 if (!appRoot) throw new Error("Could not find app mount at #app-root");
 
-render(<App store={createStore()} />, appRoot);
+render(() => <App store={createStore().store} />, appRoot);
