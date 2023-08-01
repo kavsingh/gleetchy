@@ -1,4 +1,4 @@
-import { useCallback, useRef, memo } from "react";
+import { Show, createMemo, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 import LoopHandle from "./loop-handle";
@@ -6,80 +6,57 @@ import useControlResponseMultiplier from "../hooks/use-control-response-multipli
 import usePointerDrag from "../hooks/use-pointer-drag";
 
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
-import type {
-	PropsWithChildren,
-	DetailedHTMLProps,
-	HTMLAttributes,
-} from "react";
-
-export default memo(
-	LoopRegion,
-	(prevProps, nextProps) =>
-		prevProps.loopStart === nextProps.loopStart &&
-		prevProps.loopEnd === nextProps.loopEnd,
-);
+import type { JSX, ParentProps } from "solid-js";
 
 const controlResponseMultipliers = {
 	normal: 1,
 	fine: 0.4,
 };
 
-function LoopRegion(props: Props) {
-	const moveMultiplierRef = useControlResponseMultiplier(
+export default function LoopRegion(props: Props) {
+	const moveMultiplier = useControlResponseMultiplier(
 		controlResponseMultipliers,
 	);
-	const containerRef = useRef<HTMLDivElement | null>(null);
+	let containerRef: HTMLDivElement | undefined;
 
-	const handleStartHandleDrag = useCallback<PointerDragMoveHandler>(
-		({ movementX }) => {
-			if (!(props.onLoopStartDrag && containerRef.current)) return;
+	const handleStartHandleDrag: PointerDragMoveHandler = ({ movementX }) => {
+		if (!(props.onLoopStartDrag && containerRef)) return;
 
-			const movement =
-				(movementX * moveMultiplierRef.current) /
-				containerRef.current.offsetWidth;
+		const movement = (movementX * moveMultiplier()) / containerRef.offsetWidth;
 
-			props.onLoopStartDrag(movement);
-		},
-		[props.onLoopStartDrag, moveMultiplierRef],
-	);
+		props.onLoopStartDrag(movement);
+	};
 
-	const handleEndHandleDrag = useCallback<PointerDragMoveHandler>(
-		({ movementX }) => {
-			if (!(props.onLoopEndDrag && containerRef.current)) return;
+	const handleEndHandleDrag: PointerDragMoveHandler = ({ movementX }) => {
+		if (!(props.onLoopEndDrag && containerRef)) return;
 
-			const movement =
-				(movementX * moveMultiplierRef.current) /
-				containerRef.current.offsetWidth;
+		const movement = (movementX * moveMultiplier()) / containerRef.offsetWidth;
 
-			props.onLoopEndDrag(movement);
-		},
-		[props.onLoopEndDrag, moveMultiplierRef],
-	);
+		props.onLoopEndDrag(movement);
+	};
 
-	const handleLoopRegionDrag = useCallback<PointerDragMoveHandler>(
-		({ movementX }) => {
-			if (!(props.onLoopRegionDrag && containerRef.current)) return;
+	const handleLoopRegionDrag: PointerDragMoveHandler = ({ movementX }) => {
+		if (!(props.onLoopRegionDrag && containerRef)) return;
 
-			const movement =
-				(movementX * moveMultiplierRef.current) /
-				containerRef.current.offsetWidth;
+		const movement = (movementX * moveMultiplier()) / containerRef.offsetWidth;
 
-			props.onLoopRegionDrag(movement);
-		},
-		[props.onLoopRegionDrag, moveMultiplierRef],
-	);
+		props.onLoopRegionDrag(movement);
+	};
 
-	const regionRatio = props.loopEnd - props.loopStart;
-	const preferRegionDrag = containerRef.current
-		? regionRatio * containerRef.current.offsetWidth < 30
-		: false;
+	const regionRatio = createMemo(() => props.loopEnd - props.loopStart);
+
+	const preferRegionDrag = createMemo(() => {
+		return containerRef ? regionRatio() * containerRef.offsetWidth < 30 : false;
+	});
 
 	const startDragListeners = usePointerDrag({
 		onDragMove: handleStartHandleDrag,
 	});
+
 	const regionDragListeners = usePointerDrag({
 		onDragMove: handleLoopRegionDrag,
 	});
+
 	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
 
 	return (
@@ -92,60 +69,64 @@ function LoopRegion(props: Props) {
 			</HandleContainer>
 			<div class="absolute inset-0">
 				<InactiveRegion start={0} end={props.loopStart} />
-				{regionRatio < 1 ? (
+				<Show when={regionRatio() < 1}>
 					<ActiveRegion
 						{...regionDragListeners}
 						start={props.loopStart}
 						end={props.loopEnd}
-						preferred={preferRegionDrag}
+						preferred={preferRegionDrag()}
 					/>
-				) : null}
+				</Show>
 				<InactiveRegion start={props.loopEnd} end={1} />
 			</div>
 		</div>
 	);
 }
 
-function HandleContainer(
-	_props: PropsWithChildren<{ offset: number } & DivProps>,
-) {
-	const [props, props] = splitProps(_props, ["children", "offset"]);
+function HandleContainer(props: ParentProps<{ offset: number } & DivProps>) {
+	const [local, ...divProps] = splitProps(props, ["children", "offset"]);
+
 	return (
 		<div
-			{...props}
-			className="absolute top-0 z-[1] h-full w-[10px] cursor-ew-resize"
+			{...divProps}
+			class="absolute top-0 z-[1] h-full w-[10px] cursor-ew-resize"
 			role="presentation"
-			style={{ left: `${props.offset * 100}%` }}
+			style={{ left: `${local.offset * 100}%` }}
 		>
 			{props.children}
 		</div>
 	);
 }
 
-function ActiveRegion(_props: RegionProps & { preferred: boolean }) {
-	const [props, regionProps] = splitProps(_props, ["preferred"]);
+function ActiveRegion(props: RegionProps & { preferred: boolean }) {
+	const [local, regionProps] = splitProps(props, ["preferred"]);
+
 	return (
 		<Region
 			{...regionProps}
-			className={twMerge("z-0 cursor-move", props.preferred && "z-[2]")}
+			class={twMerge("z-0 cursor-move", local.preferred && "z-[2]")}
 		/>
 	);
 }
 
 function InactiveRegion(props: RegionProps) {
-	return <Region {...props} className="z-0 bg-surface0 opacity-80" />;
+	return <Region {...props} class="z-0 bg-surface0 opacity-80" />;
 }
 
-const Region = memo(function Region(_props: RegionProps) {
-	const [props, divProps] = splitProps(_props, ["start", "end", "className"]);
+function Region(props: RegionProps) {
+	const [local, divProps] = splitProps(props, ["start", "end", "class"]);
+
 	return (
 		<div
 			{...divProps}
-			style={{ left: `${start * 100}%`, right: `${(1 - end) * 100}%` }}
-			className={twMerge("absolute inset-y-0", className)}
+			style={{
+				left: `${local.start * 100}%`,
+				right: `${(1 - local.end) * 100}%`,
+			}}
+			class={twMerge("absolute inset-y-0", local.class)}
 		/>
 	);
-});
+}
 
 type RegionProps = {
 	start: number;
@@ -153,10 +134,7 @@ type RegionProps = {
 	className?: string;
 } & DivProps;
 
-type DivProps = DetailedHTMLProps<
-	HTMLAttributes<HTMLDivElement>,
-	HTMLDivElement
->;
+type DivProps = JSX.HTMLAttributes<HTMLDivElement>;
 
 type Props = {
 	loopStart: number;
