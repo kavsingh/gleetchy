@@ -1,3 +1,5 @@
+import { Show } from "solid-js";
+
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
@@ -27,18 +29,22 @@ export default function ConnectedDelay(props: { id: string }) {
 	}
 
 	return (
-		<NodeWrapper isActive={isActive()}>
-			<UI
-				connections={connections()}
-				isActive={isActive()}
-				label={label()}
-				delayTime={audioProps().delayTime}
-				wetDryRatio={audioProps().wetDryRatio}
-				onLabelChange={updateLabel}
-				onDelayTimeChange={handleDelayTimeChange}
-				onWetDryRatioChange={handleWetDryRatioChange}
-				remove={remove}
-			/>
-		</NodeWrapper>
+		<Show when={audioProps()}>
+			{(audio) => (
+				<NodeWrapper isActive={isActive()}>
+					<UI
+						connections={connections()}
+						isActive={isActive()}
+						label={label() ?? ""}
+						delayTime={audio().delayTime}
+						wetDryRatio={audio().wetDryRatio}
+						onLabelChange={updateLabel}
+						onDelayTimeChange={handleDelayTimeChange}
+						onWetDryRatioChange={handleWetDryRatioChange}
+						remove={remove}
+					/>
+				</NodeWrapper>
+			)}
+		</Show>
 	);
 }

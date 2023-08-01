@@ -1,3 +1,5 @@
+import { Show } from "solid-js";
+
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
@@ -28,18 +30,22 @@ export default function ConnectedReverb(props: { id: string }) {
 	}
 
 	return (
-		<NodeWrapper isActive={isActive()}>
-			<UI
-				connections={connections()}
-				isActive={isActive()}
-				label={label()}
-				impulse={audioProps().impulse}
-				wetDryRatio={audioProps().wetDryRatio}
-				onLabelChange={updateLabel}
-				onWetDryRatioChange={handleWetDryRatioChange}
-				onImpulseChange={handleImpulseChange}
-				remove={remove}
-			/>
-		</NodeWrapper>
+		<Show when={audioProps()}>
+			{(audio) => (
+				<NodeWrapper isActive={isActive()}>
+					<UI
+						connections={connections()}
+						isActive={isActive()}
+						label={label() ?? ""}
+						impulse={audio().impulse}
+						wetDryRatio={audio().wetDryRatio}
+						onLabelChange={updateLabel}
+						onWetDryRatioChange={handleWetDryRatioChange}
+						onImpulseChange={handleImpulseChange}
+						remove={remove}
+					/>
+				</NodeWrapper>
+			)}
+		</Show>
 	);
 }
