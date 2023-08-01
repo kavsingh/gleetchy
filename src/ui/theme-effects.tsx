@@ -1,35 +1,33 @@
-import { memo, useEffect } from "react";
+import { createEffect, onCleanup } from "solid-js";
 
 import { useAppSelector } from "~/app-store/hooks/base";
 import { selectTheme } from "~/app-store/ui/selectors";
 
-export default memo(function ThemeEffects() {
+export default function ThemeEffects() {
 	const theme = useAppSelector(selectTheme);
+	const doc = globalThis.document.documentElement;
 
-	useEffect(() => {
-		const doc = globalThis.document.documentElement;
-
-		if (theme !== "system") {
-			doc.classList.toggle("dark", theme === "dark");
-
-			return;
-		}
-
-		function handleChange() {
+	function handleChange() {
+		if (theme() === "system") {
 			doc.classList.toggle("dark", darkSchemeQuery?.matches);
 		}
+	}
 
-		darkSchemeQuery?.addEventListener("change", handleChange);
+	createEffect(() => {
+		if (theme() !== "system") {
+			doc.classList.toggle("dark", theme() === "dark");
+		}
+	});
 
-		handleChange();
+	darkSchemeQuery?.addEventListener("change", handleChange);
+	handleChange();
 
-		return function cleanup() {
-			darkSchemeQuery?.removeEventListener("change", handleChange);
-		};
-	}, [theme]);
+	onCleanup(() => {
+		darkSchemeQuery?.removeEventListener("change", handleChange);
+	});
 
 	return null;
-});
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
 export const darkSchemeQuery = (globalThis.matchMedia?.(
