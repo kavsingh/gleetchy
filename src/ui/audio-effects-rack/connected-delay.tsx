@@ -1,5 +1,3 @@
-import { memo, useCallback } from "react";
-
 import useAudioNode, {
 	validateNodeType,
 } from "~/app-store/hooks/use-audio-node";
@@ -8,7 +6,7 @@ import { nodeType, UI } from "~/nodes/audio-effects/delay";
 
 import type { NodeProps } from "~/nodes/audio-effects/delay";
 
-export default memo(function ConnectedReverb({ id }: { id: string }) {
+export default function ConnectedDelay(props: { id: string }) {
 	const {
 		connections,
 		isActive,
@@ -17,26 +15,25 @@ export default memo(function ConnectedReverb({ id }: { id: string }) {
 		updateLabel,
 		updateAudioProps,
 		remove,
-	} = useAudioNode<NodeProps>(id, validateNodeType(nodeType));
+		// eslint-disable-next-line solid/reactivity
+	} = useAudioNode<NodeProps>(props.id, validateNodeType(nodeType));
 
-	const handleDelayTimeChange = useCallback(
-		(delayTime: number) => updateAudioProps({ delayTime }),
-		[updateAudioProps],
-	);
+	function handleDelayTimeChange(delayTime: number) {
+		updateAudioProps({ delayTime });
+	}
 
-	const handleWetDryRatioChange = useCallback(
-		(wetDryRatio: number) => updateAudioProps({ wetDryRatio }),
-		[updateAudioProps],
-	);
+	function handleWetDryRatioChange(wetDryRatio: number) {
+		updateAudioProps({ wetDryRatio });
+	}
 
 	return (
-		<NodeWrapper isActive={isActive}>
+		<NodeWrapper isActive={isActive()}>
 			<UI
-				connections={connections}
-				isActive={isActive}
-				label={label}
-				delayTime={audioProps.delayTime}
-				wetDryRatio={audioProps.wetDryRatio}
+				connections={connections()}
+				isActive={isActive()}
+				label={label()}
+				delayTime={audioProps().delayTime}
+				wetDryRatio={audioProps().wetDryRatio}
 				onLabelChange={updateLabel}
 				onDelayTimeChange={handleDelayTimeChange}
 				onWetDryRatioChange={handleWetDryRatioChange}
@@ -44,4 +41,4 @@ export default memo(function ConnectedReverb({ id }: { id: string }) {
 			/>
 		</NodeWrapper>
 	);
-});
+}
