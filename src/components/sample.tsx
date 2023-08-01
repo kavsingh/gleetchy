@@ -36,8 +36,8 @@ export default function Sample(props: SampleProps) {
 						</div>
 						<div class="absolute inset-0 z-[3]">
 							<LoopRegion
-								loopStart={props.loopStart}
-								loopEnd={props.loopEnd}
+								loopStart={props.loopStart ?? 0}
+								loopEnd={props.loopEnd ?? 1}
 								onLoopStartDrag={props.onLoopStartDrag}
 								onLoopEndDrag={props.onLoopEndDrag}
 								onLoopRegionDrag={props.onLoopRegionDrag}
