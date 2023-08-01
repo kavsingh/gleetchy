@@ -1,5 +1,3 @@
-import { memo, useCallback, useMemo } from "react";
-
 import Knob from "~/components/knob";
 import SelectBox from "~/components/select-box";
 import TitleBar from "~/components/title-bar";
@@ -7,66 +5,42 @@ import TitleBar from "~/components/title-bar";
 import type { ImpulseName } from "./impulses";
 import type { AudioNodeConnection } from "~/types";
 
-export default memo(function Reverb({
-	label,
-	wetDryRatio,
-	connections,
-	impulse,
-	onWetDryRatioChange,
-	onLabelChange,
-	onImpulseChange,
-	remove,
-}: ReverbProps) {
-	const titleBar = useMemo(
-		() => (
-			<TitleBar
-				type="Reverb"
-				label={label}
-				connections={connections}
-				onLabelChange={onLabelChange}
-				onRemoveClick={remove}
-			/>
-		),
-		[connections, label, onLabelChange, remove],
-	);
+export default function Reverb(props: ReverbProps) {
+	function handleImpulseChange(nextImpulse: string) {
+		if (!isValidImpulse(nextImpulse)) return;
 
-	const wetDryKnob = useMemo(
-		() => (
-			<Knob
-				radius="2.4em"
-				value={wetDryRatio}
-				onChange={onWetDryRatioChange}
-				label="W / D"
-				title="Wet / Dry Ratio"
-				valueLabel={`${(wetDryRatio * 100).toFixed(1)}%`}
-			/>
-		),
-		[onWetDryRatioChange, wetDryRatio],
-	);
-
-	const handleImpulseChange = useCallback(
-		(nextImpulse: string) => {
-			if (!isValidImpulse(nextImpulse)) return;
-
-			onImpulseChange(nextImpulse);
-		},
-		[onImpulseChange],
-	);
+		props.onImpulseChange(nextImpulse);
+	}
 
 	return (
-		<div className="w-full">
-			{titleBar}
-			<div className="flex w-full items-start gap-2">
+		<div class="w-full">
+			<TitleBar
+				type="Reverb"
+				label={props.label}
+				connections={props.connections}
+				onLabelChange={(label) => props.onLabelChange(label)}
+				onRemoveClick={() => props.remove()}
+			/>
+			<div class="flex w-full items-start gap-2">
 				<SelectBox
 					options={impulseOptions}
 					onChange={handleImpulseChange}
-					value={impulse}
+					value={props.impulse}
 				/>
-				<div className="w-12 shrink-0 grow-0">{wetDryKnob}</div>
+				<div class="w-12 shrink-0 grow-0">
+					<Knob
+						radius="2.4em"
+						value={props.wetDryRatio}
+						onChange={(val) => props.onWetDryRatioChange(val)}
+						label="W / D"
+						title="Wet / Dry Ratio"
+						valueLabel={`${(props.wetDryRatio * 100).toFixed(1)}%`}
+					/>
+				</div>
 			</div>
 		</div>
 	);
-});
+}
 
 export type ReverbProps = {
 	label: string;
