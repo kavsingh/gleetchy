@@ -1,5 +1,4 @@
-import { deepEqual } from "assert";
-
+import { deepEqual } from "fast-equals";
 import { createMemo } from "solid-js";
 
 import { getConnectionBetween, canConnectNodes } from "~/lib/audio";
