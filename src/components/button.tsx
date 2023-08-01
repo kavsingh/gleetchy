@@ -1,11 +1,17 @@
-import { createMemo, splitProps } from "solid-js";
+import { Match, Switch, createMemo, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 import type { JSX, ParentProps } from "solid-js";
 
 export default function Button(props: Props) {
-	const [local, buttonProps] = splitProps(props, ["class", "variant"]);
-	const isBraced = createMemo(() => local.variant === "braced");
+	const [local, buttonProps] = splitProps(props, [
+		"class",
+		"variant",
+		"children",
+	]);
+	const isBraced = createMemo(() =>
+		local.variant ? local.variant === "braced" : true,
+	);
 
 	return (
 		<button
@@ -16,7 +22,9 @@ export default function Button(props: Props) {
 				local.class,
 			)}
 		>
-			{isBraced() ? <>[ {props.children} ]</> : props.children}
+			<Switch fallback={local.children}>
+				<Match when={isBraced()}>[ {local.children} ]</Match>
+			</Switch>
 		</button>
 	);
 }
