@@ -1,3 +1,5 @@
+import { deepEqual } from "assert";
+
 import { createMemo } from "solid-js";
 
 import { getConnectionBetween, canConnectNodes } from "~/lib/audio";
@@ -14,12 +16,14 @@ export default function useConnection(
 ) {
 	const dispatch = useAppDispatch();
 	const connections = useAppSelector(selectConnections);
-	const connection = createMemo(() => {
-		return getConnectionBetween(connections(), source, target);
-	});
-	const isBlocked = createMemo(() => {
-		return !canConnectNodes(connections(), source, target);
-	});
+	const connection = createMemo(
+		() => getConnectionBetween(connections(), source, target),
+		{ equals: deepEqual },
+	);
+	const isBlocked = createMemo(
+		() => !canConnectNodes(connections(), source, target),
+		{ equals: deepEqual },
+	);
 
 	function toggleConnection() {
 		if (!isBlocked()) {
