@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js/jsx-runtime";
+import type { JSX } from "solid-js";
 
 export default function TextInput(props: Props) {
 	let inputRef: HTMLInputElement | undefined;

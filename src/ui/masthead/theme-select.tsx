@@ -1,4 +1,3 @@
-import { useCallback } from "react";
 import { For } from "solid-js";
 
 import { useAppDispatch, useAppSelector } from "~/app-store/hooks/base";
@@ -7,25 +6,24 @@ import { selectTheme } from "~/app-store/ui/selectors";
 import { THEMES } from "~/app-store/ui/slice";
 import RadioInput from "~/components/radio-input";
 
-import type { ChangeEventHandler } from "react";
+import type { JSX } from "solid-js";
 import type { Theme } from "~/app-store/ui/slice";
 
 export default function ThemeSelect() {
 	const selected = useAppSelector(selectTheme);
 	const dispatch = useAppDispatch();
 
-	const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
-		(event) => {
-			event.preventDefault();
+	const handleChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (
+		event,
+	) => {
+		event.preventDefault();
 
-			const { target } = event;
+		const { currentTarget } = event;
 
-			if (target instanceof HTMLInputElement && isValidTheme(target.value)) {
-				dispatch(setTheme(target.value));
-			}
-		},
-		[dispatch],
-	);
+		if (isValidTheme(currentTarget.value)) {
+			dispatch(setTheme(currentTarget.value));
+		}
+	};
 
 	return (
 		<fieldset class="flex items-center gap-2 text-sm">
@@ -33,13 +31,12 @@ export default function ThemeSelect() {
 			<For each={THEMES}>
 				{(theme) => (
 					<RadioInput
-						key={theme}
 						label={theme.charAt(0).toUpperCase()}
 						title={theme}
 						name="theme-select"
 						id={theme}
 						value={theme}
-						checked={selected === theme}
+						checked={selected() === theme}
 						onChange={handleChange}
 					/>
 				)}
