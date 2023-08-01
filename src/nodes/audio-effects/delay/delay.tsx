@@ -1,83 +1,52 @@
-import { memo, useCallback, useMemo } from "react";
-
 import Knob from "~/components/knob";
 import TitleBar from "~/components/title-bar";
 import { DELAY_UPPER_BOUND } from "~/constants/audio";
 
-import type { PropsWithChildren } from "react";
+import type { ParentProps } from "solid-js";
 import type { AudioNodeConnection } from "~/types";
 
-export default memo(function Delay({
-	label,
-	connections,
-	wetDryRatio,
-	delayTime,
-	onDelayTimeChange,
-	onWetDryRatioChange,
-	onLabelChange,
-	remove,
-}: DelayProps) {
-	const handleTimeKnobChange = useCallback(
-		(val: number) => {
-			onDelayTimeChange(val * DELAY_UPPER_BOUND);
-		},
-		[onDelayTimeChange],
-	);
-
-	const titleBar = useMemo(
-		() => (
-			<TitleBar
-				type="Delay"
-				label={label}
-				connections={connections}
-				onLabelChange={onLabelChange}
-				onRemoveClick={remove}
-			/>
-		),
-		[connections, label, onLabelChange, remove],
-	);
-
-	const timeKnob = useMemo(
-		() => (
-			<Knob
-				radius="2.4em"
-				value={delayTime / DELAY_UPPER_BOUND}
-				onChange={handleTimeKnobChange}
-				label="T"
-				title="Delay Time"
-				valueLabel={delayTime.toFixed(2)}
-			/>
-		),
-		[delayTime, handleTimeKnobChange],
-	);
-
-	const wetDryKnob = useMemo(
-		() => (
-			<Knob
-				radius="2.4em"
-				value={wetDryRatio}
-				onChange={onWetDryRatioChange}
-				label="W / D"
-				title="Wet / Dry Ratio"
-				valueLabel={`${(wetDryRatio * 100).toFixed(1)}%`}
-			/>
-		),
-		[onWetDryRatioChange, wetDryRatio],
-	);
+export default function Delay(props: ParentProps<DelayProps>) {
+	function handleTimeKnobChange(val: number) {
+		props.onDelayTimeChange(val * DELAY_UPPER_BOUND);
+	}
 
 	return (
-		<div className="w-full">
-			{titleBar}
-			<div className="flex w-full">
-				<KnobContainer key="time">{timeKnob}</KnobContainer>
-				<KnobContainer key="wetDry">{wetDryKnob}</KnobContainer>
+		<div class="w-full">
+			<TitleBar
+				type="Delay"
+				label={props.label}
+				connections={props.connections}
+				onLabelChange={(label) => props.onLabelChange(label)}
+				onRemoveClick={() => props.remove()}
+			/>
+			<div class="flex w-full">
+				<KnobContainer>
+					<Knob
+						radius="2.4em"
+						value={props.delayTime / DELAY_UPPER_BOUND}
+						onChange={handleTimeKnobChange}
+						label="T"
+						title="Delay Time"
+						valueLabel={props.delayTime.toFixed(2)}
+					/>
+				</KnobContainer>
+				<KnobContainer>
+					<Knob
+						radius="2.4em"
+						value={props.wetDryRatio}
+						onChange={(val) => props.onWetDryRatioChange(val)}
+						label="W / D"
+						title="Wet / Dry Ratio"
+						valueLabel={`${(props.wetDryRatio * 100).toFixed(1)}%`}
+					/>
+				</KnobContainer>
 			</div>
 		</div>
 	);
-});
+}
 
-function KnobContainer({ children }: PropsWithChildren) {
-	return <div className="w-12 shrink-0 grow-0">{children}</div>;
+function KnobContainer(props: ParentProps) {
+	return <div class="w-12 shrink-0 grow-0">{props.children}</div>;
 }
 
 export type DelayProps = {

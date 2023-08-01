@@ -1,80 +1,56 @@
-import { memo, useCallback, useMemo } from "react";
-
+// eslint-disable-next-line filenames/match-exported
 import Slider from "~/components/slider";
 
-import type { PropsWithChildren } from "react";
+import type { ParentProps } from "solid-js";
 
-export default memo(function Eq3({
-	onChange,
-	lowGain,
-	midGain,
-	highGain,
-}: Eq3Props) {
-	const handleLowGainChange = useCallback(
-		(val: number) => onChange({ lowGain: val * 2 - 1 }),
-		[onChange],
-	);
+export default function Eq3(props: Eq3Props) {
+	function handleLowGainChange(val: number) {
+		props.onChange({ lowGain: val * 2 - 1 });
+	}
 
-	const handleMidGainChange = useCallback(
-		(val: number) => onChange({ midGain: val * 2 - 1 }),
-		[onChange],
-	);
+	function handleMidGainChange(val: number) {
+		props.onChange({ midGain: val * 2 - 1 });
+	}
 
-	const handleHighGainChange = useCallback(
-		(val: number) => onChange({ highGain: val * 2 - 1 }),
-		[onChange],
-	);
-
-	const lowGainSlider = useMemo(
-		() => (
-			<Slider
-				value={lowGain * 0.5 + 0.5}
-				title="EQ Low Gain"
-				label="L"
-				valueLabel={lowGain.toFixed(1)}
-				onChange={handleLowGainChange}
-			/>
-		),
-		[handleLowGainChange, lowGain],
-	);
-
-	const midGainSlider = useMemo(
-		() => (
-			<Slider
-				value={midGain * 0.5 + 0.5}
-				title="EQ Mid Gain"
-				label="M"
-				valueLabel={midGain.toFixed(1)}
-				onChange={handleMidGainChange}
-			/>
-		),
-		[handleMidGainChange, midGain],
-	);
-
-	const highGainSlider = useMemo(
-		() => (
-			<Slider
-				value={highGain * 0.5 + 0.5}
-				title="EQ High Gain"
-				label="H"
-				valueLabel={highGain.toFixed(1)}
-				onChange={handleHighGainChange}
-			/>
-		),
-		[handleHighGainChange, highGain],
-	);
+	function handleHighGainChange(val: number) {
+		props.onChange({ highGain: val * 2 - 1 });
+	}
 
 	return (
-		<div className="flex h-full gap-2">
-			<SliderContainer key="lowGain">{lowGainSlider}</SliderContainer>
-			<SliderContainer key="midGain">{midGainSlider}</SliderContainer>
-			<SliderContainer key="highGain">{highGainSlider}</SliderContainer>
+		<div class="flex h-full gap-2">
+			<SliderContainer>
+				<Slider
+					value={props.lowGain * 0.5 + 0.5}
+					title="EQ Low Gain"
+					label="L"
+					valueLabel={props.lowGain.toFixed(1)}
+					onChange={handleLowGainChange}
+				/>
+			</SliderContainer>
+			<SliderContainer>
+				<Slider
+					value={props.midGain * 0.5 + 0.5}
+					title="EQ Mid Gain"
+					label="M"
+					valueLabel={props.midGain.toFixed(1)}
+					onChange={handleMidGainChange}
+				/>
+			</SliderContainer>
+			<SliderContainer>
+				<Slider
+					value={props.highGain * 0.5 + 0.5}
+					title="EQ High Gain"
+					label="H"
+					valueLabel={props.highGain.toFixed(1)}
+					onChange={handleHighGainChange}
+				/>
+			</SliderContainer>
 		</div>
 	);
-});
+}
 
-function SliderContainer({ children }: PropsWithChildren) {
-	return <div className="h-full w-4">{children}</div>;
+function SliderContainer(props: ParentProps) {
+	return <div class="h-full w-4">{props.children}</div>;
 }
 
 export type Eq3Props = {
