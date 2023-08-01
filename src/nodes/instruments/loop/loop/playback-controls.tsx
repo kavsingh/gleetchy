@@ -1,53 +1,33 @@
-import { memo, useMemo, useCallback } from "react";
-
 import Knob from "~/components/knob";
 
-export default memo(function PlaybackControls({
-	gain,
-	playbackRate,
-	onGainChange,
-	onPlaybackRateChange,
-}: Props) {
-	const handlePlaybackRateChange = useCallback(
-		(val: number) => {
-			onPlaybackRateChange(val * 2);
-		},
-		[onPlaybackRateChange],
-	);
-
-	const gainKnob = useMemo(
-		() => (
-			<Knob
-				value={gain}
-				title="Gain"
-				label="G"
-				valueLabel={gain.toFixed(2)}
-				onChange={onGainChange}
-			/>
-		),
-		[gain, onGainChange],
-	);
-
-	const speedKnob = useMemo(
-		() => (
-			<Knob
-				value={playbackRate * 0.5}
-				title="Speed"
-				label="S"
-				valueLabel={playbackRate.toFixed(2)}
-				onChange={handlePlaybackRateChange}
-			/>
-		),
-		[handlePlaybackRateChange, playbackRate],
-	);
+export default function PlaybackControls(props: Props) {
+	function handlePlaybackRateChange(val: number) {
+		props.onPlaybackRateChange(val * 2);
+	}
 
 	return (
-		<div className="flex h-full flex-col items-center justify-between">
-			<div key="gain">{gainKnob}</div>
-			<div key="speed">{speedKnob}</div>
+		<div class="flex h-full flex-col items-center justify-between">
+			<div>
+				<Knob
+					value={props.gain}
+					title="Gain"
+					label="G"
+					valueLabel={props.gain.toFixed(2)}
+					onChange={(val) => props.onGainChange(val)}
+				/>
+			</div>
+			<div>
+				<Knob
+					value={props.playbackRate * 0.5}
+					title="Speed"
+					label="S"
+					valueLabel={props.playbackRate.toFixed(2)}
+					onChange={handlePlaybackRateChange}
+				/>
+			</div>
 		</div>
 	);
-});
+}
 
 type Props = {
 	gain: number;

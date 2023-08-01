@@ -14,7 +14,7 @@ import { nodeType, UI } from "~/nodes/instruments/loop";
 import type { NodeProps as Eq3Props } from "~/nodes/audio-effects/eq3";
 import type { NodeProps } from "~/nodes/instruments/loop";
 
-export default memo(function ConnectedLoop({ id }: { id: string }) {
+export default memo(function ConnectedLoop(props: { id: string }) {
 	const {
 		label,
 		connections,
