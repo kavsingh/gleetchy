@@ -1,4 +1,4 @@
-import { memo, useRef, useEffect, useCallback, forwardRef } from "react";
+import { createEffect, mergeProps, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 import { clamp } from "~/lib/util/number";
@@ -11,13 +11,9 @@ import type {
 	PointerDragEndHandler,
 	PointerDragMoveHandler,
 } from "./hooks/use-pointer-drag";
-import type {
-	DetailedHTMLProps,
-	HTMLAttributes,
-	PropsWithChildren,
-} from "react";
+import type { JSX, ParentProps } from "solid-js";
 
-export default memo(function Slider(_props: Props) {
+export default function Slider(_props: Props) {
 	const props = mergeProps(
 		{
 			defaultValue: 0.5,
@@ -25,133 +21,128 @@ export default memo(function Slider(_props: Props) {
 			label: "",
 			valueLabel: "",
 			title: "",
-		},
+		} satisfies Partial<Props>,
 		_props,
 	);
-	const valueRef = useRef<number>(value);
-	const moveMultiplierRef = useControlResponseMultiplier(controlMultipliers);
-	const barContainerRef = useRef<HTMLDivElement | null>(null);
-	const barRef = useRef<HTMLDivElement | null>(null);
+	const moveMultiplier = useControlResponseMultiplier(controlMultipliers);
+	let barContainerRef: HTMLDivElement | undefined;
+	let barRef: HTMLDivElement | undefined;
 
-	const handleDoubleClick = useCallback(() => {
-		onChange?.(defaultValue);
-	}, [onChange, defaultValue]);
+	function handleDoubleClick() {
+		props.onChange?.(props.defaultValue);
+	}
 
-	const onDragMove = useCallback<PointerDragMoveHandler>(
-		({ movementX, movementY }) => {
-			const { current: bar } = barContainerRef;
+	const onDragMove: PointerDragMoveHandler = ({ movementX, movementY }) => {
+		if (!(barContainerRef && props.onChange)) return;
 
-			if (!(bar && onChange)) return;
+		const isVert = props.orientation === "block";
+		const movement = isVert ? movementY : movementX;
+		const dim = isVert
+			? barContainerRef.offsetHeight * -1
+			: barContainerRef.offsetWidth;
 
-			const isVert = orientation === "block";
-			const movement = isVert ? movementY : movementX;
-			const dim = isVert ? bar.offsetHeight * -1 : bar.offsetWidth;
+		props.onChange(
+			clampValue((movement * moveMultiplier()) / dim + props.value),
+		);
+	};
 
-			onChange(
-				clampValue(
-					(movement * moveMultiplierRef.current) / dim + valueRef.current,
-				),
-			);
-		},
-		[orientation, onChange, moveMultiplierRef],
-	);
+	const onDragEnd: PointerDragEndHandler = ({
+		duration,
+		movementX,
+		movementY,
+		targetX,
+		targetY,
+	}) => {
+		if (!(barContainerRef && props.onChange)) return;
 
-	const onDragEnd = useCallback<PointerDragEndHandler>(
-		({ duration, movementX, movementY, targetX, targetY }) => {
-			const { current: bar } = barContainerRef;
+		const isVert = props.orientation === "block";
+		const movement = isVert ? movementY : movementX;
 
-			if (!(bar && onChange)) return;
+		if (duration > 300 || movement > 4) return;
 
-			const isVert = orientation === "block";
-			const movement = isVert ? movementY : movementX;
+		const offset = isVert ? targetY : targetX;
+		const dim = isVert
+			? barContainerRef.offsetHeight
+			: barContainerRef.offsetWidth;
 
-			if (duration > 300 || movement > 4) return;
+		props.onChange(clampValue(isVert ? 1 - offset / dim : offset / dim));
+	};
 
-			const offset = isVert ? targetY : targetX;
-			const dim = isVert ? bar.offsetHeight : bar.offsetWidth;
+	createEffect(() => {
+		if (!barContainerRef) return;
 
-			onChange(clampValue(isVert ? 1 - offset / dim : offset / dim));
-		},
-		[orientation, onChange],
-	);
-
-	useEffect(() => {
-		valueRef.current = value;
-
-		if (barRef.current) {
-			barRef.current.style.transform =
-				orientation === "inline" ? `scaleX(${value})` : `scaleY(${value})`;
-		}
-	}, [value, orientation]);
+		barContainerRef.style.transform =
+			props.orientation === "inline"
+				? `scaleX(${props.value})`
+				: `scaleY(${props.value})`;
+	});
 
 	const dragHandlers = usePointerDrag({ onDragMove, onDragEnd });
 
 	return (
 		<div
-			title={title}
+			title={props.title}
 			class={twMerge(
 				"flex h-full w-full items-stretch",
-				orientation === "block" && "flex-col items-center",
+				props.orientation === "block" && "flex-col items-center",
 			)}
 		>
 			<LabelText
 				class={twMerge(
-					orientation === "inline" && "flex w-12 items-center",
-					orientation === "block" && "h-6",
+					props.orientation === "inline" && "flex w-12 items-center",
+					props.orientation === "block" && "h-6",
 				)}
 			>
-				{label}
+				{props.label}
 			</LabelText>
 			<BarContainer
 				{...dragHandlers}
-				orientation={orientation}
-				onDoubleClick={handleDoubleClick}
+				orientation={props.orientation}
+				onDblClick={handleDoubleClick}
 				ref={barContainerRef}
 			>
-				<Track orientation={orientation} />
-				<Bar orientation={orientation} ref={barRef} />
+				<Track orientation={props.orientation} />
+				<Bar orientation={props.orientation} ref={barRef} />
 			</BarContainer>
 			<LabelText
 				class={twMerge(
-					orientation === "inline" && "w-12 items-center",
-					orientation === "block" && "h-6 items-end",
+					props.orientation === "inline" && "w-12 items-center",
+					props.orientation === "block" && "h-6 items-end",
 				)}
 			>
-				{valueLabel}
+				{props.valueLabel}
 			</LabelText>
 		</div>
 	);
-});
+}
 
-function LabelText(props: PropsWithChildren<{ className: string }>) {
+function LabelText(props: ParentProps<{ class: string }>) {
 	return (
-		<div class={twMerge("shrink-0 grow-0 truncate text-sm", props.className)}>
+		<div class={twMerge("shrink-0 grow-0 truncate text-sm", props.class)}>
 			{props.children}
 		</div>
 	);
 }
 
-const BarContainer = forwardRef<
-	HTMLDivElement,
-	DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> &
-		OrientationProps
->(function BarContainer({ orientation, children, ...props }, ref) {
+function BarContainer(
+	props: JSX.HTMLAttributes<HTMLDivElement> & OrientationProps,
+) {
+	const [local, ...divProps] = splitProps(props, ["ref", "orientation"]);
+
 	return (
 		<div
-			{...props}
-			ref={ref}
+			{...divProps}
+			ref={local.ref}
 			role="presentation"
-			className={twMerge(
+			class={twMerge(
 				"relative grow",
-				orientation === "inline" &&
+				local.orientation === "inline" &&
 					"mx-auto mb-1 mt-2 w-full cursor-ew-resize ",
-				orientation === "block" && "mx-2 my-auto h-full cursor-ns-resize",
+				local.orientation === "block" && "mx-2 my-auto h-full cursor-ns-resize",
 			)}
-		>
-			{children}
-		</div>
+		/>
 	);
-});
+}
 
 function Track(props: OrientationProps) {
 	return (
@@ -165,23 +156,22 @@ function Track(props: OrientationProps) {
 	);
 }
 
-const Bar = forwardRef<HTMLDivElement, OrientationProps>(function Bar(
-	{ orientation },
-	ref,
+const Bar = function Bar(
+	props: OrientationProps & Pick<JSX.HTMLAttributes<HTMLDivElement>, "ref">,
 ) {
 	return (
 		<div
-			ref={ref}
+			ref={props.ref}
 			class={twMerge(
 				"absolute z-[2] bg-text600",
-				orientation === "inline" &&
+				props.orientation === "inline" &&
 					"inset-x-0 top-[calc(50%-1px)] h-[3px] origin-left scale-x-0",
-				orientation === "block" &&
+				props.orientation === "block" &&
 					"inset-y-0 start-[calc(50%-1px)] w-[3px] origin-bottom scale-y-0",
 			)}
 		/>
 	);
-});
+};
 
 function clampValue(value: number) {
 	return clamp(value, 0, 1);

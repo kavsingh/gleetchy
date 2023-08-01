@@ -25,10 +25,7 @@ const config: Config = {
 			},
 		},
 	},
-	plugins: [
-		// @ts-expect-error upstream exactOptionals incompat
-		containerQueriesPlugin,
-	],
+	plugins: [containerQueriesPlugin],
 };
 
 export default config;
