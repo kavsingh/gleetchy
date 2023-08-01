@@ -143,29 +143,22 @@ module.exports = {
 			files: ["src/**/*"],
 			env: { node: false, browser: true },
 			settings: {
-				react: { version: "detect" },
 				tailwindcss: { callees: ["twMerge", "twJoin"] },
 			},
-			extends: [
-				"plugin:react/recommended",
-				"plugin:react/jsx-runtime",
-				"plugin:react-hooks/recommended",
-				"plugin:tailwindcss/recommended",
-			],
+			extends: ["plugin:tailwindcss/recommended", "plugin:solid/typescript"],
 			rules: {
 				"no-console": "error",
 				"import/no-extraneous-dependencies": ["error", srcDependencies],
-				"react/jsx-filename-extension": [
-					"error",
-					{ extensions: [".tsx", ".jsx"] },
-				],
-				"react/prop-types": "off",
 			},
 		},
 		{
 			files: testFilePatterns(),
 			env: { node: true },
-			extends: ["plugin:vitest/all", "plugin:jest-dom/recommended"],
+			extends: [
+				"plugin:vitest/all",
+				"plugin:testing-library/dom",
+				"plugin:jest-dom/recommended",
+			],
 			rules: {
 				"no-console": "off",
 				"import/no-extraneous-dependencies": ["error", devDependencies],
@@ -176,10 +169,6 @@ module.exports = {
 				],
 				"vitest/no-hooks": "off",
 			},
-		},
-		{
-			files: testFilePatterns({ extensions: "[jt]sx" }),
-			extends: ["plugin:testing-library/react"],
 		},
 		{
 			files: testFilePatterns({ extensions: "ts?(x)" }),

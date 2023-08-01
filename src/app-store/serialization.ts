@@ -1,4 +1,4 @@
-import type { AppState } from "~/app-store/configure-store";
+import type { AppState } from "~/app-store/create";
 
 const serializableStateKeys: (keyof AppState)[] = [
 	"audioNodes",

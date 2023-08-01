@@ -9,7 +9,7 @@ import {
 import { selectAudioEngineSubscriptionData } from "../audio-engine/selectors";
 import { createDeepEqualSelector } from "../lib/selector";
 
-import type { AppState } from "../configure-store";
+import type { AppState } from "../create";
 import type { AudioNodeMeta } from "~/types";
 
 export const selectAudioNodes = (state: AppState) => state.audioNodes.byId;

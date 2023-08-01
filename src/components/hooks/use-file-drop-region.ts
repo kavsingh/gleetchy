@@ -1,69 +1,51 @@
-import { useState, useCallback, useMemo } from "react";
+import { createSignal } from "solid-js";
 
 import { cancelReactEvent } from "~/lib/util";
 
-import type { DragEventHandler } from "react";
+import type { JSX } from "solid-js";
 
-export default function useFileDropRegion({
-	onFiles,
-	fileFilter = defaultFilter,
-}: UseFileDropRegionProps): {
-	isDropActive: boolean;
-	eventHandlers: {
-		onDrop: DragEventHandler;
-		onDrag: typeof cancelReactEvent;
-		onDragOver: typeof cancelReactEvent;
-		onDragStart: typeof cancelReactEvent;
-		onDragEnter: DragEventHandler;
-		onDragLeave: DragEventHandler;
-		onDragEnd: DragEventHandler;
-	};
-} {
-	const [isDropActive, setIsDropActive] = useState(false);
+type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;
 
-	const eventSetDropActive = useCallback<DragEventHandler>((event) => {
-		cancelReactEvent(event);
+export default function useFileDropRegion(props: UseFileDropRegionProps) {
+	const [isDropActive, setIsDropActive] = createSignal(false);
+
+	const eventSetDropActive: DragEventHandler = (event) => {
+		event.preventDefault();
 		setIsDropActive(true);
-	}, []);
+	};
 
-	const eventSetDropInactive = useCallback<DragEventHandler>((event) => {
-		cancelReactEvent(event);
+	const eventSetDropInactive: DragEventHandler = (event) => {
+		event.preventDefault();
 		setIsDropActive(false);
-	}, []);
+	};
 
-	const onDrop = useCallback<DragEventHandler>(
-		(event) => {
-			cancelReactEvent(event);
-			setIsDropActive(false);
+	const onDrop: DragEventHandler = (event) => {
+		event.preventDefault();
+		setIsDropActive(false);
 
-			if (!onFiles) return;
+		if (!props.onFiles) return;
 
-			onFiles(Array.from(event.dataTransfer.files).filter(fileFilter));
-		},
-		[fileFilter, onFiles],
-	);
+		props.onFiles(
+			Array.from(event.dataTransfer?.files ?? []).filter((...args) => {
+				return props.fileFilter ? props.fileFilter(...args) : true;
+			}),
+		);
+	};
 
-	const eventHandlers = useMemo(
-		() => ({
-			onDrop,
-			onDrag: cancelReactEvent,
-			onDragOver: cancelReactEvent,
-			onDragStart: cancelReactEvent,
-			onDragEnter: eventSetDropActive,
-			onDragLeave: eventSetDropInactive,
-			onDragEnd: eventSetDropInactive,
-		}),
-		[onDrop, eventSetDropActive, eventSetDropInactive],
-	);
+	const eventHandlers = {
+		onDrop,
+		onDrag: cancelReactEvent,
+		onDragOver: cancelReactEvent,
+		onDragStart: cancelReactEvent,
+		onDragEnter: eventSetDropActive,
+		onDragLeave: eventSetDropInactive,
+		onDragEnd: eventSetDropInactive,
+	};
 
-	return { isDropActive, eventHandlers };
+	return { isDropActive, eventHandlers } as const;
 }
 
 export type UseFileDropRegionProps = {
 	fileFilter?(file: File, index: number, files: File[]): boolean;
 	onFiles?(files: File[]): unknown;
 };
-
-function defaultFilter() {
-	return true;
-}

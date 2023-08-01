@@ -1,116 +1,103 @@
-import { useCallback, useRef } from "react";
+import type { JSX } from "solid-js/jsx-runtime";
 
-import type { PointerEventHandler } from "react";
+export default function usePointerDrag(props: UsePointerDragProps) {
+	let state = structuredClone(initialState);
 
-export default function usePointerDrag({
-	onDragStart,
-	onDragMove,
-	onDragEnd,
-}: UsePointerDragProps) {
-	const stateRef = useRef(initialState);
+	function handleDragMove(event: PointerEvent) {
+		const { clientX, clientY, timeStamp } = event;
 
-	const handleDragMove = useCallback(
-		(event: PointerEvent) => {
-			const { clientX, clientY, timeStamp } = event;
+		state = {
+			...state,
+			timeStamp,
+			displacementX: clientX - state.startX,
+			displacementY: clientY - state.startY,
+			duration: timeStamp - state.startTime,
+			movementX: clientX - state.x,
+			movementY: clientY - state.y,
+			targetX: clientX - (state.targetRect?.left ?? 0),
+			targetY: clientY - (state.targetRect?.top ?? 0),
+			x: clientX,
+			y: clientY,
+		};
 
-			stateRef.current = {
-				...stateRef.current,
-				displacementX: clientX - stateRef.current.startX,
-				displacementY: clientY - stateRef.current.startY,
-				duration: timeStamp - stateRef.current.startTime,
-				movementX: clientX - stateRef.current.x,
-				movementY: clientY - stateRef.current.y,
-				targetX: clientX - (stateRef.current.targetRect?.left ?? 0),
-				targetY: clientY - (stateRef.current.targetRect?.top ?? 0),
-				timeStamp,
-				x: clientX,
-				y: clientY,
-			};
+		props.onDragMove?.(structuredClone(state));
+	}
 
-			onDragMove?.(stateRef.current);
-		},
-		[onDragMove],
-	);
+	function handleDragEnd(event: PointerEvent) {
+		event.preventDefault();
+		globalThis.window.removeEventListener("pointermove", handleDragMove);
+		globalThis.window.removeEventListener("pointerup", handleDragEnd);
+		globalThis.window.removeEventListener("pointercancel", handleDragEnd);
 
-	const handleDragEnd = useCallback(
-		(event: PointerEvent) => {
-			event.preventDefault();
-			globalThis.window.removeEventListener("pointermove", handleDragMove);
-			globalThis.window.removeEventListener("pointerup", handleDragEnd);
-			globalThis.window.removeEventListener("pointercancel", handleDragEnd);
+		const { clientX, clientY } = event;
 
-			const { clientX, clientY } = event;
+		state = {
+			...state,
+			displacementX: clientX - state.startX,
+			displacementY: clientY - state.startY,
+			duration: event.timeStamp - state.startTime,
+			isDragging: false,
+			movementX: clientX - state.x,
+			movementY: clientY - state.y,
+			targetX: clientX - (state.targetRect?.left ?? 0),
+			targetY: clientY - (state.targetRect?.top ?? 0),
+			timeStamp: event.timeStamp,
+			x: clientX,
+			y: clientY,
+		};
 
-			stateRef.current = {
-				...stateRef.current,
-				displacementX: clientX - stateRef.current.startX,
-				displacementY: clientY - stateRef.current.startY,
-				duration: event.timeStamp - stateRef.current.startTime,
-				isDragging: false,
-				movementX: clientX - stateRef.current.x,
-				movementY: clientY - stateRef.current.y,
-				targetX: clientX - (stateRef.current.targetRect?.left ?? 0),
-				targetY: clientY - (stateRef.current.targetRect?.top ?? 0),
-				timeStamp: event.timeStamp,
-				x: clientX,
-				y: clientY,
-			};
+		props.onDragEnd?.(structuredClone(state));
+	}
 
-			onDragEnd?.(stateRef.current);
-		},
-		[onDragEnd, handleDragMove],
-	);
+	const registerDragStart: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+		event,
+	) => {
+		event.preventDefault();
 
-	const registerDragStart = useCallback<PointerEventHandler<HTMLElement>>(
-		(event) => {
-			event.preventDefault();
+		if (state.isDragging) return;
 
-			if (stateRef.current.isDragging) return;
+		const { currentTarget, clientX, clientY, timeStamp } = event;
+		const targetRect = currentTarget.getBoundingClientRect();
+		const targetStartX = clientX - targetRect.top;
+		const targetStartY = clientY - targetRect.left;
 
-			const { currentTarget, clientX, clientY, timeStamp } = event;
-			const targetRect = currentTarget.getBoundingClientRect();
-			const targetStartX = clientX - targetRect.top;
-			const targetStartY = clientY - targetRect.left;
+		globalThis.window.addEventListener("pointermove", handleDragMove, {
+			passive: false,
+		});
 
-			globalThis.window.addEventListener("pointermove", handleDragMove, {
-				passive: false,
-			});
+		globalThis.window.addEventListener("pointerup", handleDragEnd, {
+			passive: false,
+			once: true,
+		});
 
-			globalThis.window.addEventListener("pointerup", handleDragEnd, {
-				passive: false,
-				once: true,
-			});
+		globalThis.window.addEventListener("pointercancel", handleDragEnd, {
+			passive: false,
+			once: true,
+		});
 
-			globalThis.window.addEventListener("pointercancel", handleDragEnd, {
-				passive: false,
-				once: true,
-			});
+		state = {
+			timeStamp,
+			targetRect,
+			targetStartX,
+			targetStartY,
+			displacementX: 0,
+			displacementY: 0,
+			duration: 0,
+			isDragging: true,
+			movementX: 0,
+			movementY: 0,
+			startTime: timeStamp,
+			startX: clientX,
+			startY: clientY,
+			target: currentTarget,
+			targetX: targetStartX,
+			targetY: targetStartY,
+			x: clientX,
+			y: clientY,
+		};
 
-			stateRef.current = {
-				displacementX: 0,
-				displacementY: 0,
-				duration: 0,
-				isDragging: true,
-				movementX: 0,
-				movementY: 0,
-				startTime: timeStamp,
-				startX: clientX,
-				startY: clientY,
-				target: currentTarget,
-				targetRect,
-				targetStartX,
-				targetStartY,
-				targetX: targetStartX,
-				targetY: targetStartY,
-				timeStamp,
-				x: clientX,
-				y: clientY,
-			};
-
-			onDragStart?.(stateRef.current);
-		},
-		[onDragStart, handleDragMove, handleDragEnd],
-	);
+		props.onDragStart?.(structuredClone(state));
+	};
 
 	return { onPointerDown: registerDragStart } as const;
 }

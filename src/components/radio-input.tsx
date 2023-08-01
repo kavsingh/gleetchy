@@ -1,40 +1,39 @@
-import { forwardRef } from "react";
+import { splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import type { InputHTMLAttributes, ReactNode } from "react";
+import type { JSX } from "solid-js/jsx-runtime";
 
-export default forwardRef<HTMLInputElement, Props>(function RadioInput(
-	{ label, ...inputProps },
-	ref,
-) {
+export default function RadioInput(props: Props) {
+	const [local, inputProps] = splitProps(props, ["ref", "label"]);
+
 	return (
 		<label
 			title={inputProps.title}
-			htmlFor={inputProps.id}
-			className="flex cursor-pointer items-center gap-[0.3em]"
+			for={inputProps.id}
+			class="flex cursor-pointer items-center gap-[0.3em]"
 		>
-			<div className="leading-[1]">{label}</div>
-			<div className="relative">
+			<div class="leading-[1]">{local.label}</div>
+			<div class="relative">
 				<div
-					className={twMerge(
+					class={twMerge(
 						"pointer-events-none z-0 h-[0.8em] w-[0.8em] border border-text100",
 						inputProps.checked && "border-text400 bg-text400",
 					)}
 				/>
 				<input
 					{...inputProps}
-					ref={ref}
+					ref={local.ref}
 					type="radio"
-					className="absolute inset-0 z-10 cursor-pointer opacity-0"
+					class="absolute inset-0 z-10 cursor-pointer opacity-0"
 				/>
 			</div>
 		</label>
 	);
-});
+}
 
 type Props = Omit<
-	InputHTMLAttributes<HTMLInputElement>,
-	"className" | "type" | "hidden"
+	JSX.InputHTMLAttributes<HTMLInputElement>,
+	"class" | "type" | "hidden" | "classList"
 > & {
-	label: ReactNode;
+	label: JSX.Element;
 };

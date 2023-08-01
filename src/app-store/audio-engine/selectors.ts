@@ -1,4 +1,4 @@
-import type { AppState } from "../configure-store";
+import type { AppState } from "../create";
 
 export function selectAudioEngineSubscriptionData(state: AppState) {
 	return state.audioEngine.subscriptionData;

@@ -3,10 +3,10 @@ import { twMerge } from "tailwind-merge";
 
 import { clamp } from "~/lib/util/number";
 
-import useControlResponseRef from "./hooks/use-control-response-ref";
+import useControlResponseMultiplier from "./hooks/use-control-response-multiplier";
 import usePointerDrag from "./hooks/use-pointer-drag";
 
-import type { ControlResponseMultipliers } from "./hooks/use-control-response-ref";
+import type { ControlResponseMultipliers } from "./hooks/use-control-response-multiplier";
 import type {
 	PointerDragEndHandler,
 	PointerDragMoveHandler,
@@ -17,17 +17,19 @@ import type {
 	PropsWithChildren,
 } from "react";
 
-export default memo(function Slider({
-	value,
-	onChange,
-	defaultValue = 0.5,
-	orientation = "block",
-	label = "",
-	valueLabel = "",
-	title = "",
-}: Props) {
+export default memo(function Slider(_props: Props) {
+	const props = mergeProps(
+		{
+			defaultValue: 0.5,
+			orientation: "block",
+			label: "",
+			valueLabel: "",
+			title: "",
+		},
+		_props,
+	);
 	const valueRef = useRef<number>(value);
-	const moveMultiplierRef = useControlResponseRef(controlMultipliers);
+	const moveMultiplierRef = useControlResponseMultiplier(controlMultipliers);
 	const barContainerRef = useRef<HTMLDivElement | null>(null);
 	const barRef = useRef<HTMLDivElement | null>(null);
 
@@ -87,13 +89,13 @@ export default memo(function Slider({
 	return (
 		<div
 			title={title}
-			className={twMerge(
+			class={twMerge(
 				"flex h-full w-full items-stretch",
 				orientation === "block" && "flex-col items-center",
 			)}
 		>
 			<LabelText
-				className={twMerge(
+				class={twMerge(
 					orientation === "inline" && "flex w-12 items-center",
 					orientation === "block" && "h-6",
 				)}
@@ -110,7 +112,7 @@ export default memo(function Slider({
 				<Bar orientation={orientation} ref={barRef} />
 			</BarContainer>
 			<LabelText
-				className={twMerge(
+				class={twMerge(
 					orientation === "inline" && "w-12 items-center",
 					orientation === "block" && "h-6 items-end",
 				)}
@@ -121,13 +123,10 @@ export default memo(function Slider({
 	);
 });
 
-function LabelText({
-	className,
-	children,
-}: PropsWithChildren<{ className: string }>) {
+function LabelText(props: PropsWithChildren<{ className: string }>) {
 	return (
-		<div className={twMerge("shrink-0 grow-0 truncate text-sm", className)}>
-			{children}
+		<div class={twMerge("shrink-0 grow-0 truncate text-sm", props.className)}>
+			{props.children}
 		</div>
 	);
 }
@@ -154,13 +153,13 @@ const BarContainer = forwardRef<
 	);
 });
 
-function Track({ orientation }: OrientationProps) {
+function Track(props: OrientationProps) {
 	return (
 		<div
-			className={twMerge(
+			class={twMerge(
 				"absolute z-[1] bg-text100",
-				orientation === "inline" && "inset-x-0 top-1/2 h-[1px]",
-				orientation === "block" && "inset-y-0 start-1/2 w-[1px]",
+				props.orientation === "inline" && "inset-x-0 top-1/2 h-[1px]",
+				props.orientation === "block" && "inset-y-0 start-1/2 w-[1px]",
 			)}
 		/>
 	);
@@ -173,7 +172,7 @@ const Bar = forwardRef<HTMLDivElement, OrientationProps>(function Bar(
 	return (
 		<div
 			ref={ref}
-			className={twMerge(
+			class={twMerge(
 				"absolute z-[2] bg-text600",
 				orientation === "inline" &&
 					"inset-x-0 top-[calc(50%-1px)] h-[3px] origin-left scale-x-0",

@@ -1,14 +1,28 @@
-import { useDispatch, useSelector, useStore } from "react-redux";
+import { createMemo, createSignal, onCleanup } from "solid-js";
 
-import type { AppState, AppDispatch, AppStore } from "../configure-store";
-import type { TypedUseSelectorHook } from "react-redux";
+import { useAppStore } from "./context";
 
-export function useAppStore() {
-	return useStore<AppStore>();
+import type { AppState } from "./create";
+import type { MemoOptions } from "solid-js";
+
+export function useAppSelector<T>(
+	selector: (state: AppState) => T,
+	equals?: MemoOptions<T>["equals"],
+) {
+	const store = useAppStore();
+	const [selected, setSelected] = createSignal<T>(selector(store.getState()));
+	const result = createMemo(() => selected(), { equals });
+	const unsubscribe = store.subscribe(() => {
+		setSelected(() => selector(store.getState()));
+	});
+
+	onCleanup(unsubscribe);
+
+	return result;
 }
 
 export function useAppDispatch() {
-	return useDispatch<AppDispatch>();
-}
+	const store = useAppStore();
 
-export const useAppSelector: TypedUseSelectorHook<AppState> = useSelector;
+	return store.dispatch;
+}

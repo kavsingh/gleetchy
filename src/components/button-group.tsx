@@ -1,19 +1,13 @@
 import Button from "./button";
 
-import type { ComponentProps, ReactElement } from "react";
+import type { ParentProps } from "solid-js";
 
-export default function ButtonGroup({
-	children,
-}: {
-	children: ReactElement<ButtonProps>[] | ReactElement<ButtonProps>;
-}) {
+export default function ButtonGroup(props: ParentProps) {
 	return (
-		<div className="flex min-h-[5rem] w-full items-center justify-center px-0 py-3">
-			{children}
+		<div class="flex min-h-[5rem] w-full items-center justify-center px-0 py-3">
+			{props.children}
 		</div>
 	);
 }
 
 export { Button };
-
-type ButtonProps = ComponentProps<typeof Button>;

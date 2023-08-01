@@ -8,7 +8,8 @@
 	// ],
 	"compilerOptions": {
 		"allowJs": true,
-		"jsx": "react-jsx",
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
 		"lib": ["esnext", "dom"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
@@ -23,7 +24,6 @@
 		// array when supported by ts-node
 		"strict": true,
 		"allowUnusedLabels": false,
-		"exactOptionalPropertyTypes": true,
 		"noFallthroughCasesInSwitch": true,
 		"noImplicitOverride": true,
 		"noImplicitReturns": true,
@@ -39,7 +39,10 @@
 		"noUnusedParameters": false,
 		// leave to eslint: some extensions delete
 		// unreachable code detected via ts too eagerly
-		"allowUnreachableCode": true
+		"allowUnreachableCode": true,
+
+		// lots of conflicts with jsx prop typings :(
+		"exactOptionalPropertyTypes": false
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./src", "./scripts", "./*.ts", "./*.*.cjs"],
