@@ -1,5 +1,5 @@
 import { deepEqual } from "fast-equals";
-import { useCallback, useEffect, useState } from "react";
+import { createMemo } from "solid-js";
 
 import {
 	updateAudioNodeProps,
@@ -16,57 +16,52 @@ import {
 } from "../audio-nodes/selectors";
 import { selectConnections } from "../connections/selectors";
 
-import type { AudioNodeState, AudioNodeConnection } from "~/types";
+import type { AudioNodeState } from "~/types";
 
 export default function useAudioNode<T extends Record<string, unknown>>(
 	id: string,
 	isValid: ReturnType<typeof validateNodeType>,
 ) {
-	const node = useAppSelector(
-		(state) => selectAudioNodes(state)[id] as AudioNodeState<T> | undefined,
-		deepEqual,
-	);
+	const node = useAppSelector((state) => {
+		const selected = selectAudioNodes(state)[id] as
+			| AudioNodeState<T>
+			| undefined;
+		// please forgive me
+		if (!selected) throw new Error(`No node found for ${id}`);
+		if (!isValid(selected)) throw new Error(`Node ${id} has invalid type`);
 
-	if (!node) throw new Error(`Audio node not found at id ${id}`);
+		return selected;
+	}, deepEqual);
 
-	if (!isValid(node)) throw new Error(`Audio node is invalid for ${id}`);
-
-	const isActive = useAppSelector((state) =>
-		selectActiveAudioNodeIds(state).includes(node.id),
-	);
-	const allConnections = useAppSelector(selectConnections);
 	const dispatch = useAppDispatch();
+	const allConnections = useAppSelector(selectConnections);
+	const label = createMemo(() => node().label);
+	const audioProps = createMemo(() => node().audioProps);
 
-	const [connections, setConnections] = useState<AudioNodeConnection[]>([]);
+	const isActive = useAppSelector((state) => {
+		return selectActiveAudioNodeIds(state).includes(id);
+	});
 
-	const duplicate = useCallback(
-		() => dispatch(duplicateAudioNode(id)),
-		[id, dispatch],
+	const connections = createMemo(
+		() => getConnectionsFor(node().id, allConnections()),
+		{ equals: deepEqual },
 	);
 
-	const remove = useCallback(
-		() => dispatch(removeAudioNode(id)),
-		[id, dispatch],
-	);
+	function duplicate() {
+		dispatch(duplicateAudioNode(id));
+	}
 
-	const updateAudioProps = useCallback(
-		(audioProps: Partial<T>) =>
-			dispatch(updateAudioNodeProps({ id, audioProps })),
-		[id, dispatch],
-	);
+	function remove() {
+		dispatch(removeAudioNode(id));
+	}
 
-	const updateLabel = useCallback(
-		(label: string) => dispatch(updateAudioNodeLabel({ id, label })),
-		[id, dispatch],
-	);
+	function updateAudioProps(next: Partial<T>) {
+		dispatch(updateAudioNodeProps({ id, audioProps: next }));
+	}
 
-	useEffect(() => {
-		setConnections((current) => {
-			const next = getConnectionsFor(id, allConnections);
-
-			return deepEqual(current, next) ? current : next;
-		});
-	}, [id, allConnections]);
+	function updateLabel(next: string) {
+		dispatch(updateAudioNodeLabel({ id, label: next }));
+	}
 
 	return {
 		connections,
@@ -75,15 +70,17 @@ export default function useAudioNode<T extends Record<string, unknown>>(
 		updateLabel,
 		duplicate,
 		remove,
-		label: node.label,
-		audioProps: node.audioProps,
+		label,
+		audioProps,
 	} as const;
 }
 
 export function validateNodeType(
 	type: AudioNodeState<Record<string, unknown>>["type"],
 ) {
-	return function validate(node: AudioNodeState<Record<string, unknown>>) {
-		return node.type === type;
+	return function validate(
+		node?: AudioNodeState<Record<string, unknown>> | undefined,
+	) {
+		return node?.type === type;
 	};
 }

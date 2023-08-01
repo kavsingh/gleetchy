@@ -1,4 +1,4 @@
-import { useCallback } from "react";
+import { createMemo } from "solid-js";
 
 import { getConnectionBetween, canConnectNodes } from "~/lib/audio";
 
@@ -14,14 +14,18 @@ export default function useConnection(
 ) {
 	const dispatch = useAppDispatch();
 	const connections = useAppSelector(selectConnections);
-	const connection = getConnectionBetween(connections, source, target);
-	const isBlocked = !canConnectNodes(connections, source, target);
+	const connection = createMemo(() => {
+		return getConnectionBetween(connections(), source, target);
+	});
+	const isBlocked = createMemo(() => {
+		return !canConnectNodes(connections(), source, target);
+	});
 
-	const toggleConnection = useCallback(() => {
-		if (!isBlocked) {
+	function toggleConnection() {
+		if (!isBlocked()) {
 			dispatch(toggleConnectionAction({ fromId: source.id, toId: target.id }));
 		}
-	}, [isBlocked, dispatch, source.id, target.id]);
+	}
 
 	return { connection, isBlocked, toggleConnection } as const;
 }
