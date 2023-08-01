@@ -26,24 +26,25 @@ export default function useAudioNode<T extends Record<string, unknown>>(
 		const selected = selectAudioNodes(state)[id] as
 			| AudioNodeState<T>
 			| undefined;
-		// please forgive me
-		if (!selected) throw new Error(`No node found for ${id}`);
-		if (!isValid(selected)) throw new Error(`Node ${id} has invalid type`);
 
-		return selected;
+		return selected && isValid(selected) ? selected : undefined;
 	}, deepEqual);
 
 	const dispatch = useAppDispatch();
 	const allConnections = useAppSelector(selectConnections);
-	const label = createMemo(() => node().label);
-	const audioProps = createMemo(() => node().audioProps);
+	const label = createMemo(() => node()?.label);
+	const audioProps = createMemo(() => node()?.audioProps);
 
 	const isActive = useAppSelector((state) => {
 		return selectActiveAudioNodeIds(state).includes(id);
 	});
 
 	const connections = createMemo(
-		() => getConnectionsFor(node().id, allConnections()),
+		() => {
+			const reified = node();
+
+			return reified ? getConnectionsFor(reified.id, allConnections()) : [];
+		},
 		{ equals: deepEqual },
 	);
 

@@ -1,3 +1,5 @@
+import { Show } from "solid-js";
+
 import {
 	receiveAudioFile as receiveAudioFileAction,
 	selectAudioFile as selectAudioFileAction,
@@ -52,31 +54,35 @@ export default function ConnectedLoop(props: { id: string }) {
 	}
 
 	return (
-		<NodeWrapper isActive={isActive()}>
-			<UI
-				nodeId={props.id}
-				loopStart={audioProps().loopStart}
-				loopEnd={audioProps().loopEnd}
-				label={label()}
-				fileName={audioProps().fileName}
-				connections={connections()}
-				isActive={isActive()}
-				highGain={audioProps().highGain}
-				midGain={audioProps().midGain}
-				lowGain={audioProps().lowGain}
-				playbackRate={audioProps().playbackRate}
-				gain={audioProps().gain}
-				audioBuffer={audioProps().audioBuffer}
-				onGainChange={handleGainChange}
-				onPlaybackRateChange={handlePlaybackRateChange}
-				onEqChange={handleEqChange}
-				selectAudioFile={selectAudioFile}
-				receiveAudioFile={receiveAudioFile}
-				onLoopRegionChange={handleLoopRegionChange}
-				onLabelChange={updateLabel}
-				duplicate={duplicate}
-				remove={remove}
-			/>
-		</NodeWrapper>
+		<Show when={audioProps()}>
+			{(audio) => (
+				<NodeWrapper isActive={isActive()}>
+					<UI
+						nodeId={props.id}
+						loopStart={audio().loopStart}
+						loopEnd={audio().loopEnd}
+						label={label() ?? ""}
+						fileName={audio().fileName}
+						connections={connections()}
+						isActive={isActive()}
+						highGain={audio().highGain}
+						midGain={audio().midGain}
+						lowGain={audio().lowGain}
+						playbackRate={audio().playbackRate}
+						gain={audio().gain}
+						audioBuffer={audio().audioBuffer}
+						onGainChange={handleGainChange}
+						onPlaybackRateChange={handlePlaybackRateChange}
+						onEqChange={handleEqChange}
+						selectAudioFile={selectAudioFile}
+						receiveAudioFile={receiveAudioFile}
+						onLoopRegionChange={handleLoopRegionChange}
+						onLabelChange={updateLabel}
+						duplicate={duplicate}
+						remove={remove}
+					/>
+				</NodeWrapper>
+			)}
+		</Show>
 	);
 }
