@@ -1,7 +1,7 @@
 import type { JSX } from "solid-js/jsx-runtime";
 
 export default function usePointerDrag(props: UsePointerDragProps) {
-	let state = structuredClone(initialState);
+	let state = { ...initialState };
 
 	function handleDragMove(event: PointerEvent) {
 		const { clientX, clientY, timeStamp } = event;
@@ -20,7 +20,7 @@ export default function usePointerDrag(props: UsePointerDragProps) {
 			y: clientY,
 		};
 
-		props.onDragMove?.(structuredClone(state));
+		props.onDragMove?.({ ...state });
 	}
 
 	function handleDragEnd(event: PointerEvent) {
@@ -46,7 +46,7 @@ export default function usePointerDrag(props: UsePointerDragProps) {
 			y: clientY,
 		};
 
-		props.onDragEnd?.(structuredClone(state));
+		props.onDragEnd?.({ ...state });
 	}
 
 	const registerDragStart: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
@@ -96,7 +96,7 @@ export default function usePointerDrag(props: UsePointerDragProps) {
 			y: clientY,
 		};
 
-		props.onDragStart?.(structuredClone(state));
+		props.onDragStart?.({ ...state });
 	};
 
 	return { onPointerDown: registerDragStart } as const;
