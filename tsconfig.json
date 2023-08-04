@@ -16,7 +16,7 @@
 		"noEmit": true,
 		"paths": { "~/*": ["./src/*"] },
 		"sourceMap": true,
-		"types": ["node", "audioworklet", "webaudioapi", "vitest/importMeta"],
+		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"],
 
 		// latest ts-node release does not support extends array
 		// manually add strictect config here
