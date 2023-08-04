@@ -7,23 +7,28 @@ export default function ThemeEffects() {
 	const theme = useAppSelector(selectTheme);
 	const doc = globalThis.document.documentElement;
 
-	function handleChange() {
-		if (theme() === "system") {
-			doc.classList.toggle("dark", darkSchemeQuery?.matches);
-		}
+	function handleQueryChange() {
+		if (theme() !== "system") return;
+
+		doc.classList.toggle("dark", darkSchemeQuery?.matches);
 	}
 
 	createEffect(() => {
-		if (theme() !== "system") {
-			doc.classList.toggle("dark", theme() === "dark");
-		}
+		const themeValue = theme();
+
+		doc.classList.toggle(
+			"dark",
+			themeValue === "system"
+				? darkSchemeQuery?.matches
+				: themeValue === "dark",
+		);
 	});
 
-	darkSchemeQuery?.addEventListener("change", handleChange);
-	handleChange();
+	darkSchemeQuery?.addEventListener("change", handleQueryChange);
+	handleQueryChange();
 
 	onCleanup(() => {
-		darkSchemeQuery?.removeEventListener("change", handleChange);
+		darkSchemeQuery?.removeEventListener("change", handleQueryChange);
 	});
 
 	return null;

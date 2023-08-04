@@ -1,5 +1,4 @@
 import "web-audio-test-api";
-import "raf/polyfill";
 import matchers from "@testing-library/jest-dom/matchers";
 import { cleanup } from "solid-testing-library";
 import { afterEach, expect } from "vitest";
