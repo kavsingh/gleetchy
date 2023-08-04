@@ -1,4 +1,4 @@
-import type { JSX } from "solid-js/jsx-runtime";
+import type { JSX } from "solid-js";
 
 export default function usePointerDrag(props: UsePointerDragProps) {
 	let state = { ...initialState };
