@@ -1,0 +1,59 @@
+{
+	"name": "gleetchy",
+	"version": "1.0.0",
+	"description": "looping business",
+	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
+	"license": "ISC",
+	"repository": {
+		"url": "https://github.com/kavsingh/gleetchy.git",
+		"type": "git"
+	},
+	"main": "index.js",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"tdd": "vitest",
+		"test": "vitest run --coverage",
+		"lint": "eslint .",
+		"dev": "vite",
+		"build": "rm -rf ./dist && vite build",
+		"preview": "vite preview",
+		"codecheck": "pnpm test -- --silent && pnpm tsc && pnpm lint"
+	},
+	"dependencies": {
+		"@reduxjs/toolkit": "1.9.5",
+		"cuid": "2.1.8",
+		"fast-equals": "5.0.1",
+		"raf-throttle": "2.0.6",
+		"reselect": "4.1.8",
+		"solid-js": "1.7.9",
+		"tailwind-merge": "1.14.0"
+	},
+	"devDependencies": {
+		"@gleetchy/codestyle-js": "workspace:*",
+		"@tailwindcss/container-queries": "0.1.1",
+		"@testing-library/dom": "9.3.1",
+		"@testing-library/jest-dom": "5.17.0",
+		"@testing-library/user-event": "14.4.3",
+		"@types/audioworklet": "0.0.50",
+		"@types/testing-library__jest-dom": "5.14.9",
+		"@types/webaudioapi": "0.0.27",
+		"@vitest/coverage-v8": "0.34.1",
+		"autoprefixer": "10.4.14",
+		"eslint-plugin-jest-dom": "5.0.2",
+		"eslint-plugin-solid": "0.12.1",
+		"eslint-plugin-tailwindcss": "3.13.0",
+		"eslint-plugin-testing-library": "5.11.1",
+		"eslint-plugin-vitest": "0.2.8",
+		"jsdom": "22.1.0",
+		"prettier-plugin-tailwindcss": "0.4.1",
+		"solid-testing-library": "0.5.0",
+		"tailwindcss": "3.3.3",
+		"vite": "4.4.8",
+		"vite-plugin-checker": "0.6.1",
+		"vite-plugin-solid": "2.7.0",
+		"vite-tsconfig-paths": "4.2.0",
+		"vitest": "0.34.1",
+		"web-audio-test-api": "0.5.2"
+	}
+}

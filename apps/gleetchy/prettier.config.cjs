@@ -1,6 +1,5 @@
 /** @type {import('prettier').Config} */
 module.exports = {
-	quoteProps: 'consistent',
-	useTabs: true,
+	...require("@gleetchy/codestyle-js/prettier.config.cjs"),
 	plugins: [require("prettier-plugin-tailwindcss")],
-}
+};

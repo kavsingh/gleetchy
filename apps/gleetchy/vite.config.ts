@@ -9,11 +9,10 @@ export default defineConfig(({ mode }) => ({
 	build: { sourcemap: true },
 	plugins: [tsconfigPathsPlugin(), solidPlugin(), checker(mode)],
 	test: {
-		include: ["src/**/*.{test,spec}.{js,mjs,cjs,jsx,ts,mts,cts,tsx}"],
+		include: ["./src/**/*.{test,spec}.{js,mjs,cjs,jsx,ts,mts,cts,tsx}"],
 		environment: "jsdom",
 		setupFiles: ["./vitest.setup.ts"],
 		clearMocks: true,
-		deps: { inline: [/solid-js/] },
 	},
 }));
 
