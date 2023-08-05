@@ -6,8 +6,12 @@ const baseConfig = require("@gleetchy/codestyle-js/.eslintrc.cjs");
 /** @type {import("typescript")} */
 const ts = require("typescript");
 
-const [baseImportOrderSeverity, baseImportOrderConfig] =
-	baseConfig.rules?.["import/order"];
+const baseImportOrder = baseConfig.rules?.["import/order"];
+const [baseImportOrderSeverity, baseImportOrderConfig] = Array.isArray(
+	baseImportOrder,
+)
+	? baseImportOrder
+	: [];
 
 const tsconfigFile = ts.findConfigFile(
 	__dirname,
@@ -47,7 +51,7 @@ module.exports = {
 		"import/order": [
 			baseImportOrderSeverity ?? "warn",
 			{
-				...baseImportOrderConfig,
+				...(baseImportOrderConfig ?? {}),
 				pathGroups: [
 					...tsconfigPathPatterns.map((pattern) => ({
 						pattern,
