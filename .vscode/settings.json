@@ -25,6 +25,8 @@
 	"tailwindCSS.validate": true,
 	"cssVariables.lookupFiles": ["src/style/**/*.css"],
 	"typescript.tsdk": "node_modules/typescript/lib",
+	"rust-analyzer.linkedProjects": ["packages/osc-rs/Cargo.toml"],
+	"rust-analyzer.check.command": "clippy",
 	"[javascript]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},
