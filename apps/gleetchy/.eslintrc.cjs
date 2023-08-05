@@ -1,8 +1,13 @@
 /** @type {import("path")} */
 const path = require("path");
 
+/** @type {import("eslint").ESLint.ConfigData} */
+const baseConfig = require("@gleetchy/codestyle-js/.eslintrc.cjs");
 /** @type {import("typescript")} */
 const ts = require("typescript");
+
+const [baseImportOrderSeverity, baseImportOrderConfig] =
+	baseConfig.rules?.["import/order"];
 
 const tsconfigFile = ts.findConfigFile(
 	__dirname,
@@ -40,24 +45,15 @@ module.exports = {
 	},
 	rules: {
 		"import/order": [
-			"warn",
+			baseImportOrderSeverity ?? "warn",
 			{
-				"groups": [
-					"builtin",
-					"external",
-					"internal",
-					["parent", "sibling", "index"],
-					"type",
-				],
-				"pathGroups": [
+				...baseImportOrderConfig,
+				pathGroups: [
 					...tsconfigPathPatterns.map((pattern) => ({
 						pattern,
 						group: "internal",
 					})),
 				],
-				"pathGroupsExcludedImportTypes": ["type"],
-				"alphabetize": { order: "asc" },
-				"newlines-between": "always",
 			},
 		],
 	},
@@ -66,7 +62,10 @@ module.exports = {
 			files: ["src/**/*"],
 			env: { node: false, browser: true },
 			settings: {
-				tailwindcss: { callees: ["twMerge", "twJoin"] },
+				tailwindcss: {
+					callees: ["twMerge", "twJoin"],
+					config: "apps/gleetchy/tailwind.config.ts",
+				},
 			},
 			extends: ["plugin:tailwindcss/recommended", "plugin:solid/typescript"],
 			rules: {
