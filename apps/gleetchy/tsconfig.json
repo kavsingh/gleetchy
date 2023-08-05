@@ -1,0 +1,19 @@
+{
+	"extends": "@gleetchy/codestyle-js/tsconfig.json",
+	"compilerOptions": {
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"lib": ["esnext", "dom"],
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"paths": { "~/*": ["./src/*"] },
+		"sourceMap": true,
+		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"],
+	},
+	"exclude": ["**/node_modules"],
+	"include": ["./src", "./scripts", "./*.ts", "./*.*.cjs"],
+	"ts-node": {
+		"esm": true,
+		"transpileOnly": true
+	}
+}
