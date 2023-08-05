@@ -69,9 +69,9 @@ export default function Slider(_props: Props) {
 	};
 
 	createEffect(() => {
-		if (!barContainerRef) return;
+		if (!barRef) return;
 
-		barContainerRef.style.transform =
+		barRef.style.transform =
 			props.orientation === "inline"
 				? `scaleX(${props.value})`
 				: `scaleY(${props.value})`;
@@ -165,9 +165,9 @@ const Bar = function Bar(
 			class={twMerge(
 				"absolute z-[2] bg-text600",
 				props.orientation === "inline" &&
-					"inset-x-0 top-[calc(50%-1px)] h-[3px] origin-left scale-x-0",
+					"inset-x-0 top-[calc(50%-1px)] h-[2px] origin-left scale-x-0",
 				props.orientation === "block" &&
-					"inset-y-0 start-[calc(50%-1px)] w-[3px] origin-bottom scale-y-0",
+					"inset-y-0 start-[calc(50%-1px)] w-[2px] origin-bottom scale-y-0",
 			)}
 		/>
 	);
