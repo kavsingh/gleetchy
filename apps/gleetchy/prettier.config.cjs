@@ -1,5 +1,2 @@
 /** @type {import('prettier').Config} */
-module.exports = {
-	...require("@gleetchy/codestyle-js/prettier.config.cjs"),
-	plugins: [require("prettier-plugin-tailwindcss")],
-};
+module.exports = require("@gleetchy/codestyle-js/prettier.config.cjs");
