@@ -1,5 +1,6 @@
 {
 	"name": "@gleetchy/codestyle-js",
+	"type": "module",
 	"dependencies": {
 		"@tsconfig/node20": "^20.1.1",
 		"@tsconfig/strictest": "^2.0.1",

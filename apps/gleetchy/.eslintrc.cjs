@@ -68,7 +68,7 @@ module.exports = {
 			settings: {
 				tailwindcss: {
 					callees: ["twMerge", "twJoin"],
-					config: "apps/gleetchy/tailwind.config.ts",
+					config: path.join(__dirname, "tailwind.config.ts"),
 				},
 			},
 			extends: ["plugin:tailwindcss/recommended", "plugin:solid/typescript"],
