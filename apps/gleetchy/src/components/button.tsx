@@ -1,4 +1,4 @@
-import { Match, Switch, createMemo, splitProps } from "solid-js";
+import { Show, createMemo, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 import type { JSX, ParentProps } from "solid-js";
@@ -22,9 +22,9 @@ export default function Button(_props: Props) {
 				props.class,
 			)}
 		>
-			<Switch fallback={props.children}>
-				<Match when={isBraced()}>[ {props.children} ]</Match>
-			</Switch>
+			<Show when={isBraced()} fallback={props.children}>
+				[ {props.children} ]
+			</Show>
 		</button>
 	);
 }
