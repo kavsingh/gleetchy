@@ -173,9 +173,7 @@ const Bar = function Bar(
 	);
 };
 
-function clampValue(value: number) {
-	return clamp(value, 0, 1);
-}
+const clampValue = clamp.bind(null, 0, 1);
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,

@@ -1,10 +1,7 @@
 import Knob from "~/components/knob";
+import { denormalize, normalize } from "~/lib/util/number";
 
 export default function PlaybackControls(props: Props) {
-	function handlePlaybackRateChange(val: number) {
-		props.onPlaybackRateChange(val * 2);
-	}
-
 	return (
 		<div class="flex h-full flex-col items-center justify-between">
 			<div>
@@ -18,16 +15,19 @@ export default function PlaybackControls(props: Props) {
 			</div>
 			<div>
 				<Knob
-					value={props.playbackRate * 0.5}
+					value={normalizeRate(props.playbackRate)}
 					title="Speed"
 					label="S"
 					valueLabel={props.playbackRate.toFixed(2)}
-					onChange={handlePlaybackRateChange}
+					onChange={(val) => props.onPlaybackRateChange(denormalizeRate(val))}
 				/>
 			</div>
 		</div>
 	);
 }
+
+const normalizeRate = normalize.bind(null, 0, 2);
+const denormalizeRate = denormalize.bind(null, 0, 2);
 
 type Props = {
 	gain: number;

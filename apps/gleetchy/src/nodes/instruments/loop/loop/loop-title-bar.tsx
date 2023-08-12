@@ -1,3 +1,5 @@
+import { Show } from "solid-js";
+
 import Button from "~/components/button";
 import TitleBar from "~/components/title-bar";
 
@@ -13,17 +15,24 @@ export default function LoopTitleBar(props: Props) {
 			connections={props.connections}
 		>
 			<div class="flex gap-1">
-				{props.fileName ? <span>{props.fileName}</span> : null}
-				{props.fileName && props.audioBuffer ? (
-					<span> - {props.audioBuffer.duration.toFixed(2)}s</span>
-				) : null}
-				{props.fileName ? <span>/</span> : null}
+				<Show when={props.fileName}>
+					{(fileName) => <span>{fileName()} - </span>}
+				</Show>
+				<Show when={props.audioBuffer?.duration}>
+					{(duration) => <span>{duration().toFixed(2)}s</span>}
+				</Show>
+				<Show when={props.fileName}>
+					<span>/</span>
+				</Show>
 				<Button onClick={props.selectAudioFile}>
-					{`${props.audioBuffer ? "Replace" : "Load"}`} audio file
+					<Show when={!!props.audioBuffer} fallback="Load">
+						Replace
+					</Show>{" "}
+					audio file
 				</Button>
-				{props.audioBuffer ? (
+				<Show when={props.audioBuffer}>
 					<Button onClick={props.duplicate}>Clone</Button>
-				) : null}
+				</Show>
 			</div>
 		</TitleBar>
 	);

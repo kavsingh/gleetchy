@@ -16,7 +16,7 @@ export default function Loop(props: LoopUIProps) {
 
 	function handleLoopStartDrag(movement: number) {
 		props.onLoopRegionChange(
-			clamp(props.loopStart + movement, 0, props.loopEnd - 0.0001),
+			clamp(0, props.loopEnd - 0.0001, props.loopStart + movement),
 			props.loopEnd,
 		);
 	}
@@ -24,7 +24,7 @@ export default function Loop(props: LoopUIProps) {
 	function handleLoopEndDrag(movement: number) {
 		props.onLoopRegionChange(
 			props.loopStart,
-			clamp(props.loopEnd + movement, props.loopStart + 0.0001, 1),
+			clamp(props.loopStart + 0.0001, 1, props.loopEnd + movement),
 		);
 	}
 
@@ -38,14 +38,14 @@ export default function Loop(props: LoopUIProps) {
 			const maxStart = 1 - span;
 			const val = props.loopStart + movement;
 
-			nextStart = clamp(val, minStart, maxStart);
+			nextStart = clamp(minStart, maxStart, val);
 			nextEnd = nextStart + span;
 		} else {
 			const minEnd = span;
 			const maxEnd = 1;
 			const val = props.loopEnd + movement;
 
-			nextEnd = clamp(val, minEnd, maxEnd);
+			nextEnd = clamp(minEnd, maxEnd, val);
 			nextStart = nextEnd - span;
 		}
 

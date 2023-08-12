@@ -98,9 +98,7 @@ function Label(props: ParentProps) {
 	return <div class="flex shrink-0 grow-0 text-sm">{props.children}</div>;
 }
 
-function clampMove(value: number) {
-	return clamp(value, 0, 1);
-}
+const clampMove = clamp.bind(null, 0, 1);
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,

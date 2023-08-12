@@ -1,26 +1,27 @@
 // eslint-disable-next-line filenames/match-exported
 import Slider from "~/components/slider";
+import { normalize, denormalize } from "~/lib/util/number";
 
 import type { ParentProps } from "solid-js";
 
 export default function Eq3(props: Eq3Props) {
 	function handleLowGainChange(val: number) {
-		props.onChange({ lowGain: val * 2 - 1 });
+		props.onChange({ lowGain: denormalizeGain(val) });
 	}
 
 	function handleMidGainChange(val: number) {
-		props.onChange({ midGain: val * 2 - 1 });
+		props.onChange({ midGain: denormalizeGain(val) });
 	}
 
 	function handleHighGainChange(val: number) {
-		props.onChange({ highGain: val * 2 - 1 });
+		props.onChange({ highGain: denormalizeGain(val) });
 	}
 
 	return (
 		<div class="flex h-full gap-2">
 			<SliderContainer>
 				<Slider
-					value={props.lowGain * 0.5 + 0.5}
+					value={normalizeGain(props.lowGain)}
 					title="EQ Low Gain"
 					label="L"
 					valueLabel={props.lowGain.toFixed(1)}
@@ -29,7 +30,7 @@ export default function Eq3(props: Eq3Props) {
 			</SliderContainer>
 			<SliderContainer>
 				<Slider
-					value={props.midGain * 0.5 + 0.5}
+					value={normalizeGain(props.midGain)}
 					title="EQ Mid Gain"
 					label="M"
 					valueLabel={props.midGain.toFixed(1)}
@@ -38,7 +39,7 @@ export default function Eq3(props: Eq3Props) {
 			</SliderContainer>
 			<SliderContainer>
 				<Slider
-					value={props.highGain * 0.5 + 0.5}
+					value={normalizeGain(props.highGain)}
 					title="EQ High Gain"
 					label="H"
 					valueLabel={props.highGain.toFixed(1)}
@@ -48,6 +49,9 @@ export default function Eq3(props: Eq3Props) {
 		</div>
 	);
 }
+
+const normalizeGain = normalize.bind(null, -1, 1);
+const denormalizeGain = denormalize.bind(null, -1, 1);
 
 function SliderContainer(props: ParentProps) {
 	return <div class="h-full w-4">{props.children}</div>;
