@@ -13,6 +13,8 @@ export default defineConfig(({ mode }) => ({
 		environment: "jsdom",
 		setupFiles: ["./vitest.setup.ts"],
 		clearMocks: true,
+		server: { deps: { inline: [/solid-js/] } },
+		deps: { optimizer: { web: { include: ["solid-js"] } } },
 	},
 }));
 
