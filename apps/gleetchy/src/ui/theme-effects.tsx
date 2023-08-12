@@ -6,11 +6,12 @@ import { selectTheme } from "~/app-store/ui/selectors";
 export default function ThemeEffects() {
 	const theme = useAppSelector(selectTheme);
 	const doc = globalThis.document.documentElement;
+	const darkSchemeQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
 
 	function handleQueryChange() {
 		if (theme() !== "system") return;
 
-		doc.classList.toggle("dark", darkSchemeQuery?.matches);
+		doc.classList.toggle("dark", darkSchemeQuery.matches);
 	}
 
 	createEffect(() => {
@@ -18,23 +19,16 @@ export default function ThemeEffects() {
 
 		doc.classList.toggle(
 			"dark",
-			themeValue === "system"
-				? darkSchemeQuery?.matches
-				: themeValue === "dark",
+			themeValue === "system" ? darkSchemeQuery.matches : themeValue === "dark",
 		);
 	});
 
-	darkSchemeQuery?.addEventListener("change", handleQueryChange);
+	darkSchemeQuery.addEventListener("change", handleQueryChange);
 	handleQueryChange();
 
 	onCleanup(() => {
-		darkSchemeQuery?.removeEventListener("change", handleQueryChange);
+		darkSchemeQuery.removeEventListener("change", handleQueryChange);
 	});
 
 	return null;
 }
-
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-export const darkSchemeQuery = (globalThis.matchMedia?.(
-	"(prefers-color-scheme: dark)",
-) ?? undefined) as MediaQueryList | undefined;

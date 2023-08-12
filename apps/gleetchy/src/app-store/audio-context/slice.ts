@@ -21,9 +21,6 @@ export const audioContextSlice = createSlice({
 });
 
 function getAudioContext() {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (!globalThis.document) throw new Error("Could not access dom");
-
 	const AudioContext =
 		// workaround for Safari
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unnecessary-condition

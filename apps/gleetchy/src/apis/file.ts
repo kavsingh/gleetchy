@@ -3,9 +3,6 @@ import type { AudioFileData } from "~/types";
 let fileInput: HTMLInputElement | undefined;
 
 function getFileInput() {
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-	if (!globalThis?.document) return undefined;
-
 	if (!fileInput) {
 		fileInput = globalThis.document.createElement("input");
 		fileInput.setAttribute("type", "file");
@@ -19,8 +16,6 @@ function getFileInput() {
 
 export function loadAudioFiles() {
 	const input = getFileInput();
-
-	if (!input) return Promise.reject(new Error("Cannot load files"));
 
 	return new Promise<File[]>((resolve, reject) => {
 		input.onchange = () => {

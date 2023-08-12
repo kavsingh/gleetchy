@@ -96,11 +96,10 @@ export default function Loop(props: LoopUIProps) {
 }
 
 function AudioFileDropRegion(
-	// eslint-disable-next-line @typescript-eslint/no-invalid-void-type
-	props: ParentProps<{ onFiles(this: void, files: File[]): unknown }>,
+	props: ParentProps<{ onFiles(files: File[]): unknown }>,
 ) {
 	const { eventHandlers } = useFileDropRegion({
-		onFiles: props.onFiles,
+		onFiles: (files) => props.onFiles(files),
 		fileFilter: ({ type }) => type.startsWith("audio"),
 	});
 

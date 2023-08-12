@@ -18,8 +18,7 @@ export default function Waveform(
 		updateWaveform(canvasRef, {
 			timeRegions: props.timeRegions,
 			buffer: props.buffer,
-			// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-			pixelRatio: globalThis.window.devicePixelRatio ?? 1,
+			pixelRatio: globalThis.window.devicePixelRatio,
 		});
 	}
 

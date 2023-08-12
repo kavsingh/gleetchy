@@ -16,7 +16,7 @@ import { togglePlayback } from "~/app-store/global-playback/actions";
 import { MAIN_OUT_ID } from "~/constants/audio";
 import { isInstrumentNode } from "~/lib/audio";
 import { GAudioNode } from "~/lib/g-audio-node";
-import { logWarn } from "~/lib/log";
+import { logError, logWarn } from "~/lib/log";
 import {
 	createAudioNode as createDelayNode,
 	nodeType as delayType,
@@ -117,8 +117,7 @@ export default class AudioEngine {
 				try {
 					node.destroy();
 				} catch (e) {
-					// eslint-disable-next-line no-console
-					console.error(e);
+					logError(e);
 				}
 			}
 

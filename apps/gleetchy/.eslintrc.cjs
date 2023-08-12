@@ -6,34 +6,7 @@ const baseConfig = require("@gleetchy/codestyle-js/.eslintrc.cjs");
 /** @type {import("typescript")} */
 const ts = require("typescript");
 
-const baseImportOrder = baseConfig.rules?.["import/order"];
-const [baseImportOrderSeverity, baseImportOrderConfig] = Array.isArray(
-	baseImportOrder,
-)
-	? baseImportOrder
-	: [];
-
-const tsconfigFile = ts.findConfigFile(
-	__dirname,
-	ts.sys.fileExists,
-	"tsconfig.json",
-);
-const tsconfig = tsconfigFile
-	? ts.readConfigFile(tsconfigFile, ts.sys.readFile)
-	: undefined;
-
-const tsconfigPathPatterns = Object.keys(
-	tsconfig?.config?.compilerOptions?.paths ?? {},
-);
 const testFileSuffixes = ["test", "spec", "mock"];
-
-function testFilePatterns({ root = "", extensions = "*" } = {}) {
-	return [
-		`*.{${testFileSuffixes.join(",")}}`,
-		"__{test,tests,mocks,fixtures}__/**/*",
-		"__{test,mock,fixture}-*__/**/*",
-	].map((pattern) => path.join(root, `**/${pattern}.${extensions}`));
-}
 
 /** @type {import("eslint").ESLint.ConfigData} */
 module.exports = {
@@ -43,23 +16,12 @@ module.exports = {
 	settings: {
 		"import/resolver": {
 			"eslint-import-resolver-typescript": {
-				project: "apps/gleetchy/tsconfig.json",
+				project: path.join(__dirname, "tsconfig.json"),
 			},
 		},
 	},
 	rules: {
-		"import/order": [
-			baseImportOrderSeverity ?? "warn",
-			{
-				...(baseImportOrderConfig ?? {}),
-				pathGroups: [
-					...tsconfigPathPatterns.map((pattern) => ({
-						pattern,
-						group: "internal",
-					})),
-				],
-			},
-		],
+		"import/order": getImportOrderConfig(),
 	},
 	overrides: [
 		{
@@ -77,7 +39,7 @@ module.exports = {
 			},
 		},
 		{
-			files: testFilePatterns(),
+			files: getTestFilePatterns(),
 			env: { node: true },
 			extends: [
 				"plugin:vitest/all",
@@ -95,7 +57,7 @@ module.exports = {
 			},
 		},
 		{
-			files: testFilePatterns({ extensions: "ts?(x)" }),
+			files: getTestFilePatterns({ extensions: "ts?(x)" }),
 			rules: {
 				"@typescript-eslint/no-explicit-any": "off",
 				"@typescript-eslint/no-non-null-assertion": "off",
@@ -109,3 +71,49 @@ module.exports = {
 		},
 	],
 };
+
+function getTestFilePatterns({ root = "", extensions = "*" } = {}) {
+	return [
+		`*.{${testFileSuffixes.join(",")}}`,
+		"__{test,tests,mocks,fixtures}__/**/*",
+		"__{test,mock,fixture}-*__/**/*",
+	].map((pattern) => path.join(root, `**/${pattern}.${extensions}`));
+}
+
+/** @returns {import("eslint").Linter.RuleEntry} */
+function getImportOrderConfig() {
+	const baseImportOrder = baseConfig.rules?.["import/order"];
+	const [severity, config] = Array.isArray(baseImportOrder)
+		? baseImportOrder
+		: [];
+
+	const tsconfigPathPatterns = Object.keys(
+		getTsConfig()?.config?.compilerOptions?.paths ?? {},
+	);
+
+	return [
+		severity ?? "warn",
+		{
+			...config,
+			pathGroups: [
+				...(config?.pathGroups ?? []),
+				...tsconfigPathPatterns.map((pattern) => ({
+					pattern,
+					group: "internal",
+				})),
+			],
+		},
+	];
+}
+
+function getTsConfig() {
+	const tsconfigFile = ts.findConfigFile(
+		__dirname,
+		ts.sys.fileExists,
+		"tsconfig.json",
+	);
+
+	return tsconfigFile
+		? ts.readConfigFile(tsconfigFile, ts.sys.readFile)
+		: undefined;
+}

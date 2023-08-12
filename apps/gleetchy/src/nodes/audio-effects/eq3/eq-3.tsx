@@ -1,4 +1,3 @@
-// eslint-disable-next-line filenames/match-exported
 import Slider from "~/components/slider";
 import { normalize, denormalize } from "~/lib/util/number";
 
