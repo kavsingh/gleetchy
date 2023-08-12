@@ -49,7 +49,7 @@ export default function usePointerDrag(props: UsePointerDragProps) {
 		props.onDragEnd?.({ ...state });
 	}
 
-	const registerDragStart: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
+	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		event,
 	) => {
 		event.preventDefault();
@@ -99,7 +99,7 @@ export default function usePointerDrag(props: UsePointerDragProps) {
 		props.onDragStart?.({ ...state });
 	};
 
-	return { onPointerDown: registerDragStart } as const;
+	return { onPointerDown } as const;
 }
 
 const initialState: PointerDragState = {

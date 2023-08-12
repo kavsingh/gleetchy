@@ -2,8 +2,6 @@ import { createSignal } from "solid-js";
 
 import type { JSX } from "solid-js";
 
-type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;
-
 export default function useFileDropRegion(props: UseFileDropRegionProps) {
 	const [isDropActive, setIsDropActive] = createSignal(false);
 
@@ -52,3 +50,5 @@ export type UseFileDropRegionProps = {
 	fileFilter?(file: File, index: number, files: File[]): boolean;
 	onFiles?(files: File[]): unknown;
 };
+
+type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;
