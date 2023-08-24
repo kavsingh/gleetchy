@@ -1,5 +1,3 @@
-import type { AudioFileData } from "~/types";
-
 let fileInput: HTMLInputElement | undefined;
 
 function getFileInput() {
@@ -14,7 +12,7 @@ function getFileInput() {
 	return fileInput;
 }
 
-export function loadAudioFiles() {
+export function loadAudioFilesFromInput() {
 	const input = getFileInput();
 
 	return new Promise<File[]>((resolve, reject) => {
@@ -42,18 +40,4 @@ export function loadAudioFiles() {
 
 		input.click();
 	});
-}
-
-export async function readFileToArrayBuffer(
-	file: File,
-): Promise<AudioFileData> {
-	const buffer = await file.arrayBuffer();
-
-	return { buffer, fileName: file.name, fileType: file.type };
-}
-
-export async function loadAudioFilesToArrayBuffers() {
-	const files = await loadAudioFiles();
-
-	return Promise.all(files.map(readFileToArrayBuffer));
 }

@@ -39,10 +39,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	positionBufferSource: AudioBufferSourceNode | null = null;
 	throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
 
-	constructor(
-		protected override audioContext: AudioContext,
-		initProps: Props,
-	) {
+	constructor(audioContext: AudioContext, initProps: Props) {
 		super(audioContext, initProps);
 
 		this.gainNode.connect(this.eq3Node.inNode);

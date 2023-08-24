@@ -12,10 +12,7 @@ export class GEq3Node extends GAudioNode<Props> {
 	midNode = this.audioContext.createBiquadFilter();
 	highNode = this.audioContext.createBiquadFilter();
 
-	constructor(
-		protected override audioContext: AudioContext,
-		props: Props,
-	) {
+	constructor(audioContext: AudioContext, props: Props) {
 		super(audioContext, props);
 
 		this.lowNode.type = "lowshelf";

@@ -14,10 +14,7 @@ export class GDelayNode extends GAudioNode<Props> {
 	wetGainNode: GainNode = this.audioContext.createGain();
 	dryGainNode: GainNode = this.audioContext.createGain();
 
-	constructor(
-		protected override audioContext: AudioContext,
-		initialProps: Props,
-	) {
+	constructor(audioContext: AudioContext, initialProps: Props) {
 		super(audioContext, initialProps);
 
 		this.inNode.connect(this.dryGainNode);

@@ -1,79 +1,45 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import {
-	readFileToArrayBuffer,
-	loadAudioFilesToArrayBuffers,
-} from "~/apis/file";
-
+import { getFileId } from "./helpers";
+import { selectAudioFile as sSelectAudioFile } from "./selectors";
 import { selectAudioContext } from "../audio-context/selectors";
 
 import type { AppState } from "../create";
-import type { AudioFileData, DecodedAudioFileData } from "~/types";
+import type { AudioFile } from "~/types";
 
-export const selectAudioFile = createAsyncThunk(
-	"audioFiles/select",
-	async function selectFile(
-		{ id }: SelectAudioFileArg,
+export const loadAudioFileToNode = createAsyncThunk(
+	"audioFiles/loadToNode",
+	async function loadFileToNode(
+		{ nodeId, file }: { nodeId: string; file: File },
 		{ dispatch, getState },
-	) {
-		const audioContext = selectAudioContext(getState() as AppState);
+	): Promise<{ nodeId: string; file: AudioFile }> {
+		const state = getState() as AppState;
+		const fileId = getFileId(file);
+		const stored = sSelectAudioFile(state, fileId);
 
-		if (!audioContext) return;
+		if (stored) return { nodeId, file: stored };
 
-		try {
-			const [file] = await loadAudioFilesToArrayBuffers();
+		const loaded = (await dispatch(loadAudioFile(file))).payload as AudioFile;
 
-			if (!file) throw new Error("No file loaded");
-
-			const result = { id, file };
-
-			void dispatch(decodeAudioFile({ ...result }));
-
-			return result;
-		} catch (e) {
-			throw errorFrom(e);
-		}
+		return { nodeId, file: loaded };
 	},
 );
 
-export const receiveAudioFile = createAsyncThunk(
-	"audioFiles/receive",
-	async function receiveFile(
-		{ id, file }: ReceiveAudioFileArg,
-		{ dispatch, getState },
-	) {
-		const audioContext = selectAudioContext(getState() as AppState);
-
-		if (!audioContext) return;
-
-		try {
-			const fileData = await readFileToArrayBuffer(file);
-			const result = { id, file: fileData };
-
-			void dispatch(decodeAudioFile({ ...result }));
-
-			return result;
-		} catch (e) {
-			throw errorFrom(e);
-		}
-	},
-);
-
-export const decodeAudioFile = createAsyncThunk(
+export const loadAudioFile = createAsyncThunk(
 	"audioFiles/decode",
-	async function decodeFile(
-		{ id, file }: DecodeAudioFileArg,
-		{ getState },
-	): Promise<DecodeAudioFileReturn | undefined> {
+	async function loadFile(file: File, { getState }): Promise<AudioFile> {
 		const audioContext = selectAudioContext(getState() as AppState);
 
-		if (!audioContext) return;
+		if (!audioContext) throw new Error("No valid audio context");
 
 		try {
-			const { fileName, fileType } = file;
-			const audioBuffer = await audioContext.decodeAudioData(file.buffer);
+			const id = getFileId(file);
+			const { name, type } = file;
+			const buffer = await audioContext.decodeAudioData(
+				await file.arrayBuffer(),
+			);
 
-			return { id, file: { fileName, fileType, audioBuffer } };
+			return { id, name, type, buffer };
 		} catch (e) {
 			throw errorFrom(e);
 		}
@@ -83,22 +49,3 @@ export const decodeAudioFile = createAsyncThunk(
 function errorFrom(value: unknown) {
 	return value instanceof Error ? value : new Error(String(value));
 }
-
-type SelectAudioFileArg = {
-	id: string;
-};
-
-type ReceiveAudioFileArg = {
-	id: string;
-	file: File;
-};
-
-type DecodeAudioFileArg = {
-	id: string;
-	file: AudioFileData;
-};
-
-type DecodeAudioFileReturn = {
-	id: string;
-	file: DecodedAudioFileData;
-};

@@ -17,8 +17,7 @@ export type LoopUIProps = {
 	onGainChange(gain: number): unknown;
 	onPlaybackRateChange(playbackRate: number): unknown;
 	onEqChange(props: Record<string, number>): unknown;
-	selectAudioFile(): unknown;
-	receiveAudioFile(file: File): unknown;
+	loadAudioFile(file: File): unknown;
 	onLoopRegionChange(start: number, end: number): unknown;
 	onLabelChange(label: string): unknown;
 	duplicate(): unknown;

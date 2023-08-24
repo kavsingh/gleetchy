@@ -16,7 +16,7 @@ import {
 	nodeType as loopNodeType,
 } from "~/nodes/instruments/loop";
 
-import { decodeAudioFile } from "../audio-files/actions";
+import { loadAudioFileToNode } from "../audio-files/actions";
 
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { NodeProps as DelayNodeProps } from "~/nodes/audio-effects/delay";
@@ -107,23 +107,15 @@ export const audioNodesSlice = createSlice({
 		},
 	},
 	extraReducers(builder) {
-		builder.addCase(decodeAudioFile.fulfilled, (state, action) => {
-			if (!action.payload) return;
+		builder.addCase(loadAudioFileToNode.fulfilled, (state, action) => {
+			const { nodeId, file } = action.payload;
+			const existing = state.byId[nodeId];
 
-			const { id, file } = action.payload;
-			const existing = state.byId[id];
+			if (existing?.type !== loopNodeType) return;
 
-			if (!existing) return;
-
-			// TODO: clean this up. specific prop types etc.
-
-			const keys = Object.keys(
-				existing.audioProps,
-			) as (keyof typeof existing.audioProps)[];
-
-			for (const key of keys) {
-				if (key in file) existing.audioProps[key] = file[key];
-			}
+			(existing.audioProps as LoopNodeProps).audioBuffer = file.buffer;
+			(existing.audioProps as LoopNodeProps).fileName = file.name;
+			(existing.audioProps as LoopNodeProps).fileType = file.type;
 		});
 	},
 });

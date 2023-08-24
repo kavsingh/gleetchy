@@ -1,6 +1,6 @@
 import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
 
-import { decodeAudioFile } from "~/app-store/audio-files/actions";
+import { loadAudioFileToNode } from "~/app-store/audio-files/actions";
 import {
 	addAudioNode,
 	duplicateAudioNode,
@@ -134,12 +134,17 @@ export default class AudioEngine {
 			return;
 		}
 
-		if (isFulfilled(decodeAudioFile)(action)) {
-			if (!action.payload) return;
+		if (isFulfilled(loadAudioFileToNode)(action)) {
+			const { nodeId, file } = action.payload;
+			const existing = this.audioNodes.get(nodeId);
 
-			const { id, file } = action.payload;
+			if (!(existing instanceof GLoopNode)) return;
 
-			this.updateNode({ id, audioProps: { ...file } });
+			existing.set({
+				fileName: file.name,
+				fileType: file.type,
+				audioBuffer: file.buffer,
+			});
 		}
 	}
 

@@ -16,14 +16,9 @@ export type AudioNodeConnection = {
 	color: string;
 };
 
-export type AudioFileData = {
-	buffer: ArrayBuffer;
-	fileName: string;
-	fileType: string;
-};
-
-export type DecodedAudioFileData = {
-	audioBuffer: AudioBuffer;
-	fileName: string;
-	fileType: string;
+export type AudioFile = {
+	readonly id: string;
+	readonly type: string;
+	readonly name: string;
+	readonly buffer: AudioBuffer;
 };

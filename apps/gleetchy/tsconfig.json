@@ -8,7 +8,7 @@
 		"moduleResolution": "bundler",
 		"paths": { "~/*": ["./src/*"] },
 		"sourceMap": true,
-		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"],
+		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./src", "./scripts", "./*.ts", "./*.*.cjs"],

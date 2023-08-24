@@ -1,9 +1,6 @@
 import { Show } from "solid-js";
 
-import {
-	receiveAudioFile as receiveAudioFileAction,
-	selectAudioFile as selectAudioFileAction,
-} from "~/app-store/audio-files/actions";
+import { loadAudioFileToNode as loadAudioFileAction } from "~/app-store/audio-files/actions";
 import { useAppDispatch } from "~/app-store/hooks/base";
 import useAudioNode, {
 	validateNodeType,
@@ -29,12 +26,8 @@ export default function ConnectedLoop(props: { id: string }) {
 
 	const dispatch = useAppDispatch();
 
-	function receiveAudioFile(file: File) {
-		void dispatch(receiveAudioFileAction({ id: props.id, file }));
-	}
-
-	function selectAudioFile() {
-		void dispatch(selectAudioFileAction({ id: props.id }));
+	function loadAudioFile(file: File) {
+		void dispatch(loadAudioFileAction({ file, nodeId: props.id }));
 	}
 
 	function handleGainChange(gain: number) {
@@ -74,8 +67,7 @@ export default function ConnectedLoop(props: { id: string }) {
 						onGainChange={handleGainChange}
 						onPlaybackRateChange={handlePlaybackRateChange}
 						onEqChange={handleEqChange}
-						selectAudioFile={selectAudioFile}
-						receiveAudioFile={receiveAudioFile}
+						loadAudioFile={loadAudioFile}
 						onLoopRegionChange={handleLoopRegionChange}
 						onLabelChange={updateLabel}
 						duplicate={duplicate}

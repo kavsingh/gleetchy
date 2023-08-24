@@ -1,3 +1,4 @@
+import { loadAudioFilesFromInput } from "~/apis/file";
 import useFileDropRegion from "~/components/hooks/use-file-drop-region";
 import { clamp } from "~/lib/util/number";
 import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
@@ -10,8 +11,12 @@ import type { LoopUIProps } from "./types";
 import type { ParentProps } from "solid-js";
 
 export default function Loop(props: LoopUIProps) {
-	function handleFiles(files: File[]) {
-		if (files[0]) props.receiveAudioFile(files[0]);
+	function handleFiles([file]: File[]) {
+		if (file) props.loadAudioFile(file);
+	}
+
+	async function selectAudioFile() {
+		handleFiles(await loadAudioFilesFromInput());
 	}
 
 	function handleLoopStartDrag(movement: number) {
@@ -62,7 +67,7 @@ export default function Loop(props: LoopUIProps) {
 				onLabelChange={(val) => props.onLabelChange(val)}
 				duplicate={() => props.duplicate()}
 				remove={() => props.remove()}
-				selectAudioFile={() => props.selectAudioFile()}
+				selectAudioFile={selectAudioFile}
 			/>
 			<AudioFileDropRegion onFiles={handleFiles}>
 				<LoopSample
@@ -74,7 +79,7 @@ export default function Loop(props: LoopUIProps) {
 					onLoopStartDrag={handleLoopStartDrag}
 					onLoopEndDrag={handleLoopEndDrag}
 					onLoopRegionDrag={handleLoopRegionDrag}
-					selectAudioFile={() => props.selectAudioFile()}
+					selectAudioFile={selectAudioFile}
 				/>
 				<div class="flex h-full shrink-0 grow-0 gap-3">
 					<PlaybackControls
