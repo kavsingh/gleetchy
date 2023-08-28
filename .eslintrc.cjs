@@ -2,4 +2,10 @@
 module.exports = {
 	root: true,
 	extends: [require.resolve("./packages/codestyle-js/.eslintrc.cjs")],
+	parserOptions: { project: "./tsconfig.json" },
+	settings: {
+		"import/resolver": {
+			"eslint-import-resolver-typescript": { project: "./tsconfig.json" },
+		},
+	},
 };

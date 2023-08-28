@@ -1,5 +1,12 @@
 {
-	"extends": "./packages/codestyle-js/tsconfig.json",
+	"extends": [
+		"./packages/codestyle-js/tsconfig.json",
+		"@tsconfig/node20/tsconfig.json"
+	],
+	"compilerOptions": {
+		"allowJs": true,
+		"noEmit": true
+	},
 	"exclude": ["**/node_modules"],
-	"include": ["./*.*.cjs"]
+	"include": ["./*.ts", "./*.*.cjs"]
 }

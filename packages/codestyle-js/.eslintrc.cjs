@@ -1,6 +1,5 @@
 /** @type {import("eslint").ESLint.ConfigData} */
 module.exports = {
-	root: true,
 	reportUnusedDisableDirectives: true,
 	env: { es2022: true, node: true, browser: false },
 	parser: "@typescript-eslint/parser",

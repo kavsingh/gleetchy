@@ -1,38 +1,10 @@
 {
-	// latest ts-node release does not support extends array
-	// TODO: enables extends array when supported by ts-node
-	"extends": "@tsconfig/node20/tsconfig.json",
-	// "extends": [
-	// 	"@tsconfig/node20/tsconfig.json",
-	// 	"@tsconfig/strictest/tsconfig.json"
-	// ],
+	"extends": "@tsconfig/strictest/tsconfig.json",
 	"compilerOptions": {
-		"allowJs": true,
-		"noEmit": true,
-
-		// latest ts-node release does not support extends array
-		// manually add strictect config here
-		// TODO: replace with "@tsconfig/strictest/tsconfig.json" in extends
-		// array when supported by ts-node
-		"strict": true,
-		"allowUnusedLabels": false,
-		"noFallthroughCasesInSwitch": true,
-		"noImplicitOverride": true,
-		"noImplicitReturns": true,
-		"noPropertyAccessFromIndexSignature": true,
-		"noUncheckedIndexedAccess": true,
-		"checkJs": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
-		"forceConsistentCasingInFileNames": true,
-
 		// leave the following to eslint
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		// leave to eslint: some extensions delete
-		// unreachable code detected via ts too eagerly
 		"allowUnreachableCode": true,
-
 		// lots of conflicts with jsx prop typings :(
 		"exactOptionalPropertyTypes": false
 	},
