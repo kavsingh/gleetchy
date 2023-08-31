@@ -23,7 +23,7 @@
 		"@types/node": "20.5.7",
 		"eslint": "8.48.0",
 		"npkill": "0.11.3",
-		"prettier": "3.0.2",
+		"prettier": "3.0.3",
 		"turbo": "1.10.13",
 		"typescript": "5.2.2"
 	},
