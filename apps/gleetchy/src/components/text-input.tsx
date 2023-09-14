@@ -34,7 +34,7 @@ export default function TextInput(props: Props) {
 	return (
 		<input
 			type="text"
-			class="cursor-text border-b border-none border-b-transparent bg-transparent text-current transition-colors hover:text-text600 focus:border-b-current focus:text-text600 focus-visible:outline-none active:text-text600"
+			class="cursor-text border-b border-b-transparent bg-transparent text-current transition-colors hover:text-text600 focus:border-b-current focus:text-text600 focus-visible:outline-none active:text-text600"
 			ref={inputRef}
 			value={props.value}
 			placeholder={props.placeholder}
