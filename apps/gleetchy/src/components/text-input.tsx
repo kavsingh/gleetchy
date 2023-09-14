@@ -1,22 +1,24 @@
-import type { JSX } from "solid-js";
+import { createEffect, createSignal, type JSX } from "solid-js";
 
 export default function TextInput(props: Props) {
-	let inputRef: HTMLInputElement | undefined;
 	// eslint-disable-next-line solid/reactivity
 	let initialValue = props.value;
+	let inputRef: HTMLInputElement | undefined;
+	const [value, setValue] = createSignal(initialValue);
 
 	const handleFocus: JSX.FocusEventHandlerUnion<
 		HTMLInputElement,
 		FocusEvent
-	> = (event) => {
-		initialValue = event.currentTarget.value;
+	> = () => {
+		initialValue = value();
 	};
 
-	const handleChange: JSX.ChangeEventHandlerUnion<HTMLInputElement, Event> = (
-		event,
-	) => {
+	const handleInput: JSX.InputEventHandlerUnion<
+		HTMLInputElement,
+		InputEvent
+	> = (event) => {
 		event.preventDefault();
-		props.onChange?.(event.currentTarget.value);
+		setValue(event.currentTarget.value);
 	};
 
 	const handleKeyDown: JSX.EventHandlerUnion<
@@ -28,20 +30,29 @@ export default function TextInput(props: Props) {
 		event.preventDefault();
 		inputRef?.blur();
 
-		if (props.onChange && event.key === "Escape") props.onChange(initialValue);
+		if (event.key === "Escape") setValue(initialValue);
 	};
 
+	createEffect(() => {
+		props.onChange?.(value());
+	});
+
 	return (
-		<input
-			type="text"
-			class="cursor-text border-b border-b-transparent bg-transparent text-current transition-colors hover:text-text600 focus:border-b-current focus:text-text600 focus-visible:outline-none active:text-text600"
-			ref={inputRef}
-			value={props.value}
-			placeholder={props.placeholder}
-			onChange={handleChange}
-			onFocus={handleFocus}
-			onKeyDown={handleKeyDown}
-		/>
+		<div class="relative inline-block border-b border-b-transparent focus-within:border-b-current">
+			<input
+				type="text"
+				class="absolute inset-0 z-10 cursor-text bg-transparent text-current transition-colors hover:text-text600 focus:text-text600 focus-visible:outline-none active:text-text600"
+				ref={inputRef}
+				value={props.value}
+				placeholder={props.placeholder}
+				onInput={handleInput}
+				onFocus={handleFocus}
+				onKeyDown={handleKeyDown}
+			/>
+			<span class="pointer-events-none z-0 block h-5 min-w-[1ch] opacity-0">
+				{value()}
+			</span>
+		</div>
 	);
 }
 
