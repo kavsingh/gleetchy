@@ -20,11 +20,11 @@
 	"devDependencies": {
 		"@tsconfig/node20": "20.1.2",
 		"@types/eslint": "8.44.2",
-		"@types/node": "20.6.0",
+		"@types/node": "20.6.2",
 		"eslint": "8.49.0",
 		"npkill": "0.11.3",
 		"prettier": "3.0.3",
-		"turbo": "1.10.13",
+		"turbo": "1.10.14",
 		"typescript": "5.2.2"
 	},
 	"pnpm": {
