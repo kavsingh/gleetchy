@@ -6,8 +6,8 @@ export default function NodeWrapper(props: ParentProps<{ isActive: boolean }>) {
 	return (
 		<div
 			class={twMerge(
-				"opacity-40 transition-opacity",
-				props.isActive && "opacity-100",
+				"transition-opacity",
+				props.isActive ? "opacity-100" : "opacity-40",
 			)}
 		>
 			{props.children}

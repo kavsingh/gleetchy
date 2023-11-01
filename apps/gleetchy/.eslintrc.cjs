@@ -48,17 +48,6 @@ module.exports = {
 			],
 			rules: {
 				"no-console": "off",
-				"filenames/match-exported": [
-					"error",
-					"kebab",
-					`\\.(${testFileSuffixes.join("|")})$`,
-				],
-				"vitest/no-hooks": "off",
-			},
-		},
-		{
-			files: getTestFilePatterns({ extensions: "ts?(x)" }),
-			rules: {
 				"@typescript-eslint/no-explicit-any": "off",
 				"@typescript-eslint/no-non-null-assertion": "off",
 				"@typescript-eslint/no-unsafe-argument": "off",
@@ -67,6 +56,12 @@ module.exports = {
 				"@typescript-eslint/no-unsafe-member-access": "off",
 				"@typescript-eslint/no-unsafe-return": "off",
 				"@typescript-eslint/unbound-method": "off",
+				"filenames/match-exported": [
+					"error",
+					"kebab",
+					`\\.(${testFileSuffixes.join("|")})$`,
+				],
+				"vitest/no-hooks": "off",
 			},
 		},
 	],

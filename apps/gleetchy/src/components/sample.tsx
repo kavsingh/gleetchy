@@ -9,6 +9,7 @@ export default function Sample(props: SampleProps) {
 	let unsubscribe: (() => void) | undefined;
 
 	createEffect(() => {
+		unsubscribe?.();
 		unsubscribe = props.subscribeToPositionRatio?.((ratio) => {
 			if (playheadRef) {
 				playheadRef.style.transform = `translateX(${ratio * 100}%)`;
