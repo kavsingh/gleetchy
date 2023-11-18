@@ -16,9 +16,9 @@
 		"packages/*"
 	],
 	"scripts": {
-		"dev": "npx turbo dev",
-		"build": "npx turbo build",
-		"codecheck": "npx turbo codecheck",
+		"dev": "bun x turbo dev",
+		"build": "bun x turbo build",
+		"codecheck": "bun x turbo codecheck",
 		"clean": "npkill ."
 	},
 	"devDependencies": {

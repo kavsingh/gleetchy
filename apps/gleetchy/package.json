@@ -12,13 +12,13 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
-		"tdd": "bunx vitest",
-		"test": "bunx vitest run",
-		"lint": "bunx eslint .",
-		"dev": "bunx vite",
-		"build": "rm -rf ./dist && bunx vite build",
-		"preview": "bunx vite preview",
-		"codecheck": "bun run test -- --silent && bunx tsc && bun lint"
+		"tdd": "bun x vitest",
+		"test": "bun x vitest run",
+		"lint": "bun x eslint .",
+		"dev": "bun x vite",
+		"build": "rm -rf ./dist && bun x vite build",
+		"preview": "bun x vite preview",
+		"codecheck": "bun run test -- --silent && bun x tsc && bun lint"
 	},
 	"dependencies": {
 		"@reduxjs/toolkit": "1.9.7",
