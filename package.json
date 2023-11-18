@@ -19,17 +19,15 @@
 	},
 	"devDependencies": {
 		"@tsconfig/node20": "20.1.2",
-		"@types/eslint": "8.44.6",
-		"@types/node": "20.8.10",
-		"eslint": "8.52.0",
+		"@types/eslint": "8.44.7",
+		"@types/node": "20.9.2",
+		"eslint": "8.54.0",
 		"npkill": "0.11.3",
-		"prettier": "3.0.3",
+		"prettier": "3.1.0",
 		"turbo": "1.10.16",
 		"typescript": "5.2.2"
 	},
-	"pnpm": {
-		"overrides": {
-			"tsconfig-paths": ">=4.0.0"
-		}
+	"resolutions": {
+		"tsconfig-paths": ">=4.0.0"
 	}
 }
