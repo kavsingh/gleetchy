@@ -4,7 +4,6 @@ import LoopRegion from "~/components/loop-region";
 import Waveform from "~/components/waveform";
 
 export default function Sample(props: SampleProps) {
-	let containerRef: HTMLDivElement | undefined;
 	let playheadRef: HTMLDivElement | undefined;
 	let unsubscribe: (() => void) | undefined;
 
@@ -22,7 +21,7 @@ export default function Sample(props: SampleProps) {
 	});
 
 	return (
-		<div class="relative h-full w-full" ref={containerRef}>
+		<div class="relative h-full w-full">
 			<div class="absolute inset-0 z-[1]">
 				<Waveform buffer={props.audioBuffer} />
 			</div>
@@ -32,7 +31,7 @@ export default function Sample(props: SampleProps) {
 						<div class="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
 							<div
 								class="pointer-events-none absolute inset-0 z-[2] before:absolute before:inset-y-0 before:left-0 before:w-[1px] before:bg-text600"
-								ref={playheadRef}
+								ref={(el) => (playheadRef = el)}
 							/>
 						</div>
 						<div class="absolute inset-0 z-[3]">

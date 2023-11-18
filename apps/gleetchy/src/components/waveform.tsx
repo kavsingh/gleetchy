@@ -40,7 +40,7 @@ export default function Waveform(
 		<div class="h-full w-full overflow-hidden">
 			<canvas
 				class="h-full w-full border-0 border-text100 text-text600"
-				ref={canvasRef}
+				ref={(el) => (canvasRef = el)}
 			/>
 		</div>
 	);

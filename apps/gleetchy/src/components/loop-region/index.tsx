@@ -60,7 +60,7 @@ export default function LoopRegion(props: Props) {
 	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
 
 	return (
-		<div class="relative h-full w-full" ref={containerRef}>
+		<div class="relative h-full w-full" ref={(el) => (containerRef = el)}>
 			<HandleContainer {...startDragListeners} offset={props.loopStart}>
 				<LoopHandle align="start" />
 			</HandleContainer>

@@ -1,11 +1,15 @@
 {
-	"extends": [
-		"./packages/codestyle-js/tsconfig.json",
-		"@tsconfig/node20/tsconfig.json"
-	],
+	"extends": ["./packages/codestyle-js/tsconfig.json"],
 	"compilerOptions": {
+		"allowImportingTsExtensions": true,
 		"allowJs": true,
-		"noEmit": true
+		"lib": ["esnext"],
+		"module": "esnext",
+		"moduleDetection": "force",
+		"moduleResolution": "bundler",
+		"noEmit": true,
+		"target": "esnext",
+		"types": ["bun-types"]
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./*.ts", "./*.*.cjs"]

@@ -33,7 +33,7 @@ export default function TitleBar(props: Props) {
 type Props = ParentProps<{
 	label: string;
 	type: string;
+	onRemoveClick: () => unknown;
 	connections?: AudioNodeConnection[];
 	onLabelChange?: ((label: string) => unknown) | undefined;
-	onRemoveClick?: (() => unknown) | undefined;
 }>;

@@ -11,7 +11,7 @@ export default function SelectBox(props: Props) {
 
 	return (
 		<select
-			value={props.value ?? props.options[0]?.value}
+			value={props.value ?? props.options[0]?.value ?? ""}
 			onChange={handleChange}
 			class="relative m-0 appearance-none border-0 border-b-text600 bg-transparent p-0 font-sans text-sm text-current underline transition-colors focus:text-text600"
 		>
