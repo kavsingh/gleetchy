@@ -1,12 +1,12 @@
 {
 	"extends": "@tsconfig/strictest/tsconfig.json",
 	"compilerOptions": {
+		"allowJs": true,
+		"noEmit": true,
 		// leave the following to eslint
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
-		"allowUnreachableCode": true,
-		// lots of conflicts with jsx prop typings :(
-		"exactOptionalPropertyTypes": false
+		"allowUnreachableCode": true
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./*.*.cjs"]

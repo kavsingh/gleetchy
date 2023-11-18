@@ -11,7 +11,7 @@ export default function SVGArc(props: Props) {
 				cx="50"
 				cy="50"
 				r={radius()}
-				stroke-width={props.backgroundStrokeWidth}
+				stroke-width={props.backgroundStrokeWidth ?? 1}
 				class={props.backgroundClassName}
 				fill="transparent"
 			/>
@@ -22,7 +22,7 @@ export default function SVGArc(props: Props) {
 				r={radius()}
 				stroke-dasharray={String(circumference())}
 				stroke-dashoffset={String((1 - props.endRatio) * circumference())}
-				stroke-width={props.foregroundStrokeWidth}
+				stroke-width={props.foregroundStrokeWidth ?? 1}
 				class={props.foregroundClassName}
 				fill="transparent"
 			/>

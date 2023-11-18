@@ -71,7 +71,7 @@ export default function Knob(_props: Props) {
 				{...dragHandlers}
 				role="presentation"
 				onDblClick={handleDoubleClick}
-				ref={knobRef}
+				ref={(el) => (knobRef = el)}
 				style={{ "block-size": radius(), "inline-size": radius() }}
 				class={twMerge(
 					"relative my-auto mb-1 mt-2 shrink-0 grow-0",

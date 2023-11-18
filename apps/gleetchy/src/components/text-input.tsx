@@ -42,9 +42,9 @@ export default function TextInput(props: Props) {
 			<input
 				type="text"
 				class="absolute inset-0 z-10 cursor-text bg-transparent text-current transition-colors hover:text-text600 focus:text-text600 focus-visible:outline-none active:text-text600"
-				ref={inputRef}
+				ref={(el) => (inputRef = el)}
 				value={props.value}
-				placeholder={props.placeholder}
+				placeholder={props.placeholder ?? ""}
 				onInput={handleInput}
 				onFocus={handleFocus}
 				onKeyDown={handleKeyDown}

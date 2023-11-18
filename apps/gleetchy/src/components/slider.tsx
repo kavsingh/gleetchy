@@ -99,10 +99,10 @@ export default function Slider(_props: Props) {
 				{...dragHandlers}
 				orientation={props.orientation}
 				onDblClick={handleDoubleClick}
-				ref={barContainerRef}
+				ref={(el) => (barContainerRef = el)}
 			>
 				<Track orientation={props.orientation} />
-				<Bar orientation={props.orientation} ref={barRef} />
+				<Bar orientation={props.orientation} ref={(el) => (barRef = el)} />
 			</BarContainer>
 			<LabelText
 				class={twMerge(
@@ -130,6 +130,7 @@ function BarContainer(
 	const [local, divProps] = splitProps(props, ["ref", "orientation"]);
 
 	return (
+		// @ts-expect-error exact optionals
 		<div
 			{...divProps}
 			ref={local.ref}
@@ -156,10 +157,11 @@ function Track(props: OrientationProps) {
 	);
 }
 
-const Bar = function Bar(
+function Bar(
 	props: OrientationProps & Pick<JSX.HTMLAttributes<HTMLDivElement>, "ref">,
 ) {
 	return (
+		// @ts-expect-error exact optionals
 		<div
 			ref={props.ref}
 			class={twMerge(
@@ -171,7 +173,7 @@ const Bar = function Bar(
 			)}
 		/>
 	);
-};
+}
 
 const clampValue = clamp.bind(null, 0, 1);
 

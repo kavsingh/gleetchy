@@ -20,7 +20,7 @@ export default function PatchBay() {
 			<ErrorBoundary fallback={(e) => <ErrorMessage>{String(e)}</ErrorMessage>}>
 				<tbody>
 					<tr>
-						<SourceLabel>To / From</SourceLabel>
+						<SourceLabel title="To / From">To / From</SourceLabel>
 						<For each={sources()}>
 							{(source) => (
 								<SourceLabel title={`From ${source.label} to ...`}>
@@ -51,7 +51,7 @@ export default function PatchBay() {
 	);
 }
 
-function SourceLabel(props: ParentProps<{ title?: string }>) {
+function SourceLabel(props: ParentProps<{ title: string }>) {
 	return (
 		<th
 			title={props.title}
@@ -62,7 +62,7 @@ function SourceLabel(props: ParentProps<{ title?: string }>) {
 	);
 }
 
-function TargetLabel(props: ParentProps<{ title?: string }>) {
+function TargetLabel(props: ParentProps<{ title: string }>) {
 	return (
 		<td
 			title={props.title}

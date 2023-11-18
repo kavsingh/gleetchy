@@ -11,6 +11,10 @@
 	"main": "index.js",
 	"type": "module",
 	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
 	"scripts": {
 		"dev": "npx turbo dev",
 		"build": "npx turbo build",
@@ -18,9 +22,8 @@
 		"clean": "npkill ."
 	},
 	"devDependencies": {
-		"@tsconfig/node20": "20.1.2",
 		"@types/eslint": "8.44.7",
-		"@types/node": "20.9.2",
+		"bun-types": "1.0.13",
 		"eslint": "8.54.0",
 		"npkill": "0.11.3",
 		"prettier": "3.1.0",
