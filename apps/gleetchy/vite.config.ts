@@ -5,9 +5,14 @@ import checkerPlugin from "vite-plugin-checker";
 import solidPlugin from "vite-plugin-solid";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
+import type { Plugin } from "vite";
+
 export default defineConfig(({ mode }) => ({
 	build: { sourcemap: true },
-	plugins: [tsconfigPathsPlugin(), solidPlugin(), checker(mode)],
+	plugins: [tsconfigPathsPlugin(), solidPlugin(), checker(mode)] as (
+		| Plugin
+		| undefined
+	)[],
 	test: {
 		include: ["./src/**/*.{test,spec}.{js,mjs,cjs,jsx,ts,mts,cts,tsx}"],
 		environment: "jsdom",
