@@ -3,7 +3,7 @@ import { ErrorBoundary, For } from "solid-js";
 import {
 	selectConnectableSources,
 	selectConnectableTargets,
-} from "~/app-store/audio-nodes/selectors";
+} from "~/app-store/connections/selectors";
 import { useAppSelector } from "~/app-store/hooks/base";
 import ErrorMessage from "~/components/error-message";
 

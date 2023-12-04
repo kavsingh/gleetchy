@@ -1,9 +1,3 @@
-import type { AppState } from "~/app-store/create";
+import { uiSlice } from "./slice";
 
-export function selectTheme(state: AppState) {
-	return state.ui.currentTheme;
-}
-
-export function selectModifierKeys(state: AppState) {
-	return state.ui.modifierKeys;
-}
+export const { selectTheme, selectModifierKeys } = uiSlice.selectors;

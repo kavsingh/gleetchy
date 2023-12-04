@@ -10,6 +10,11 @@ export const globalPlaybackSlice = createSlice({
 			state.isPlaying = !state.isPlaying;
 		},
 	},
+	selectors: {
+		selectIsPlaying(state) {
+			return state.isPlaying;
+		},
+	},
 });
 
 type GlobalPlaybackState = {

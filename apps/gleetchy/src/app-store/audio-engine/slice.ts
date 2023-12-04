@@ -20,6 +20,14 @@ export const audioEngineSlice = createSlice({
 			);
 		},
 	},
+	selectors: {
+		selectAudioEngineSubscriptionData(state) {
+			return state.subscriptionData;
+		},
+		selectAudioNodeSubscriptionData(state, nodeId: string) {
+			return state.subscriptionData[nodeId];
+		},
+	},
 });
 
 type AudioEngineState = {

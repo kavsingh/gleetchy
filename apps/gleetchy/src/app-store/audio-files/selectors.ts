@@ -1,5 +1,3 @@
-import type { AppState } from "../create";
+import { audioFilesSlice } from "./slice";
 
-export function selectAudioFile(state: AppState, fileId: string) {
-	return state.audioFiles[fileId];
-}
+export const { selectAudioFile } = audioFilesSlice.selectors;

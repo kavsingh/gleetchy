@@ -1,4 +1,4 @@
-import { createMemo, createSignal, onCleanup } from "solid-js";
+import { createSignal, onCleanup } from "solid-js";
 
 import { useAppStore } from "../context";
 
@@ -9,18 +9,20 @@ export { useAppStore };
 
 export function useAppSelector<T>(
 	selector: (state: AppState) => T,
-	equals?: MemoOptions<T>["equals"],
+	equals?: MemoOptions<T>["equals"] | undefined,
 ) {
 	const store = useAppStore();
-	const [selected, setSelected] = createSignal<T>(selector(store.getState()));
-	const result = createMemo(() => selected(), { equals });
+	const [selected, setSelected] = createSignal<T>(
+		selector(store.getState()),
+		equals ? { equals } : undefined,
+	);
 	const unsubscribe = store.subscribe(() => {
 		setSelected(() => selector(store.getState()));
 	});
 
 	onCleanup(unsubscribe);
 
-	return result;
+	return selected;
 }
 
 export function useAppDispatch() {

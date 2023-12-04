@@ -1,5 +1,6 @@
-import type { AppState } from "../create";
+import { audioEngineSlice } from "./slice";
 
-export function selectAudioEngineSubscriptionData(state: AppState) {
-	return state.audioEngine.subscriptionData;
-}
+export const {
+	selectAudioEngineSubscriptionData,
+	selectAudioNodeSubscriptionData,
+} = audioEngineSlice.selectors;

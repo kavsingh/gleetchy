@@ -1,6 +1,6 @@
 import { splitProps } from "solid-js";
 
-import { selectAudioNodeSubscriptionData } from "~/app-store/audio-nodes/selectors";
+import { selectAudioNodeSubscriptionData } from "~/app-store/audio-engine/selectors";
 import { useAppStore } from "~/app-store/hooks/base";
 import Sample from "~/components/sample";
 import { isFiniteNumber } from "~/lib/util/predicate";

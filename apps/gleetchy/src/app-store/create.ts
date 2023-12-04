@@ -1,4 +1,4 @@
-import { configureStore } from "@reduxjs/toolkit";
+import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
 import { AudioEngine, setupAudioEngineListeners } from "~/audio";
 
@@ -12,35 +12,32 @@ import { globalPlaybackSlice } from "./global-playback/slice";
 import { appStartListening, listenerMiddleware } from "./listener-middleware";
 import { uiSlice } from "./ui/slice";
 
-import type { StateFromReducersMapObject } from "@reduxjs/toolkit";
+const reducer = combineSlices(
+	audioContextSlice,
+	audioEngineSlice,
+	globalPlaybackSlice,
+	audioFilesSlice,
+	audioNodesSlice,
+	connectionsSlice,
+	uiSlice,
+);
 
-const reducer = {
-	[audioContextSlice.name]: audioContextSlice.reducer,
-	[audioEngineSlice.name]: audioEngineSlice.reducer,
-	[globalPlaybackSlice.name]: globalPlaybackSlice.reducer,
-	[audioFilesSlice.name]: audioFilesSlice.reducer,
-	[audioNodesSlice.name]: audioNodesSlice.reducer,
-	[connectionsSlice.name]: connectionsSlice.reducer,
-	[uiSlice.name]: uiSlice.reducer,
-} as const;
-
-export function createStore(
-	preloadedState: Partial<StateFromReducersMapObject<typeof reducer>> = {},
-) {
+export function createStore() {
 	const store = configureStore({
 		reducer,
-		preloadedState,
-		middleware: (getDefaultMiddleware) =>
+		middleware(getDefaultMiddleware) {
 			// TODO: revisit serializable check
-			getDefaultMiddleware({ serializableCheck: false }).prepend(
+			return getDefaultMiddleware({ serializableCheck: false }).prepend(
 				listenerMiddleware.middleware,
-			),
+			);
+		},
 		devTools: import.meta.env.DEV,
 	});
 
 	const audioEngine = new AudioEngine({
-		publishSubscriptionEvent: (nodeId: string, subscriptionPayload: unknown) =>
-			store.dispatch(publishSubscriptionEvent({ nodeId, subscriptionPayload })),
+		publishSubscriptionEvent(nodeId: string, subscriptionPayload: unknown) {
+			store.dispatch(publishSubscriptionEvent({ nodeId, subscriptionPayload }));
+		},
 	});
 
 	const removeAudioEngineListeners = setupAudioEngineListeners(

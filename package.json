@@ -22,9 +22,9 @@
 		"clean": "npkill ."
 	},
 	"devDependencies": {
-		"@types/eslint": "8.44.7",
-		"bun-types": "1.0.14",
-		"eslint": "8.54.0",
+		"@types/eslint": "8.44.8",
+		"bun-types": "1.0.15",
+		"eslint": "8.55.0",
 		"npkill": "0.11.3",
 		"prettier": "3.1.0",
 		"turbo": "1.10.16",

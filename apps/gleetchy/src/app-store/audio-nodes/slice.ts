@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 import initialNodes from "~/app-store/default-nodes";
+import { MAIN_OUT_ID } from "~/constants/audio";
 import { prefixedId } from "~/lib/id";
 import { stableOmit, stableFilter } from "~/lib/util";
 import {
@@ -117,6 +118,22 @@ export const audioNodesSlice = createSlice({
 			(existing.audioProps as LoopNodeProps).fileName = file.name;
 			(existing.audioProps as LoopNodeProps).fileType = file.type;
 		});
+	},
+	selectors: {
+		selectAudioNodes(state) {
+			return state.byId;
+		},
+		// TODO: Better naming
+		selectNodesIdentifierMeta(state) {
+			return state.orderedIdentifierMeta;
+		},
+		selectMainOutNode(state) {
+			const mainOut = state.byId[MAIN_OUT_ID];
+
+			if (!mainOut) throw new Error("Main out not found");
+
+			return mainOut;
+		},
 	},
 });
 

@@ -1,7 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 import { getFileId } from "./helpers";
-import { selectAudioFile as sSelectAudioFile } from "./selectors";
 import { selectAudioContext } from "../audio-context/selectors";
 
 import type { AppState } from "../create";
@@ -15,7 +14,7 @@ export const loadAudioFileToNode = createAsyncThunk(
 	): Promise<{ nodeId: string; file: AudioFile }> {
 		const state = getState() as AppState;
 		const fileId = getFileId(file);
-		const stored = sSelectAudioFile(state, fileId);
+		const stored = state.audioFiles[fileId];
 
 		if (stored) return { nodeId, file: stored };
 

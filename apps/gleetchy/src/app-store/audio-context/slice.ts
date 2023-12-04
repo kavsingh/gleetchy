@@ -18,6 +18,11 @@ export const audioContextSlice = createSlice({
 			if (context.state === "suspended") void context.resume();
 		},
 	},
+	selectors: {
+		selectAudioContext(state) {
+			return state.audioContext;
+		},
+	},
 });
 
 function getAudioContext() {

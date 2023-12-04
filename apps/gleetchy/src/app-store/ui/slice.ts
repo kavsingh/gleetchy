@@ -32,6 +32,14 @@ export const uiSlice = createSlice({
 			);
 		},
 	},
+	selectors: {
+		selectTheme(state) {
+			return state.currentTheme;
+		},
+		selectModifierKeys(state) {
+			return state.modifierKeys;
+		},
+	},
 });
 
 export const THEMES = ["system", "light", "dark"] as const;

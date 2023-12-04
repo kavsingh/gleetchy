@@ -18,6 +18,11 @@ export const audioFilesSlice = createSlice({
 			);
 		});
 	},
+	selectors: {
+		selectAudioFile(state, fileId: string) {
+			return state[fileId];
+		},
+	},
 });
 
 type AudioFilesState = Record<string, AudioFile>;

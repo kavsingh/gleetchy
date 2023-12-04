@@ -10,11 +10,11 @@ import {
 import { getConnectionsFor } from "~/lib/audio";
 
 import { useAppDispatch, useAppSelector } from "./base";
+import { selectAudioNodes } from "../audio-nodes/selectors";
 import {
-	selectAudioNodes,
 	selectActiveAudioNodeIds,
-} from "../audio-nodes/selectors";
-import { selectConnections } from "../connections/selectors";
+	selectConnections,
+} from "../connections/selectors";
 
 import type { AudioNodeState } from "~/types";
 

@@ -1,5 +1,3 @@
-import type { AppState } from "../create";
+import { globalPlaybackSlice } from "./slice";
 
-export function selectIsPlaying(state: AppState) {
-	return state.globalPlayback.isPlaying;
-}
+export const { selectIsPlaying } = globalPlaybackSlice.selectors;

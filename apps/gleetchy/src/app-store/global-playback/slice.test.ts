@@ -6,11 +6,11 @@ import { globalPlaybackSlice } from "./slice";
 describe("globalPlaybackSlice", () => {
 	it("should toggle playback", () => {
 		expect(
-			globalPlaybackSlice.reducer({ isPlaying: false }, togglePlayback),
+			globalPlaybackSlice.reducer({ isPlaying: false }, togglePlayback()),
 		).toStrictEqual({ isPlaying: true });
 
 		expect(
-			globalPlaybackSlice.reducer({ isPlaying: true }, togglePlayback),
+			globalPlaybackSlice.reducer({ isPlaying: true }, togglePlayback()),
 		).toStrictEqual({ isPlaying: false });
 	});
 });

@@ -1,5 +1,3 @@
-import type { AppState } from "~/app-store/create";
+import { audioContextSlice } from "./slice";
 
-export function selectAudioContext(state: AppState) {
-	return state.audioContext.audioContext;
-}
+export const { selectAudioContext } = audioContextSlice.selectors;

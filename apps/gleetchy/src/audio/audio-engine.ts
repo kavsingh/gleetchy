@@ -33,7 +33,7 @@ import {
 } from "~/nodes/instruments/loop";
 import { GLoopNode } from "~/nodes/instruments/loop/create-audio-node";
 
-import type { AnyAction } from "@reduxjs/toolkit";
+import type { UnknownAction } from "@reduxjs/toolkit";
 import type { AppState } from "~/app-store/create";
 import type { GInstrumentNode } from "~/lib/g-audio-node";
 import type { AudioNodeState } from "~/types";
@@ -56,7 +56,7 @@ export default class AudioEngine {
 		this.publishSubscriptionEvent = publishSubscriptionEvent;
 	}
 
-	public async update(appState: AppState, action: AnyAction) {
+	public async update(appState: AppState, action: UnknownAction) {
 		const didUpdate = await this.updateAudioContext(
 			appState.audioContext.audioContext,
 		);
