@@ -8,8 +8,7 @@
 		"moduleDetection": "force",
 		"moduleResolution": "bundler",
 		"noEmit": true,
-		"target": "esnext",
-		"types": ["bun-types"]
+		"target": "esnext"
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./*.ts", "./*.*.cjs"]

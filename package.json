@@ -1,36 +1,37 @@
 {
-	"name": "gleetchy-mono",
-	"version": "1.0.0",
-	"description": "looping business",
-	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
-	"license": "ISC",
-	"repository": {
-		"url": "https://github.com/kavsingh/gleetchy.git",
-		"type": "git"
-	},
-	"main": "index.js",
-	"type": "module",
-	"private": true,
-	"workspaces": [
-		"apps/*",
-		"packages/*"
-	],
-	"scripts": {
-		"dev": "bun x turbo dev",
-		"build": "bun x turbo build",
-		"codecheck": "bun x turbo codecheck",
-		"clean": "npkill ."
-	},
-	"devDependencies": {
-		"@types/eslint": "8.44.8",
-		"bun-types": "1.0.15",
-		"eslint": "8.55.0",
-		"npkill": "0.11.3",
-		"prettier": "3.1.0",
-		"turbo": "1.10.16",
-		"typescript": "5.3.2"
-	},
-	"resolutions": {
-		"tsconfig-paths": ">=4.0.0"
-	}
+  "name": "gleetchy-mono",
+  "version": "1.0.0",
+  "description": "looping business",
+  "author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
+  "license": "ISC",
+  "repository": {
+    "url": "https://github.com/kavsingh/gleetchy.git",
+    "type": "git"
+  },
+  "main": "index.js",
+  "type": "module",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "bun x turbo dev",
+    "build": "bun x turbo build",
+    "codecheck": "bun x turbo codecheck",
+    "clean": "npkill ."
+  },
+  "devDependencies": {
+    "@types/eslint": "8.44.8",
+    "@types/node": "20.10.3",
+    "bun-types": "1.0.15",
+    "eslint": "8.55.0",
+    "npkill": "0.11.3",
+    "prettier": "3.1.0",
+    "turbo": "1.10.16",
+    "typescript": "5.3.2"
+  },
+  "resolutions": {
+    "tsconfig-paths": ">=4.0.0"
+  }
 }
