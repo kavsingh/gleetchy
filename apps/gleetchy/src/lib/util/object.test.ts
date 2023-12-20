@@ -5,6 +5,8 @@ import { stableOmit } from "./object";
 describe("util/Object", () => {
 	describe("stableOmit", () => {
 		it("returns same object if nothing to remove", () => {
+			expect.assertions(2);
+
 			const initialObject: {
 				a: number;
 				b: number;
@@ -19,6 +21,8 @@ describe("util/Object", () => {
 		});
 
 		it("returns new object if items to remove", () => {
+			expect.assertions(2);
+
 			const initialObject = { a: 1, b: 2, c: 3 };
 			const result = stableOmit(["a", "c"], initialObject);
 

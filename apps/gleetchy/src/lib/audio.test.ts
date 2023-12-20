@@ -22,6 +22,7 @@ describe("lib/audio", () => {
 			["audio_effect_", true],
 			["AUDIO_EFFECT_", true],
 		])("should determine type %s is %s for audio effect", (type, expected) => {
+			expect.assertions(1);
 			expect(hasAudioEffectType({ type })).toBe(expected);
 		});
 	});
@@ -37,12 +38,14 @@ describe("lib/audio", () => {
 			["instrument_", true],
 			["INSTRUMENT_", true],
 		])("should determine type %s is %s for instrument", (type, expected) => {
+			expect.assertions(1);
 			expect(hasInstrumentType({ type })).toBe(expected);
 		});
 	});
 
 	describe("isSameConnection", () => {
 		it("should determine if two connections are the same", () => {
+			expect.assertions(3);
 			expect(
 				isSameConnection({ from: "a", to: "b" }, { from: "a", to: "b" }),
 			).toBeTruthy();
@@ -66,6 +69,7 @@ describe("lib/audio", () => {
 		];
 
 		it("should return an array of direct connections for given node", () => {
+			expect.assertions(3);
 			expect(getConnectionsFor("q", connections)).toStrictEqual([]);
 			expect(getConnectionsFor("a", connections)).toStrictEqual([
 				{ from: "a", to: "b", color: "" },
@@ -89,6 +93,8 @@ describe("lib/audio", () => {
 		];
 
 		it("should determine if from id is connected to id", () => {
+			expect.assertions(4);
+
 			const connectedToC = hasConnectionTo.bind(null, connections, "c");
 
 			expect(connectedToC("a")).toBeTruthy();
@@ -100,14 +106,18 @@ describe("lib/audio", () => {
 
 	describe("canConnectNodes", () => {
 		it("should return true if nodes are unconnected", () => {
+			expect.assertions(1);
 			expect(canConnectNodes([], { id: "a" }, { id: "b" })).toBeTruthy();
 		});
 
 		it("should return false if same node", () => {
+			expect.assertions(1);
 			expect(canConnectNodes([], { id: "a" }, { id: "a" })).toBeFalsy();
 		});
 
 		it("should return false if to node is connected to from node", () => {
+			expect.assertions(1);
+
 			const connections = [
 				{ from: "d", to: "b" },
 				{ from: "b", to: "a" },
@@ -126,6 +136,8 @@ describe("lib/audio", () => {
 		];
 
 		it("should return first found connection between nodes", () => {
+			expect.assertions(3);
+
 			const getConnection = getConnectionBetween.bind(null, connections);
 
 			expect(getConnection({ id: "a" }, { id: "b" })).toStrictEqual({

@@ -5,6 +5,8 @@ import { globalPlaybackSlice } from "./slice";
 
 describe("globalPlaybackSlice", () => {
 	it("should toggle playback", () => {
+		expect.assertions(2);
+
 		expect(
 			globalPlaybackSlice.reducer({ isPlaying: false }, togglePlayback()),
 		).toStrictEqual({ isPlaying: true });

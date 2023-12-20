@@ -7,6 +7,8 @@ describe("custom state selectors", () => {
 	// Check assumptions for default createSelector
 	describe("default createSelector assumptions check", () => {
 		it("results in new value on ref changes despite equal values", () => {
+			expect.assertions(3);
+
 			let state = { a: { b: [1, 2] } };
 			const aSelector = (s: typeof state) => s.a;
 
@@ -24,6 +26,8 @@ describe("custom state selectors", () => {
 
 	describe("createDeepEqualSelector", () => {
 		it("only results in new value if state value has changed", () => {
+			expect.assertions(3);
+
 			let state = { a: { b: [1, 2] } };
 			const aSelector = (s: typeof state) => s.a;
 

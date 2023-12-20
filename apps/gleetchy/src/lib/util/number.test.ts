@@ -19,6 +19,7 @@ describe("number utils", () => {
 		])(
 			"should clamp %s within %s - %s inclusive, returning %s",
 			(value, min, max, expected) => {
+				expect.assertions(1);
 				expect(clamp(min, max, value)).toBe(expected);
 			},
 		);
@@ -35,6 +36,7 @@ describe("number utils", () => {
 		])(
 			"should normalize %s from range %s - %s, returning %s",
 			(value, min, max, expected) => {
+				expect.assertions(1);
 				expect(normalize(min, max, value)).toBe(expected);
 			},
 		);
@@ -51,6 +53,7 @@ describe("number utils", () => {
 		])(
 			"should denormalize %s from range %s - %s, returning %s",
 			(value, min, max, expected) => {
+				expect.assertions(1);
 				expect(denormalize(min, max, value)).toBe(expected);
 			},
 		);
