@@ -2,11 +2,11 @@ import { Show } from "solid-js";
 
 import useAudioNode, {
 	validateNodeType,
-} from "~/app-store/hooks/use-audio-node";
-import NodeWrapper from "~/components/node-wrapper";
-import { nodeType, UI } from "~/nodes/audio-effects/delay";
+} from "#app-store/hooks/use-audio-node";
+import NodeWrapper from "#components/node-wrapper";
+import { nodeType, UI } from "#nodes/audio-effects/delay";
 
-import type { NodeProps } from "~/nodes/audio-effects/delay";
+import type { NodeProps } from "#nodes/audio-effects/delay";
 
 export default function ConnectedDelay(props: { id: string }) {
 	const {

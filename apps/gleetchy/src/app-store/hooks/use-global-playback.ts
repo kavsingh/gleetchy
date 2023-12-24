@@ -1,5 +1,5 @@
-import { togglePlayback as togglePlaybackAction } from "~/app-store/global-playback/actions";
-import { selectIsPlaying } from "~/app-store/global-playback/selectors";
+import { togglePlayback as togglePlaybackAction } from "#app-store/global-playback/actions";
+import { selectIsPlaying } from "#app-store/global-playback/selectors";
 
 import { useAppDispatch, useAppSelector } from "./base";
 

@@ -1,7 +1,7 @@
 import rafThrottle from "raf-throttle";
 
-import { GInstrumentNode } from "~/lib/g-audio-node";
-import createEq3Node from "~/nodes/audio-effects/eq3/create-audio-node";
+import { GInstrumentNode } from "#lib/g-audio-node";
+import createEq3Node from "#nodes/audio-effects/eq3/create-audio-node";
 
 import { defaultProps } from "./node-props";
 import nodeType from "./node-type";

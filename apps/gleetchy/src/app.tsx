@@ -1,11 +1,11 @@
 import { ErrorBoundary } from "solid-js";
 
-import UI from "~/ui";
+import UI from "#ui";
 
 import { AppStoreProvider } from "./app-store/context";
 import ErrorMessage from "./components/error-message";
 
-import type { AppStore } from "~/app-store/create";
+import type { AppStore } from "#app-store/create";
 
 export default function App(props: { store: AppStore }) {
 	return (

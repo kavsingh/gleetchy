@@ -3,9 +3,9 @@ import { ErrorBoundary, For } from "solid-js";
 import {
 	selectConnectableSources,
 	selectConnectableTargets,
-} from "~/app-store/connections/selectors";
-import { useAppSelector } from "~/app-store/hooks/base";
-import ErrorMessage from "~/components/error-message";
+} from "#app-store/connections/selectors";
+import { useAppSelector } from "#app-store/hooks/base";
+import ErrorMessage from "#components/error-message";
 
 import PatchBayNode from "./patch-bay-node";
 

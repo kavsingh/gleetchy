@@ -1,7 +1,7 @@
 import { Match, Switch, createEffect, onCleanup } from "solid-js";
 
-import LoopRegion from "~/components/loop-region";
-import Waveform from "~/components/waveform";
+import LoopRegion from "#components/loop-region";
+import Waveform from "#components/waveform";
 
 export default function Sample(props: SampleProps) {
 	let playheadRef: HTMLDivElement | undefined;

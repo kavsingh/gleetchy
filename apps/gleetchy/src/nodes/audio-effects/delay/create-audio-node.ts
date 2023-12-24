@@ -1,5 +1,5 @@
-import { DELAY_UPPER_BOUND } from "~/constants/audio";
-import { GAudioNode } from "~/lib/g-audio-node";
+import { DELAY_UPPER_BOUND } from "#constants/audio";
+import { GAudioNode } from "#lib/g-audio-node";
 
 import { defaultProps } from "./node-props";
 import nodeType from "./node-type";

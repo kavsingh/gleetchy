@@ -1,6 +1,6 @@
 import { render } from "solid-js/web";
 
-import { createStore } from "~/app-store/create";
+import { createStore } from "#app-store/create";
 
 import "./index.css";
 import App from "./app";

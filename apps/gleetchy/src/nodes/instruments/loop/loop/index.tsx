@@ -1,7 +1,7 @@
-import { loadAudioFilesFromInput } from "~/apis/file";
-import useFileDropRegion from "~/components/hooks/use-file-drop-region";
-import { clamp } from "~/lib/util/number";
-import { UI as Eq3 } from "~/nodes/audio-effects/eq3";
+import { loadAudioFilesFromInput } from "#apis/file";
+import useFileDropRegion from "#components/hooks/use-file-drop-region";
+import { clamp } from "#lib/util/number";
+import { UI as Eq3 } from "#nodes/audio-effects/eq3";
 
 import LoopSample from "./loop-sample";
 import LoopTitleBar from "./loop-title-bar";

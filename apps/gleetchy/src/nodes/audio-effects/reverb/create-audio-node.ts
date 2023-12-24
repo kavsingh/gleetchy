@@ -1,5 +1,5 @@
-import { GAudioNode } from "~/lib/g-audio-node";
-import { logError } from "~/lib/log";
+import { GAudioNode } from "#lib/g-audio-node";
+import { logError } from "#lib/log";
 
 import { loadImpulse } from "./impulses";
 import { defaultProps } from "./node-props";

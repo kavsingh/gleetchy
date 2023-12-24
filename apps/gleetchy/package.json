@@ -27,11 +27,11 @@
 		"raf-throttle": "2.0.6",
 		"reselect": "5.0.1",
 		"solid-js": "1.8.7",
-		"tailwind-merge": "2.1.0"
+		"tailwind-merge": "2.2.0"
 	},
 	"devDependencies": {
 		"@gleetchy/codestyle-js": "workspace:*",
-		"@solidjs/testing-library": "0.8.4",
+		"@solidjs/testing-library": "0.8.5",
 		"@tailwindcss/container-queries": "0.1.1",
 		"@testing-library/dom": "9.3.3",
 		"@testing-library/jest-dom": "6.1.5",

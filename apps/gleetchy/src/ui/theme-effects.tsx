@@ -1,7 +1,7 @@
 import { createEffect, onCleanup } from "solid-js";
 
-import { useAppSelector } from "~/app-store/hooks/base";
-import { selectTheme } from "~/app-store/ui/selectors";
+import { useAppSelector } from "#app-store/hooks/base";
+import { selectTheme } from "#app-store/ui/selectors";
 
 export default function ThemeEffects() {
 	const theme = useAppSelector(selectTheme);

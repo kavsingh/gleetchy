@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 import { loadAudioFile } from "./actions";
 
-import type { AudioFile } from "~/types";
+import type { AudioFile } from "#types";
 
 const initialState: AudioFilesState = {};
 

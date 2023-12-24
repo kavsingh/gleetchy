@@ -2,12 +2,12 @@ import { Show } from "solid-js";
 
 import useAudioNode, {
 	validateNodeType,
-} from "~/app-store/hooks/use-audio-node";
-import NodeWrapper from "~/components/node-wrapper";
-import { nodeType, UI } from "~/nodes/audio-effects/reverb";
+} from "#app-store/hooks/use-audio-node";
+import NodeWrapper from "#components/node-wrapper";
+import { nodeType, UI } from "#nodes/audio-effects/reverb";
 
-import type { NodeProps } from "~/nodes/audio-effects/reverb";
-import type { ImpulseName } from "~/nodes/audio-effects/reverb/impulses";
+import type { NodeProps } from "#nodes/audio-effects/reverb";
+import type { ImpulseName } from "#nodes/audio-effects/reverb/impulses";
 
 export default function ConnectedReverb(props: { id: string }) {
 	const {

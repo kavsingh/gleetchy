@@ -1,11 +1,11 @@
 import { ErrorBoundary, For, Match, Switch } from "solid-js";
 
-import useAddNode from "~/app-store/hooks/use-add-node";
-import useAudioNodesMeta from "~/app-store/hooks/use-audio-nodes-meta";
-import ButtonGroup, { Button } from "~/components/button-group";
-import ErrorMessage from "~/components/error-message";
-import { nodeType as delayType } from "~/nodes/audio-effects/delay";
-import { nodeType as reverbType } from "~/nodes/audio-effects/reverb";
+import useAddNode from "#app-store/hooks/use-add-node";
+import useAudioNodesMeta from "#app-store/hooks/use-audio-nodes-meta";
+import ButtonGroup, { Button } from "#components/button-group";
+import ErrorMessage from "#components/error-message";
+import { nodeType as delayType } from "#nodes/audio-effects/delay";
+import { nodeType as reverbType } from "#nodes/audio-effects/reverb";
 
 import ConnectedDelay from "./connected-delay";
 import ConnectedReverb from "./connected-reverb";

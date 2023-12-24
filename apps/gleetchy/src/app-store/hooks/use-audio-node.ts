@@ -6,26 +6,24 @@ import {
 	updateAudioNodeLabel,
 	duplicateAudioNode,
 	removeAudioNode,
-} from "~/app-store/audio-nodes/actions";
-import { getConnectionsFor } from "~/lib/audio";
+} from "#app-store/audio-nodes/actions";
+import { getConnectionsFor } from "#lib/audio";
 
-import { useAppDispatch, useAppSelector } from "./base";
 import { selectAudioNodes } from "../audio-nodes/selectors";
 import {
 	selectActiveAudioNodeIds,
 	selectConnections,
 } from "../connections/selectors";
 
-import type { AudioNodeState } from "~/types";
+import { useAppDispatch, useAppSelector } from "./base";
 
-export default function useAudioNode<T extends Record<string, unknown>>(
-	id: string,
-	isValid: ReturnType<typeof validateNodeType>,
-) {
+import type { AudioNodeState } from "#types";
+
+export default function useAudioNode<
+	TAudioNodeProps extends Record<string, unknown>,
+>(id: string, isValid: ReturnType<typeof validateNodeType>) {
 	const node = useAppSelector((state) => {
-		const selected = selectAudioNodes(state)[id] as
-			| AudioNodeState<T>
-			| undefined;
+		const selected = selectAudioNodes(state)[id];
 
 		return selected && isValid(selected) ? selected : undefined;
 	}, deepEqual);
@@ -33,7 +31,13 @@ export default function useAudioNode<T extends Record<string, unknown>>(
 	const dispatch = useAppDispatch();
 	const allConnections = useAppSelector(selectConnections);
 	const label = createMemo(() => node()?.label);
-	const audioProps = createMemo(() => node()?.audioProps);
+	const audioProps = createMemo(() => {
+		const nodeAudioProps = node()?.audioProps;
+
+		if (!nodeAudioProps) return undefined;
+
+		return nodeAudioProps as Extract<typeof nodeAudioProps, TAudioNodeProps>;
+	});
 
 	const isActive = useAppSelector((state) => {
 		return selectActiveAudioNodeIds(state).includes(id);
@@ -56,7 +60,7 @@ export default function useAudioNode<T extends Record<string, unknown>>(
 		dispatch(removeAudioNode(id));
 	}
 
-	function updateAudioProps(next: Partial<T>) {
+	function updateAudioProps(next: Partial<TAudioNodeProps>) {
 		dispatch(updateAudioNodeProps({ id, audioProps: next }));
 	}
 

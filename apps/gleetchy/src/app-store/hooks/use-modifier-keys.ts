@@ -1,9 +1,10 @@
-import { useAppDispatch, useAppSelector } from "./base";
 import {
 	registerKeyPress as registerKeyPressAction,
 	registerKeyRelease as registerKeyReleaseAction,
 } from "../ui/actions";
 import { selectModifierKeys } from "../ui/selectors";
+
+import { useAppDispatch, useAppSelector } from "./base";
 
 export default function useModifierKeys() {
 	const dispatch = useAppDispatch();

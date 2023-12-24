@@ -1,4 +1,4 @@
-import { defaultProps as eq3DefaultProps } from "~/nodes/audio-effects/eq3/node-props";
+import { defaultProps as eq3DefaultProps } from "#nodes/audio-effects/eq3/node-props";
 
 export const defaultProps = {
 	...eq3DefaultProps,

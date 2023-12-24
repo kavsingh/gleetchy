@@ -1,13 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { stableWithout } from "~/lib/util";
-import { nodeColorPool } from "~/style/color";
+import { stableWithout } from "#lib/util";
+import { nodeColorPool } from "#style/color";
 
 import { removeAudioNode } from "../audio-nodes/actions";
 import defaultNodes from "../default-nodes";
 
+import type { AudioNodeConnection } from "#types";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { AudioNodeConnection } from "~/types";
 
 const mainOut = defaultNodes[0];
 const loop1 = defaultNodes[1];

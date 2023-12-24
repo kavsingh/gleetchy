@@ -1,9 +1,10 @@
 import { Show, createMemo, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import LoopHandle from "./loop-handle";
 import useControlResponseMultiplier from "../hooks/use-control-response-multiplier";
 import usePointerDrag from "../hooks/use-pointer-drag";
+
+import LoopHandle from "./loop-handle";
 
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type { JSX, ParentProps } from "solid-js";

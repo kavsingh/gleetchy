@@ -6,11 +6,12 @@ import {
 } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import { clamp } from "~/lib/util/number";
+import { clamp } from "#lib/util/number";
 
-import SVGArc from "./svg-arc";
 import useControlResponseMultiplier from "../hooks/use-control-response-multiplier";
 import usePointerDrag from "../hooks/use-pointer-drag";
+
+import SVGArc from "./svg-arc";
 
 import type { ControlResponseMultipliers } from "../hooks/use-control-response-multiplier";
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";

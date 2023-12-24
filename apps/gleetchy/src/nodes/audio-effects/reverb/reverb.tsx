@@ -1,9 +1,9 @@
-import Knob from "~/components/knob";
-import SelectBox from "~/components/select-box";
-import TitleBar from "~/components/title-bar";
+import Knob from "#components/knob";
+import SelectBox from "#components/select-box";
+import TitleBar from "#components/title-bar";
 
+import type { AudioNodeConnection } from "#types";
 import type { ImpulseName } from "./impulses";
-import type { AudioNodeConnection } from "~/types";
 
 export default function Reverb(props: ReverbProps) {
 	function handleImpulseChange(nextImpulse: string) {

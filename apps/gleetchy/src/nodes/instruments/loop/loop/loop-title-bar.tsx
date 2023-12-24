@@ -1,7 +1,7 @@
 import { Show } from "solid-js";
 
-import Button from "~/components/button";
-import TitleBar from "~/components/title-bar";
+import Button from "#components/button";
+import TitleBar from "#components/title-bar";
 
 import type { LoopUIProps } from "./types";
 

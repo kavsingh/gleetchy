@@ -1,4 +1,4 @@
-import type { AudioNodeConnection } from "~/types";
+import type { AudioNodeConnection } from "#types";
 
 export type LoopUIProps = {
 	nodeId: string;

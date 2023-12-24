@@ -7,7 +7,7 @@
 		"allowJs": true,
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
-		"paths": { "~/*": ["./src/*"] },
+		"paths": { "#*": ["./src/*"] },
 		"sourceMap": true,
 		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
 	},

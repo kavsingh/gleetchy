@@ -1,13 +1,13 @@
 import { For } from "solid-js";
 
-import { useAppDispatch, useAppSelector } from "~/app-store/hooks/base";
-import { setTheme } from "~/app-store/ui/actions";
-import { selectTheme } from "~/app-store/ui/selectors";
-import { THEMES } from "~/app-store/ui/slice";
-import RadioInput from "~/components/radio-input";
+import { useAppDispatch, useAppSelector } from "#app-store/hooks/base";
+import { setTheme } from "#app-store/ui/actions";
+import { selectTheme } from "#app-store/ui/selectors";
+import { THEMES } from "#app-store/ui/slice";
+import RadioInput from "#components/radio-input";
 
+import type { Theme } from "#app-store/ui/slice";
 import type { JSX } from "solid-js";
-import type { Theme } from "~/app-store/ui/slice";
 
 export default function ThemeSelect() {
 	const selected = useAppSelector(selectTheme);

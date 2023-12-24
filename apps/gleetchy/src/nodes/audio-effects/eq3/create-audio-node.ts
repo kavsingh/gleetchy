@@ -1,4 +1,4 @@
-import { GAudioNode } from "~/lib/g-audio-node";
+import { GAudioNode } from "#lib/g-audio-node";
 
 import { defaultProps } from "./node-props";
 import nodeType from "./node-type";

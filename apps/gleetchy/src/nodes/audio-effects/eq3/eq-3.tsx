@@ -1,5 +1,5 @@
-import Slider from "~/components/slider";
-import { normalize, denormalize } from "~/lib/util/number";
+import Slider from "#components/slider";
+import { normalize, denormalize } from "#lib/util/number";
 
 import type { ParentProps } from "solid-js";
 

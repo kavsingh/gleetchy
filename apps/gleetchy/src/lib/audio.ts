@@ -1,5 +1,5 @@
-import type { GAudioNode, GInstrumentNode } from "~/lib/g-audio-node";
-import type { AudioNodeConnection, AudioNodeMeta } from "~/types";
+import type { GAudioNode, GInstrumentNode } from "#lib/g-audio-node";
+import type { AudioNodeConnection, AudioNodeMeta } from "#types";
 
 export function hasAudioEffectType<T extends { type?: string }>(item: T) {
 	return /^audio_effect_/i.test(item.type ?? "");

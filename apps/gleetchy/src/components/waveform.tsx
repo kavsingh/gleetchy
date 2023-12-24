@@ -1,9 +1,9 @@
 import { createEffect, onCleanup } from "solid-js";
 
-import { useAppSelector } from "~/app-store/hooks/base";
-import { selectTheme } from "~/app-store/ui/selectors";
+import { useAppSelector } from "#app-store/hooks/base";
+import { selectTheme } from "#app-store/ui/selectors";
 
-import type { Theme } from "~/app-store/ui/slice";
+import type { Theme } from "#app-store/ui/slice";
 
 export default function Waveform(
 	props: WaveformProps & { class?: string | undefined },

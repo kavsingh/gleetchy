@@ -1,10 +1,10 @@
-import Knob from "~/components/knob";
-import TitleBar from "~/components/title-bar";
-import { DELAY_UPPER_BOUND } from "~/constants/audio";
-import { denormalize, normalize } from "~/lib/util/number";
+import Knob from "#components/knob";
+import TitleBar from "#components/title-bar";
+import { DELAY_UPPER_BOUND } from "#constants/audio";
+import { denormalize, normalize } from "#lib/util/number";
 
+import type { AudioNodeConnection } from "#types";
 import type { ParentProps } from "solid-js";
-import type { AudioNodeConnection } from "~/types";
 
 export default function Delay(props: ParentProps<DelayProps>) {
 	return (

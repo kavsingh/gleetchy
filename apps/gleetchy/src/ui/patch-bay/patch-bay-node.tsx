@@ -1,9 +1,9 @@
 import { createMemo } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import useConnection from "~/app-store/hooks/use-connection";
+import useConnection from "#app-store/hooks/use-connection";
 
-import type { AudioNodeMeta } from "~/types";
+import type { AudioNodeMeta } from "#types";
 
 export default function PatchBayNode(props: {
 	source: AudioNodeMeta;

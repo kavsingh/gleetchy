@@ -1,29 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import initialNodes from "~/app-store/default-nodes";
-import { MAIN_OUT_ID } from "~/constants/audio";
-import { prefixedId } from "~/lib/id";
-import { stableOmit, stableFilter } from "~/lib/util";
+import initialNodes from "#app-store/default-nodes";
+import { MAIN_OUT_ID } from "#constants/audio";
+import { prefixedId } from "#lib/id";
+import { stableOmit, stableFilter } from "#lib/util";
 import {
 	defaultProps as delayDefaultProps,
 	nodeType as delayNodeType,
-} from "~/nodes/audio-effects/delay";
+} from "#nodes/audio-effects/delay";
 import {
 	defaultProps as reverbDefaultProps,
 	nodeType as reverbNodeType,
-} from "~/nodes/audio-effects/reverb";
+} from "#nodes/audio-effects/reverb";
 import {
 	defaultProps as loopDefaultProps,
 	nodeType as loopNodeType,
-} from "~/nodes/instruments/loop";
+} from "#nodes/instruments/loop";
 
 import { loadAudioFileToNode } from "../audio-files/actions";
 
+import type { NodeProps as DelayNodeProps } from "#nodes/audio-effects/delay";
+import type { NodeProps as ReverbNodeProps } from "#nodes/audio-effects/reverb";
+import type { NodeProps as LoopNodeProps } from "#nodes/instruments/loop";
+import type { AudioNodeIdentifierMeta, AudioNodeState } from "#types";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { NodeProps as DelayNodeProps } from "~/nodes/audio-effects/delay";
-import type { NodeProps as ReverbNodeProps } from "~/nodes/audio-effects/reverb";
-import type { NodeProps as LoopNodeProps } from "~/nodes/instruments/loop";
-import type { AudioNodeIdentifierMeta, AudioNodeState } from "~/types";
 
 const initialState: AudioNodesState = initialNodes.reduce(
 	(acc: AudioNodesState, instrument) => {

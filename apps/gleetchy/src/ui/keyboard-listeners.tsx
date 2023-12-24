@@ -1,6 +1,6 @@
 import { onCleanup } from "solid-js";
 
-import useModifierKeys from "~/app-store/hooks/use-modifier-keys";
+import useModifierKeys from "#app-store/hooks/use-modifier-keys";
 
 export default function KeyboardListeners() {
 	const { registerKeyPress, registerKeyRelease } = useModifierKeys();

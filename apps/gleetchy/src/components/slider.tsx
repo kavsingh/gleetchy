@@ -1,7 +1,7 @@
 import { createEffect, mergeProps, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import { clamp } from "~/lib/util/number";
+import { clamp } from "#lib/util/number";
 
 import useControlResponseMultiplier from "./hooks/use-control-response-multiplier";
 import usePointerDrag from "./hooks/use-pointer-drag";

@@ -3,7 +3,7 @@ import { For, type ParentProps } from "solid-js";
 import Button from "./button";
 import TextInput from "./text-input";
 
-import type { AudioNodeConnection } from "~/types";
+import type { AudioNodeConnection } from "#types";
 
 export default function TitleBar(props: Props) {
 	return (

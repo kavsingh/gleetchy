@@ -1,6 +1,7 @@
-import { useAppDispatch, useAppSelector } from "./base";
 import { initAudioContext as initAudioContextAction } from "../audio-context/actions";
 import { selectAudioContext } from "../audio-context/selectors";
+
+import { useAppDispatch, useAppSelector } from "./base";
 
 export default function useAudioContext() {
 	const dispatch = useAppDispatch();

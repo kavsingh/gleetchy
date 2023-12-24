@@ -1,6 +1,6 @@
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 
-import { AudioEngine, setupAudioEngineListeners } from "~/audio";
+import { AudioEngine, setupAudioEngineListeners } from "#audio";
 
 import { audioContextSlice } from "./audio-context/slice";
 import { publishSubscriptionEvent } from "./audio-engine/actions";

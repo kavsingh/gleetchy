@@ -1,10 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { MODIFIER_KEYS } from "~/lib/constants";
-import { stableAppendUnique, stableWithout } from "~/lib/util";
+import { MODIFIER_KEYS } from "#lib/constants";
+import { stableAppendUnique, stableWithout } from "#lib/util";
 
+import type { ModifierKey } from "#lib/constants";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { ModifierKey } from "~/lib/constants";
 
 const initialState: UIState = {
 	currentTheme: "system",
