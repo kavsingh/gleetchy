@@ -66,7 +66,7 @@ export default function Knob(_props: Props) {
 	});
 
 	return (
-		<div title={props.title} class="flex h-full w-full flex-col items-center">
+		<div title={props.title} class="flex size-full flex-col items-center">
 			<Label>{props.label}</Label>
 			<div
 				{...dragHandlers}

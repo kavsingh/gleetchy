@@ -13,7 +13,7 @@ export default function TitleBar(props: Props) {
 					<For each={props.connections}>
 						{(connection) => (
 							<div
-								class="me-1 h-3 w-3 shrink-0 grow-0 border-current bg-current"
+								class="me-1 size-3 shrink-0 grow-0 border-current bg-current"
 								style={{ color: connection.color }}
 							/>
 						)}

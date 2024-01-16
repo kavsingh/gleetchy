@@ -21,7 +21,7 @@ export default function Sample(props: SampleProps) {
 	});
 
 	return (
-		<div class="relative h-full w-full">
+		<div class="relative size-full">
 			<div class="absolute inset-0 z-[1]">
 				<Waveform buffer={props.audioBuffer} />
 			</div>

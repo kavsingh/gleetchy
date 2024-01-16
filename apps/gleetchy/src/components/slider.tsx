@@ -83,7 +83,7 @@ export default function Slider(_props: Props) {
 		<div
 			title={props.title}
 			class={twMerge(
-				"flex h-full w-full items-stretch",
+				"flex size-full items-stretch",
 				props.orientation === "block" && "flex-col items-center",
 			)}
 		>

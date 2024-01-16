@@ -16,7 +16,7 @@ export default function RadioInput(_props: Props) {
 			<div class="relative">
 				<div
 					class={twMerge(
-						"pointer-events-none z-0 h-[0.8em] w-[0.8em] border border-text100",
+						"pointer-events-none z-0 size-[0.8em] border border-text100",
 						inputProps.checked && "border-text400 bg-text400",
 					)}
 				/>

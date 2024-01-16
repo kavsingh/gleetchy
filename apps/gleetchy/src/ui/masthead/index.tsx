@@ -15,7 +15,7 @@ export default function Masthead() {
 					title="view on github"
 					class="opacity-40 transition-opacity hover:opacity-100 focus:opacity-100 focus-visible:opacity-100"
 				>
-					<GithubLogo class="h-[15px] w-[15px]" />
+					<GithubLogo class="size-[15px]" />
 				</a>
 			</div>
 		</div>

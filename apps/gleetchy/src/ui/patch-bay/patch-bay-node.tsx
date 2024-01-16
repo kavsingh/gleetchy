@@ -28,7 +28,7 @@ export default function PatchBayNode(props: {
 			onClick={toggleConnection}
 			style={{ color: color() ?? "currentcolor" }}
 			class={twMerge(
-				"mx-auto mb-0 h-3 w-3 border p-0 transition-all",
+				"mx-auto mb-0 size-3 border p-0 transition-all",
 				!color() && "border-text100",
 				!color() && !isBlocked() && "hover:border-text400",
 				isBlocked() && "rotate-45 scale-50 cursor-default bg-text100",

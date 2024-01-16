@@ -16,7 +16,7 @@ export function loadAudioFilesFromInput() {
 	const input = getFileInput();
 
 	return new Promise<File[]>((resolve, reject) => {
-		input.onchange = () => {
+		input.onchange = function audioFileInputChanged() {
 			const { files } = input;
 
 			if (!files) {
@@ -32,7 +32,12 @@ export function loadAudioFilesFromInput() {
 			input.value = "";
 		};
 
-		input.onerror = (error) => {
+		input.onerror = function audioFileInputError(cause) {
+			const error =
+				typeof cause === "string"
+					? new Error(cause)
+					: new Error("Could not load audio file");
+
 			reject(error);
 
 			input.value = "";
