@@ -22,13 +22,13 @@
 		"clean": "npkill ."
 	},
 	"devDependencies": {
-		"@types/bun": "1.0.1",
+		"@types/bun": "1.0.4",
 		"@types/eslint": "8.56.2",
-		"@types/node": "20.11.3",
+		"@types/node": "20.11.16",
 		"eslint": "8.56.0",
 		"npkill": "0.11.3",
-		"prettier": "3.2.2",
-		"turbo": "1.11.3",
+		"prettier": "3.2.5",
+		"turbo": "1.12.2",
 		"typescript": "5.3.3"
 	},
 	"resolutions": {
