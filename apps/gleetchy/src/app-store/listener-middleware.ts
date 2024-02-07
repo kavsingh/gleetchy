@@ -10,7 +10,8 @@ export const appAddListener = addListener as TypedAddListener<
 	AppDispatch
 >;
 
-export const appStartListening =
-	listenerMiddleware.startListening as AppStartListening;
+export const appStartListening = listenerMiddleware.startListening.bind(
+	listenerMiddleware,
+) as AppStartListening;
 
 export type AppStartListening = TypedStartListening<AppState, AppDispatch>;

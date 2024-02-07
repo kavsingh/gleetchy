@@ -18,14 +18,14 @@ export const uiSlice = createSlice({
 		setTheme(state, action: PayloadAction<Theme>) {
 			state.currentTheme = action.payload;
 		},
-		registerKeyPress: (state, action: PayloadAction<string>) => {
+		registerKeyPress(state, action: PayloadAction<string>) {
 			const key = action.payload;
 
 			if (!isModifierKey(key)) return;
 
 			state.modifierKeys = stableAppendUnique([key], state.modifierKeys);
 		},
-		registerKeyRelease: (state, action: PayloadAction<string>) => {
+		registerKeyRelease(state, action: PayloadAction<string>) {
 			state.modifierKeys = stableWithout<ModifierKey>(
 				[action.payload as ModifierKey],
 				state.modifierKeys,
