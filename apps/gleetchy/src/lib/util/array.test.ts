@@ -41,7 +41,6 @@ describe("util/array", () => {
 
 			const initialArray = [1, 2, 3, 3];
 			const result = stableFilter(
-				// eslint-disable-next-line vitest/no-conditional-in-test, vitest/no-conditional-tests
 				(item) => item !== 3 && item !== 1,
 				initialArray,
 			);
