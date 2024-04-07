@@ -22,14 +22,14 @@
 		"clean": "npkill ."
 	},
 	"devDependencies": {
-		"@types/bun": "1.0.8",
-		"@types/eslint": "8.56.5",
-		"@types/node": "20.11.25",
+		"@types/bun": "1.0.12",
+		"@types/eslint": "8.56.7",
+		"@types/node": "20.12.5",
 		"eslint": "8.57.0",
 		"npkill": "0.11.3",
 		"prettier": "3.2.5",
-		"turbo": "1.12.5",
-		"typescript": "5.4.2"
+		"turbo": "1.13.2",
+		"typescript": "5.4.4"
 	},
 	"resolutions": {
 		"tsconfig-paths": ">=4.0.0"
