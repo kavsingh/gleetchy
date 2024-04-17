@@ -12,7 +12,7 @@ export default function RadioInput(_props: Props) {
 			for={inputProps.id ?? ""}
 			class="flex cursor-pointer items-center gap-[0.3em]"
 		>
-			<div class="leading-[1]">{props.label}</div>
+			<div class="leading-none">{props.label}</div>
 			<div class="relative">
 				<div
 					class={twMerge(

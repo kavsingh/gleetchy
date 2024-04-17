@@ -49,6 +49,10 @@ module.exports = {
 			"error",
 			{ argsIgnorePattern: "^_", varsIgnorePattern: "^_" },
 		],
+		"@typescript-eslint/restrict-template-expressions": [
+			"error",
+			{ allowNumber: true },
+		],
 		"filenames/match-regex": ["error", "^[a-z0-9-.]+$", true],
 		"filenames/match-exported": ["error", "kebab"],
 		"import/no-cycle": "error",

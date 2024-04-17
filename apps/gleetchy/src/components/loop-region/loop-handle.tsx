@@ -5,7 +5,7 @@ export default function LoopHandle(props: { align: Alignment }) {
 		<div
 			class={twMerge(
 				"pointer-events-none relative size-full",
-				props.align === "end" && "translate-x-[-100%]",
+				props.align === "end" && "-translate-x-full",
 			)}
 		>
 			<Tag align={props.align} verticalPosition="top" />
@@ -25,7 +25,7 @@ function Tag(props: { align: Alignment; verticalPosition?: "top" | "bottom" }) {
 	return (
 		<div
 			class={twMerge(
-				"pointer-events-auto absolute h-[1px] w-[60%] bg-text600",
+				"pointer-events-auto absolute h-px w-3/5 bg-text600",
 				props.verticalPosition === "top" && "top-0",
 				props.verticalPosition === "bottom" && "bottom-0",
 				props.align === "start" && "start-0",

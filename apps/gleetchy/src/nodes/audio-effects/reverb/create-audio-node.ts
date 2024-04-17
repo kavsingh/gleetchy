@@ -40,7 +40,9 @@ export class GReverbNode extends GAudioNode<Props> {
 				.then((buffer) => {
 					this.reverbNode.buffer = buffer;
 				})
-				.catch(logError);
+				.catch((error: unknown) => {
+					logError(error);
+				});
 		}
 	}
 }

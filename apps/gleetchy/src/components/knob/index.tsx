@@ -30,9 +30,11 @@ export default function Knob(_props: Props) {
 	let knobRef: HTMLDivElement | undefined;
 	const [axis, setAxis] = createSignal<MovementAxis>();
 	const moveMultiplierRef = useControlResponseMultiplier(controlMultipliers);
-	const radius = createMemo(() =>
-		typeof props.radius === "string" ? props.radius : `${props.radius}px`,
-	);
+	const radius = createMemo(() => {
+		return typeof props.radius === "string"
+			? props.radius
+			: `${props.radius}px`;
+	});
 
 	function handleDoubleClick() {
 		props.onChange?.(props.defaultValue);

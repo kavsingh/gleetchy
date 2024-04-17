@@ -150,8 +150,8 @@ function Track(props: OrientationProps) {
 		<div
 			class={twMerge(
 				"absolute z-[1] bg-text100",
-				props.orientation === "inline" && "inset-x-0 top-1/2 h-[1px]",
-				props.orientation === "block" && "inset-y-0 start-1/2 w-[1px]",
+				props.orientation === "inline" && "inset-x-0 top-1/2 h-px",
+				props.orientation === "block" && "inset-y-0 start-1/2 w-px",
 			)}
 		/>
 	);
