@@ -8,12 +8,12 @@ const config: Config = {
 	theme: {
 		extend: {
 			colors: {
-				surface0: "rgb(var(--color-surface0) / <alpha-value>)",
-				text100: "rgb(var(--color-text100) / <alpha-value>)",
-				text400: "rgb(var(--color-text400) / <alpha-value>)",
-				text600: "rgb(var(--color-text600) / <alpha-value>)",
-				semanticError: "rgb(var(--color-semanticError) / <alpha-value>)",
-				semanticFocus: "rgb(var(--color-semanticFocus) / <alpha-value>)",
+				surface0: "oklch(var(--color-surface0) / <alpha-value>)",
+				text100: "oklch(var(--color-text100) / <alpha-value>)",
+				text400: "oklch(var(--color-text400) / <alpha-value>)",
+				text600: "oklch(var(--color-text600) / <alpha-value>)",
+				semanticError: "oklch(var(--color-semanticError) / <alpha-value>)",
+				semanticFocus: "oklch(var(--color-semanticFocus) / <alpha-value>)",
 			},
 			animation: {
 				appear: "fade-in 400ms ease-out forwards",
