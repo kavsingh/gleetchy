@@ -1,8 +1,9 @@
 /** @type {import("path")} */
 const path = require("path");
 
-/** @type {import("eslint").ESLint.ConfigData} */
 const baseConfig = require("@gleetchy/codestyle-js/.eslintrc.cjs");
+const vitest = require("eslint-plugin-vitest");
+/** @type {import("eslint").ESLint.ConfigData} */
 /** @type {import("typescript")} */
 const ts = require("typescript");
 
@@ -41,11 +42,8 @@ module.exports = {
 		{
 			files: getTestFilePatterns(),
 			env: { node: true },
-			extends: [
-				"plugin:vitest/all",
-				"plugin:testing-library/dom",
-				"plugin:jest-dom/recommended",
-			],
+			plugins: ["vitest"],
+			extends: ["plugin:testing-library/dom", "plugin:jest-dom/recommended"],
 			rules: {
 				"no-console": "off",
 				"@typescript-eslint/no-explicit-any": "off",
@@ -61,6 +59,8 @@ module.exports = {
 					"kebab",
 					`\\.(${testFileSuffixes.join("|")})$`,
 				],
+				// @ts-expect-error type import mismatch
+				...vitest.configs.all.rules,
 				"vitest/no-hooks": "off",
 			},
 		},
