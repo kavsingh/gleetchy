@@ -3,18 +3,20 @@ import { createEffect, onCleanup } from "solid-js";
 import { useAppSelector } from "#app-store/hooks/base";
 import { selectTheme } from "#app-store/ui/selectors";
 
-import type { Theme } from "#app-store/ui/slice";
+import { useResizeObserver } from "./hooks/use-resize-observer";
 
 export default function Waveform(
 	props: WaveformProps & { class?: string | undefined },
 ) {
 	const theme = useAppSelector(selectTheme);
+	const observe = useResizeObserver();
+	let unobserve: ReturnType<typeof observe> | undefined;
 	let canvasRef: HTMLCanvasElement | undefined;
 
-	function update(appTheme: Theme) {
+	function update() {
 		if (!canvasRef) return;
 
-		canvasRef.setAttribute("data-theme", appTheme);
+		canvasRef.setAttribute("data-theme", theme());
 		updateWaveform(canvasRef, {
 			timeRegions: props.timeRegions,
 			buffer: props.buffer,
@@ -22,25 +24,20 @@ export default function Waveform(
 		});
 	}
 
-	function handleResize() {
-		update(theme());
-	}
-
-	createEffect(() => {
-		update(theme());
-	});
-
-	globalThis.window.addEventListener("resize", handleResize);
+	createEffect(update);
 
 	onCleanup(() => {
-		globalThis.window.removeEventListener("resize", handleResize);
+		unobserve?.();
 	});
 
 	return (
 		<div class="size-full overflow-hidden">
 			<canvas
 				class="size-full border-0 border-text100 text-text600"
-				ref={(el) => (canvasRef = el)}
+				ref={(el) => {
+					canvasRef = el;
+					unobserve = observe(el, update);
+				}}
 			/>
 		</div>
 	);

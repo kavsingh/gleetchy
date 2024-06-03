@@ -9,7 +9,11 @@
 		"jsxImportSource": "solid-js",
 		"paths": { "#*": ["./src/*"] },
 		"sourceMap": true,
-		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
+		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"],
+		// leave the following to eslint
+		"noUnusedLocals": false,
+		"noUnusedParameters": false,
+		"allowUnreachableCode": true
 	},
 	"exclude": ["**/node_modules"],
 	"include": ["./src", "./scripts", "./*.ts", "./*.*.cjs"]
