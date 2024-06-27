@@ -5,8 +5,8 @@ module.exports = {
 	parser: "@typescript-eslint/parser",
 	parserOptions: { project: "./tsconfig.json" },
 	settings: {
-		"import/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] },
-		"import/resolver": {
+		"import-x/parsers": { "@typescript-eslint/parser": [".ts", ".tsx"] },
+		"import-x/resolver": {
 			"eslint-import-resolver-typescript": { project: "./tsconfig.json" },
 		},
 	},
@@ -15,8 +15,8 @@ module.exports = {
 		"eslint:recommended",
 		"plugin:@typescript-eslint/strict-type-checked",
 		"plugin:@typescript-eslint/stylistic-type-checked",
-		"plugin:import/recommended",
-		"plugin:import/typescript",
+		"plugin:import-x/recommended",
+		"plugin:import-x/typescript",
 		"plugin:prettier/recommended",
 	],
 	rules: {
@@ -55,11 +55,11 @@ module.exports = {
 		],
 		"filenames/match-regex": ["error", "^[a-z0-9-.]+$", true],
 		"filenames/match-exported": ["error", "kebab"],
-		"import/no-cycle": "error",
-		"import/no-self-import": "error",
-		"import/no-unused-modules": "error",
-		"import/no-useless-path-segments": "error",
-		"import/order": [
+		"import-x/no-cycle": "error",
+		"import-x/no-self-import": "error",
+		"import-x/no-unused-modules": "error",
+		"import-x/no-useless-path-segments": "error",
+		"import-x/order": [
 			"warn",
 			{
 				"groups": [

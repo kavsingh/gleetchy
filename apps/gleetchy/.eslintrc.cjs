@@ -15,14 +15,14 @@ module.exports = {
 	extends: [require.resolve("@gleetchy/codestyle-js/.eslintrc.cjs")],
 	parserOptions: { tsconfigRootDir: __dirname },
 	settings: {
-		"import/resolver": {
+		"import-x/resolver": {
 			"eslint-import-resolver-typescript": {
 				project: path.join(__dirname, "tsconfig.json"),
 			},
 		},
 	},
 	rules: {
-		"import/order": getImportOrderConfig(),
+		"import-x/order": getImportOrderConfig(),
 	},
 	overrides: [
 		{
@@ -77,7 +77,7 @@ function getTestFilePatterns({ root = "", extensions = "*" } = {}) {
 
 /** @returns {import("eslint").Linter.RuleEntry} */
 function getImportOrderConfig() {
-	const baseImportOrder = baseConfig.rules?.["import/order"];
+	const baseImportOrder = baseConfig.rules?.["import-x/order"];
 	const [severity, config] = Array.isArray(baseImportOrder)
 		? baseImportOrder
 		: [];

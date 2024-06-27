@@ -5,7 +5,7 @@ import createEq3Node from "#nodes/audio-effects/eq3/create-audio-node";
 
 import { defaultProps } from "./node-props";
 import nodeType from "./node-type";
-// eslint-disable-next-line import/default
+// eslint-disable-next-line import-x/default
 import processor from "./processor.worklet?worker&url";
 
 import type { Props } from "./node-props";
