@@ -1,20 +1,13 @@
 {
-	"extends": [
-		"@gleetchy/codestyle-js/tsconfig.json",
-		"@tsconfig/vite-react/tsconfig.json"
-	],
+	"extends": "../../tsconfig.base.json",
 	"compilerOptions": {
-		"allowJs": true,
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
+		"lib": ["esnext", "dom"],
 		"paths": { "#*": ["./src/*"] },
 		"sourceMap": true,
-		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"],
-		// leave the following to eslint
-		"noUnusedLocals": false,
-		"noUnusedParameters": false,
-		"allowUnreachableCode": true
+		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
 	},
 	"exclude": ["**/node_modules"],
-	"include": ["./src", "./scripts", "./*.ts", "./*.*.cjs"]
+	"include": ["./src", "./*.ts", "./*.js", "./*.cjs"]
 }

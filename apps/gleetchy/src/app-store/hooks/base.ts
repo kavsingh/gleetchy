@@ -9,7 +9,7 @@ export { useAppStore };
 
 export function useAppSelector<T>(
 	selector: (state: AppState) => T,
-	equals?: MemoOptions<T>["equals"] | undefined,
+	equals?: MemoOptions<T>["equals"],
 ) {
 	const store = useAppStore();
 	const [selected, setSelected] = createSignal<T>(

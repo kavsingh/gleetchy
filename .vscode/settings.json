@@ -22,10 +22,15 @@
 		"**/dist/": true,
 		"**/distStatic/": true
 	},
-	"tailwindCSS.validate": true,
-	"cssVariables.lookupFiles": ["src/style/**/*.css"],
 	"typescript.tsdk": "node_modules/typescript/lib",
 	"rust-analyzer.check.command": "clippy",
+	"eslint.workingDirectories": [{ "mode": "auto" }],
+	"tailwindCSS.validate": true,
+	"tailwindCSS.classAttributes": ["class", "classList"],
+	"tailwindCSS.experimental.classRegex": [
+		["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+	],
+	"cssVariables.lookupFiles": ["src/style/**/*.css"],
 	"[javascript]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},

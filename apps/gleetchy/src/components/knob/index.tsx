@@ -1,9 +1,4 @@
-import {
-	createMemo,
-	createSignal,
-	mergeProps,
-	type ParentProps,
-} from "solid-js";
+import { createMemo, createSignal, mergeProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
 import { clamp } from "#lib/util/number";
@@ -15,6 +10,7 @@ import SVGArc from "./svg-arc";
 
 import type { ControlResponseMultipliers } from "../hooks/use-control-response-multiplier";
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
+import type { ParentProps } from "solid-js";
 
 export default function Knob(_props: Props) {
 	const props = mergeProps(

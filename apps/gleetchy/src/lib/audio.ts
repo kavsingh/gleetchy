@@ -1,11 +1,11 @@
 import type { GAudioNode, GInstrumentNode } from "#lib/g-audio-node";
 import type { AudioNodeConnection, AudioNodeMeta } from "#types";
 
-export function hasAudioEffectType<T extends { type?: string }>(item: T) {
+export function hasAudioEffectType(item: { type?: string }) {
 	return /^audio_effect_/i.test(item.type ?? "");
 }
 
-export function hasInstrumentType<T extends { type?: string }>(item: T) {
+export function hasInstrumentType(item: { type?: string }) {
 	return /^instrument_/i.test(item.type ?? "");
 }
 

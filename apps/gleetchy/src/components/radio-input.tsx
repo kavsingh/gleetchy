@@ -1,7 +1,7 @@
 import { splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import type { JSX } from "solid-js";
+import type { ComponentProps, JSX } from "solid-js";
 
 export default function RadioInput(_props: Props) {
 	const [props, inputProps] = splitProps(_props, ["ref", "label"]);
@@ -20,7 +20,6 @@ export default function RadioInput(_props: Props) {
 						inputProps.checked && "border-text400 bg-text400",
 					)}
 				/>
-				{/* @ts-expect-error exact optionals */}
 				<input
 					{...inputProps}
 					ref={props.ref}
@@ -33,8 +32,8 @@ export default function RadioInput(_props: Props) {
 }
 
 type Props = Omit<
-	JSX.InputHTMLAttributes<HTMLInputElement>,
-	"class" | "type" | "hidden" | "classList"
+	ComponentProps<"input">,
+	"type" | "hidden" | "class" | "classList"
 > & {
 	label: JSX.Element;
 };

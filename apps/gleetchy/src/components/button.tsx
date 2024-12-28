@@ -1,7 +1,7 @@
 import { Show, createMemo, splitProps } from "solid-js";
 import { twMerge } from "tailwind-merge";
 
-import type { JSX, ParentProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 
 export default function Button(_props: Props) {
 	const [props, buttonProps] = splitProps(_props, [
@@ -29,10 +29,8 @@ export default function Button(_props: Props) {
 	);
 }
 
-type Props = ParentProps<
-	Omit<JSX.ButtonHTMLAttributes<HTMLButtonElement>, "classList"> & {
-		variant?: Variant;
-	}
->;
+type Props = Omit<ComponentProps<"button">, "classList"> & {
+	variant?: Variant;
+};
 
 export type Variant = "braced" | "text";

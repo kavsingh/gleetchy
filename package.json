@@ -11,7 +11,7 @@
 	"main": "index.js",
 	"type": "module",
 	"private": true,
-	"packageManager": "bun@1.1.12",
+	"packageManager": "bun@1.1.42",
 	"workspaces": [
 		"apps/*",
 		"packages/*"
@@ -19,16 +19,24 @@
 	"scripts": {
 		"dev": "turbo dev",
 		"build": "turbo build",
-		"codecheck": "turbo codecheck",
-		"clean": "npkill ."
+		"test": "turbo test",
+		"lint": "turbo lint"
 	},
 	"devDependencies": {
-		"@types/bun": "1.1.6",
-		"@types/eslint": "8.56.10",
-		"eslint": "8.57.0",
-		"npkill": "0.12.2",
-		"prettier": "3.3.3",
-		"turbo": "2.0.9",
-		"typescript": "5.5.4"
+		"@eslint/js": "9.17.0",
+		"@kavsingh/eslint-plugin-filenames": "2.0.0-rc.0",
+		"@tsconfig/strictest": "2.0.5",
+		"@types/bun": "1.1.14",
+		"@types/eslint": "9.6.1",
+		"eslint": "9.17.0",
+		"eslint-config-prettier": "9.1.0",
+		"eslint-import-resolver-typescript": "3.7.0",
+		"eslint-plugin-import-x": "4.6.1",
+		"eslint-plugin-prettier": "5.2.1",
+		"globals": "15.14.0",
+		"prettier": "3.4.2",
+		"turbo": "2.3.3",
+		"typescript": "5.7.2",
+		"typescript-eslint": "8.18.2"
 	}
 }

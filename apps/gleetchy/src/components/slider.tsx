@@ -11,7 +11,7 @@ import type {
 	PointerDragEndHandler,
 	PointerDragMoveHandler,
 } from "./hooks/use-pointer-drag";
-import type { JSX, ParentProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 
 export default function Slider(_props: Props) {
 	const props = mergeProps(
@@ -116,7 +116,7 @@ export default function Slider(_props: Props) {
 	);
 }
 
-function LabelText(props: ParentProps<{ class: string }>) {
+function LabelText(props: Pick<ComponentProps<"div">, "class" | "children">) {
 	return (
 		<div class={twMerge("shrink-0 grow-0 truncate text-sm", props.class)}>
 			{props.children}
@@ -124,13 +124,10 @@ function LabelText(props: ParentProps<{ class: string }>) {
 	);
 }
 
-function BarContainer(
-	props: JSX.HTMLAttributes<HTMLDivElement> & OrientationProps,
-) {
+function BarContainer(props: ComponentProps<"div"> & OrientationProps) {
 	const [local, divProps] = splitProps(props, ["ref", "orientation"]);
 
 	return (
-		// @ts-expect-error exact optionals
 		<div
 			{...divProps}
 			ref={local.ref}
@@ -157,11 +154,8 @@ function Track(props: OrientationProps) {
 	);
 }
 
-function Bar(
-	props: OrientationProps & Pick<JSX.HTMLAttributes<HTMLDivElement>, "ref">,
-) {
+function Bar(props: OrientationProps & Pick<ComponentProps<"div">, "ref">) {
 	return (
-		// @ts-expect-error exact optionals
 		<div
 			ref={props.ref}
 			class={twMerge(

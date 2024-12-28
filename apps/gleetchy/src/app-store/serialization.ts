@@ -16,11 +16,11 @@ export function serialize(state: AppState) {
 	return JSON.stringify(unsetUnserializable(toSerialize));
 }
 
-export function deserialize<T>(stateString: string) {
+export function deserialize(stateString: string) {
 	try {
 		const parsed: unknown = JSON.parse(stateString);
 
-		return parsed as T;
+		return parsed;
 	} catch (_e) {
 		return undefined;
 	}

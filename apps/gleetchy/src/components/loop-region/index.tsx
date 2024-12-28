@@ -7,7 +7,7 @@ import usePointerDrag from "../hooks/use-pointer-drag";
 import LoopHandle from "./loop-handle";
 
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
-import type { JSX, ParentProps } from "solid-js";
+import type { ComponentProps } from "solid-js";
 
 const controlResponseMultipliers = {
 	normal: 1,
@@ -84,7 +84,7 @@ export default function LoopRegion(props: Props) {
 	);
 }
 
-function HandleContainer(_props: ParentProps<{ offset: number } & DivProps>) {
+function HandleContainer(_props: ComponentProps<"div"> & { offset: number }) {
 	const [props, divProps] = splitProps(_props, ["children", "offset"]);
 
 	return (
@@ -132,10 +132,7 @@ function Region(_props: RegionProps) {
 type RegionProps = {
 	start: number;
 	end: number;
-	className?: string;
-} & DivProps;
-
-type DivProps = JSX.HTMLAttributes<HTMLDivElement>;
+} & ComponentProps<"div">;
 
 type Props = {
 	loopStart: number;

@@ -43,6 +43,7 @@ export const connectionsSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder.addCase(removeAudioNode, (state, { payload: id }) => {
+			// eslint-disable-next-line @typescript-eslint/no-unused-vars
 			state = stableWithout(
 				state.filter(({ from, to }) => from === id || to === id),
 				state,

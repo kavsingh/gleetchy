@@ -25,7 +25,6 @@ const config: Config = {
 			},
 		},
 	},
-	// @ts-expect-error exact optionals
 	plugins: [containerQueriesPlugin],
 };
 

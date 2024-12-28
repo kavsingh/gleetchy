@@ -83,9 +83,7 @@ export default function useAudioNode<
 export function validateNodeType(
 	type: AudioNodeState<Record<string, unknown>>["type"],
 ) {
-	return function validate(
-		node?: AudioNodeState<Record<string, unknown>> | undefined,
-	) {
+	return function validate(node?: AudioNodeState<Record<string, unknown>>) {
 		return node?.type === type;
 	};
 }
