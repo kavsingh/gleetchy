@@ -1,7 +1,7 @@
 import { createMemo, createSignal, mergeProps } from "solid-js";
-import { twMerge } from "tailwind-merge";
 
 import { clamp } from "#lib/util/number";
+import { tj } from "#style";
 
 import useControlResponseMultiplier from "../hooks/use-control-response-multiplier";
 import usePointerDrag from "../hooks/use-pointer-drag";
@@ -72,8 +72,8 @@ export default function Knob(_props: Props) {
 				onDblClick={handleDoubleClick}
 				ref={(el) => (knobRef = el)}
 				style={{ "block-size": radius(), "inline-size": radius() }}
-				class={twMerge(
-					"relative my-auto mb-1 mt-2 shrink-0 grow-0",
+				class={tj(
+					"relative my-auto mt-2 mb-1 shrink-0 grow-0",
 					axis() === "vertical" && "cursor-ns-resize",
 					axis() === "horizontal" && "cursor-ew-resize",
 				)}
@@ -83,8 +83,8 @@ export default function Knob(_props: Props) {
 						endRatio={props.value}
 						foregroundStrokeWidth={6}
 						backgroundStrokeWidth={3}
-						foregroundClassName="stroke-text600"
-						backgroundClassName="stroke-text100"
+						foregroundClassName="stroke-emphasis-600"
+						backgroundClassName="stroke-emphasis-100"
 					/>
 				</div>
 			</div>

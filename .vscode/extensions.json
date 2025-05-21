@@ -3,7 +3,6 @@
 		"dbaeumer.vscode-eslint",
 		"esbenp.prettier-vscode",
 		"bradlc.vscode-tailwindcss",
-		"vunguyentuan.vscode-css-variables",
 		"rust-lang.rust-analyzer",
 		"vadimcn.vscode-lldb",
 		"tamasfe.even-better-toml"

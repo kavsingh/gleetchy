@@ -33,7 +33,7 @@ export default function Waveform(
 	return (
 		<div class="size-full overflow-hidden">
 			<canvas
-				class="size-full border-0 border-text100 text-text600"
+				class="size-full border-0 border-emphasis-100 text-emphasis-600"
 				ref={(el) => {
 					canvasRef = el;
 					unobserve = observe(el, update);

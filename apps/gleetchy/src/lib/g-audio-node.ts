@@ -2,16 +2,15 @@ export abstract class GAudioNode<
 	P extends Record<string, unknown> = Record<string, unknown>,
 > {
 	protected props: P;
+	protected audioContext: AudioContext;
 	private inputGainNode: AudioNode;
 	private outputGainNode: AudioNode;
 
 	abstract type: string;
 
-	constructor(
-		protected audioContext: AudioContext,
-		initialProps: P,
-	) {
+	constructor(audioContext: AudioContext, initialProps: P) {
 		this.props = { ...initialProps };
+		this.audioContext = audioContext;
 		this.inputGainNode = audioContext.createGain();
 		this.outputGainNode = audioContext.createGain();
 	}

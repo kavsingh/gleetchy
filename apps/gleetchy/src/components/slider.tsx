@@ -1,7 +1,7 @@
 import { createEffect, mergeProps, splitProps } from "solid-js";
-import { twMerge } from "tailwind-merge";
 
 import { clamp } from "#lib/util/number";
+import { tj, tm } from "#style";
 
 import useControlResponseMultiplier from "./hooks/use-control-response-multiplier";
 import usePointerDrag from "./hooks/use-pointer-drag";
@@ -82,13 +82,15 @@ export default function Slider(_props: Props) {
 	return (
 		<div
 			title={props.title}
-			class={twMerge(
-				"flex size-full items-stretch",
-				props.orientation === "block" && "flex-col items-center",
+			class={tj(
+				"flex size-full",
+				props.orientation === "block"
+					? "flex-col items-center"
+					: "items-stretch",
 			)}
 		>
 			<LabelText
-				class={twMerge(
+				class={tj(
 					props.orientation === "inline" && "flex w-12 items-center",
 					props.orientation === "block" && "h-6",
 				)}
@@ -105,7 +107,7 @@ export default function Slider(_props: Props) {
 				<Bar orientation={props.orientation} ref={(el) => (barRef = el)} />
 			</BarContainer>
 			<LabelText
-				class={twMerge(
+				class={tj(
 					props.orientation === "inline" && "w-12 items-center",
 					props.orientation === "block" && "h-6 items-end",
 				)}
@@ -118,7 +120,7 @@ export default function Slider(_props: Props) {
 
 function LabelText(props: Pick<ComponentProps<"div">, "class" | "children">) {
 	return (
-		<div class={twMerge("shrink-0 grow-0 truncate text-sm", props.class)}>
+		<div class={tm("shrink-0 grow-0 truncate text-sm", props.class)}>
 			{props.children}
 		</div>
 	);
@@ -132,10 +134,10 @@ function BarContainer(props: ComponentProps<"div"> & OrientationProps) {
 			{...divProps}
 			ref={local.ref}
 			role="presentation"
-			class={twMerge(
+			class={tj(
 				"relative grow",
 				local.orientation === "inline" &&
-					"mx-auto mb-1 mt-2 w-full cursor-ew-resize ",
+					"mx-auto mt-2 mb-1 w-full cursor-ew-resize",
 				local.orientation === "block" && "mx-2 my-auto h-full cursor-ns-resize",
 			)}
 		/>
@@ -145,8 +147,8 @@ function BarContainer(props: ComponentProps<"div"> & OrientationProps) {
 function Track(props: OrientationProps) {
 	return (
 		<div
-			class={twMerge(
-				"absolute z-[1] bg-text100",
+			class={tj(
+				"absolute z-[1] bg-emphasis-100",
 				props.orientation === "inline" && "inset-x-0 top-1/2 h-px",
 				props.orientation === "block" && "inset-y-0 start-1/2 w-px",
 			)}
@@ -158,8 +160,8 @@ function Bar(props: OrientationProps & Pick<ComponentProps<"div">, "ref">) {
 	return (
 		<div
 			ref={props.ref}
-			class={twMerge(
-				"absolute z-[2] bg-text600",
+			class={tj(
+				"absolute z-[2] bg-emphasis-600",
 				props.orientation === "inline" &&
 					"inset-x-0 top-[calc(50%-1px)] h-[2px] origin-left scale-x-0",
 				props.orientation === "block" &&

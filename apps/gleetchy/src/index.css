@@ -1,29 +1,32 @@
-@import url("./style/colors.css");
+@import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "./style/theme.css";
 
-html {
-	font-size: 14px;
-	line-height: 1.2;
-	cursor: default;
-	user-select: none;
-	color: theme("colors.text400");
-	background-color: theme("colors.surface0");
-}
+@custom-variant dark (&:is(.dark *));
 
-*,
-*::before,
-*::after {
-	user-select: inherit;
-}
+/* https://tailwindcss.com/docs/upgrade-guide#buttons-use-the-default-cursor */
+@layer base {
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
 
-*:focus:not(:focus-visible),
-*:active:not(:focus-visible) {
-	outline: none;
-}
+	:root {
+		@apply cursor-default bg-surface-0 text-[14px] leading-[1.2] text-emphasis-400 select-none;
+	}
 
-*:focus-visible {
-	outline: 1px solid theme("colors.semanticFocus");
+	*,
+	*::before,
+	*::after {
+		user-select: inherit;
+	}
+
+	*:focus:not(:focus-visible),
+	*:active:not(:focus-visible) {
+		@apply outline-0;
+	}
+
+	*:focus-visible {
+		@apply outline-1 outline-semantic-focus;
+	}
 }

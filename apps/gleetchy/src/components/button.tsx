@@ -1,5 +1,6 @@
 import { Show, createMemo, splitProps } from "solid-js";
-import { twMerge } from "tailwind-merge";
+
+import { tm } from "#style";
 
 import type { ComponentProps } from "solid-js";
 
@@ -16,8 +17,8 @@ export default function Button(_props: Props) {
 	return (
 		<button
 			{...buttonProps}
-			class={twMerge(
-				"block appearance-none transition-colors hover:text-text600 focus-visible:text-text600 active:text-text600 disabled:cursor-default disabled:text-text100",
+			class={tm(
+				"block appearance-none transition-colors hover:text-emphasis-600 focus-visible:text-emphasis-600 active:text-emphasis-600 disabled:cursor-default disabled:text-emphasis-100",
 				isBraced() && "text-xs",
 				props.class,
 			)}

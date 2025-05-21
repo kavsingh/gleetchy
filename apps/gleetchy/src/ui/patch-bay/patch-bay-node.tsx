@@ -1,7 +1,7 @@
 import { createMemo } from "solid-js";
-import { twMerge } from "tailwind-merge";
 
 import useConnection from "#app-store/hooks/use-connection";
+import { tj } from "#style";
 
 import type { AudioNodeMeta } from "#types";
 
@@ -27,11 +27,11 @@ export default function PatchBayNode(props: {
 			title={title()}
 			onClick={toggleConnection}
 			style={{ color: color() ?? "currentcolor" }}
-			class={twMerge(
+			class={tj(
 				"mx-auto mb-0 size-3 border p-0 transition-all",
-				!color() && "border-text100",
-				!color() && !isBlocked() && "hover:border-text400",
-				isBlocked() && "rotate-45 scale-50 cursor-default bg-text100",
+				!color() && "border-emphasis-100",
+				!color() && !isBlocked() && "hover:border-emphasis-400",
+				isBlocked() && "scale-50 rotate-45 cursor-default bg-emphasis-100",
 				!!color() && !isBlocked() && "border-current bg-current",
 			)}
 		/>

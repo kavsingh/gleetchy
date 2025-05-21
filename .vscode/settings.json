@@ -1,5 +1,4 @@
 {
-	"eslint.enable": true,
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll": "explicit"
@@ -7,9 +6,7 @@
 	"editor.quickSuggestions": {
 		"strings": true
 	},
-	"files.associations": {
-		"*.css": "tailwindcss"
-	},
+
 	"files.watcherExclude": {
 		"**/node_modules": true,
 		"**/coverage/": true,
@@ -22,15 +19,25 @@
 		"**/dist/": true,
 		"**/distStatic/": true
 	},
+
 	"typescript.tsdk": "node_modules/typescript/lib",
-	"rust-analyzer.check.command": "clippy",
+
+	"eslint.enable": true,
 	"eslint.workingDirectories": [{ "mode": "auto" }],
+
+	"files.associations": { "*.css": "tailwindcss" },
 	"tailwindCSS.validate": true,
 	"tailwindCSS.classAttributes": ["class", "classList"],
 	"tailwindCSS.experimental.classRegex": [
 		["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
 	],
-	"cssVariables.lookupFiles": ["src/style/**/*.css"],
+	"tailwindCSS.experimental.configFile": {
+		"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"
+	},
+
+	"rust-analyzer.check.command": "clippy",
+
+	"prettier.enable": true,
 	"[javascript]": {
 		"editor.defaultFormatter": "dbaeumer.vscode-eslint"
 	},

@@ -1,11 +1,11 @@
-import { twMerge } from "tailwind-merge";
+import { tj } from "#style";
 
 import type { ParentProps } from "solid-js";
 
 export default function NodeWrapper(props: ParentProps<{ isActive: boolean }>) {
 	return (
 		<div
-			class={twMerge(
+			class={tj(
 				"transition-opacity",
 				props.isActive ? "opacity-100" : "opacity-40",
 			)}

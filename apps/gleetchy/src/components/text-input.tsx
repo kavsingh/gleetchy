@@ -43,7 +43,7 @@ export default function TextInput(props: Props) {
 		<div class="relative inline-block border-b border-b-transparent focus-within:border-b-current">
 			<input
 				type="text"
-				class="absolute inset-0 z-10 cursor-text bg-transparent text-current transition-colors hover:text-text600 focus:text-text600 focus-visible:outline-none active:text-text600"
+				class="absolute inset-0 z-10 cursor-text bg-transparent text-current transition-colors hover:text-emphasis-600 focus:text-emphasis-600 focus-visible:outline-none active:text-emphasis-600"
 				ref={(el) => (inputRef = el)}
 				value={props.value}
 				placeholder={props.placeholder ?? ""}

@@ -30,7 +30,7 @@ export default function Sample(props: SampleProps) {
 					<>
 						<div class="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
 							<div
-								class="pointer-events-none absolute inset-0 z-[2] before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-text600"
+								class="pointer-events-none absolute inset-0 z-[2] before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-emphasis-600"
 								ref={(el) => (playheadRef = el)}
 							/>
 						</div>
@@ -47,7 +47,7 @@ export default function Sample(props: SampleProps) {
 				</Match>
 				<Match when={!props.audioBuffer}>
 					<button
-						class="absolute inset-0 z-[3] flex flex-col items-center justify-center gap-2 bg-surface0 p-12"
+						class="absolute inset-0 z-[3] flex flex-col items-center justify-center gap-2 bg-surface-0 p-12"
 						tabIndex={0}
 						onClick={() => props.selectAudioFile?.()}
 					>

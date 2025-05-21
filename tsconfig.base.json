@@ -4,11 +4,13 @@
 		"allowImportingTsExtensions": true,
 		"allowJs": true,
 		"checkJs": true,
+		"erasableSyntaxOnly": true,
 		"lib": ["esnext"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"noEmit": true,
 		"target": "esnext",
+		"verbatimModuleSyntax": true,
 		// leave the following to eslint
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,

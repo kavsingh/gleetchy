@@ -1,5 +1,6 @@
 import { Show, createMemo, splitProps } from "solid-js";
-import { twMerge } from "tailwind-merge";
+
+import { tj, tm } from "#style";
 
 import useControlResponseMultiplier from "../hooks/use-control-response-multiplier";
 import usePointerDrag from "../hooks/use-pointer-drag";
@@ -105,13 +106,13 @@ function ActiveRegion(_props: RegionProps & { preferred: boolean }) {
 	return (
 		<Region
 			{...regionProps}
-			class={twMerge("z-0 cursor-move", props.preferred && "z-[2]")}
+			class={tj("cursor-move", props.preferred ? "z-[2]" : "z-0")}
 		/>
 	);
 }
 
 function InactiveRegion(props: RegionProps) {
-	return <Region {...props} class="z-0 bg-surface0 opacity-80" />;
+	return <Region {...props} class="z-0 bg-surface-0 opacity-80" />;
 }
 
 function Region(_props: RegionProps) {
@@ -124,7 +125,7 @@ function Region(_props: RegionProps) {
 				left: `${props.start * 100}%`,
 				right: `${(1 - props.end) * 100}%`,
 			}}
-			class={twMerge("absolute inset-y-0", props.class)}
+			class={tm("absolute inset-y-0", props.class)}
 		/>
 	);
 }

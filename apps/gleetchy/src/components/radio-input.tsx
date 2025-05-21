@@ -1,5 +1,6 @@
 import { splitProps } from "solid-js";
-import { twMerge } from "tailwind-merge";
+
+import { tj } from "#style";
 
 import type { ComponentProps, JSX } from "solid-js";
 
@@ -15,9 +16,11 @@ export default function RadioInput(_props: Props) {
 			<div class="leading-none">{props.label}</div>
 			<div class="relative">
 				<div
-					class={twMerge(
-						"pointer-events-none z-0 size-[0.8em] border border-text100",
-						inputProps.checked && "border-text400 bg-text400",
+					class={tj(
+						"pointer-events-none z-0 size-[0.8em] border",
+						inputProps.checked
+							? "border-emphasis-400 bg-emphasis-400"
+							: "border-emphasis-100",
 					)}
 				/>
 				<input

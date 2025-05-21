@@ -13,7 +13,7 @@ export default function SelectBox(props: Props) {
 		<select
 			value={props.value ?? props.options[0]?.value ?? ""}
 			onChange={handleChange}
-			class="relative m-0 appearance-none border-0 border-b-text600 bg-transparent p-0 font-sans text-sm text-current underline transition-colors focus:text-text600"
+			class="relative m-0 appearance-none border-0 border-b-emphasis-600 bg-transparent p-0 font-sans text-sm text-current underline transition-colors focus:text-emphasis-600"
 		>
 			<For each={props.options}>
 				{(option) => <option value={option.value}>{option.label}</option>}

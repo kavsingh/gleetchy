@@ -31,5 +31,5 @@ export default function UI() {
 }
 
 function Divider() {
-	return <hr class="mx-0 my-4 border-text100 p-0" />;
+	return <hr class="mx-0 my-4 border-emphasis-100 p-0" />;
 }
