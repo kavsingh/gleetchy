@@ -35,7 +35,7 @@ import { GLoopNode } from "#nodes/instruments/loop/create-audio-node";
 
 import type { AppState } from "#app-store/create";
 import type { GInstrumentNode } from "#lib/g-audio-node";
-import type { AudioNodeState } from "#types";
+import type { AudioNodeState, GenericObject } from "#types";
 import type { UnknownAction } from "@reduxjs/toolkit";
 
 export default class AudioEngine {
@@ -307,7 +307,7 @@ const setNodeProps = ({
 
 function createNewNode(
 	context: AudioContext,
-	state: AudioNodeState<Record<string, unknown>>,
+	state: AudioNodeState<GenericObject>,
 ): GAudioNode | GInstrumentNode | undefined {
 	switch (state.type) {
 		case delayType:

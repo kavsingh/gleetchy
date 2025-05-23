@@ -166,7 +166,7 @@ const createAudioNode = (
 
 export default createAudioNode;
 
-type PlaybackState = {
+interface PlaybackState {
 	playing: boolean;
 	positionRatio?: number;
-} & Record<string, unknown>;
+}

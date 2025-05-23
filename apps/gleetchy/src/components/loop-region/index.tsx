@@ -85,7 +85,7 @@ export default function LoopRegion(props: Props) {
 	);
 }
 
-function HandleContainer(_props: ComponentProps<"div"> & { offset: number }) {
+function HandleContainer(_props: HandleContainerProps) {
 	const [props, divProps] = splitProps(_props, ["children", "offset"]);
 
 	return (
@@ -100,7 +100,11 @@ function HandleContainer(_props: ComponentProps<"div"> & { offset: number }) {
 	);
 }
 
-function ActiveRegion(_props: RegionProps & { preferred: boolean }) {
+interface HandleContainerProps extends ComponentProps<"div"> {
+	offset: number;
+}
+
+function ActiveRegion(_props: ActiveRegionProps) {
 	const [props, regionProps] = splitProps(_props, ["preferred"]);
 
 	return (
@@ -109,6 +113,10 @@ function ActiveRegion(_props: RegionProps & { preferred: boolean }) {
 			class={tj("cursor-move", props.preferred ? "z-[2]" : "z-0")}
 		/>
 	);
+}
+
+interface ActiveRegionProps extends RegionProps {
+	preferred: boolean;
 }
 
 function InactiveRegion(props: RegionProps) {
@@ -130,15 +138,15 @@ function Region(_props: RegionProps) {
 	);
 }
 
-type RegionProps = {
+interface RegionProps extends ComponentProps<"div"> {
 	start: number;
 	end: number;
-} & ComponentProps<"div">;
+}
 
-type Props = {
+interface Props {
 	loopStart: number;
 	loopEnd: number;
 	onLoopStartDrag?: ((movement: number) => unknown) | undefined;
 	onLoopEndDrag?: ((movement: number) => unknown) | undefined;
 	onLoopRegionDrag?: ((movement: number) => unknown) | undefined;
-};
+}

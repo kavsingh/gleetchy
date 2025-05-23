@@ -30,8 +30,8 @@ export default function Button(_props: Props) {
 	);
 }
 
-type Props = Omit<ComponentProps<"button">, "classList"> & {
+interface Props extends Omit<ComponentProps<"button">, "classList"> {
 	variant?: Variant;
-};
+}
 
 export type Variant = "braced" | "text";

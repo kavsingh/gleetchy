@@ -38,13 +38,16 @@ export default function LoopTitleBar(props: Props) {
 	);
 }
 
-type Props = Pick<
-	LoopUIProps,
-	| "fileName"
-	| "audioBuffer"
-	| "label"
-	| "onLabelChange"
-	| "duplicate"
-	| "remove"
-	| "connections"
-> & { selectAudioFile: () => unknown };
+interface Props
+	extends Pick<
+		LoopUIProps,
+		| "fileName"
+		| "audioBuffer"
+		| "label"
+		| "onLabelChange"
+		| "duplicate"
+		| "remove"
+		| "connections"
+	> {
+	selectAudioFile: () => unknown;
+}

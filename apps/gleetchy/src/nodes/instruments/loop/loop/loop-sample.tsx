@@ -8,7 +8,7 @@ import { isFiniteNumber } from "#lib/util/predicate";
 import type { AppState } from "#app-store/create";
 import type { SampleProps } from "#components/sample";
 
-export default function LoopSample(_props: SampleProps & { nodeId: string }) {
+export default function LoopSample(_props: Props) {
 	const [props, sampleProps] = splitProps(_props, ["nodeId"]);
 	const store = useAppStore();
 
@@ -31,4 +31,8 @@ export default function LoopSample(_props: SampleProps & { nodeId: string }) {
 			subscribeToPositionRatio={subscribeToPositionRatio}
 		/>
 	);
+}
+
+interface Props extends SampleProps {
+	nodeId: string;
 }

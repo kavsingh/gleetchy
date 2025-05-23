@@ -29,9 +29,9 @@ export default function PlaybackControls(props: Props) {
 const normalizeRate = normalize.bind(null, 0, 2);
 const denormalizeRate = denormalize.bind(null, 0, 2);
 
-type Props = {
+interface Props {
 	gain: number;
 	playbackRate: number;
 	onGainChange(gain: number): unknown;
 	onPlaybackRateChange(playbackRate: number): unknown;
-};
+}

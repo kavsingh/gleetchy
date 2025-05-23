@@ -49,7 +49,7 @@ function KnobContainer(props: ParentProps) {
 	return <div class="w-12 shrink-0 grow-0">{props.children}</div>;
 }
 
-export type DelayProps = {
+export interface DelayProps {
 	label: string;
 	connections: AudioNodeConnection[];
 	wetDryRatio: number;
@@ -59,4 +59,4 @@ export type DelayProps = {
 	onWetDryRatioChange(wetDryRatio: number): unknown;
 	onLabelChange(label: string): unknown;
 	remove(): unknown;
-};
+}

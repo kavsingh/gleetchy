@@ -70,7 +70,7 @@ export default function Sample(props: SampleProps) {
 	);
 }
 
-export type SampleProps = {
+export interface SampleProps {
 	audioBuffer: Nullable<AudioBuffer>;
 	fromSaved?: boolean | undefined;
 	loopStart?: number | undefined;
@@ -82,4 +82,4 @@ export type SampleProps = {
 	subscribeToPositionRatio?:
 		| ((handler: (ratio: number) => void) => () => void)
 		| undefined;
-};
+}

@@ -12,10 +12,8 @@ export const defaultProps = {
 	playbackRate: 1,
 };
 
-export type Props = Omit<
-	typeof defaultProps,
-	"audioBuffer" | "playbackPosition"
-> & {
+export interface Props
+	extends Omit<typeof defaultProps, "audioBuffer" | "playbackPosition"> {
 	audioBuffer: AudioBuffer | undefined;
 	playbackPosition: number | undefined;
-};
+}

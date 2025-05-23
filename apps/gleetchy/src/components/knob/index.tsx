@@ -104,7 +104,7 @@ const controlMultipliers: ControlResponseMultipliers = {
 	fine: 0.2,
 };
 
-type Props = {
+interface Props {
 	value: number;
 	defaultValue?: number;
 	radius?: number | string;
@@ -112,6 +112,6 @@ type Props = {
 	label?: string;
 	valueLabel?: string;
 	onChange?: ((value: number) => unknown) | undefined;
-};
+}
 
 type MovementAxis = "vertical" | "horizontal";

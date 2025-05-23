@@ -1,6 +1,6 @@
 import type { AudioNodeConnection } from "#types";
 
-export type LoopUIProps = {
+export interface LoopUIProps {
 	nodeId: string;
 	loopStart: number;
 	loopEnd: number;
@@ -22,4 +22,4 @@ export type LoopUIProps = {
 	onLabelChange(label: string): unknown;
 	duplicate(): unknown;
 	remove(): unknown;
-};
+}

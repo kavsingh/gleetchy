@@ -42,7 +42,7 @@ export default function Reverb(props: ReverbProps) {
 	);
 }
 
-export type ReverbProps = {
+export interface ReverbProps {
 	label: string;
 	wetDryRatio: number;
 	isActive: boolean;
@@ -52,7 +52,7 @@ export type ReverbProps = {
 	onLabelChange(label: string): unknown;
 	onImpulseChange(impulse: ImpulseName): unknown;
 	remove(): unknown;
-};
+}
 
 const impulseOptions: { value: ImpulseName; label: string }[] = [
 	{ value: "wide", label: "Wide" },

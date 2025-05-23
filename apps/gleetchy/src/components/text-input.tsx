@@ -58,8 +58,8 @@ export default function TextInput(props: Props) {
 	);
 }
 
-type Props = {
+interface Props {
 	value: string;
 	placeholder?: string | undefined;
 	onChange?: ((value: string) => unknown) | undefined;
-};
+}

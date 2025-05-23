@@ -34,9 +34,10 @@ export default function RadioInput(_props: Props) {
 	);
 }
 
-type Props = Omit<
-	ComponentProps<"input">,
-	"type" | "hidden" | "class" | "classList"
-> & {
+interface Props
+	extends Omit<
+		ComponentProps<"input">,
+		"type" | "hidden" | "class" | "classList"
+	> {
 	label: JSX.Element;
-};
+}

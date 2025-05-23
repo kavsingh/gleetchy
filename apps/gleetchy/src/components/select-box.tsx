@@ -22,8 +22,8 @@ export default function SelectBox(props: Props) {
 	);
 }
 
-type Props = {
+interface Props {
 	options: { value: string; label: string }[];
 	value?: string;
 	onChange?: (value: string) => unknown;
-};
+}

@@ -30,10 +30,10 @@ export default function SVGArc(props: Props) {
 	);
 }
 
-type Props = {
+interface Props {
 	endRatio: number;
 	foregroundClassName: string;
 	foregroundStrokeWidth?: number;
 	backgroundClassName?: string;
 	backgroundStrokeWidth?: number;
-};
+}

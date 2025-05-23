@@ -50,7 +50,7 @@ function isModifierKey(key: string): key is ModifierKey {
 	return Object.values(MODIFIER_KEYS).includes(key as ModifierKey);
 }
 
-type UIState = {
+interface UIState {
 	currentTheme: Theme;
 	modifierKeys: ModifierKey[];
-};
+}

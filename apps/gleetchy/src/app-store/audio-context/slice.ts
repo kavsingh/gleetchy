@@ -38,6 +38,6 @@ function getAudioContext() {
 	return new AudioContext();
 }
 
-type AudioContextState = {
+interface AudioContextState {
 	audioContext?: AudioContext;
-};
+}

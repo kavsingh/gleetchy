@@ -1,24 +1,29 @@
-export type AudioNodeIdentifierMeta = {
+export interface AudioNodeIdentifierMeta {
 	readonly id: string;
 	readonly type: string;
-};
+}
 
-export type AudioNodeMeta = {
+export interface AudioNodeMeta extends AudioNodeIdentifierMeta {
 	label: string;
-} & AudioNodeIdentifierMeta;
+}
 
-export type AudioNodeState<TProps extends Record<string, unknown>> =
-	AudioNodeMeta & { audioProps: TProps };
+export interface AudioNodeState<TProps extends GenericObject>
+	extends AudioNodeMeta {
+	audioProps: TProps;
+}
 
-export type AudioNodeConnection = {
+export interface AudioNodeConnection {
 	from: string;
 	to: string;
 	color: string;
-};
+}
 
-export type AudioFile = {
+export interface AudioFile {
 	readonly id: string;
 	readonly type: string;
 	readonly name: string;
 	readonly buffer: AudioBuffer;
-};
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type GenericObject = Record<PropertyKey, any>;

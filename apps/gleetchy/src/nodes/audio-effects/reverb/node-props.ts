@@ -5,4 +5,7 @@ export const defaultProps: Props = {
 	impulse: "wide",
 };
 
-export type Props = { wetDryRatio: number; impulse: ImpulseName };
+export interface Props {
+	wetDryRatio: number;
+	impulse: ImpulseName;
+}

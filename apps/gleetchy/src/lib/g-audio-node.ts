@@ -1,6 +1,6 @@
-export abstract class GAudioNode<
-	P extends Record<string, unknown> = Record<string, unknown>,
-> {
+import type { GenericObject } from "#types";
+
+export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 	protected props: P;
 	protected audioContext: AudioContext;
 	private inputGainNode: AudioNode;
@@ -63,8 +63,8 @@ export abstract class GAudioNode<
 }
 
 export abstract class GInstrumentNode<
-	P extends Record<string, unknown> = Record<string, unknown>,
-	S extends Record<string, unknown> = Record<string, unknown>,
+	P extends GenericObject = GenericObject,
+	S extends GenericObject = GenericObject,
 > extends GAudioNode<P> {
 	private subscribers = new Set<GInstrumentNodeSubscriber<S>>();
 

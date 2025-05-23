@@ -126,7 +126,7 @@ function LabelText(props: Pick<ComponentProps<"div">, "class" | "children">) {
 	);
 }
 
-function BarContainer(props: ComponentProps<"div"> & OrientationProps) {
+function BarContainer(props: BarContainerProps) {
 	const [local, divProps] = splitProps(props, ["ref", "orientation"]);
 
 	return (
@@ -144,6 +144,8 @@ function BarContainer(props: ComponentProps<"div"> & OrientationProps) {
 	);
 }
 
+interface BarContainerProps extends ComponentProps<"div">, OrientationProps {}
+
 function Track(props: OrientationProps) {
 	return (
 		<div
@@ -156,7 +158,7 @@ function Track(props: OrientationProps) {
 	);
 }
 
-function Bar(props: OrientationProps & Pick<ComponentProps<"div">, "ref">) {
+function Bar(props: BarProps) {
 	return (
 		<div
 			ref={props.ref}
@@ -171,6 +173,10 @@ function Bar(props: OrientationProps & Pick<ComponentProps<"div">, "ref">) {
 	);
 }
 
+interface BarProps
+	extends OrientationProps,
+		Pick<ComponentProps<"div">, "ref"> {}
+
 const clampValue = clamp.bind(null, 0, 1);
 
 const controlMultipliers: ControlResponseMultipliers = {
@@ -178,7 +184,7 @@ const controlMultipliers: ControlResponseMultipliers = {
 	fine: 0.4,
 };
 
-type Props = {
+interface Props {
 	value: number;
 	defaultValue?: number;
 	orientation?: Orientation;
@@ -186,8 +192,10 @@ type Props = {
 	valueLabel?: string;
 	title?: string;
 	onChange?: ((value: number) => unknown) | undefined;
-};
+}
 
-type OrientationProps = { orientation: Orientation };
+interface OrientationProps {
+	orientation: Orientation;
+}
 
 type Orientation = "inline" | "block";

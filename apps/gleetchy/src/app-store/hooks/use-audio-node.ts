@@ -17,11 +17,12 @@ import {
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-import type { AudioNodeState } from "#types";
+import type { AudioNodeState, GenericObject } from "#types";
 
-export default function useAudioNode<
-	TAudioNodeProps extends Record<string, unknown>,
->(id: string, isValid: ReturnType<typeof validateNodeType>) {
+export default function useAudioNode<TAudioNodeProps extends GenericObject>(
+	id: string,
+	isValid: ReturnType<typeof validateNodeType>,
+) {
 	const node = useAppSelector((state) => {
 		const selected = selectAudioNodes(state)[id];
 
@@ -80,10 +81,8 @@ export default function useAudioNode<
 	} as const;
 }
 
-export function validateNodeType(
-	type: AudioNodeState<Record<string, unknown>>["type"],
-) {
-	return function validate(node?: AudioNodeState<Record<string, unknown>>) {
+export function validateNodeType(type: AudioNodeState<GenericObject>["type"]) {
+	return function validate(node?: AudioNodeState<GenericObject>) {
 		return node?.type === type;
 	};
 }

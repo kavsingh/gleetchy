@@ -46,9 +46,9 @@ export default function useFileDropRegion(props: UseFileDropRegionProps) {
 	return { isDropActive, eventHandlers } as const;
 }
 
-export type UseFileDropRegionProps = {
+export interface UseFileDropRegionProps {
 	fileFilter?(file: File, index: number, files: File[]): boolean;
 	onFiles?(files: File[]): unknown;
-};
+}
 
 type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;

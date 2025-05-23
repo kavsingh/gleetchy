@@ -167,10 +167,10 @@ function getNewNodeState(type: string) {
 	}
 }
 
-type AudioNodesState = {
+interface AudioNodesState {
 	byId: Record<string, AudioNodeState<KnownProps>>;
 	orderedIdentifierMeta: AudioNodeIdentifierMeta[];
-};
+}
 
 type KnownProps =
 	| DelayNodeProps

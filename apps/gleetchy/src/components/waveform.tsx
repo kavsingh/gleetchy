@@ -5,9 +5,7 @@ import { selectTheme } from "#app-store/ui/selectors";
 
 import { useResizeObserver } from "./hooks/use-resize-observer";
 
-export default function Waveform(
-	props: WaveformProps & { class?: string | undefined },
-) {
+export default function Waveform(props: Props) {
 	const theme = useAppSelector(selectTheme);
 	const observe = useResizeObserver();
 	let unobserve: ReturnType<typeof observe> | undefined;
@@ -41,6 +39,15 @@ export default function Waveform(
 			/>
 		</div>
 	);
+}
+
+export interface WaveformProps {
+	buffer: Nullable<AudioBuffer>;
+	timeRegions?: number | undefined;
+}
+
+interface Props extends WaveformProps {
+	class?: string | undefined;
 }
 
 function drawTempWaveform(
@@ -95,11 +102,7 @@ function drawWaveform(
 
 function updateWaveform(
 	canvasNode: HTMLCanvasElement,
-	{
-		pixelRatio = 1,
-		timeRegions = 4,
-		buffer,
-	}: WaveformProps & { pixelRatio: number },
+	{ pixelRatio = 1, timeRegions = 4, buffer }: UpdateWaveformOptions,
 ) {
 	const context = canvasNode.getContext("2d");
 
@@ -125,7 +128,6 @@ function updateWaveform(
 	}
 }
 
-export type WaveformProps = {
-	buffer: Nullable<AudioBuffer>;
-	timeRegions?: number | undefined;
-};
+interface UpdateWaveformOptions extends WaveformProps {
+	pixelRatio: number;
+}

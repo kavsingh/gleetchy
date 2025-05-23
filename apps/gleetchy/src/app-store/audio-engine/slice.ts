@@ -30,6 +30,6 @@ export const audioEngineSlice = createSlice({
 	},
 });
 
-type AudioEngineState = {
+interface AudioEngineState {
 	subscriptionData: Record<string, Record<string, unknown>>;
-};
+}

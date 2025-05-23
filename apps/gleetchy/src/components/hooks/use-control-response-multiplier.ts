@@ -14,7 +14,7 @@ export default function useControlResponseMultiplier(
 	return multiplier;
 }
 
-export type ControlResponseMultipliers = {
+export interface ControlResponseMultipliers {
 	normal: number;
 	fine: number;
-};
+}

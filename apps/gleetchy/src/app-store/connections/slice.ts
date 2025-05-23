@@ -74,7 +74,7 @@ type ConnectionsState = AudioNodeConnection[];
 
 type ConnectionAction = PayloadAction<ConnectionDescriptor>;
 
-type ConnectionDescriptor = {
+interface ConnectionDescriptor {
 	fromId: string;
 	toId: string;
-};
+}

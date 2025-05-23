@@ -34,7 +34,7 @@ export default tsEslint.config(
 				{ selector: "TSEnumDeclaration", message: "Avoid using enums" },
 			],
 			"no-unreachable": "error",
-			"@typescript-eslint/consistent-type-definitions": ["warn", "type"],
+			"@typescript-eslint/consistent-type-definitions": ["warn", "interface"],
 			"@typescript-eslint/consistent-type-imports": "error",
 			"@typescript-eslint/member-ordering": ["warn"],
 			"@typescript-eslint/restrict-template-expressions": [

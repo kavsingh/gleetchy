@@ -123,7 +123,7 @@ const initialState: PointerDragState = {
 	y: 0,
 };
 
-export type PointerDragState = {
+export interface PointerDragState {
 	displacementX: number;
 	displacementY: number;
 	duration: number;
@@ -142,7 +142,7 @@ export type PointerDragState = {
 	timeStamp: number;
 	x: number;
 	y: number;
-};
+}
 
 export type PointerDragStartHandler = (state: PointerDragState) => void;
 
@@ -150,8 +150,8 @@ export type PointerDragMoveHandler = (state: PointerDragState) => void;
 
 export type PointerDragEndHandler = (state: PointerDragState) => void;
 
-export type UsePointerDragProps = {
+export interface UsePointerDragProps {
 	onDragStart?: PointerDragStartHandler;
 	onDragMove?: PointerDragMoveHandler;
 	onDragEnd?: PointerDragEndHandler;
-};
+}
