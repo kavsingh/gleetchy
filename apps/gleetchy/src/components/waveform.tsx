@@ -1,12 +1,10 @@
 import { createEffect, onCleanup } from "solid-js";
 
-import { useAppSelector } from "#app-store/hooks/base";
-import { selectTheme } from "#app-store/ui/selectors";
+import { ui } from "#stores/ui";
 
 import { useResizeObserver } from "./hooks/use-resize-observer";
 
 export default function Waveform(props: Props) {
-	const theme = useAppSelector(selectTheme);
 	const observe = useResizeObserver();
 	let unobserve: ReturnType<typeof observe> | undefined;
 	let canvasRef: HTMLCanvasElement | undefined;
@@ -14,7 +12,7 @@ export default function Waveform(props: Props) {
 	function update() {
 		if (!canvasRef) return;
 
-		canvasRef.setAttribute("data-theme", theme());
+		canvasRef.setAttribute("data-theme", ui.theme);
 		updateWaveform(canvasRef, {
 			timeRegions: props.timeRegions,
 			buffer: props.buffer,

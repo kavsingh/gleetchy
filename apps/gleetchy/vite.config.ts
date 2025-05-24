@@ -5,7 +5,6 @@ import solidPlugin from "vite-plugin-solid";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
 export default defineConfig(({ mode }) => ({
-	server: { port: 3000 },
 	build: { sourcemap: true },
 	plugins: [
 		tsconfigPathsPlugin(),

@@ -1,14 +1,13 @@
 import { createMemo } from "solid-js";
 
-import useModifierKeys from "#app-store/hooks/use-modifier-keys";
 import { MODIFIER_KEYS } from "#lib/constants";
+import { ui } from "#stores/ui";
 
 export default function useControlResponseMultiplier(
 	props: ControlResponseMultipliers,
 ) {
-	const { activeKeys } = useModifierKeys();
 	const multiplier = createMemo(() =>
-		activeKeys().includes(MODIFIER_KEYS.Shift) ? props.fine : props.normal,
+		ui.activeKeys.includes(MODIFIER_KEYS.Shift) ? props.fine : props.normal,
 	);
 
 	return multiplier;

@@ -10,7 +10,6 @@ import { audioNodesSlice } from "./audio-nodes/slice";
 import { connectionsSlice } from "./connections/slice";
 import { globalPlaybackSlice } from "./global-playback/slice";
 import { appStartListening, listenerMiddleware } from "./listener-middleware";
-import { uiSlice } from "./ui/slice";
 
 const reducer = combineSlices(
 	audioContextSlice,
@@ -19,7 +18,6 @@ const reducer = combineSlices(
 	audioFilesSlice,
 	audioNodesSlice,
 	connectionsSlice,
-	uiSlice,
 );
 
 export function createStore() {
