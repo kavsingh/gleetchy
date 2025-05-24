@@ -1,5 +1,5 @@
+import { createSelectorCreator, lruMemoize } from "@reduxjs/toolkit";
 import { deepEqual } from "fast-equals";
-import { createSelectorCreator, lruMemoize } from "reselect";
 
 export const createDeepEqualSelector = createSelectorCreator(
 	lruMemoize,
