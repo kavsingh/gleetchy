@@ -1,10 +1,8 @@
 import { onCleanup } from "solid-js";
 
-import useModifierKeys from "#app-store/hooks/use-modifier-keys";
+import { registerKeyPress, registerKeyRelease } from "#stores/ui";
 
 export default function KeyboardListeners() {
-	const { registerKeyPress, registerKeyRelease } = useModifierKeys();
-
 	globalThis.window.addEventListener("keydown", registerKeyPress, true);
 	globalThis.window.addEventListener("keyup", registerKeyRelease, true);
 
