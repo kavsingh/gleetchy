@@ -8,13 +8,11 @@ import { audioEngineSlice } from "./audio-engine/slice";
 import { audioFilesSlice } from "./audio-files/slice";
 import { audioNodesSlice } from "./audio-nodes/slice";
 import { connectionsSlice } from "./connections/slice";
-import { globalPlaybackSlice } from "./global-playback/slice";
 import { appStartListening, listenerMiddleware } from "./listener-middleware";
 
 const reducer = combineSlices(
 	audioContextSlice,
 	audioEngineSlice,
-	globalPlaybackSlice,
 	audioFilesSlice,
 	audioNodesSlice,
 	connectionsSlice,

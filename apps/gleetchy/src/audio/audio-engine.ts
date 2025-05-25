@@ -1,4 +1,5 @@
 import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
+import { createEffect } from "solid-js";
 
 import { loadAudioFileToNode } from "#app-store/audio-files/actions";
 import {
@@ -12,7 +13,6 @@ import {
 	removeConnection,
 	toggleConnection,
 } from "#app-store/connections/actions";
-import { togglePlayback } from "#app-store/global-playback/actions";
 import { MAIN_OUT_ID } from "#constants/audio";
 import { isInstrumentNode } from "#lib/audio";
 import { GAudioNode } from "#lib/g-audio-node";
@@ -32,6 +32,7 @@ import {
 	nodeType as loopType,
 } from "#nodes/instruments/loop";
 import { GLoopNode } from "#nodes/instruments/loop/create-audio-node";
+import { globalTransport } from "#stores/global-transport";
 
 import type { AppState } from "#app-store/create";
 import type { GInstrumentNode } from "#lib/g-audio-node";
@@ -54,6 +55,14 @@ export default class AudioEngine {
 		publishSubscriptionEvent: SubscriptionEventDispatcher;
 	}) {
 		this.publishSubscriptionEvent = publishSubscriptionEvent;
+
+		createEffect(() => {
+			const isPlaying = globalTransport.isPlaying;
+
+			this.forEachInstrument((instrument) => {
+				this.toggleInstrumentPlaybackAndSubscription(instrument, isPlaying);
+			});
+		});
 	}
 
 	public async update(appState: AppState, action: UnknownAction) {
@@ -66,7 +75,7 @@ export default class AudioEngine {
 		const updateNodes = () => {
 			this.updateAudioNodes(
 				appState.audioNodes.byId,
-				appState.globalPlayback.isPlaying,
+				globalTransport.isPlaying,
 			);
 		};
 
@@ -77,17 +86,6 @@ export default class AudioEngine {
 		if (didUpdate) {
 			updateNodes();
 			updateGraph();
-
-			return;
-		}
-
-		if (isAnyOf(togglePlayback)(action)) {
-			this.forEachInstrument((instrument) => {
-				this.toggleInstrumentPlaybackAndSubscription(
-					instrument,
-					appState.globalPlayback.isPlaying,
-				);
-			});
 
 			return;
 		}
@@ -238,7 +236,7 @@ export default class AudioEngine {
 
 	private updateAudioNodes(
 		nextNodes: AppState["audioNodes"]["byId"],
-		isPlaying: AppState["globalPlayback"]["isPlaying"],
+		isPlaying: boolean,
 	) {
 		if (!this.audioContext) return;
 
