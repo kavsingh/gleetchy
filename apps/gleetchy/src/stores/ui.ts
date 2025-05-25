@@ -1,6 +1,4 @@
-import { createStore } from "solid-js/store";
-
-import { stableAppendUnique, stableWithout } from "#lib/util";
+import { createStore, produce } from "solid-js/store";
 
 const [store, setStore] = createStore<UiState>({
 	theme: "system",
@@ -13,16 +11,22 @@ export function setTheme(theme: Theme) {
 	setStore("theme", theme);
 }
 
-export function registerKeyPress(event: KeyboardEvent) {
-	setStore("activeKeys", (prev) => {
-		return stableAppendUnique([event.key], prev);
-	});
+export function registerKeyPress({ key }: KeyboardEvent) {
+	setStore(
+		produce((draft) => {
+			if (!draft.activeKeys.includes(key)) draft.activeKeys.push(key);
+		}),
+	);
 }
 
-export function registerKeyRelease(event: KeyboardEvent) {
-	setStore("activeKeys", (prev) => {
-		return stableWithout([event.key], prev);
-	});
+export function registerKeyRelease({ key }: KeyboardEvent) {
+	setStore(
+		produce((draft) => {
+			const idx = draft.activeKeys.indexOf(key);
+
+			if (idx !== -1) draft.activeKeys.splice(idx, 1);
+		}),
+	);
 }
 
 interface UiState {
