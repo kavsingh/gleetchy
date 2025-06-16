@@ -105,7 +105,6 @@ export default tsEslint.config(
 		},
 	},
 
-	// @ts-expect-error upstream types
 	prettierRecommended,
 
 	{
