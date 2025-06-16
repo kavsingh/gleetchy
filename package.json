@@ -1,45 +1,47 @@
 {
-  "name": "gleetchy-mono",
-  "version": "1.0.0",
-  "description": "looping business",
-  "author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
-  "license": "ISC",
-  "repository": {
-    "url": "https://github.com/kavsingh/gleetchy.git",
-    "type": "git"
-  },
-  "main": "index.js",
-  "type": "module",
-  "private": true,
-  "packageManager": "bun@1.2.14",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
-  "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "test": "turbo test",
-    "lint": "turbo lint"
-  },
-  "devDependencies": {
-    "@eslint/js": "9.27.0",
-    "@kavsingh/eslint-plugin-filenames": "2.0.0-rc.1",
-    "@tsconfig/strictest": "2.0.5",
-    "@types/bun": "1.2.14",
-    "@types/eslint": "9.6.1",
-    "eslint": "9.27.0",
-    "eslint-config-prettier": "10.1.5",
-    "eslint-import-resolver-typescript": "4.3.5",
-    "eslint-plugin-import-x": "4.12.2",
-    "eslint-plugin-prettier": "5.4.0",
-    "globals": "16.1.0",
-    "prettier": "3.5.3",
-    "turbo": "2.5.3",
-    "typescript": "5.8.3",
-    "typescript-eslint": "8.32.1"
-  },
-  "trustedDependencies": [
-    "unrs-resolver"
-  ]
+	"name": "gleetchy-mono",
+	"version": "1.0.0",
+	"description": "looping business",
+	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
+	"license": "ISC",
+	"repository": {
+		"url": "https://github.com/kavsingh/gleetchy.git",
+		"type": "git"
+	},
+	"main": "index.js",
+	"type": "module",
+	"private": true,
+	"packageManager": "bun@1.2.16",
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"test": "turbo test",
+		"lint": "turbo lint"
+	},
+	"devDependencies": {
+		"@eslint/js": "9.29.0",
+		"@kavsingh/eslint-plugin-filenames": "2.0.0-rc.1",
+		"@tsconfig/strictest": "2.0.5",
+		"@types/bun": "1.2.16",
+		"@types/eslint": "9.6.1",
+		"eslint": "9.29.0",
+		"eslint-config-prettier": "10.1.5",
+		"eslint-import-resolver-typescript": "4.4.3",
+		"eslint-plugin-import-x": "4.15.2",
+		"eslint-plugin-prettier": "5.4.1",
+		"globals": "16.2.0",
+		"prettier": "3.5.3",
+		"turbo": "2.5.4",
+		"typescript": "5.8.3",
+		"typescript-eslint": "8.34.0"
+	},
+	"trustedDependencies": [
+		"@tailwindcss/oxide",
+		"esbuild",
+		"unrs-resolver"
+	]
 }

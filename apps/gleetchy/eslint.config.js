@@ -91,7 +91,9 @@ export default tsEslint.config(
 		},
 		extends: [
 			vitest.configs.all,
+			// @ts-expect-error upstream types
 			testingLibrary.configs["flat/dom"],
+			// @ts-expect-error upstream types
 			jestDom.configs["flat/recommended"],
 		],
 		rules: {
