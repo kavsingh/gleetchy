@@ -28,14 +28,14 @@
 	"files.associations": { "*.css": "tailwindcss" },
 	"tailwindCSS.validate": true,
 	"tailwindCSS.classAttributes": ["class", "classList"],
-	"tailwindCSS.experimental.classRegex": [
-		["tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-	],
+	"tailwindCSS.classFunctions": ["tj", "tm"],
 	"tailwindCSS.experimental.configFile": {
 		"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"
 	},
 
 	"rust-analyzer.check.command": "clippy",
+	"rust-analyzer.diagnostics.styleLints.enable": true,
+	"rust-analyzer.rustfmt.extraArgs": ["+nightly"],
 
 	"prettier.enable": true,
 	"[javascript]": {

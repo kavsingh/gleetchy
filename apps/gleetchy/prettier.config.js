@@ -5,5 +5,5 @@ export default {
 	...baseConfig,
 	plugins: ["prettier-plugin-tailwindcss"],
 	tailwindStylesheet: "./src/index.css",
-	tailwindFunctions: ["tj", "tm", "tv"],
+	tailwindFunctions: ["tj", "tm"],
 };
