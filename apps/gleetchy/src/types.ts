@@ -13,10 +13,12 @@ export interface AudioNodeState<TProps extends GenericObject>
 }
 
 export interface AudioNodeConnection {
-	from: string;
-	to: string;
+	fromId: string;
+	toId: string;
 	color: string;
 }
+
+export type ConnectionIdent = Pick<AudioNodeConnection, "fromId" | "toId">;
 
 export interface AudioFile {
 	readonly id: string;

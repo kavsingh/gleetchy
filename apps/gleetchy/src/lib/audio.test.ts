@@ -47,49 +47,58 @@ describe("lib/audio", () => {
 		it("should determine if two connections are the same", () => {
 			expect.assertions(3);
 			expect(
-				isSameConnection({ from: "a", to: "b" }, { from: "a", to: "b" }),
+				isSameConnection(
+					{ fromId: "a", toId: "b" },
+					{ fromId: "a", toId: "b" },
+				),
 			).toBeTruthy();
 			expect(
-				isSameConnection({ from: "a", to: "b" }, { to: "b", from: "a" }),
+				isSameConnection(
+					{ fromId: "a", toId: "b" },
+					{ toId: "b", fromId: "a" },
+				),
 			).toBeTruthy();
 			expect(
-				isSameConnection({ from: "a", to: "b" }, { from: "b", to: "a" }),
+				isSameConnection(
+					{ fromId: "a", toId: "b" },
+					{ fromId: "b", toId: "a" },
+				),
 			).toBeFalsy();
 		});
 	});
 
 	describe("getConnectionsFor", () => {
 		const connections = [
-			{ from: "a", to: "b", color: "" },
-			{ from: "a", to: "d", color: "" },
-			{ from: "d", to: "a", color: "" },
-			{ from: "e", to: "f", color: "" },
-			{ from: "e", to: "g", color: "" },
-			{ from: "b", to: "c", color: "" },
+			{ fromId: "a", toId: "b", color: "" },
+			{ fromId: "a", toId: "d", color: "" },
+			{ fromId: "d", toId: "a", color: "" },
+			{ fromId: "e", toId: "f", color: "" },
+			{ fromId: "e", toId: "g", color: "" },
+			{ fromId: "b", toId: "c", color: "" },
 		];
 
 		it("should return an array of direct connections for given node", () => {
 			expect.assertions(3);
 			expect(getConnectionsFor("q", connections)).toStrictEqual([]);
 			expect(getConnectionsFor("a", connections)).toStrictEqual([
-				{ from: "a", to: "b", color: "" },
-				{ from: "a", to: "d", color: "" },
-				{ from: "d", to: "a", color: "" },
+				{ fromId: "a", toId: "b", color: "" },
+				{ fromId: "a", toId: "d", color: "" },
+				{ fromId: "d", toId: "a", color: "" },
 			]);
 			expect(getConnectionsFor("g", connections)).toStrictEqual([
-				{ from: "e", to: "g", color: "" },
+				{ fromId: "e", toId: "g", color: "" },
 			]);
 		});
 	});
 
 	describe("hasConnectionTo", () => {
 		const connections = [
-			{ from: "a", to: "b" },
-			{ from: "a", to: "d" },
-			{ from: "d", to: "a" },
-			{ from: "e", to: "f" },
-			{ from: "e", to: "g" },
-			{ from: "b", to: "c" },
+			{ fromId: "a", toId: "b" },
+			{ fromId: "a", toId: "d" },
+			{ fromId: "d", toId: "a" },
+			{ fromId: "e", toId: "f" },
+			{ fromId: "e", toId: "g" },
+			{ fromId: "b", toId: "c" },
 		];
 
 		it("should determine if from id is connected to id", () => {
@@ -119,8 +128,8 @@ describe("lib/audio", () => {
 			expect.assertions(1);
 
 			const connections = [
-				{ from: "d", to: "b" },
-				{ from: "b", to: "a" },
+				{ fromId: "d", toId: "b" },
+				{ fromId: "b", toId: "a" },
 			];
 
 			const canConnectIn = canConnectNodes.bind(null, connections);
@@ -131,8 +140,8 @@ describe("lib/audio", () => {
 
 	describe("getConnectionBetween", () => {
 		const connections = [
-			{ from: "a", to: "b", color: "black" },
-			{ from: "a", to: "b", color: "white" },
+			{ fromId: "a", toId: "b", color: "black" },
+			{ fromId: "a", toId: "b", color: "white" },
 		];
 
 		it("should return first found connection between nodes", () => {
@@ -141,8 +150,8 @@ describe("lib/audio", () => {
 			const getConnection = getConnectionBetween.bind(null, connections);
 
 			expect(getConnection({ id: "a" }, { id: "b" })).toStrictEqual({
-				from: "a",
-				to: "b",
+				fromId: "a",
+				toId: "b",
 				color: "black",
 			});
 			expect(getConnection({ id: "b" }, { id: "a" })).toBeUndefined();

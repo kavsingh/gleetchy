@@ -1,5 +1,9 @@
 import type { GAudioNode, GInstrumentNode } from "#lib/g-audio-node";
-import type { AudioNodeConnection, AudioNodeMeta } from "#types";
+import type {
+	AudioNodeConnection,
+	AudioNodeMeta,
+	ConnectionIdent,
+} from "#types";
 
 export function hasAudioEffectType(item: { type?: string }) {
 	return /^audio_effect_/i.test(item.type ?? "");
@@ -21,63 +25,53 @@ export function isInstrumentNode(
 	return hasInstrumentType(node as GAudioNode);
 }
 
-type Connection = Omit<AudioNodeConnection, "color">;
-
-export function isSameConnection(
-	connection1: Connection,
-	connection2: Connection,
-) {
-	return (
-		connection1.from === connection2.from && connection1.to === connection2.to
-	);
+export function isSameConnection(a: ConnectionIdent, b: ConnectionIdent) {
+	return a.fromId === b.fromId && a.toId === b.toId;
 }
 
 export function getConnectionsFor(
 	id: string,
 	connections: AudioNodeConnection[],
 ) {
-	return connections.filter(({ from, to }) => from === id || to === id);
+	return connections.filter((c) => c.fromId === id || c.toId === id);
 }
 
 export function hasConnectionTo(
-	connections: Connection[],
+	connections: ConnectionIdent[],
 	toId: string,
 	fromId: string,
 ) {
 	if (!connections.length) return false;
 
-	const checkDownstreamConnection = (innerFromId: string): boolean => {
-		const connectionsFromId = connections.filter(
-			({ from }) => from === innerFromId,
-		);
+	function hasDownstreamConnection(innerFromId: string): boolean {
+		const connectionsFromId = connections.filter((connection) => {
+			return connection.fromId === innerFromId;
+		});
 
 		if (!connectionsFromId.length) return false;
-		if (connectionsFromId.some(({ to }) => to === toId)) return true;
 
-		return connectionsFromId.reduce(
-			(accum: boolean, connection) =>
-				accum || checkDownstreamConnection(connection.to),
-			false,
-		);
-	};
+		if (connectionsFromId.some((c) => c.toId === toId)) return true;
 
-	return checkDownstreamConnection(fromId);
+		return connectionsFromId.some((c) => hasDownstreamConnection(c.toId));
+	}
+
+	return hasDownstreamConnection(fromId);
 }
 
 export function canConnectNodes(
-	connections: Connection[],
+	connections: ConnectionIdent[],
 	{ id: fromId }: Pick<AudioNodeMeta, "id">,
 	{ id: toId }: Pick<AudioNodeMeta, "id">,
 ) {
 	return fromId !== toId && !hasConnectionTo(connections, fromId, toId);
 }
 
-export function getConnectionBetween(
+export function getConnectionBetween<TNodeId extends Pick<AudioNodeMeta, "id">>(
 	connections: AudioNodeConnection[],
-	{ id: from }: Pick<AudioNodeMeta, "id">,
-	{ id: to }: Pick<AudioNodeMeta, "id">,
+	{ id: fromId }: TNodeId,
+	{ id: toId }: TNodeId,
 ) {
-	return connections.find((connection) =>
-		isSameConnection({ from, to }, connection),
-	);
+	return connections.find((connection) => {
+		return isSameConnection({ fromId, toId }, connection);
+	});
 }

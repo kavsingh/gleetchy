@@ -266,9 +266,9 @@ export default class AudioEngine {
 	private updateAudioGraph(connections: AppState["connections"]) {
 		this.disconnectAllNodes();
 
-		for (const { from, to } of connections) {
-			const fromNode = this.audioNodes.get(from);
-			const toNode = this.audioNodes.get(to);
+		for (const { fromId, toId } of connections) {
+			const fromNode = this.audioNodes.get(fromId);
+			const toNode = this.audioNodes.get(toId);
 
 			if (fromNode && toNode) (fromNode as GAudioNode).connect(toNode);
 		}
