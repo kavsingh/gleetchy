@@ -1,17 +1,14 @@
 {
+	"$schema": "https://json.schemastore.org/tsconfig",
 	"extends": "@tsconfig/strictest/tsconfig.json",
 	"compilerOptions": {
 		"allowImportingTsExtensions": true,
 		"allowJs": true,
 		"checkJs": true,
 		"erasableSyntaxOnly": true,
-		"lib": ["esnext"],
-		"module": "esnext",
-		"moduleResolution": "bundler",
 		"noEmit": true,
-		"target": "esnext",
 		"verbatimModuleSyntax": true,
-		// leave the following to eslint
+		// leave the following to linter / formatter
 		"noUnusedLocals": false,
 		"noUnusedParameters": false,
 		"allowUnreachableCode": true
