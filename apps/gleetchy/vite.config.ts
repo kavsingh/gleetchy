@@ -4,14 +4,12 @@ import checkerPlugin from "vite-plugin-checker";
 import solidPlugin from "vite-plugin-solid";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
-import type { Plugin } from "vite";
-
 export default defineConfig(({ mode }) => ({
 	build: { sourcemap: true },
 	plugins: [
 		tsconfigPathsPlugin(),
-		solidPlugin() as unknown as Plugin,
-		tailwindcssPlugin() as unknown as Plugin,
+		solidPlugin(),
+		tailwindcssPlugin(),
 		checker(mode),
 	],
 }));
