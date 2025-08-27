@@ -43,7 +43,7 @@ describe("lib/audio", () => {
 		});
 	});
 
-	describe("isSameConnection", () => {
+	describe(isSameConnection, () => {
 		it("should determine if two connections are the same", () => {
 			expect.assertions(3);
 			expect(
@@ -51,23 +51,23 @@ describe("lib/audio", () => {
 					{ fromId: "a", toId: "b" },
 					{ fromId: "a", toId: "b" },
 				),
-			).toBeTruthy();
+			).toBe(true);
 			expect(
 				isSameConnection(
 					{ fromId: "a", toId: "b" },
 					{ toId: "b", fromId: "a" },
 				),
-			).toBeTruthy();
+			).toBe(true);
 			expect(
 				isSameConnection(
 					{ fromId: "a", toId: "b" },
 					{ fromId: "b", toId: "a" },
 				),
-			).toBeFalsy();
+			).toBe(false);
 		});
 	});
 
-	describe("getConnectionsFor", () => {
+	describe(getConnectionsFor, () => {
 		const connections = [
 			{ fromId: "a", toId: "b", color: "" },
 			{ fromId: "a", toId: "d", color: "" },
@@ -91,7 +91,7 @@ describe("lib/audio", () => {
 		});
 	});
 
-	describe("hasConnectionTo", () => {
+	describe(hasConnectionTo, () => {
 		const connections = [
 			{ fromId: "a", toId: "b" },
 			{ fromId: "a", toId: "d" },
@@ -106,22 +106,22 @@ describe("lib/audio", () => {
 
 			const connectedToC = hasConnectionTo.bind(null, connections, "c");
 
-			expect(connectedToC("a")).toBeTruthy();
-			expect(connectedToC("d")).toBeTruthy();
-			expect(connectedToC("e")).toBeFalsy();
-			expect(hasConnectionTo(connections, "f", "e")).toBeTruthy();
+			expect(connectedToC("a")).toBe(true);
+			expect(connectedToC("d")).toBe(true);
+			expect(connectedToC("e")).toBe(false);
+			expect(hasConnectionTo(connections, "f", "e")).toBe(true);
 		});
 	});
 
-	describe("canConnectNodes", () => {
+	describe(canConnectNodes, () => {
 		it("should return true if nodes are unconnected", () => {
 			expect.assertions(1);
-			expect(canConnectNodes([], { id: "a" }, { id: "b" })).toBeTruthy();
+			expect(canConnectNodes([], { id: "a" }, { id: "b" })).toBe(true);
 		});
 
 		it("should return false if same node", () => {
 			expect.assertions(1);
-			expect(canConnectNodes([], { id: "a" }, { id: "a" })).toBeFalsy();
+			expect(canConnectNodes([], { id: "a" }, { id: "a" })).toBe(false);
 		});
 
 		it("should return false if to node is connected to from node", () => {
@@ -134,11 +134,11 @@ describe("lib/audio", () => {
 
 			const canConnectIn = canConnectNodes.bind(null, connections);
 
-			expect(canConnectIn({ id: "a" }, { id: "d" })).toBeFalsy();
+			expect(canConnectIn({ id: "a" }, { id: "d" })).toBe(false);
 		});
 	});
 
-	describe("getConnectionBetween", () => {
+	describe(getConnectionBetween, () => {
 		const connections = [
 			{ fromId: "a", toId: "b", color: "black" },
 			{ fromId: "a", toId: "b", color: "white" },

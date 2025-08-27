@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { clamp, denormalize, normalize } from "./number";
 
 describe("number utils", () => {
-	describe("clamp", () => {
+	describe(clamp, () => {
 		it.each([
 			// [value, min, max, expected]
 			[5, 0, 10, 5],
@@ -25,7 +25,7 @@ describe("number utils", () => {
 		);
 	});
 
-	describe("normalize", () => {
+	describe(normalize, () => {
 		it.each([
 			// [value, min, max, expected]
 			[5, 0, 10, 0.5],
@@ -42,7 +42,7 @@ describe("number utils", () => {
 		);
 	});
 
-	describe("denormalize", () => {
+	describe(denormalize, () => {
 		it.each([
 			// [value, min, max, expected]
 			[0.5, 0, 10, 5],

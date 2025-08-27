@@ -24,7 +24,7 @@ describe("custom state selectors", () => {
 		});
 	});
 
-	describe("createDeepEqualSelector", () => {
+	describe(createDeepEqualSelector, () => {
 		it("only results in new value if state value has changed", () => {
 			expect.assertions(3);
 

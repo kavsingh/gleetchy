@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { stableWithout, stableFilter, stableAppendUnique } from "./array";
 
 describe("util/array", () => {
-	describe("stableWithout", () => {
+	describe(stableWithout, () => {
 		it("returns same array if nothing to remove", () => {
 			expect.assertions(2);
 
@@ -25,7 +25,7 @@ describe("util/array", () => {
 		});
 	});
 
-	describe("stableFilter", () => {
+	describe(stableFilter, () => {
 		it("returns same array if nothing to remove", () => {
 			expect.assertions(2);
 
@@ -50,7 +50,7 @@ describe("util/array", () => {
 		});
 	});
 
-	describe("stableAppendUnique", () => {
+	describe(stableAppendUnique, () => {
 		it("does nothing if item is already unique and last in array", () => {
 			expect.assertions(2);
 

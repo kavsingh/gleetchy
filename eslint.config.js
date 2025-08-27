@@ -1,7 +1,7 @@
 import js from "@eslint/js";
 import filenames from "@kavsingh/eslint-plugin-filenames";
+import prettier from "eslint-config-prettier/flat";
 import { flatConfigs as importX } from "eslint-plugin-import-x";
-import prettierRecommended from "eslint-plugin-prettier/recommended";
 import globals from "globals";
 import * as tsEslint from "typescript-eslint";
 
@@ -105,12 +105,11 @@ export default tsEslint.config(
 		},
 	},
 
-	prettierRecommended,
+	prettier,
 
 	{
 		rules: {
-			"curly": ["warn", "multi-line", "consistent"],
-			"prettier/prettier": "warn",
+			curly: ["warn", "multi-line", "consistent"],
 		},
 	},
 );

@@ -1,10 +1,12 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
+import vitest from "@vitest/eslint-plugin";
+import tailwindcss from "eslint-plugin-better-tailwindcss";
+import { getDefaultCallees } from "eslint-plugin-better-tailwindcss/api/defaults";
 import jestDom from "eslint-plugin-jest-dom";
 import solid from "eslint-plugin-solid";
 import testingLibrary from "eslint-plugin-testing-library";
-import vitest from "eslint-plugin-vitest";
 import globals from "globals";
 import * as tsEslint from "typescript-eslint";
 
@@ -42,7 +44,14 @@ export default tsEslint.config(
 		languageOptions: {
 			globals: { ...globals.browser },
 		},
+		settings: {
+			"better-tailwindcss": {
+				entryPoint: "src/index.css",
+				callees: [...getDefaultCallees(), "tj", "tm"],
+			},
+		},
 		extends: [solid.configs["flat/recommended"]],
+		plugins: { "better-tailwindcss": tailwindcss },
 		rules: {
 			"no-console": "error",
 			"@typescript-eslint/no-restricted-imports": [
@@ -56,6 +65,10 @@ export default tsEslint.config(
 					],
 				},
 			],
+			...tailwindcss.configs["recommended"]?.rules,
+			"better-tailwindcss/enforce-consistent-line-wrapping": "off",
+			"better-tailwindcss/enforce-shorthand-classes": "warn",
+			"better-tailwindcss/no-conflicting-classes": "error",
 		},
 	},
 
@@ -88,6 +101,9 @@ export default tsEslint.config(
 		files: testFilePatterns({ root: "src" }),
 		languageOptions: {
 			globals: { ...globals.node, ...globals.browser },
+		},
+		settings: {
+			vitest: { typecheck: true },
 		},
 		extends: [
 			vitest.configs.all,

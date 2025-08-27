@@ -3,7 +3,7 @@ import { describe, it, expect } from "vitest";
 import { stableOmit } from "./object";
 
 describe("util/Object", () => {
-	describe("stableOmit", () => {
+	describe(stableOmit, () => {
 		it("returns same object if nothing to remove", () => {
 			expect.assertions(2);
 
