@@ -71,10 +71,8 @@ export default function Slider(_props: Props) {
 	createEffect(() => {
 		if (!barRef) return;
 
-		barRef.style.transform =
-			props.orientation === "inline"
-				? `scaleX(${props.value})`
-				: `scaleY(${props.value})`;
+		barRef.style.scale =
+			props.orientation === "inline" ? `${props.value} 1` : `1 ${props.value}`;
 	});
 
 	const dragHandlers = usePointerDrag({ onDragMove, onDragEnd });
@@ -85,9 +83,11 @@ export default function Slider(_props: Props) {
 			class={tj(
 				"flex size-full",
 				props.orientation === "block"
-					? "flex-col items-center"
-					: "items-stretch",
+					? "flex-col items-center cursor-ns-resize"
+					: "items-stretch cursor-ew-resize",
 			)}
+			onDblClick={handleDoubleClick}
+			{...dragHandlers}
 		>
 			<LabelText
 				class={tj(
@@ -98,9 +98,7 @@ export default function Slider(_props: Props) {
 				{props.label}
 			</LabelText>
 			<BarContainer
-				{...dragHandlers}
 				orientation={props.orientation}
-				onDblClick={handleDoubleClick}
 				ref={(el) => (barContainerRef = el)}
 			>
 				<Track orientation={props.orientation} />
