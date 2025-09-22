@@ -2,20 +2,20 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import vitest from "@vitest/eslint-plugin";
+import { defineConfig } from "eslint/config";
 import tailwindcss from "eslint-plugin-better-tailwindcss";
 import { getDefaultCallees } from "eslint-plugin-better-tailwindcss/api/defaults";
 import jestDom from "eslint-plugin-jest-dom";
 import solid from "eslint-plugin-solid";
 import testingLibrary from "eslint-plugin-testing-library";
 import globals from "globals";
-import * as tsEslint from "typescript-eslint";
 
 import baseConfig from "../../eslint.config.js";
 import { testFilePatterns, testFileSuffixes } from "../../eslint.helpers.js";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export default tsEslint.config(
+export default defineConfig(
 	...baseConfig,
 
 	{
@@ -50,7 +50,10 @@ export default tsEslint.config(
 				callees: [...getDefaultCallees(), "tj", "tm"],
 			},
 		},
-		extends: [solid.configs["flat/recommended"]],
+		extends: [
+			// @ts-expect-error upstream types
+			solid.configs["flat/recommended"],
+		],
 		plugins: { "better-tailwindcss": tailwindcss },
 		rules: {
 			"no-console": "error",

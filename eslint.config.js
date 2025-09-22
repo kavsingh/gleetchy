@@ -1,11 +1,12 @@
 import js from "@eslint/js";
 import filenames from "@kavsingh/eslint-plugin-filenames";
+import { defineConfig } from "eslint/config";
 import prettier from "eslint-config-prettier/flat";
 import { flatConfigs as importX } from "eslint-plugin-import-x";
 import globals from "globals";
-import * as tsEslint from "typescript-eslint";
+import { configs as tsEslint } from "typescript-eslint";
 
-export default tsEslint.config(
+export default defineConfig(
 	{
 		ignores: [".vscode/*", ".turbo/*", ".temp/*", "apps/*", "packages/*"],
 	},
@@ -19,8 +20,9 @@ export default tsEslint.config(
 	},
 
 	js.configs.recommended,
-	...tsEslint.configs.strictTypeChecked,
-	...tsEslint.configs.stylisticTypeChecked,
+	...tsEslint.strictTypeChecked,
+	...tsEslint.stylisticTypeChecked,
+	// @ts-expect-error upstream types
 	importX.recommended,
 	importX.typescript,
 	filenames.configs.kebab,

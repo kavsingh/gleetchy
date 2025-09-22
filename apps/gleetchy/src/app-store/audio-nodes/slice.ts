@@ -150,7 +150,7 @@ function getNewNodeState(type: string) {
 			return {
 				type,
 				id: prefixedId(reverbNodeType),
-				label: `RX`,
+				label: "RX",
 				audioProps: { ...reverbDefaultProps },
 			} as AudioNodeState<ReverbNodeProps>;
 		}

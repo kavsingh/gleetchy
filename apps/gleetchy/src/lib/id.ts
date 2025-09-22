@@ -1,7 +1,7 @@
-import { slug } from "cuid";
+import { nanoid } from "nanoid/non-secure";
 
 export function prefixedId(prefix: string) {
-	return `${prefix}-${slug()}`;
+	return `${prefix}-${nanoid(10)}`;
 }
 
 if (import.meta.vitest) {
