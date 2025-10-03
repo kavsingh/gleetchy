@@ -4,7 +4,9 @@
 *.sublime-project
 *.sublime-workspace
 
-.turbo/
+.nx/cache
+.nx/workspace-data
+.github/instructions/nx.instructions.md
 
 **/node_modules/
 **/targets/

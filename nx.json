@@ -1,0 +1,20 @@
+{
+	"$schema": "./node_modules/nx/schemas/nx-schema.json",
+	"tui": { "enabled": false },
+	"targetDefaults": {
+		"build": {
+			"dependsOn": ["^build"],
+			"outputs": ["{projectRoot}/dist/**"],
+			"cache": true
+		},
+		"dev": {
+			"cache": false
+		},
+		"test": {
+			"cache": false
+		},
+		"lint": {
+			"cache": false
+		}
+	}
+}

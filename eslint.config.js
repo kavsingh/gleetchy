@@ -8,7 +8,7 @@ import { configs as tsEslint } from "typescript-eslint";
 
 export default defineConfig(
 	{
-		ignores: [".vscode/*", ".turbo/*", ".temp/*", "apps/*", "packages/*"],
+		ignores: [".vscode/*", ".nx/*", ".temp/*", "apps/*", "packages/*"],
 	},
 
 	{
