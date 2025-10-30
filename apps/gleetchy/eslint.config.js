@@ -54,7 +54,10 @@ export default defineConfig(
 			// @ts-expect-error upstream types
 			solid.configs["flat/recommended"],
 		],
-		plugins: { "better-tailwindcss": tailwindcss },
+		plugins: {
+			// @ts-expect-error upstream types
+			"better-tailwindcss": tailwindcss,
+		},
 		rules: {
 			"no-console": "error",
 			"@typescript-eslint/no-restricted-imports": [

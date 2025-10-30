@@ -11,7 +11,7 @@
 	"private": true,
 	"main": "index.js",
 	"type": "module",
-	"packageManager": "pnpm@10.18.3+sha512.bbd16e6d7286fd7e01f6b3c0b3c932cda2965c06a908328f74663f10a9aea51f1129eea615134bf992831b009eabe167ecb7008b597f40ff9bc75946aadfb08d",
+	"packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd",
 	"scripts": {
 		"dev": "nx dev gleetchy",
 		"build": "nx build gleetchy",
@@ -24,17 +24,17 @@
 		"@eslint/js": "9.38.0",
 		"@kavsingh/eslint-plugin-filenames": "2.0.0-rc.3",
 		"@tsconfig/node24": "24.0.1",
-		"@tsconfig/strictest": "2.0.6",
+		"@tsconfig/strictest": "2.0.7",
 		"@types/eslint": "9.6.1",
-		"@types/node": "24.9.0",
+		"@types/node": "24.9.2",
 		"eslint": "9.38.0",
 		"eslint-config-prettier": "10.1.8",
 		"eslint-import-resolver-typescript": "4.4.4",
 		"eslint-plugin-import-x": "4.16.1",
 		"globals": "16.4.0",
-		"nx": "21.6.5",
+		"nx": "22.0.2",
 		"prettier": "3.6.2",
 		"typescript": "5.9.3",
-		"typescript-eslint": "8.46.1"
+		"typescript-eslint": "8.46.2"
 	}
 }
