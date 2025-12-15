@@ -102,7 +102,7 @@ function drawWaveform(
 
 function updateWaveform(
 	canvasNode: HTMLCanvasElement,
-	{ pixelRatio = 1, timeRegions = 4, buffer }: UpdateWaveformOptions,
+	{ pixelRatio, timeRegions = 4, buffer }: UpdateWaveformOptions,
 ) {
 	const context = canvasNode.getContext("2d");
 

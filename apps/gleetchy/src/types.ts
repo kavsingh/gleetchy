@@ -7,8 +7,9 @@ export interface AudioNodeMeta extends AudioNodeIdentifierMeta {
 	label: string;
 }
 
-export interface AudioNodeState<TProps extends GenericObject>
-	extends AudioNodeMeta {
+export interface AudioNodeState<
+	TProps extends GenericObject,
+> extends AudioNodeMeta {
 	audioProps: TProps;
 }
 

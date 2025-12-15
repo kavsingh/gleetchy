@@ -148,7 +148,7 @@ function Track(props: OrientationProps) {
 	return (
 		<div
 			class={tj(
-				"absolute z-[1] bg-emphasis-100",
+				"absolute z-1 bg-emphasis-100",
 				props.orientation === "inline" && "inset-x-0 top-1/2 h-px",
 				props.orientation === "block" && "inset-y-0 start-1/2 w-px",
 			)}
@@ -161,19 +161,18 @@ function Bar(props: BarProps) {
 		<div
 			ref={props.ref}
 			class={tj(
-				"absolute z-[2] bg-emphasis-600",
+				"absolute z-2 bg-emphasis-600",
 				props.orientation === "inline" &&
-					"inset-x-0 top-[calc(50%-1px)] h-[2px] origin-left scale-x-0",
+					"inset-x-0 top-[calc(50%-1px)] h-0.5 origin-left scale-x-0",
 				props.orientation === "block" &&
-					"inset-y-0 start-[calc(50%-1px)] w-[2px] origin-bottom scale-y-0",
+					"inset-y-0 start-[calc(50%-1px)] w-0.5 origin-bottom scale-y-0",
 			)}
 		/>
 	);
 }
 
 interface BarProps
-	extends OrientationProps,
-		Pick<ComponentProps<"div">, "ref"> {}
+	extends OrientationProps, Pick<ComponentProps<"div">, "ref"> {}
 
 const clampValue = clamp.bind(null, 0, 1);
 
