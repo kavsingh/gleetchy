@@ -2,7 +2,7 @@ import { For } from "solid-js";
 
 import type { JSX } from "solid-js";
 
-export default function SelectBox(props: Props) {
+export function SelectBox(props: Props) {
 	const handleChange: JSX.ChangeEventHandlerUnion<HTMLSelectElement, Event> = (
 		event,
 	) => {

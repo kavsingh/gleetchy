@@ -1,1 +1,1 @@
-export default "AUDIO_EFFECT_DELAY";
+export const nodeType = "AUDIO_EFFECT_DELAY";

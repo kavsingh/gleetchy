@@ -1,7 +1,7 @@
-import Knob from "#components/knob";
+import { Knob } from "#components/knob";
 import { denormalize, normalize } from "#lib/util/number";
 
-export default function PlaybackControls(props: Props) {
+export function PlaybackControls(props: Props) {
 	return (
 		<div class="flex h-full flex-col items-center justify-between">
 			<div>
@@ -26,8 +26,8 @@ export default function PlaybackControls(props: Props) {
 	);
 }
 
-const normalizeRate = normalize.bind(null, 0, 2);
-const denormalizeRate = denormalize.bind(null, 0, 2);
+const normalizeRate = normalize.bind(undefined, 0, 2);
+const denormalizeRate = denormalize.bind(undefined, 0, 2);
 
 interface Props {
 	gain: number;

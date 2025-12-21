@@ -2,7 +2,7 @@ import { tj } from "#style";
 
 import type { ParentProps } from "solid-js";
 
-export default function NodeWrapper(props: ParentProps<{ isActive: boolean }>) {
+export function NodeWrapper(props: ParentProps<{ isActive: boolean }>) {
 	return (
 		<div
 			class={tj(

@@ -3,7 +3,7 @@ import { logError } from "#lib/log";
 
 import { loadImpulse } from "./impulses";
 import { defaultProps } from "./node-props";
-import nodeType from "./node-type";
+import { nodeType } from "./node-type";
 
 import type { Props } from "./node-props";
 
@@ -27,6 +27,7 @@ export class GReverbNode extends GAudioNode<Props> {
 		this.propsUpdated(this.props);
 	}
 
+	// oxlint-disable-next-line class-methods-use-this
 	destroy(): void {
 		// noop
 	}
@@ -37,19 +38,21 @@ export class GReverbNode extends GAudioNode<Props> {
 
 		if (props.impulse !== previousProps?.impulse) {
 			void loadImpulse(this.audioContext, props.impulse)
+				// oxlint-disable-next-line prefer-await-to-then, always-return
 				.then((buffer) => {
 					this.reverbNode.buffer = buffer;
 				})
-				.catch((error: unknown) => {
-					logError(error);
+				// oxlint-disable-next-line prefer-await-to-then
+				.catch((cause: unknown) => {
+					logError(cause);
 				});
 		}
 	}
 }
 
-const createAudioNode = (
+export function createAudioNode(
 	audioContext: AudioContext,
 	initProps: Partial<Props>,
-) => new GReverbNode(audioContext, { ...defaultProps, ...initProps });
-
-export default createAudioNode;
+) {
+	return new GReverbNode(audioContext, { ...defaultProps, ...initProps });
+}

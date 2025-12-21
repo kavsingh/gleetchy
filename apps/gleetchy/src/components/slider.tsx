@@ -3,8 +3,8 @@ import { createEffect, mergeProps, splitProps } from "solid-js";
 import { clamp } from "#lib/util/number";
 import { tj, tm } from "#style";
 
-import useControlResponseMultiplier from "./hooks/use-control-response-multiplier";
-import usePointerDrag from "./hooks/use-pointer-drag";
+import { useControlResponseMultiplier } from "./hooks/use-control-response-multiplier";
+import { usePointerDrag } from "./hooks/use-pointer-drag";
 
 import type { ControlResponseMultipliers } from "./hooks/use-control-response-multiplier";
 import type {
@@ -13,7 +13,7 @@ import type {
 } from "./hooks/use-pointer-drag";
 import type { ComponentProps } from "solid-js";
 
-export default function Slider(_props: Props) {
+export function Slider(_props: Props) {
 	const props = mergeProps(
 		{
 			defaultValue: 0.5,
@@ -25,8 +25,8 @@ export default function Slider(_props: Props) {
 		_props,
 	);
 	const moveMultiplier = useControlResponseMultiplier(controlMultipliers);
-	let barContainerRef: HTMLDivElement | undefined;
-	let barRef: HTMLDivElement | undefined;
+	let barContainerRef: HTMLDivElement | undefined = undefined;
+	let barRef: HTMLDivElement | undefined = undefined;
 
 	function handleDoubleClick() {
 		props.onChange?.(props.defaultValue);
@@ -174,7 +174,7 @@ function Bar(props: BarProps) {
 interface BarProps
 	extends OrientationProps, Pick<ComponentProps<"div">, "ref"> {}
 
-const clampValue = clamp.bind(null, 0, 1);
+const clampValue = clamp.bind(undefined, 0, 1);
 
 const controlMultipliers: ControlResponseMultipliers = {
 	normal: 1,

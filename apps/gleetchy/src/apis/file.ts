@@ -1,11 +1,11 @@
-let fileInput: HTMLInputElement | undefined;
+let fileInput: HTMLInputElement | undefined = undefined;
 
 function getFileInput() {
 	if (!fileInput) {
 		fileInput = globalThis.document.createElement("input");
 		fileInput.setAttribute("type", "file");
 		fileInput.setAttribute("accept", ".wav, .mp3, .ogg");
-		globalThis.document.body.appendChild(fileInput);
+		globalThis.document.body.append(fileInput);
 		fileInput.style.display = "none";
 	}
 
@@ -15,8 +15,12 @@ function getFileInput() {
 export function loadAudioFilesFromInput() {
 	const input = getFileInput();
 
+	// oxlint-disable-next-line avoid-new
 	return new Promise<File[]>((resolve, reject) => {
-		input.onchange = function audioFileInputChanged() {
+		function handleAudioFileInputChanged() {
+			input.removeEventListener("change", handleAudioFileInputChanged);
+			input.removeEventListener("error", handleAudioFileInputError);
+
 			const { files } = input;
 
 			if (!files) {
@@ -26,23 +30,24 @@ export function loadAudioFilesFromInput() {
 			}
 
 			resolve(
+				// oxlint-disable-next-line prefer-spread FileList has no symbol.iterator
 				Array.from(files).filter(({ type }) => type.startsWith("audio/")),
 			);
 
 			input.value = "";
-		};
+		}
 
-		input.onerror = function audioFileInputError(cause) {
-			const error =
-				typeof cause === "string"
-					? new Error(cause)
-					: new Error("Could not load audio file");
+		function handleAudioFileInputError(event: ErrorEvent) {
+			input.removeEventListener("change", handleAudioFileInputChanged);
+			input.removeEventListener("error", handleAudioFileInputError);
 
-			reject(error);
+			reject(new Error(`Could not load audio file: ${String(event.error)}`));
 
 			input.value = "";
-		};
+		}
 
+		input.addEventListener("change", handleAudioFileInputChanged);
+		input.addEventListener("error", handleAudioFileInputError);
 		input.click();
 	});
 }

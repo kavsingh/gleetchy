@@ -3,15 +3,15 @@ class LoopProcessor extends AudioWorkletProcessor {
 
 	constructor() {
 		super();
-		this.port.onmessage = (message: MessageEvent<string>) => {
+		this.port.addEventListener("message", (message) => {
 			if (message.data === "kill") this.keepAlive = false;
-		};
+		});
 	}
 
 	process(inputList: InputList) {
 		const position = inputList[0]?.[0]?.[0];
 
-		if (Number.isFinite(position)) this.port.postMessage(position);
+		if (Number.isFinite(position)) this.port.postMessage(position, {});
 
 		return this.keepAlive;
 	}
@@ -19,6 +19,7 @@ class LoopProcessor extends AudioWorkletProcessor {
 
 registerProcessor("loop-processor", LoopProcessor);
 
+// oxlint-disable-next-line require-module-specifiers
 export {};
 
 type InputList = Float32Array[][];

@@ -1,7 +1,7 @@
 import { createMemo } from "solid-js";
 
 // Adapted from https://codepen.io/JMChristensen/pen/Ablch
-export default function SVGArc(props: Props) {
+export function SVGArc(props: Props) {
 	const radius = createMemo(() => 50 - (props.foregroundStrokeWidth ?? 0) / 2);
 	const circumference = createMemo(() => 2 * Math.PI * radius());
 

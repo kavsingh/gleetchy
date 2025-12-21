@@ -2,13 +2,13 @@ import { createSignal } from "solid-js";
 
 import type { JSX } from "solid-js";
 
-export default function useFileDropRegion(props: UseFileDropRegionProps) {
-	const [isDropActive, setIsDropActive] = createSignal(false);
+function cancelEvent(event: Event) {
+	event.preventDefault();
+	event.stopPropagation();
+}
 
-	const cancelEvent: DragEventHandler = (event) => {
-		event.preventDefault();
-		event.stopPropagation();
-	};
+export function useFileDropRegion(props: UseFileDropRegionProps) {
+	const [isDropActive, setIsDropActive] = createSignal(false);
 
 	const eventSetDropActive: DragEventHandler = (event) => {
 		cancelEvent(event);
@@ -27,6 +27,7 @@ export default function useFileDropRegion(props: UseFileDropRegionProps) {
 		if (!props.onFiles) return;
 
 		props.onFiles(
+			// oxlint-disable-next-line prefer-spread FileList has no symbol.iterator
 			Array.from(event.dataTransfer?.files ?? []).filter((...args) => {
 				return props.fileFilter ? props.fileFilter(...args) : true;
 			}),

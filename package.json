@@ -1,17 +1,16 @@
 {
 	"name": "gleetchy-mono",
 	"version": "1.0.0",
-	"description": "looping business",
-	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
-	"license": "ISC",
-	"repository": {
-		"url": "https://github.com/kavsingh/gleetchy.git",
-		"type": "git"
-	},
 	"private": true,
-	"main": "index.js",
+	"description": "looping business",
+	"license": "ISC",
+	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kavsingh/gleetchy.git"
+	},
 	"type": "module",
-	"packageManager": "pnpm@10.26.1+sha512.664074abc367d2c9324fdc18037097ce0a8f126034160f709928e9e9f95d98714347044e5c3164d65bd5da6c59c6be362b107546292a8eecb7999196e5ce58fa",
+	"main": "index.js",
 	"scripts": {
 		"dev": "nx dev gleetchy",
 		"build": "nx build gleetchy",
@@ -21,20 +20,21 @@
 		"clean:modules": "rm -rf node_modules && pnpm -r exec rm -rf node_modules"
 	},
 	"devDependencies": {
-		"@eslint/js": "9.39.2",
-		"@kavsingh/eslint-plugin-filenames": "2.0.0-rc.3",
+		"@total-typescript/ts-reset": "0.6.1",
 		"@tsconfig/node24": "24.0.3",
 		"@tsconfig/strictest": "2.0.8",
 		"@types/eslint": "9.6.1",
 		"@types/node": "24.10.4",
 		"eslint": "9.39.2",
-		"eslint-config-prettier": "10.1.8",
 		"eslint-import-resolver-typescript": "4.4.4",
 		"eslint-plugin-import-x": "4.16.1",
 		"globals": "16.5.0",
 		"nx": "22.3.3",
-		"prettier": "3.7.4",
+		"oxfmt": "0.19.0",
+		"oxlint": "1.34.0",
+		"oxlint-tsgolint": "0.10.0",
 		"typescript": "5.9.3",
 		"typescript-eslint": "8.50.0"
-	}
+	},
+	"packageManager": "pnpm@10.26.1+sha512.664074abc367d2c9324fdc18037097ce0a8f126034160f709928e9e9f95d98714347044e5c3164d65bd5da6c59c6be362b107546292a8eecb7999196e5ce58fa"
 }

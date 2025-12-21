@@ -1,7 +1,7 @@
 import { GAudioNode } from "#lib/g-audio-node";
 
 import { defaultProps } from "./node-props";
-import nodeType from "./node-type";
+import { nodeType } from "./node-type";
 
 import type { Props } from "./node-props";
 
@@ -33,6 +33,7 @@ export class GEq3Node extends GAudioNode<Props> {
 		this.propsUpdated();
 	}
 
+	// oxlint-disable-next-line class-methods-use-this
 	destroy(): void {
 		// noop
 	}
@@ -44,9 +45,9 @@ export class GEq3Node extends GAudioNode<Props> {
 	}
 }
 
-const createAudioNode = (
+export function createAudioNode(
 	audioContext: AudioContext,
 	initProps: Partial<Props>,
-) => new GEq3Node(audioContext, { ...defaultProps, ...initProps });
-
-export default createAudioNode;
+) {
+	return new GEq3Node(audioContext, { ...defaultProps, ...initProps });
+}

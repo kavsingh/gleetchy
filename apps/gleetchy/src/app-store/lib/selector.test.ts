@@ -10,8 +10,8 @@ describe("custom state selectors", () => {
 			expect.assertions(3);
 
 			let state = { a: { b: [1, 2] } };
+			// oxlint-disable-next-line func-style
 			const aSelector = (s: typeof state) => s.a;
-
 			const bSelector = createSelector(aSelector, (a) => a.b);
 			const b = bSelector(state);
 
@@ -29,8 +29,8 @@ describe("custom state selectors", () => {
 			expect.assertions(3);
 
 			let state = { a: { b: [1, 2] } };
+			// oxlint-disable-next-line func-style
 			const aSelector = (s: typeof state) => s.a;
-
 			const bSelector = createDeepEqualSelector(aSelector, (a) => a.b);
 			const b = bSelector(state);
 

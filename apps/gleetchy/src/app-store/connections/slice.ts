@@ -5,20 +5,17 @@ import { stableWithout } from "#lib/util";
 import { nodeColorPool } from "#style/color";
 
 import { removeAudioNode } from "../audio-nodes/actions";
-import defaultNodes from "../default-nodes";
+import { defaultNodes } from "../default-nodes";
 
 import type { AudioNodeConnection, ConnectionIdent } from "#types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-const mainOut = defaultNodes[0];
-const loop1 = defaultNodes[1];
-const loop2 = defaultNodes[2];
-
+const [mainOut, loop0, loop1] = defaultNodes;
 const initialState: ConnectionsState = [
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	{ fromId: loop1.id, toId: mainOut.id, color: nodeColorPool[0]! },
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	{ fromId: loop2.id, toId: mainOut.id, color: nodeColorPool[1]! },
+	// oxlint-disable-next-line no-non-null-assertion
+	{ fromId: loop0.id, toId: mainOut.id, color: nodeColorPool[0]! },
+	// oxlint-disable-next-line no-non-null-assertion
+	{ fromId: loop1.id, toId: mainOut.id, color: nodeColorPool[1]! },
 ];
 
 export const connectionsSlice = createSlice({
@@ -26,7 +23,7 @@ export const connectionsSlice = createSlice({
 	name: "connections",
 	reducers: {
 		addConnection(state, { payload }: PayloadAction<ConnectionIdent>) {
-			if (!state.find((c) => isSameConnection(payload, c))) {
+			if (!state.some((c) => isSameConnection(payload, c))) {
 				state.push(createConnection(state, payload));
 			}
 		},
@@ -38,13 +35,13 @@ export const connectionsSlice = createSlice({
 		toggleConnection(state, { payload }: PayloadAction<ConnectionIdent>) {
 			const idx = state.findIndex((c) => isSameConnection(payload, c));
 
-			if (idx !== -1) state.splice(idx, 1);
-			else state.push(createConnection(state, payload));
+			if (idx === -1) state.push(createConnection(state, payload));
+			else state.splice(idx, 1);
 		},
 	},
 	extraReducers(builder) {
 		builder.addCase(removeAudioNode, (state, { payload: id }) => {
-			// eslint-disable-next-line @typescript-eslint/no-unused-vars
+			// oxlint-disable-next-line no-param-reassign
 			state = stableWithout(getConnectionsFor(id, state), state);
 		});
 	},
@@ -57,7 +54,7 @@ function createConnection(
 	return {
 		fromId,
 		toId,
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+		// oxlint-disable-next-line no-non-null-assertion
 		color: nodeColorPool[state.length % nodeColorPool.length]!,
 	};
 }

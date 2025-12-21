@@ -4,7 +4,7 @@ import { tj } from "#style";
 
 import type { ComponentProps, JSX } from "solid-js";
 
-export default function RadioInput(_props: Props) {
+export function RadioInput(_props: Props) {
 	const [props, inputProps] = splitProps(_props, ["ref", "label"]);
 
 	return (

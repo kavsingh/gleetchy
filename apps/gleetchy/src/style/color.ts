@@ -42,4 +42,5 @@ export const nodeColorPool = [
 	"oklch(50.08% 0.077 251.97)",
 	"oklch(52.49% 0.106 234.7)",
 	"oklch(82.4% 0.065 219.06)",
+	// oxlint-disable-next-line no-array-sort
 ].sort(() => Math.floor(Math.random() * 3) - 1);

@@ -1,4 +1,7 @@
-/* eslint-disable no-console */
+// oxlint-disable no-mutable-exports
+// oxlint-disable no-console
+
+// TODO: refactor to logger object
 
 const logError = console.error.bind(console);
 let logInfo: typeof console.log = () => undefined;

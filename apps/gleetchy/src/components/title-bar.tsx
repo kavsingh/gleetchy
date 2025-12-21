@@ -1,12 +1,12 @@
 import { For } from "solid-js";
 
-import Button from "./button";
-import TextInput from "./text-input";
+import { Button } from "./button";
+import { TextInput } from "./text-input";
 
 import type { AudioNodeConnection } from "#types";
 import type { ParentProps } from "solid-js";
 
-export default function TitleBar(props: Props) {
+export function TitleBar(props: Props) {
 	return (
 		<div class="mb-2 text-xs">
 			<div class="flex items-center justify-start">

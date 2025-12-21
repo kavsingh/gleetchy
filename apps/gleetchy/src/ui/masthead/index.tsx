@@ -1,8 +1,8 @@
 import { GithubLogo } from "./github-logo";
-import PlayPauseButton from "./play-pause-button";
-import ThemeSelect from "./theme-select";
+import { PlayPauseButton } from "./play-pause-button";
+import { ThemeSelect } from "./theme-select";
 
-export default function Masthead() {
+export function Masthead() {
 	return (
 		<div class="flex w-full items-center justify-between">
 			<PlayPauseButton />
@@ -15,7 +15,7 @@ export default function Masthead() {
 					title="view on github"
 					class="opacity-40 transition-opacity hover:opacity-100 focus:opacity-100 focus-visible:opacity-100"
 				>
-					<GithubLogo class="size-[15px]" />
+					<GithubLogo class="size-3.75" />
 				</a>
 			</div>
 		</div>

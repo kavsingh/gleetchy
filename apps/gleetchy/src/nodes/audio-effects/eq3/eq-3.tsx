@@ -1,9 +1,9 @@
-import Slider from "#components/slider";
+import { Slider } from "#components/slider";
 import { normalize, denormalize } from "#lib/util/number";
 
 import type { ParentProps } from "solid-js";
 
-export default function Eq3(props: Eq3Props) {
+export function Eq3(props: Eq3Props) {
 	function handleLowGainChange(val: number) {
 		props.onChange({ lowGain: denormalizeGain(val) });
 	}
@@ -49,8 +49,8 @@ export default function Eq3(props: Eq3Props) {
 	);
 }
 
-const normalizeGain = normalize.bind(null, -1, 1);
-const denormalizeGain = denormalize.bind(null, -1, 1);
+const normalizeGain = normalize.bind(undefined, -1, 1);
+const denormalizeGain = denormalize.bind(undefined, -1, 1);
 
 function SliderContainer(props: ParentProps) {
 	return <div class="h-full w-4">{props.children}</div>;

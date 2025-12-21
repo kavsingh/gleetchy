@@ -3,7 +3,7 @@ import { selectIsPlaying } from "#app-store/global-playback/selectors";
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-export default function useGlobalPlayback() {
+export function useGlobalPlayback() {
 	const dispatch = useAppDispatch();
 	const isPlaying = useAppSelector(selectIsPlaying);
 

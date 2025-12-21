@@ -18,7 +18,10 @@ export function stableFilter<T>(
 	predicate: (item: T) => boolean,
 	arr: T[],
 ): T[] {
-	return originalIfEqual(arr.filter(predicate), arr);
+	return originalIfEqual(
+		arr.filter((item) => predicate(item)),
+		arr,
+	);
 }
 
 /**
@@ -26,7 +29,7 @@ export function stableFilter<T>(
  * returns original array
  */
 export function stableAppendUnique<T>(items: T[], arr: T[]): T[] {
-	return originalIfEqual(without(items, arr).concat(items), arr);
+	return originalIfEqual([...without(items, arr), ...items], arr);
 }
 
 function without<T>(items: T[], arr: T[]) {

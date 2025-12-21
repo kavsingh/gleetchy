@@ -75,7 +75,7 @@ describe("util/array", () => {
 			expect.assertions(2);
 
 			const initialArray = [2, 1, 2, 3];
-			const appendItems = stableAppendUnique.bind(null, [2, 1, "c"]);
+			const appendItems = stableAppendUnique.bind(undefined, [2, 1, "c"]);
 			const result = appendItems(initialArray);
 
 			expect(result).toStrictEqual([3, 2, 1, "c"]);

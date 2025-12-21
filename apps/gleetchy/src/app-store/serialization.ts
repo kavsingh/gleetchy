@@ -18,10 +18,8 @@ export function serialize(state: AppState) {
 
 export function deserialize(stateString: string) {
 	try {
-		const parsed: unknown = JSON.parse(stateString);
-
-		return parsed;
-	} catch (_e) {
+		return JSON.parse(stateString);
+	} catch {
 		return undefined;
 	}
 }
@@ -42,15 +40,15 @@ function unsetUnserializable(value: unknown): unknown {
 	if (isUnserializable(value)) return undefined;
 
 	if (Array.isArray(value)) {
-		return (value as unknown[]).map(unsetUnserializable);
+		return value.map((item) => unsetUnserializable(item));
 	}
 
 	if (isObjectLike(value)) {
 		const copy = { ...value };
 
-		Object.entries(copy).forEach(([key, val]) => {
+		for (const [key, val] of Object.entries(copy)) {
 			copy[key] = unsetUnserializable(val);
-		});
+		}
 
 		return copy;
 	}

@@ -1,1 +1,1 @@
-export default "INSTRUMENT_LOOP";
+export const nodeType = "INSTRUMENT_LOOP";

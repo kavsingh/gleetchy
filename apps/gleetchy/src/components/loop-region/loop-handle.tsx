@@ -1,6 +1,6 @@
 import { tj } from "#style";
 
-export default function LoopHandle(props: { align: Alignment }) {
+export function LoopHandle(props: { align: Alignment }) {
 	return (
 		<div
 			class={tj(
@@ -13,8 +13,8 @@ export default function LoopHandle(props: { align: Alignment }) {
 				class={tj(
 					"absolute top-0 size-full",
 					props.align === "start" &&
-						"start-[-100%] border-r border-r-emphasis-600",
-					props.align === "end" && "end-[-100%] border-l border-l-emphasis-600",
+						"-start-full border-r border-r-emphasis-600",
+					props.align === "end" && "-end-full border-l border-l-emphasis-600",
 				)}
 			/>
 			<Tag align={props.align} verticalPosition="bottom" />

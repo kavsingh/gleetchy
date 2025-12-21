@@ -18,6 +18,7 @@ describe("number utils", () => {
 			[20, 10, 0, 0],
 		])(
 			"should clamp %s within %s - %s inclusive, returning %s",
+			// oxlint-disable-next-line max-params
 			(value, min, max, expected) => {
 				expect.assertions(1);
 				expect(clamp(min, max, value)).toBe(expected);
@@ -35,6 +36,7 @@ describe("number utils", () => {
 			[-8, -4, 0, -1],
 		])(
 			"should normalize %s from range %s - %s, returning %s",
+			// oxlint-disable-next-line max-params
 			(value, min, max, expected) => {
 				expect.assertions(1);
 				expect(normalize(min, max, value)).toBe(expected);
@@ -52,6 +54,7 @@ describe("number utils", () => {
 			[-1, -4, 0, -8],
 		])(
 			"should denormalize %s from range %s - %s, returning %s",
+			// oxlint-disable-next-line max-params
 			(value, min, max, expected) => {
 				expect.assertions(1);
 				expect(denormalize(min, max, value)).toBe(expected);

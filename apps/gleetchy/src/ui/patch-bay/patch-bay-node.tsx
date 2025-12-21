@@ -1,11 +1,11 @@
 import { createMemo } from "solid-js";
 
-import useConnection from "#app-store/hooks/use-connection";
+import { useConnection } from "#app-store/hooks/use-connection";
 import { tj } from "#style";
 
 import type { AudioNodeMeta } from "#types";
 
-export default function PatchBayNode(props: {
+export function PatchBayNode(props: {
 	source: AudioNodeMeta;
 	target: AudioNodeMeta;
 }) {
@@ -32,7 +32,7 @@ export default function PatchBayNode(props: {
 				!color() && "border-emphasis-100",
 				!color() && !isBlocked() && "hover:border-emphasis-400",
 				isBlocked() && "scale-50 rotate-45 cursor-default bg-emphasis-100",
-				!!color() && !isBlocked() && "border-current bg-current",
+				Boolean(color()) && !isBlocked() && "border-current bg-current",
 			)}
 		/>
 	);

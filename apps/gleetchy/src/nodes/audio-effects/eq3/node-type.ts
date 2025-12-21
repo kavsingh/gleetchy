@@ -1,1 +1,1 @@
-export default "AUDIO_EFFECT_EQ3";
+export const nodeType = "AUDIO_EFFECT_EQ3";

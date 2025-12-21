@@ -1,16 +1,16 @@
 import rafThrottle from "raf-throttle";
 
 import { GInstrumentNode } from "#lib/g-audio-node";
-import createEq3Node from "#nodes/audio-effects/eq3/create-audio-node";
+import { createAudioNode as createEq3Node } from "#nodes/audio-effects/eq3/create-audio-node";
 
 import { defaultProps } from "./node-props";
-import nodeType from "./node-type";
-// eslint-disable-next-line import-x/default
+import { nodeType } from "./node-type";
+// oxlint-disable-next-line default
 import processor from "./processor.worklet?worker&url";
 
 import type { Props } from "./node-props";
 
-const createPositionBuffer = (context: AudioContext, source: AudioBuffer) => {
+function createPositionBuffer(context: AudioContext, source: AudioBuffer) {
 	const buffer = context.createBuffer(1, source.length, source.sampleRate);
 	const positions = buffer.getChannelData(0);
 
@@ -19,7 +19,7 @@ const createPositionBuffer = (context: AudioContext, source: AudioBuffer) => {
 	}
 
 	return buffer;
-};
+}
 
 export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	type = nodeType;
@@ -35,8 +35,8 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	});
 
 	worklet: AudioWorkletNode;
-	playbackBufferSource: AudioBufferSourceNode | null = null;
-	positionBufferSource: AudioBufferSourceNode | null = null;
+	playbackBufferSource: AudioBufferSourceNode | undefined = undefined;
+	positionBufferSource: AudioBufferSourceNode | undefined = undefined;
 	throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
 
 	constructor(audioContext: AudioContext, initProps: Props) {
@@ -68,7 +68,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	destroy(): void {
 		this.stop();
 		this.throttledNotifySubscribers.cancel();
-		this.worklet.port.postMessage("kill");
+		this.worklet.port.postMessage("kill", {});
 	}
 
 	protected propsUpdated(props: Props, prevProps: Props): void {
@@ -103,12 +103,18 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 		const { loopStart, loopEnd, playbackRate, audioBuffer } = this.props;
 		const { duration } = audioBuffer;
 
-		this.positionBufferSource.loopStart = this.playbackBufferSource.loopStart =
-			loopStart * duration;
-		this.positionBufferSource.loopEnd = this.playbackBufferSource.loopEnd =
-			loopEnd * duration;
-		this.positionBufferSource.playbackRate.value =
-			this.playbackBufferSource.playbackRate.value = playbackRate;
+		const loopStartInstant = loopStart * duration;
+
+		this.positionBufferSource.loopStart = loopStartInstant;
+		this.playbackBufferSource.loopStart = loopStartInstant;
+
+		const loopEndInstant = loopEnd * duration;
+
+		this.positionBufferSource.loopEnd = loopEndInstant;
+		this.playbackBufferSource.loopEnd = loopEndInstant;
+
+		this.positionBufferSource.playbackRate.value = playbackRate;
+		this.playbackBufferSource.playbackRate.value = playbackRate;
 	}
 
 	private removeSource() {
@@ -117,13 +123,16 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 			this.positionBufferSource?.stop();
 			this.playbackBufferSource?.disconnect(this.gainNode);
 			this.positionBufferSource?.disconnect(this.worklet);
-		} catch (_e) {
+		} catch {
 			// noop
 		}
 
-		this.worklet.port.onmessage = null;
-		this.playbackBufferSource = null;
-		this.positionBufferSource = null;
+		this.worklet.port.removeEventListener(
+			"message",
+			this.processWorkletPositionMessage,
+		);
+		this.playbackBufferSource = undefined;
+		this.positionBufferSource = undefined;
 	}
 
 	private replaceSource() {
@@ -142,14 +151,22 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 			audioBuffer,
 		);
 
-		this.positionBufferSource.loop = this.playbackBufferSource.loop = true;
+		this.positionBufferSource.loop = true;
+		this.playbackBufferSource.loop = true;
 
 		this.positionBufferSource.connect(this.worklet);
 		this.updateSourceProps();
 
 		if (!this.playbackState.playing) return;
 
-		this.worklet.port.onmessage = this.processWorkletPositionMessage;
+		this.worklet.port.removeEventListener(
+			"message",
+			this.processWorkletPositionMessage,
+		);
+		this.worklet.port.addEventListener(
+			"message",
+			this.processWorkletPositionMessage,
+		);
 
 		this.playbackBufferSource.connect(this.gainNode);
 		this.playbackBufferSource.start(0, this.playbackBufferSource.loopStart);
@@ -159,12 +176,12 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	}
 }
 
-const createAudioNode = (
+export function createAudioNode(
 	audioContext: AudioContext,
 	initProps: Partial<Props>,
-) => new GLoopNode(audioContext, { ...defaultProps, ...initProps });
-
-export default createAudioNode;
+) {
+	return new GLoopNode(audioContext, { ...defaultProps, ...initProps });
+}
 
 interface PlaybackState {
 	playing: boolean;

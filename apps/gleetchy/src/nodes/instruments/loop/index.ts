@@ -1,7 +1,7 @@
-import createAudioNode from "./create-audio-node";
-import UI from "./loop";
+import { createAudioNode } from "./create-audio-node";
+import { Loop as UI } from "./loop";
 import { defaultProps } from "./node-props";
-import nodeType from "./node-type";
+import { nodeType } from "./node-type";
 
 import type { Props } from "./node-props";
 

@@ -1,9 +1,9 @@
 import { Show } from "solid-js";
 
-import useGlobalPlayback from "#app-store/hooks/use-global-playback";
-import Button from "#components/button";
+import { useGlobalPlayback } from "#app-store/hooks/use-global-playback";
+import { Button } from "#components/button";
 
-export default function PlayPauseButton() {
+export function PlayPauseButton() {
 	const { isPlaying, togglePlayback } = useGlobalPlayback();
 
 	return (

@@ -1,16 +1,16 @@
 import { loadAudioFilesFromInput } from "#apis/file";
-import useFileDropRegion from "#components/hooks/use-file-drop-region";
+import { useFileDropRegion } from "#components/hooks/use-file-drop-region";
 import { clamp } from "#lib/util/number";
 import { UI as Eq3 } from "#nodes/audio-effects/eq3";
 
-import LoopSample from "./loop-sample";
-import LoopTitleBar from "./loop-title-bar";
-import PlaybackControls from "./playback-controls";
+import { LoopSample } from "./loop-sample";
+import { LoopTitleBar } from "./loop-title-bar";
+import { PlaybackControls } from "./playback-controls";
 
 import type { LoopUIProps } from "./types";
 import type { ParentProps } from "solid-js";
 
-export default function Loop(props: LoopUIProps) {
+export function Loop(props: LoopUIProps) {
 	function handleFiles([file]: File[]) {
 		if (file) props.loadAudioFile(file);
 	}
@@ -35,8 +35,8 @@ export default function Loop(props: LoopUIProps) {
 
 	function handleLoopRegionDrag(movement: number) {
 		const span = props.loopEnd - props.loopStart;
-		let nextStart: number;
-		let nextEnd: number;
+		let nextStart: number | undefined = undefined;
+		let nextEnd: number | undefined = undefined;
 
 		if (movement < 0) {
 			const minStart = 0;
@@ -72,7 +72,7 @@ export default function Loop(props: LoopUIProps) {
 			<AudioFileDropRegion onFiles={handleFiles}>
 				<LoopSample
 					nodeId={props.nodeId}
-					fromSaved={!!(props.fileName && !props.audioBuffer)}
+					fromSaved={Boolean(props.fileName && !props.audioBuffer)}
 					audioBuffer={props.audioBuffer}
 					loopStart={props.loopStart}
 					loopEnd={props.loopEnd}

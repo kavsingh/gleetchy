@@ -1,16 +1,16 @@
 import { ErrorBoundary, For, Match, Switch } from "solid-js";
 
-import useAddNode from "#app-store/hooks/use-add-node";
-import useAudioNodesMeta from "#app-store/hooks/use-audio-nodes-meta";
-import ButtonGroup, { Button } from "#components/button-group";
-import ErrorMessage from "#components/error-message";
+import { useAddNode } from "#app-store/hooks/use-add-node";
+import { useAudioNodesMeta } from "#app-store/hooks/use-audio-nodes-meta";
+import { ButtonGroup, Button } from "#components/button-group";
+import { ErrorMessage } from "#components/error-message";
 import { nodeType as loopType } from "#nodes/instruments/loop";
 
-import ConnectedLoop from "./connected-loop";
+import { ConnectedLoop } from "./connected-loop";
 
 import type { ParentProps } from "solid-js";
 
-export default function InstrumentsRack() {
+export function InstrumentsRack() {
 	return (
 		<div class="flex w-full flex-col gap-8">
 			<Rack />
@@ -25,7 +25,7 @@ function Rack() {
 	return (
 		<For each={instruments()}>
 			{(instrument) => (
-				<Switch fallback={null}>
+				<Switch fallback={undefined}>
 					<Match when={instrument.type === loopType}>
 						<RackMount>
 							<ConnectedLoop id={instrument.id} />

@@ -23,7 +23,7 @@ export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 		return this.outputGainNode;
 	}
 
-	static async getWorklets(): Promise<string[]> {
+	static getWorklets(): Promise<string[]> {
 		return Promise.resolve([]);
 	}
 
@@ -33,7 +33,7 @@ export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 		} else if (node instanceof GAudioNode) {
 			this.outputGainNode.connect(node.inputGainNode);
 		} else {
-			throw new Error("Unable to connect to node");
+			throw new TypeError("Unexpected node type, unable to connect");
 		}
 	}
 
@@ -45,7 +45,7 @@ export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 		} else if (node instanceof GAudioNode) {
 			this.outputGainNode.disconnect(node.inputGainNode);
 		} else {
-			throw new Error("Unable to disconnect node");
+			throw new TypeError("Unexpected node type, unable to disconnect");
 		}
 	}
 

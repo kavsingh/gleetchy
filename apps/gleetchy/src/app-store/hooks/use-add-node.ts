@@ -2,7 +2,7 @@ import { addAudioNode } from "#app-store/audio-nodes/actions";
 
 import { useAppDispatch } from "./base";
 
-export default function useAddNode() {
+export function useAddNode() {
 	const dispatch = useAppDispatch();
 
 	return function addNode(type: string) {

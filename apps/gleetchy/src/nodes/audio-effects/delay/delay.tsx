@@ -1,12 +1,12 @@
-import Knob from "#components/knob";
-import TitleBar from "#components/title-bar";
+import { Knob } from "#components/knob";
+import { TitleBar } from "#components/title-bar";
 import { DELAY_UPPER_BOUND } from "#constants/audio";
 import { denormalize, normalize } from "#lib/util/number";
 
 import type { AudioNodeConnection } from "#types";
 import type { ParentProps } from "solid-js";
 
-export default function Delay(props: ParentProps<DelayProps>) {
+export function Delay(props: ParentProps<DelayProps>) {
 	return (
 		<div class="w-full">
 			<TitleBar
@@ -42,8 +42,8 @@ export default function Delay(props: ParentProps<DelayProps>) {
 	);
 }
 
-const normalizeDelay = normalize.bind(null, 0, DELAY_UPPER_BOUND);
-const denormalizeDelay = denormalize.bind(null, 0, DELAY_UPPER_BOUND);
+const normalizeDelay = normalize.bind(undefined, 0, DELAY_UPPER_BOUND);
+const denormalizeDelay = denormalize.bind(undefined, 0, DELAY_UPPER_BOUND);
 
 function KnobContainer(props: ParentProps) {
 	return <div class="w-12 shrink-0 grow-0">{props.children}</div>;

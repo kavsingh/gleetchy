@@ -3,7 +3,7 @@ import { createEffect, onCleanup } from "solid-js";
 import { useAppSelector } from "#app-store/hooks/base";
 import { selectTheme } from "#app-store/ui/selectors";
 
-export default function ThemeEffects() {
+export function ThemeEffects() {
 	const theme = useAppSelector(selectTheme);
 	const doc = globalThis.document.documentElement;
 	const darkSchemeQuery = globalThis.matchMedia("(prefers-color-scheme: dark)");
@@ -30,5 +30,5 @@ export default function ThemeEffects() {
 		darkSchemeQuery.removeEventListener("change", handleQueryChange);
 	});
 
-	return null;
+	return undefined;
 }

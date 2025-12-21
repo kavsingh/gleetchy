@@ -27,6 +27,7 @@ export const uiSlice = createSlice({
 		},
 		registerKeyRelease(state, action: PayloadAction<string>) {
 			state.modifierKeys = stableWithout<ModifierKey>(
+				// oxlint-disable-next-line no-unsafe-type-assertion
 				[action.payload as ModifierKey],
 				state.modifierKeys,
 			);
@@ -47,7 +48,7 @@ export const THEMES = ["system", "light", "dark"] as const;
 export type Theme = (typeof THEMES)[number];
 
 function isModifierKey(key: string): key is ModifierKey {
-	return Object.values(MODIFIER_KEYS).includes(key as ModifierKey);
+	return Object.values(MODIFIER_KEYS).includes(key);
 }
 
 interface UIState {

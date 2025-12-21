@@ -26,12 +26,14 @@ export const audioContextSlice = createSlice({
 });
 
 function getAudioContext() {
-	const AudioContext =
-		// workaround for Safari
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unnecessary-condition
-		globalThis.AudioContext || (globalThis as any).webkitAudioContext;
+	let { AudioContext } = globalThis;
 
-	// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+	// workaround for Safari
+	if (!AudioContext) {
+		// oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-unsafe-type-assertion, typescript/no-explicit-any, typescript/no-unsafe-member-access
+		AudioContext = (globalThis as any).webkitAudioContext;
+	}
+
 	if (!AudioContext) throw new Error("No audio context available");
 
 	// NOTE: https://developer.chrome.com/blog/autoplay/#web-audio
