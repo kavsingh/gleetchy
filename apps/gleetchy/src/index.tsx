@@ -3,9 +3,9 @@ import { render } from "solid-js/web";
 import { createStore } from "#app-store/create";
 
 import "./index.css";
-import App from "./app";
+import { App } from "./app";
 
-const appRoot = globalThis.document.getElementById("app-root");
+const appRoot = globalThis.document.querySelector("#app-root");
 
 if (!appRoot) throw new Error("Could not find app mount at #app-root");
 

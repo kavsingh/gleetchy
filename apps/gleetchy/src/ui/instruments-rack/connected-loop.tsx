@@ -2,16 +2,17 @@ import { Show } from "solid-js";
 
 import { loadAudioFileToNode as loadAudioFileAction } from "#app-store/audio-files/actions";
 import { useAppDispatch } from "#app-store/hooks/base";
-import useAudioNode, {
+import {
+	useAudioNode,
 	validateNodeType,
 } from "#app-store/hooks/use-audio-node";
-import NodeWrapper from "#components/node-wrapper";
+import { NodeWrapper } from "#components/node-wrapper";
 import { nodeType, UI } from "#nodes/instruments/loop";
 
 import type { NodeProps as Eq3Props } from "#nodes/audio-effects/eq3";
 import type { NodeProps } from "#nodes/instruments/loop";
 
-export default function ConnectedLoop(props: { id: string }) {
+export function ConnectedLoop(props: { id: string }) {
 	const {
 		label,
 		connections,

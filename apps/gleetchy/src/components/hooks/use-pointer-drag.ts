@@ -1,6 +1,7 @@
 import type { JSX } from "solid-js";
 
-export default function usePointerDrag(props: UsePointerDragProps) {
+// oxlint-disable-next-line max-lines-per-function
+export function usePointerDrag(props: UsePointerDragProps) {
 	let state = { ...initialState };
 
 	function handleDragMove(event: PointerEvent) {
@@ -112,8 +113,8 @@ const initialState: PointerDragState = {
 	startTime: 0,
 	startX: 0,
 	startY: 0,
-	target: null,
-	targetRect: null,
+	target: undefined,
+	targetRect: undefined,
 	targetStartX: 0,
 	targetStartY: 0,
 	targetX: 0,
@@ -133,8 +134,8 @@ export interface PointerDragState {
 	startTime: number;
 	startX: number;
 	startY: number;
-	target: HTMLElement | null;
-	targetRect: DOMRect | null;
+	target: HTMLElement | undefined;
+	targetRect: DOMRect | undefined;
 	targetStartX: number;
 	targetStartY: number;
 	targetX: number;

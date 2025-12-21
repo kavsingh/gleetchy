@@ -14,12 +14,12 @@ export const {
 
 export const selectInstrumentsIdentifierMeta = createDeepEqualSelector(
 	[selectNodesIdentifierMeta],
-	(meta) => meta.filter(hasInstrumentType),
+	(meta) => meta.filter((item) => hasInstrumentType(item)),
 );
 
 export const selectAudioEffectsIdentifierMeta = createDeepEqualSelector(
 	[selectNodesIdentifierMeta],
-	(meta) => meta.filter(hasAudioEffectType),
+	(meta) => meta.filter((item) => hasAudioEffectType(item)),
 );
 
 export const selectMainOutMeta = createDeepEqualSelector(

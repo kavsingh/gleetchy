@@ -9,9 +9,9 @@ const resizeObserver = new ResizeObserver((entries) => {
 export function useResizeObserver() {
 	function observe(
 		el: Element,
-		callback: UseResizeObserverEntryCallback,
+		onResize: UseResizeObserverEntryCallback,
 	): UseResizeObserverUnobserveFn {
-		elementCallbacks.set(el, callback);
+		elementCallbacks.set(el, onResize);
 		resizeObserver.observe(el);
 
 		return function unobserve() {

@@ -1,1 +1,1 @@
-export default "AUDIO_EFFECT_REVERB";
+export const nodeType = "AUDIO_EFFECT_REVERB";

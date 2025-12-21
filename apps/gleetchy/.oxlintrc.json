@@ -1,0 +1,57 @@
+{
+	"$schema": "../../node_modules/oxlint/configuration_schema.json",
+	"extends": ["../../.oxlintrc.json"],
+	"ignorePatterns": [
+		"dist/**/*",
+		"dist-isolation/**/*",
+		"reports/**/*",
+		"**/__generated__/**/*",
+		"!**/__generated__/__mocks__/**/*"
+	],
+	"overrides": [
+		{
+			"files": ["src/**/*"],
+			"env": { "browser": true, "node": false },
+			"rules": {
+				"eslint/no-console": "error",
+				"eslint/no-restricted-imports": [
+					"error",
+					{
+						"paths": [
+							{
+								"message": "please import helpers from #style",
+								"name": "tailwind-merge"
+							}
+						]
+					}
+				]
+			}
+		},
+		{
+			"files": ["src/**/*.tsx"],
+			"plugins": ["jsx-a11y"],
+			"rules": {
+				"eslint/max-lines-per-function": [
+					"warn",
+					{ "max": 100, "skipBlankLines": true, "skipComments": true }
+				]
+			}
+		},
+		{
+			"files": ["**/*.test.{ts,tsx}"],
+			"env": { "browser": true, "node": true },
+			"plugins": ["vitest"],
+			"rules": {
+				"eslint/max-lines-per-function": "off",
+				"eslint/no-console": "off",
+				"import/no-namespace": "off",
+				"unicorn/consistent-function-scoping": "off",
+				"vitest/prefer-to-be-falsy": "off",
+				"vitest/prefer-to-be-truthy": "off"
+			}
+		}
+	],
+	"settings": {
+		"vitest": { "typecheck": true }
+	}
+}

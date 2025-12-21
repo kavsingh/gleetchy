@@ -104,7 +104,7 @@ describe("lib/audio", () => {
 		it("should determine if from id is connected to id", () => {
 			expect.assertions(4);
 
-			const connectedToC = hasConnectionTo.bind(null, connections, "c");
+			const connectedToC = hasConnectionTo.bind(undefined, connections, "c");
 
 			expect(connectedToC("a")).toBe(true);
 			expect(connectedToC("d")).toBe(true);
@@ -132,7 +132,7 @@ describe("lib/audio", () => {
 				{ fromId: "b", toId: "a" },
 			];
 
-			const canConnectIn = canConnectNodes.bind(null, connections);
+			const canConnectIn = canConnectNodes.bind(undefined, connections);
 
 			expect(canConnectIn({ id: "a" }, { id: "d" })).toBe(false);
 		});
@@ -147,7 +147,7 @@ describe("lib/audio", () => {
 		it("should return first found connection between nodes", () => {
 			expect.assertions(3);
 
-			const getConnection = getConnectionBetween.bind(null, connections);
+			const getConnection = getConnectionBetween.bind(undefined, connections);
 
 			expect(getConnection({ id: "a" }, { id: "b" })).toStrictEqual({
 				fromId: "a",

@@ -10,10 +10,7 @@ import { useAppDispatch, useAppSelector } from "./base";
 
 import type { AudioNodeMeta } from "#types";
 
-export default function useConnection(
-	source: AudioNodeMeta,
-	target: AudioNodeMeta,
-) {
+export function useConnection(source: AudioNodeMeta, target: AudioNodeMeta) {
 	const dispatch = useAppDispatch();
 	const connections = useAppSelector(selectConnections);
 	const connection = createMemo(

@@ -12,19 +12,19 @@ import { createDeepEqualSelector } from "../lib/selector";
 
 import { connectionsSlice } from "./slice";
 
+import type { AudioNodeMeta } from "#types";
+
 export const selectConnections =
 	connectionsSlice.selectSlice.bind(connectionsSlice);
-
-import type { AudioNodeMeta } from "#types";
 
 export const selectActiveAudioNodeIds = createDeepEqualSelector(
 	selectNodesIdentifierMeta,
 	selectConnections,
 	selectMainOutNode,
 	(meta, connections, mainOut) => {
-		const connectedToMain = hasConnectionTo.bind(null, connections, mainOut.id);
-
-		return meta.map(({ id }) => id).filter(connectedToMain);
+		return meta
+			.map(({ id }) => id)
+			.filter((id) => hasConnectionTo(connections, mainOut.id, id));
 	},
 );
 

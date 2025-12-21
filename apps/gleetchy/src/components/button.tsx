@@ -4,7 +4,7 @@ import { tm } from "#style";
 
 import type { ComponentProps } from "solid-js";
 
-export default function Button(_props: Props) {
+export function Button(_props: Props) {
 	const [props, buttonProps] = splitProps(_props, [
 		"class",
 		"variant",

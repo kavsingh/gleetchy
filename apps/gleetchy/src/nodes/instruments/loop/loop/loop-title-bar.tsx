@@ -1,11 +1,11 @@
 import { Show } from "solid-js";
 
-import Button from "#components/button";
-import TitleBar from "#components/title-bar";
+import { Button } from "#components/button";
+import { TitleBar } from "#components/title-bar";
 
 import type { LoopUIProps } from "./types";
 
-export default function LoopTitleBar(props: Props) {
+export function LoopTitleBar(props: Props) {
 	return (
 		<TitleBar
 			type="Loop"
@@ -25,7 +25,7 @@ export default function LoopTitleBar(props: Props) {
 					<span>/</span>
 				</Show>
 				<Button onClick={props.selectAudioFile}>
-					<Show when={!!props.audioBuffer} fallback="Load">
+					<Show when={Boolean(props.audioBuffer)} fallback="Load">
 						Replace
 					</Show>{" "}
 					audio file

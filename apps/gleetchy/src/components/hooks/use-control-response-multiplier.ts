@@ -1,9 +1,9 @@
 import { createMemo } from "solid-js";
 
-import useModifierKeys from "#app-store/hooks/use-modifier-keys";
+import { useModifierKeys } from "#app-store/hooks/use-modifier-keys";
 import { MODIFIER_KEYS } from "#lib/constants";
 
-export default function useControlResponseMultiplier(
+export function useControlResponseMultiplier(
 	props: ControlResponseMultipliers,
 ) {
 	const { activeKeys } = useModifierKeys();

@@ -1,11 +1,11 @@
 import { Match, Switch, createEffect, onCleanup } from "solid-js";
 
-import LoopRegion from "#components/loop-region";
-import Waveform from "#components/waveform";
+import { LoopRegion } from "#components/loop-region";
+import { Waveform } from "#components/waveform";
 
-export default function Sample(props: SampleProps) {
-	let playheadRef: HTMLDivElement | undefined;
-	let unsubscribe: (() => void) | undefined;
+export function Sample(props: SampleProps) {
+	let playheadRef: HTMLDivElement | undefined = undefined;
+	let unsubscribe: (() => void) | undefined = undefined;
 
 	createEffect(() => {
 		unsubscribe?.();
@@ -22,19 +22,19 @@ export default function Sample(props: SampleProps) {
 
 	return (
 		<div class="relative size-full">
-			<div class="absolute inset-0 z-[1]">
+			<div class="absolute inset-0 z-1">
 				<Waveform buffer={props.audioBuffer} />
 			</div>
 			<Switch>
-				<Match when={!!props.audioBuffer}>
+				<Match when={Boolean(props.audioBuffer)}>
 					<>
-						<div class="pointer-events-none absolute inset-0 z-[1] overflow-hidden">
+						<div class="pointer-events-none absolute inset-0 z-1 overflow-hidden">
 							<div
-								class="pointer-events-none absolute inset-0 z-[2] before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-emphasis-600"
+								class="pointer-events-none absolute inset-0 z-2 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-emphasis-600"
 								ref={(el) => (playheadRef = el)}
 							/>
 						</div>
-						<div class="absolute inset-0 z-[3]">
+						<div class="absolute inset-0 z-3">
 							<LoopRegion
 								loopStart={props.loopStart ?? 0}
 								loopEnd={props.loopEnd ?? 1}
@@ -47,7 +47,7 @@ export default function Sample(props: SampleProps) {
 				</Match>
 				<Match when={!props.audioBuffer}>
 					<button
-						class="absolute inset-0 z-[3] flex flex-col items-center justify-center gap-2 bg-surface-0 p-12"
+						class="absolute inset-0 z-3 flex flex-col items-center justify-center gap-2 bg-surface-0 p-12"
 						tabIndex={0}
 						onClick={() => props.selectAudioFile?.()}
 					>
@@ -71,7 +71,7 @@ export default function Sample(props: SampleProps) {
 }
 
 export interface SampleProps {
-	audioBuffer: Nullable<AudioBuffer>;
+	audioBuffer: AudioBuffer | undefined;
 	fromSaved?: boolean | undefined;
 	loopStart?: number | undefined;
 	loopEnd?: number | undefined;

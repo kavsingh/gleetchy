@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import initialNodes from "#app-store/default-nodes";
+import { defaultNodes } from "#app-store/default-nodes";
 import { MAIN_OUT_ID } from "#constants/audio";
 import { prefixedId } from "#lib/id";
 import { stableOmit, stableFilter } from "#lib/util";
@@ -25,7 +25,7 @@ import type { NodeProps as LoopNodeProps } from "#nodes/instruments/loop";
 import type { AudioNodeIdentifierMeta, AudioNodeState } from "#types";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: AudioNodesState = initialNodes.reduce(
+const initialState: AudioNodesState = defaultNodes.reduce(
 	(acc: AudioNodesState, instrument) => {
 		acc.byId[instrument.id] = instrument;
 		acc.orderedIdentifierMeta.push({
@@ -114,9 +114,12 @@ export const audioNodesSlice = createSlice({
 
 			if (existing?.type !== loopNodeType) return;
 
-			(existing.audioProps as LoopNodeProps).audioBuffer = file.buffer;
-			(existing.audioProps as LoopNodeProps).fileName = file.name;
-			(existing.audioProps as LoopNodeProps).fileType = file.type;
+			// oxlint-disable-next-line no-unsafe-type-assertion
+			const audioProps = existing.audioProps as LoopNodeProps;
+
+			audioProps.audioBuffer = file.buffer;
+			audioProps.fileName = file.name;
+			audioProps.fileType = file.type;
 		});
 	},
 	selectors: {
@@ -139,31 +142,39 @@ export const audioNodesSlice = createSlice({
 
 function getNewNodeState(type: string) {
 	switch (type) {
-		case delayNodeType:
-			return {
+		case delayNodeType: {
+			const state: AudioNodeState<DelayNodeProps> = {
 				type,
 				id: prefixedId(delayNodeType),
 				label: "DX",
 				audioProps: { ...delayDefaultProps },
-			} as AudioNodeState<DelayNodeProps>;
+			};
+
+			return state;
+		}
 		case reverbNodeType: {
-			return {
+			const state: AudioNodeState<ReverbNodeProps> = {
 				type,
 				id: prefixedId(reverbNodeType),
 				label: "RX",
 				audioProps: { ...reverbDefaultProps },
-			} as AudioNodeState<ReverbNodeProps>;
+			};
+
+			return state;
 		}
 		case loopNodeType: {
-			return {
+			const state: AudioNodeState<LoopNodeProps> = {
 				type,
 				id: prefixedId(loopNodeType),
 				label: "LX",
 				audioProps: { ...loopDefaultProps },
-			} as AudioNodeState<LoopNodeProps>;
+			};
+
+			return state;
 		}
-		default:
-			return null;
+		default: {
+			return undefined;
+		}
 	}
 }
 

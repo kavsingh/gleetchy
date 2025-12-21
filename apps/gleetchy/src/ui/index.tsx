@@ -1,12 +1,12 @@
-import AudioEffectsRack from "./audio-effects-rack";
-import AudioInitListeners from "./audio-init-listeners";
-import InstrumentsRack from "./instruments-rack";
-import KeyboardListeners from "./keyboard-listeners";
-import Masthead from "./masthead";
-import PatchBay from "./patch-bay";
-import ThemeEffects from "./theme-effects";
+import { AudioEffectsRack } from "./audio-effects-rack";
+import { AudioInitListeners } from "./audio-init-listeners";
+import { InstrumentsRack } from "./instruments-rack";
+import { KeyboardListeners } from "./keyboard-listeners";
+import { Masthead } from "./masthead";
+import { PatchBay } from "./patch-bay";
+import { ThemeEffects } from "./theme-effects";
 
-export default function UI() {
+export function UI() {
 	return (
 		<>
 			<AudioInitListeners />

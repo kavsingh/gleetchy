@@ -1,8 +1,8 @@
 import { onCleanup } from "solid-js";
 
-import useAudioContext from "#app-store/hooks/use-audio-context";
+import { useAudioContext } from "#app-store/hooks/use-audio-context";
 
-export default function AudioInitListeners() {
+export function AudioInitListeners() {
 	const { initAudioContext } = useAudioContext();
 
 	globalThis.window.addEventListener("click", initAudioContext, {
@@ -14,5 +14,5 @@ export default function AudioInitListeners() {
 		globalThis.window.removeEventListener("click", initAudioContext, true);
 	});
 
-	return null;
+	return undefined;
 }

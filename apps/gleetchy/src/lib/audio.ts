@@ -5,22 +5,22 @@ import type {
 	ConnectionIdent,
 } from "#types";
 
-export function hasAudioEffectType(item: { type?: string }) {
+export function hasAudioEffectType(item: { type?: string | undefined }) {
 	return /^audio_effect_/i.test(item.type ?? "");
 }
 
-export function hasInstrumentType(item: { type?: string }) {
+export function hasInstrumentType(item: { type?: string | undefined }) {
 	return /^instrument_/i.test(item.type ?? "");
 }
 
 export function isAudioEffectNode(
-	node: GAudioNode | GInstrumentNode | AudioNode,
+	node: GAudioNode | GInstrumentNode,
 ): node is GAudioNode {
-	return hasAudioEffectType(node as GAudioNode);
+	return hasAudioEffectType(node);
 }
 
 export function isInstrumentNode(
-	node: GAudioNode | GInstrumentNode | AudioNode,
+	node: GAudioNode | GInstrumentNode,
 ): node is GInstrumentNode {
 	return hasInstrumentType(node as GAudioNode);
 }
@@ -41,14 +41,14 @@ export function hasConnectionTo(
 	toId: string,
 	fromId: string,
 ) {
-	if (!connections.length) return false;
+	if (connections.length === 0) return false;
 
 	function hasDownstreamConnection(innerFromId: string): boolean {
 		const connectionsFromId = connections.filter((connection) => {
 			return connection.fromId === innerFromId;
 		});
 
-		if (!connectionsFromId.length) return false;
+		if (connectionsFromId.length === 0) return false;
 
 		if (connectionsFromId.some((c) => c.toId === toId)) return true;
 

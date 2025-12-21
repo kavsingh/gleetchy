@@ -2,10 +2,10 @@ import { Show, createMemo, splitProps } from "solid-js";
 
 import { tj, tm } from "#style";
 
-import useControlResponseMultiplier from "../hooks/use-control-response-multiplier";
-import usePointerDrag from "../hooks/use-pointer-drag";
+import { useControlResponseMultiplier } from "../hooks/use-control-response-multiplier";
+import { usePointerDrag } from "../hooks/use-pointer-drag";
 
-import LoopHandle from "./loop-handle";
+import { LoopHandle } from "./loop-handle";
 
 import type { PointerDragMoveHandler } from "../hooks/use-pointer-drag";
 import type { ComponentProps } from "solid-js";
@@ -15,11 +15,11 @@ const controlResponseMultipliers = {
 	fine: 0.4,
 };
 
-export default function LoopRegion(props: Props) {
+export function LoopRegion(props: Props) {
 	const moveMultiplier = useControlResponseMultiplier(
 		controlResponseMultipliers,
 	);
-	let containerRef: HTMLDivElement | undefined;
+	let containerRef: HTMLDivElement | undefined = undefined;
 
 	const handleStartHandleDrag: PointerDragMoveHandler = ({ movementX }) => {
 		if (!(props.onLoopStartDrag && containerRef)) return;
@@ -91,7 +91,7 @@ function HandleContainer(_props: HandleContainerProps) {
 	return (
 		<div
 			{...divProps}
-			class="absolute top-0 z-[1] h-full w-[10px] cursor-ew-resize"
+			class="absolute top-0 z-1 h-full w-2.5 cursor-ew-resize"
 			role="presentation"
 			style={{ left: `${props.offset * 100}%` }}
 		>
@@ -110,7 +110,7 @@ function ActiveRegion(_props: ActiveRegionProps) {
 	return (
 		<Region
 			{...regionProps}
-			class={tj("cursor-move", props.preferred ? "z-[2]" : "z-0")}
+			class={tj("cursor-move", props.preferred ? "z-2" : "z-0")}
 		/>
 	);
 }

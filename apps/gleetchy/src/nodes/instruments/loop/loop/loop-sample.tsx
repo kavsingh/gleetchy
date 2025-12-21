@@ -2,13 +2,13 @@ import { splitProps } from "solid-js";
 
 import { selectAudioNodeSubscriptionData } from "#app-store/audio-engine/selectors";
 import { useAppStore } from "#app-store/hooks/base";
-import Sample from "#components/sample";
+import { Sample } from "#components/sample";
 import { isFiniteNumber } from "#lib/util/predicate";
 
 import type { AppState } from "#app-store/create";
 import type { SampleProps } from "#components/sample";
 
-export default function LoopSample(_props: Props) {
+export function LoopSample(_props: Props) {
 	const [props, sampleProps] = splitProps(_props, ["nodeId"]);
 	const store = useAppStore();
 

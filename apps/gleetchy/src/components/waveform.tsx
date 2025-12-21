@@ -5,16 +5,16 @@ import { selectTheme } from "#app-store/ui/selectors";
 
 import { useResizeObserver } from "./hooks/use-resize-observer";
 
-export default function Waveform(props: Props) {
+export function Waveform(props: Props) {
 	const theme = useAppSelector(selectTheme);
 	const observe = useResizeObserver();
-	let unobserve: ReturnType<typeof observe> | undefined;
-	let canvasRef: HTMLCanvasElement | undefined;
+	let unobserve: ReturnType<typeof observe> | undefined = undefined;
+	let canvasRef: HTMLCanvasElement | undefined = undefined;
 
 	function update() {
 		if (!canvasRef) return;
 
-		canvasRef.setAttribute("data-theme", theme());
+		canvasRef.dataset["theme"] = theme();
 		updateWaveform(canvasRef, {
 			timeRegions: props.timeRegions,
 			buffer: props.buffer,
@@ -42,7 +42,7 @@ export default function Waveform(props: Props) {
 }
 
 export interface WaveformProps {
-	buffer: Nullable<AudioBuffer>;
+	buffer: AudioBuffer | undefined;
 	timeRegions?: number | undefined;
 }
 
@@ -58,6 +58,7 @@ function drawTempWaveform(
 	context.fillRect(0, height / 2, width, 1);
 }
 
+// oxlint-disable-next-line max-params
 function drawTimeRegions(
 	context: CanvasRenderingContext2D,
 	width: number,
@@ -74,6 +75,7 @@ function drawTimeRegions(
 	context.stroke();
 }
 
+// oxlint-disable-next-line max-params
 function drawWaveform(
 	context: CanvasRenderingContext2D,
 	width: number,

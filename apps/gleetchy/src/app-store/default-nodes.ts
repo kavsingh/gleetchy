@@ -1,9 +1,12 @@
 import { MAIN_OUT_ID } from "#constants/audio";
+// oxlint-disable-next-line no-namespace
 import * as delay from "#nodes/audio-effects/delay";
+// oxlint-disable-next-line no-namespace
 import * as reverb from "#nodes/audio-effects/reverb";
+// oxlint-disable-next-line no-namespace
 import * as loop from "#nodes/instruments/loop";
 
-const defaultNodes = [
+export const defaultNodes = [
 	{
 		id: MAIN_OUT_ID,
 		label: "Main",
@@ -47,5 +50,3 @@ const defaultNodes = [
 		type: reverb.nodeType,
 	},
 ] as const;
-
-export default defaultNodes;

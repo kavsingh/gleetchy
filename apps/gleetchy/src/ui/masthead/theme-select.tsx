@@ -4,12 +4,12 @@ import { useAppDispatch, useAppSelector } from "#app-store/hooks/base";
 import { setTheme } from "#app-store/ui/actions";
 import { selectTheme } from "#app-store/ui/selectors";
 import { THEMES } from "#app-store/ui/slice";
-import RadioInput from "#components/radio-input";
+import { RadioInput } from "#components/radio-input";
 
 import type { Theme } from "#app-store/ui/slice";
 import type { JSX } from "solid-js";
 
-export default function ThemeSelect() {
+export function ThemeSelect() {
 	const selected = useAppSelector(selectTheme);
 	const dispatch = useAppDispatch();
 
@@ -46,5 +46,5 @@ export default function ThemeSelect() {
 }
 
 function isValidTheme(value: unknown): value is Theme {
-	return THEMES.includes(value as Theme);
+	return typeof value === "string" && THEMES.includes(value);
 }

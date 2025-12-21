@@ -5,7 +5,7 @@ import {
 
 import { useAppSelector } from "./base";
 
-export default function useAudioNodesMeta() {
+export function useAudioNodesMeta() {
 	const instruments = useAppSelector(selectInstrumentsIdentifierMeta);
 	const audioEffects = useAppSelector(selectAudioEffectsIdentifierMeta);
 

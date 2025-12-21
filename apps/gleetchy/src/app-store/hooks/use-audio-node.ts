@@ -19,7 +19,7 @@ import { useAppDispatch, useAppSelector } from "./base";
 
 import type { AudioNodeState, GenericObject } from "#types";
 
-export default function useAudioNode<TAudioNodeProps extends GenericObject>(
+export function useAudioNode<TAudioNodeProps extends GenericObject>(
 	id: string,
 	isValid: ReturnType<typeof validateNodeType>,
 ) {
@@ -37,6 +37,7 @@ export default function useAudioNode<TAudioNodeProps extends GenericObject>(
 
 		if (!nodeAudioProps) return undefined;
 
+		// oxlint-disable-next-line typescript/no-unsafe-type-assertion
 		return nodeAudioProps as Extract<typeof nodeAudioProps, TAudioNodeProps>;
 	});
 

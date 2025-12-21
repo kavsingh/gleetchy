@@ -1,11 +1,11 @@
-import Knob from "#components/knob";
-import SelectBox from "#components/select-box";
-import TitleBar from "#components/title-bar";
+import { Knob } from "#components/knob";
+import { SelectBox } from "#components/select-box";
+import { TitleBar } from "#components/title-bar";
 
 import type { AudioNodeConnection } from "#types";
 import type { ImpulseName } from "./impulses";
 
-export default function Reverb(props: ReverbProps) {
+export function Reverb(props: ReverbProps) {
 	function handleImpulseChange(nextImpulse: string) {
 		if (!isValidImpulse(nextImpulse)) return;
 
@@ -62,5 +62,5 @@ const impulseOptions: { value: ImpulseName; label: string }[] = [
 function isValidImpulse(value: string): value is ImpulseName {
 	const names = impulseOptions.map((option) => option.value);
 
-	return names.includes(value as ImpulseName);
+	return names.includes(value);
 }

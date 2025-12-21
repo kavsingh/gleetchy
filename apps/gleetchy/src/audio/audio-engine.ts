@@ -1,3 +1,4 @@
+// oxlint-disable max-lines
 import { isAnyOf, isFulfilled } from "@reduxjs/toolkit";
 
 import { loadAudioFileToNode } from "#app-store/audio-files/actions";
@@ -38,12 +39,9 @@ import type { GInstrumentNode } from "#lib/g-audio-node";
 import type { AudioNodeState, GenericObject } from "#types";
 import type { UnknownAction } from "@reduxjs/toolkit";
 
-export default class AudioEngine {
+export class AudioEngine {
 	private publishSubscriptionEvent: SubscriptionEventDispatcher;
-	private audioNodes = new Map<
-		string,
-		GAudioNode | GInstrumentNode | AudioNode
-	>();
+	private audioNodes = new Map<string, GAudioNode | GInstrumentNode>();
 	private unsubscribers = new Map<string, () => void>();
 	private workletsLoaded = false;
 	private audioContext?: AudioContext;
@@ -56,6 +54,7 @@ export default class AudioEngine {
 		this.publishSubscriptionEvent = publishSubscriptionEvent;
 	}
 
+	// oxlint-disable-next-line max-lines-per-function
 	public async update(appState: AppState, action: UnknownAction) {
 		const didUpdate = await this.updateAudioContext(
 			appState.audioContext.audioContext,
@@ -116,8 +115,8 @@ export default class AudioEngine {
 			if (node instanceof GAudioNode) {
 				try {
 					node.destroy();
-				} catch (e) {
-					logError(e);
+				} catch (cause) {
+					logError(cause);
 				}
 			}
 
@@ -260,7 +259,11 @@ export default class AudioEngine {
 			}
 		}
 
-		this.audioNodes.set(MAIN_OUT_ID, this.audioContext.destination);
+		this.audioNodes.set(
+			MAIN_OUT_ID,
+			// oxlint-disable-next-line no-unsafe-type-assertion
+			this.audioContext.destination as unknown as GAudioNode,
+		);
 	}
 
 	private updateAudioGraph(connections: AppState["connections"]) {
@@ -270,7 +273,7 @@ export default class AudioEngine {
 			const fromNode = this.audioNodes.get(fromId);
 			const toNode = this.audioNodes.get(toId);
 
-			if (fromNode && toNode) (fromNode as GAudioNode).connect(toNode);
+			if (fromNode && toNode) fromNode.connect(toNode);
 		}
 	}
 
@@ -289,49 +292,56 @@ export default class AudioEngine {
 	}
 }
 
-const setNodeProps = ({
+function setNodeProps({
 	node,
 	audioProps,
 }: {
 	node: AudioEngineNode;
 	audioProps: Record<string, unknown>;
-}) => {
+}) {
 	if (!(node instanceof GAudioNode)) return;
 
 	try {
 		if (typeof node.set === "function") node.set(audioProps);
-	} catch (reason) {
-		logWarn(reason);
+	} catch (cause) {
+		logWarn(cause);
 	}
-};
+}
 
 function createNewNode(
 	context: AudioContext,
 	state: AudioNodeState<GenericObject>,
 ): GAudioNode | GInstrumentNode | undefined {
 	switch (state.type) {
-		case delayType:
+		case delayType: {
 			return createDelayNode(context, state.audioProps);
-		case reverbType:
+		}
+
+		case reverbType: {
+			// TODO: why doesn't this satisfy GAudioNode
+			// oxlint-disable-next-line no-unsafe-type-assertion
 			return createReverbNode(context, state.audioProps) as GAudioNode;
-		case loopType:
+		}
+
+		case loopType: {
 			return createLoopNode(context, state.audioProps);
-		default:
-			return;
+		}
+
+		default: {
+			return undefined;
+		}
 	}
 }
 
 async function registerWorklets(context: AudioContext) {
-	const sources = (
-		await Promise.all([
-			GLoopNode.getWorklets(),
-			GDelayNode.getWorklets(),
-			GReverbNode.getWorklets(),
-		])
-	).flat();
+	const sources = await Promise.all([
+		GLoopNode.getWorklets(),
+		GDelayNode.getWorklets(),
+		GReverbNode.getWorklets(),
+	]);
 
 	await Promise.all(
-		sources.map((source) => context.audioWorklet.addModule(source)),
+		sources.flat().map((source) => context.audioWorklet.addModule(source)),
 	);
 }
 

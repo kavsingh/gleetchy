@@ -1,51 +1,52 @@
 import type { GenericObject } from "#types";
 
 export abstract class GAudioNode<P extends GenericObject = GenericObject> {
+	abstract type: string;
+
 	protected props: P;
 	protected audioContext: AudioContext;
-	private inputGainNode: AudioNode;
-	private outputGainNode: AudioNode;
 
-	abstract type: string;
+	#inputGainNode: AudioNode;
+	#outputGainNode: AudioNode;
 
 	constructor(audioContext: AudioContext, initialProps: P) {
 		this.props = { ...initialProps };
 		this.audioContext = audioContext;
-		this.inputGainNode = audioContext.createGain();
-		this.outputGainNode = audioContext.createGain();
+		this.#inputGainNode = audioContext.createGain();
+		this.#outputGainNode = audioContext.createGain();
 	}
 
 	get inNode(): AudioNode {
-		return this.inputGainNode;
+		return this.#inputGainNode;
 	}
 
 	get outNode(): AudioNode {
-		return this.outputGainNode;
+		return this.#outputGainNode;
 	}
 
-	static async getWorklets(): Promise<string[]> {
+	static getWorklets(): Promise<string[]> {
 		return Promise.resolve([]);
 	}
 
 	connect(node: AudioNode | GAudioNode): void {
 		if (node instanceof AudioNode) {
-			this.outputGainNode.connect(node);
+			this.#outputGainNode.connect(node);
 		} else if (node instanceof GAudioNode) {
-			this.outputGainNode.connect(node.inputGainNode);
+			this.#outputGainNode.connect(node.#inputGainNode);
 		} else {
-			throw new Error("Unable to connect to node");
+			throw new TypeError("Unexpected node type, unable to connect");
 		}
 	}
 
 	disconnect(node?: AudioNode | GAudioNode): void {
 		if (!node) {
-			this.outputGainNode.disconnect();
+			this.#outputGainNode.disconnect();
 		} else if (node instanceof AudioNode) {
-			this.outputGainNode.disconnect(node);
+			this.#outputGainNode.disconnect(node);
 		} else if (node instanceof GAudioNode) {
-			this.outputGainNode.disconnect(node.inputGainNode);
+			this.#outputGainNode.disconnect(node.#inputGainNode);
 		} else {
-			throw new Error("Unable to disconnect node");
+			throw new TypeError("Unexpected node type, unable to disconnect");
 		}
 	}
 

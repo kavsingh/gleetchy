@@ -1,11 +1,12 @@
 import tailwindcssPlugin from "@tailwindcss/vite";
-import { defineConfig } from "vite";
+import { defineConfig } from "rolldown-vite";
 import checkerPlugin from "vite-plugin-checker";
 import solidPlugin from "vite-plugin-solid";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
 export default defineConfig(({ mode }) => ({
 	build: { sourcemap: true },
+	oxc: { jsx: { importSource: "solid-js" } },
 	plugins: [
 		tsconfigPathsPlugin(),
 		solidPlugin(),
@@ -20,10 +21,5 @@ function checker(mode: string) {
 	return checkerPlugin({
 		overlay: { initialIsOpen: false },
 		typescript: true,
-		eslint: {
-			useFlatConfig: true,
-			lintCommand: 'eslint "./src"',
-			dev: { logLevel: ["error"] },
-		},
 	});
 }

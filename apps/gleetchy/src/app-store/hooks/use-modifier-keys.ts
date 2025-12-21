@@ -6,7 +6,7 @@ import { selectModifierKeys } from "../ui/selectors";
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-export default function useModifierKeys() {
+export function useModifierKeys() {
 	const dispatch = useAppDispatch();
 	const activeKeys = useAppSelector(selectModifierKeys);
 

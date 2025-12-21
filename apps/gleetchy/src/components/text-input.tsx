@@ -2,10 +2,10 @@ import { createEffect, createSignal } from "solid-js";
 
 import type { JSX } from "solid-js";
 
-export default function TextInput(props: Props) {
+export function TextInput(props: Props) {
 	// eslint-disable-next-line solid/reactivity
 	let initialValue = props.value;
-	let inputRef: HTMLInputElement | undefined;
+	let inputRef: HTMLInputElement | undefined = undefined;
 	const [value, setValue] = createSignal(initialValue);
 
 	const handleFocus: JSX.FocusEventHandlerUnion<

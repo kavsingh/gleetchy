@@ -1,20 +1,20 @@
 {
 	"name": "gleetchy",
 	"version": "1.0.0",
-	"description": "looping business",
-	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
-	"license": "ISC",
-	"repository": {
-		"url": "https://github.com/kavsingh/gleetchy.git",
-		"type": "git"
-	},
-	"main": "index.js",
-	"type": "module",
 	"private": true,
+	"description": "looping business",
+	"license": "ISC",
+	"author": "Kav Singh <flakisms@gmail.com> (https://github.com/kavsingh)",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/kavsingh/gleetchy.git"
+	},
+	"type": "module",
+	"main": "index.js",
 	"scripts": {
 		"tdd": "vitest",
 		"test": "vitest run",
-		"lint": "tsc && eslint . && prettier . --check",
+		"lint": "tsc && oxlint --type-aware && eslint . && oxfmt --check",
 		"dev": "vite",
 		"build": "rm -rf ./dist && vite build",
 		"preview": "vite preview"
@@ -37,14 +37,13 @@
 		"@types/audioworklet": "0.0.92",
 		"@types/webaudioapi": "0.0.27",
 		"@vitest/coverage-v8": "4.0.16",
-		"@vitest/eslint-plugin": "1.5.4",
 		"eslint-plugin-better-tailwindcss": "3.8.0",
 		"eslint-plugin-jest-dom": "5.5.0",
 		"eslint-plugin-solid": "0.14.5",
 		"eslint-plugin-testing-library": "7.15.1",
 		"jsdom": "27.3.0",
+		"rolldown-vite": "7.3.0",
 		"tailwindcss": "4.1.18",
-		"vite": "7.3.0",
 		"vite-plugin-checker": "0.12.0",
 		"vite-plugin-solid": "2.11.10",
 		"vite-tsconfig-paths": "6.0.3",

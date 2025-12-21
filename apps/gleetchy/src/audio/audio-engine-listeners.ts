@@ -1,10 +1,10 @@
 import type { AppStartListening } from "#app-store/listener-middleware";
-import type AudioEngine from "./audio-engine";
+import type { AudioEngine } from "./audio-engine";
 
-export const setupAudioEngineListeners = (
+export function setupAudioEngineListeners(
 	audioEngine: AudioEngine,
 	startListening: AppStartListening,
-) => {
+) {
 	const removeStateUpdatesListener = startListening({
 		predicate: () => true,
 		effect: (action, listenerApi) => {
@@ -12,7 +12,7 @@ export const setupAudioEngineListeners = (
 		},
 	});
 
-	return () => {
+	return function cleanup() {
 		removeStateUpdatesListener();
 	};
-};
+}

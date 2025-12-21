@@ -13,7 +13,7 @@ export interface LoopUIProps {
 	lowGain: number;
 	playbackRate: number;
 	gain: number;
-	audioBuffer: Nullable<AudioBuffer>;
+	audioBuffer: AudioBuffer | undefined;
 	onGainChange(gain: number): unknown;
 	onPlaybackRateChange(playbackRate: number): unknown;
 	onEqChange(props: Record<string, number>): unknown;

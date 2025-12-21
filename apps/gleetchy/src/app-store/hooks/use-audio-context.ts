@@ -3,7 +3,7 @@ import { selectAudioContext } from "../audio-context/selectors";
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-export default function useAudioContext() {
+export function useAudioContext() {
 	const dispatch = useAppDispatch();
 	const audioContext = useAppSelector(selectAudioContext);
 

@@ -13,21 +13,25 @@ export const loadAudioFileToNode = createAsyncThunk(
 		{ nodeId, file }: { nodeId: string; file: File },
 		{ dispatch, getState },
 	): Promise<{ nodeId: string; file: AudioFile }> {
+		// oxlint-disable-next-line no-unsafe-type-assertion
 		const state = getState() as AppState;
 		const fileId = getFileId(file);
 		const stored = state.audioFiles[fileId];
 
 		if (stored) return { nodeId, file: stored };
 
-		const loaded = (await dispatch(loadAudioFile(file))).payload as AudioFile;
+		const loaded = await dispatch(loadAudioFile(file));
+		// oxlint-disable-next-line no-unsafe-type-assertion
+		const loadedFile = loaded.payload as AudioFile;
 
-		return { nodeId, file: loaded };
+		return { nodeId, file: loadedFile };
 	},
 );
 
 export const loadAudioFile = createAsyncThunk(
 	"audioFiles/decode",
 	async function loadFile(file: File, { getState }): Promise<AudioFile> {
+		// oxlint-disable-next-line no-unsafe-type-assertion
 		const audioContext = selectAudioContext(getState() as AppState);
 
 		if (!audioContext) throw new Error("No valid audio context");
@@ -40,8 +44,8 @@ export const loadAudioFile = createAsyncThunk(
 			);
 
 			return { id, name, type, buffer };
-		} catch (e) {
-			throw errorFrom(e);
+		} catch (cause) {
+			throw errorFrom(cause);
 		}
 	},
 );
