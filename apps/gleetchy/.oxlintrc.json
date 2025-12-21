@@ -41,8 +41,6 @@
 		}
 	],
 	"settings": {
-		"vitest": {
-			"typecheck": false
-		}
+		"vitest": { "typecheck": true }
 	}
 }
