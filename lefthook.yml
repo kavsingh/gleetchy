@@ -1,0 +1,3 @@
+extends:
+  - apps/*/lefthook.yml
+  - packages/*/lefthook.yml
