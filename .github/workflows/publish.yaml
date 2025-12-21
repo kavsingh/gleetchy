@@ -1,0 +1,30 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  test-lint:
+    uses: ./.github/workflows/test-lint.yml
+    secrets: inherit
+
+  publish:
+    needs: test-lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: ./.github/actions/setup
+      - run: pnpm nx build gleetchy
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: ./apps/gleetchy/dist
+      - uses: actions/deploy-pages@v4
