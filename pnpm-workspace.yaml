@@ -3,7 +3,8 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
-  - "@tailwindcss/oxide"
+  - '@tailwindcss/oxide'
   - esbuild
+  - lefthook
   - nx
   - unrs-resolver

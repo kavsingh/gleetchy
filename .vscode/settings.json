@@ -2,7 +2,7 @@
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
 		"source.fixAll.oxc": "always",
-		"source.fixAll.eslint": "always",
+		"source.fixAll.eslint": "always"
 	},
 	"editor.quickSuggestions": {
 		"strings": true
@@ -42,7 +42,7 @@
 	"rust-analyzer.check.command": "clippy",
 	"rust-analyzer.diagnostics.styleLints.enable": true,
 	"rust-analyzer.rustfmt.extraArgs": ["+nightly"],
-	
+
 	"[javascript]": {
 		"editor.defaultFormatter": "oxc.oxc-vscode"
 	},
