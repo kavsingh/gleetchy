@@ -21,6 +21,7 @@ jobs:
     needs: test-lint
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - run: pnpm nx build gleetchy
       - uses: actions/configure-pages@v5

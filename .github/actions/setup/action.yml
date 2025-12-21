@@ -4,7 +4,6 @@ description: Setup and install dependencies
 runs:
   using: composite
   steps:
-    - uses: actions/checkout@v6
     - uses: pnpm/action-setup@v4
     - run: pnpm install --frozen-lockfile
       shell: bash
