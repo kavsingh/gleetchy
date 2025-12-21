@@ -13,7 +13,18 @@
 			"files": ["src/**/*"],
 			"env": { "browser": true, "node": false },
 			"rules": {
-				"eslint/no-console": "error"
+				"eslint/no-console": "error",
+				"eslint/no-restricted-imports": [
+					"error",
+					{
+						"paths": [
+							{
+								"message": "please import helpers from #style",
+								"name": "tailwind-merge"
+							}
+						]
+					}
+				]
 			}
 		},
 		{

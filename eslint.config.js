@@ -2,6 +2,8 @@ import { defineConfig } from "eslint/config";
 import { flatConfigs as importX } from "eslint-plugin-import-x";
 import { configs as tsEslint } from "typescript-eslint";
 
+// TODO: use eslint plugins via oxlint jsPlugin once available in language server
+
 export default defineConfig(
 	{
 		ignores: [".vscode/*", ".nx/*", ".temp/*", "apps/*", "packages/*"],
@@ -34,14 +36,6 @@ export default defineConfig(
 					"pathGroupsExcludedImportTypes": ["type"],
 				},
 			],
-		},
-	},
-
-	{
-		files: ["**/*.c[tj]s?(x)"],
-		languageOptions: {
-			parserOptions: { sourceType: "commonjs" },
-			sourceType: "commonjs",
 		},
 	},
 );

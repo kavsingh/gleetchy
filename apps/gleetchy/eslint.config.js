@@ -11,6 +11,8 @@ import baseConfig from "../../eslint.config.js";
 
 const { dirname } = import.meta;
 
+// TODO: use eslint plugins via oxlint jsPlugin once available in language server
+
 export default defineConfig(
 	...baseConfig,
 
@@ -42,17 +44,6 @@ export default defineConfig(
 		files: ["src/**/*.?(m|c)[tj]s?(x)"],
 		plugins: { "better-tailwindcss": tailwindcss },
 		rules: {
-			"@typescript-eslint/no-restricted-imports": [
-				"error",
-				{
-					paths: [
-						{
-							message: "please import helpers from #style",
-							name: "tailwind-merge",
-						},
-					],
-				},
-			],
 			...tailwindcss.configs["recommended"]?.rules,
 			"better-tailwindcss/enforce-consistent-line-wrapping": "off",
 			"better-tailwindcss/enforce-shorthand-classes": "warn",
