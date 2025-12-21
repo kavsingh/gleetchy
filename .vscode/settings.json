@@ -1,7 +1,8 @@
 {
 	"editor.formatOnSave": true,
 	"editor.codeActionsOnSave": {
-		"source.fixAll": "explicit"
+		"source.fixAll.oxc": "always",
+		"source.fixAll.eslint": "always",
 	},
 	"editor.quickSuggestions": {
 		"strings": true
