@@ -14,7 +14,7 @@
 	"scripts": {
 		"tdd": "vitest",
 		"test": "vitest run",
-		"lint": "tsc && oxlint --type-aware --report-unused-disable-directives && eslint . && oxfmt --check",
+		"lint": "tsc && oxlint --type-aware && eslint . && oxfmt --check",
 		"dev": "vite",
 		"build": "rm -rf ./dist && vite build",
 		"preview": "vite preview"

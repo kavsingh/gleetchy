@@ -11,7 +11,9 @@ class LoopProcessor extends AudioWorkletProcessor {
 	process(inputList: InputList) {
 		const position = inputList[0]?.[0]?.[0];
 
-		if (Number.isFinite(position)) this.port.postMessage(position, {});
+		if (typeof position === "number" && Number.isFinite(position)) {
+			this.port.postMessage(position, {});
+		}
 
 		return this.keepAlive;
 	}

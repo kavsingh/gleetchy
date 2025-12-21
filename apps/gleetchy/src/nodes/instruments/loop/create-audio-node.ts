@@ -25,26 +25,24 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	type = nodeType;
 	defaultProps = defaultProps;
 
-	playbackState: PlaybackState = { playing: false, positionRatio: 0 };
-
-	gainNode = this.audioContext.createGain();
-	eq3Node = createEq3Node(this.audioContext, {
+	#playbackState: PlaybackState = { playing: false, positionRatio: 0 };
+	#gainNode = this.audioContext.createGain();
+	#eq3Node = createEq3Node(this.audioContext, {
 		lowGain: 0,
 		midGain: 0,
 		highGain: 0,
 	});
-
-	worklet: AudioWorkletNode;
-	playbackBufferSource: AudioBufferSourceNode | undefined = undefined;
-	positionBufferSource: AudioBufferSourceNode | undefined = undefined;
-	throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
+	#worklet: AudioWorkletNode;
+	#playbackBufferSource: AudioBufferSourceNode | undefined = undefined;
+	#positionBufferSource: AudioBufferSourceNode | undefined = undefined;
+	#throttledNotifySubscribers = rafThrottle(this.notifySubscribers);
 
 	constructor(audioContext: AudioContext, initProps: Props) {
 		super(audioContext, initProps);
 
-		this.gainNode.connect(this.eq3Node.inNode);
-		this.eq3Node.connect(this.outNode);
-		this.worklet = new AudioWorkletNode(this.audioContext, "loop-processor");
+		this.#gainNode.connect(this.#eq3Node.inNode);
+		this.#eq3Node.connect(this.outNode);
+		this.#worklet = new AudioWorkletNode(this.audioContext, "loop-processor");
 	}
 
 	static override getWorklets(): Promise<string[]> {
@@ -52,50 +50,50 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 	}
 
 	play(): void {
-		if (this.playbackState.playing) return;
+		if (this.#playbackState.playing) return;
 
-		this.playbackState.playing = true;
-		this.replaceSource();
+		this.#playbackState.playing = true;
+		this.#replaceSource();
 	}
 
 	stop(): void {
-		if (!this.playbackState.playing) return;
+		if (!this.#playbackState.playing) return;
 
-		this.playbackState.playing = false;
-		this.removeSource();
+		this.#playbackState.playing = false;
+		this.#removeSource();
 	}
 
 	destroy(): void {
 		this.stop();
-		this.throttledNotifySubscribers.cancel();
-		this.worklet.port.postMessage("kill", {});
+		this.#throttledNotifySubscribers.cancel();
+		this.#worklet.port.postMessage("kill", {});
 	}
 
 	protected propsUpdated(props: Props, prevProps: Props): void {
 		const { gain, audioBuffer, midGain, lowGain, highGain } = props;
 
-		this.gainNode.gain.value = gain;
-		this.eq3Node.set({ midGain, lowGain, highGain });
+		this.#gainNode.gain.value = gain;
+		this.#eq3Node.set({ midGain, lowGain, highGain });
 
 		if (prevProps.audioBuffer !== audioBuffer) {
-			this.replaceSource();
-		} else if (audioBuffer && this.playbackBufferSource) {
-			this.updateSourceProps();
+			this.#replaceSource();
+		} else if (audioBuffer && this.#playbackBufferSource) {
+			this.#updateSourceProps();
 		} else if (!audioBuffer) {
-			this.removeSource();
+			this.#removeSource();
 		}
 	}
 
-	private processWorkletPositionMessage = ({ data }: MessageEvent<number>) => {
-		this.playbackState.positionRatio = data;
-		this.throttledNotifySubscribers(this.playbackState);
+	#processWorkletPositionMessage = ({ data }: MessageEvent<number>) => {
+		this.#playbackState.positionRatio = data;
+		this.#throttledNotifySubscribers(this.#playbackState);
 	};
 
-	private updateSourceProps() {
+	#updateSourceProps() {
 		if (
 			!this.props.audioBuffer ||
-			!this.playbackBufferSource ||
-			!this.positionBufferSource
+			!this.#playbackBufferSource ||
+			!this.#positionBufferSource
 		) {
 			return;
 		}
@@ -103,76 +101,67 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 		const { loopStart, loopEnd, playbackRate, audioBuffer } = this.props;
 		const { duration } = audioBuffer;
 
-		const loopStartInstant = loopStart * duration;
+		this.#playbackBufferSource.loop = true;
+		this.#positionBufferSource.loop = this.#playbackBufferSource.loop;
 
-		this.positionBufferSource.loopStart = loopStartInstant;
-		this.playbackBufferSource.loopStart = loopStartInstant;
+		this.#playbackBufferSource.loopStart = loopStart * duration;
+		this.#positionBufferSource.loopStart = this.#playbackBufferSource.loopStart;
 
-		const loopEndInstant = loopEnd * duration;
+		this.#playbackBufferSource.loopEnd = loopEnd * duration;
+		this.#positionBufferSource.loopEnd = this.#playbackBufferSource.loopEnd;
 
-		this.positionBufferSource.loopEnd = loopEndInstant;
-		this.playbackBufferSource.loopEnd = loopEndInstant;
-
-		this.positionBufferSource.playbackRate.value = playbackRate;
-		this.playbackBufferSource.playbackRate.value = playbackRate;
+		this.#playbackBufferSource.playbackRate.value = playbackRate;
+		this.#positionBufferSource.playbackRate.value =
+			this.#playbackBufferSource.playbackRate.value;
 	}
 
-	private removeSource() {
+	#removeSource() {
 		try {
-			this.playbackBufferSource?.stop();
-			this.positionBufferSource?.stop();
-			this.playbackBufferSource?.disconnect(this.gainNode);
-			this.positionBufferSource?.disconnect(this.worklet);
+			this.#playbackBufferSource?.stop();
+			this.#positionBufferSource?.stop();
+			this.#playbackBufferSource?.disconnect(this.#gainNode);
+			this.#positionBufferSource?.disconnect(this.#worklet);
 		} catch {
 			// noop
 		}
 
-		this.worklet.port.removeEventListener(
-			"message",
-			this.processWorkletPositionMessage,
-		);
-		this.playbackBufferSource = undefined;
-		this.positionBufferSource = undefined;
+		// TODO: this only seems to work with onmessage, and not addEventListener. why?
+		// oxlint-disable-next-line prefer-add-event-listener, no-null
+		this.#worklet.port.onmessage = null;
+		this.#playbackBufferSource = undefined;
+		this.#positionBufferSource = undefined;
 	}
 
-	private replaceSource() {
-		this.removeSource();
+	#replaceSource() {
+		this.#removeSource();
 
 		const { audioBuffer } = this.props;
 
 		if (!audioBuffer) return;
 
-		this.playbackBufferSource = this.audioContext.createBufferSource();
-		this.positionBufferSource = this.audioContext.createBufferSource();
+		this.#playbackBufferSource = this.audioContext.createBufferSource();
+		this.#positionBufferSource = this.audioContext.createBufferSource();
 
-		this.playbackBufferSource.buffer = audioBuffer;
-		this.positionBufferSource.buffer = createPositionBuffer(
+		this.#playbackBufferSource.buffer = audioBuffer;
+		this.#positionBufferSource.buffer = createPositionBuffer(
 			this.audioContext,
 			audioBuffer,
 		);
 
-		this.positionBufferSource.loop = true;
-		this.playbackBufferSource.loop = true;
+		this.#updateSourceProps();
 
-		this.positionBufferSource.connect(this.worklet);
-		this.updateSourceProps();
+		if (!this.#playbackState.playing) return;
 
-		if (!this.playbackState.playing) return;
+		// TODO: this only seems to work with onmessage, and not addEventListener. why?
+		// oxlint-disable-next-line prefer-add-event-listener
+		this.#worklet.port.onmessage = this.#processWorkletPositionMessage;
 
-		this.worklet.port.removeEventListener(
-			"message",
-			this.processWorkletPositionMessage,
-		);
-		this.worklet.port.addEventListener(
-			"message",
-			this.processWorkletPositionMessage,
-		);
+		this.#positionBufferSource.connect(this.#worklet);
+		this.#playbackBufferSource.connect(this.#gainNode);
+		this.#playbackState.positionRatio = this.#positionBufferSource.loopStart;
 
-		this.playbackBufferSource.connect(this.gainNode);
-		this.playbackBufferSource.start(0, this.playbackBufferSource.loopStart);
-		this.positionBufferSource.start(0, this.positionBufferSource.loopStart);
-
-		this.playbackState.positionRatio = this.positionBufferSource.loopStart;
+		this.#playbackBufferSource.start(0, this.#playbackBufferSource.loopStart);
+		this.#positionBufferSource.start(0, this.#positionBufferSource.loopStart);
 	}
 }
 

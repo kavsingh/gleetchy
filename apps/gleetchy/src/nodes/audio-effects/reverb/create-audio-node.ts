@@ -11,18 +11,18 @@ export class GReverbNode extends GAudioNode<Props> {
 	type = nodeType;
 	defaultProps = defaultProps;
 
-	private reverbNode = this.audioContext.createConvolver();
-	private wetGainNode = this.audioContext.createGain();
-	private dryGainNode = this.audioContext.createGain();
+	#reverbNode = this.audioContext.createConvolver();
+	#wetGainNode = this.audioContext.createGain();
+	#dryGainNode = this.audioContext.createGain();
 
 	constructor(audioContext: AudioContext, initialProps: Props) {
 		super(audioContext, initialProps);
 
-		this.inNode.connect(this.dryGainNode);
-		this.inNode.connect(this.reverbNode);
-		this.reverbNode.connect(this.wetGainNode);
-		this.wetGainNode.connect(this.outNode);
-		this.dryGainNode.connect(this.outNode);
+		this.inNode.connect(this.#dryGainNode);
+		this.inNode.connect(this.#reverbNode);
+		this.#reverbNode.connect(this.#wetGainNode);
+		this.#wetGainNode.connect(this.outNode);
+		this.#dryGainNode.connect(this.outNode);
 
 		this.propsUpdated(this.props);
 	}
@@ -33,14 +33,14 @@ export class GReverbNode extends GAudioNode<Props> {
 	}
 
 	protected propsUpdated(props: Props, previousProps?: Props): void {
-		this.wetGainNode.gain.value = props.wetDryRatio;
-		this.dryGainNode.gain.value = 1 - props.wetDryRatio;
+		this.#wetGainNode.gain.value = props.wetDryRatio;
+		this.#dryGainNode.gain.value = 1 - props.wetDryRatio;
 
 		if (props.impulse !== previousProps?.impulse) {
 			void loadImpulse(this.audioContext, props.impulse)
 				// oxlint-disable-next-line prefer-await-to-then, always-return
 				.then((buffer) => {
-					this.reverbNode.buffer = buffer;
+					this.#reverbNode.buffer = buffer;
 				})
 				// oxlint-disable-next-line prefer-await-to-then
 				.catch((cause: unknown) => {

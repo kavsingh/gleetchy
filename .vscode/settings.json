@@ -22,10 +22,11 @@
 
 	"typescript.tsdk": "node_modules/typescript/lib",
 
+	"prettier.enable": false,
+
 	"oxc.enable": true,
 	"oxc.typeAware": true,
-
-	"prettier.enable": false,
+	"oxc.unusedDisableDirectives": "warn",
 
 	"eslint.enable": true,
 	"eslint.workingDirectories": [{ "mode": "auto" }],

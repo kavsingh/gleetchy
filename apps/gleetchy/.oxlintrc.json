@@ -32,6 +32,7 @@
 			"plugins": ["vitest"],
 			"rules": {
 				"eslint/max-lines-per-function": "off",
+				"eslint/no-console": "off",
 				"import/no-namespace": "off",
 				"unicorn/consistent-function-scoping": "off",
 				"vitest/prefer-to-be-falsy": "off",

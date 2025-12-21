@@ -14,7 +14,7 @@ export function Waveform(props: Props) {
 	function update() {
 		if (!canvasRef) return;
 
-		canvasRef.dataset["data-theme"] = theme();
+		canvasRef.dataset["theme"] = theme();
 		updateWaveform(canvasRef, {
 			timeRegions: props.timeRegions,
 			buffer: props.buffer,
@@ -42,7 +42,7 @@ export function Waveform(props: Props) {
 }
 
 export interface WaveformProps {
-	buffer: Nullable<AudioBuffer>;
+	buffer: AudioBuffer | undefined;
 	timeRegions?: number | undefined;
 }
 

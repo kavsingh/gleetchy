@@ -71,7 +71,7 @@ export function Sample(props: SampleProps) {
 }
 
 export interface SampleProps {
-	audioBuffer: Nullable<AudioBuffer>;
+	audioBuffer: AudioBuffer | undefined;
 	fromSaved?: boolean | undefined;
 	loopStart?: number | undefined;
 	loopEnd?: number | undefined;
