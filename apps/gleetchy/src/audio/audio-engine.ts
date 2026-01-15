@@ -54,7 +54,7 @@ export class AudioEngine {
 		this.publishSubscriptionEvent = publishSubscriptionEvent;
 	}
 
-	// oxlint-disable-next-line max-lines-per-function
+	// oxlint-disable-next-line max-lines-per-function, max-statements
 	public async update(appState: AppState, action: UnknownAction) {
 		const didUpdate = await this.updateAudioContext(
 			appState.audioContext.audioContext,
@@ -235,6 +235,7 @@ export class AudioEngine {
 		}
 	}
 
+	// oxlint-disable-next-line max-statements
 	private updateAudioNodes(
 		nextNodes: AppState["audioNodes"]["byId"],
 		isPlaying: AppState["globalPlayback"]["isPlaying"],

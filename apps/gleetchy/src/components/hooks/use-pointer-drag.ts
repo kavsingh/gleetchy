@@ -50,6 +50,7 @@ export function usePointerDrag(props: UsePointerDragProps) {
 		props.onDragEnd?.({ ...state });
 	}
 
+	// oxlint-disable-next-line max-statements
 	const onPointerDown: JSX.EventHandlerUnion<HTMLElement, PointerEvent> = (
 		event,
 	) => {

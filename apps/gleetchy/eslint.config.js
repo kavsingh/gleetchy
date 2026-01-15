@@ -2,14 +2,15 @@ import path from "node:path";
 
 import { defineConfig } from "eslint/config";
 import tailwindcss from "eslint-plugin-better-tailwindcss";
-import { getDefaultCallees } from "eslint-plugin-better-tailwindcss/api/defaults";
+import {
+	getDefaultAttributes,
+	getDefaultCallees,
+} from "eslint-plugin-better-tailwindcss/api/defaults";
 import jestDom from "eslint-plugin-jest-dom";
 import solid from "eslint-plugin-solid";
 import testingLibrary from "eslint-plugin-testing-library";
 
 import baseConfig from "../../eslint.config.js";
-
-const { dirname } = import.meta;
 
 // TODO: use eslint plugins via oxlint jsPlugin once available in language server
 
@@ -30,7 +31,7 @@ export default defineConfig(
 		settings: {
 			"import-x/resolver": {
 				"eslint-import-resolver-typescript": {
-					project: path.resolve(dirname, "tsconfig.json"),
+					project: path.resolve(import.meta.dirname, "tsconfig.json"),
 				},
 			},
 		},
@@ -46,12 +47,17 @@ export default defineConfig(
 		rules: {
 			...tailwindcss.configs["recommended"]?.rules,
 			"better-tailwindcss/enforce-consistent-line-wrapping": "off",
-			"better-tailwindcss/enforce-shorthand-classes": "warn",
 			"better-tailwindcss/no-conflicting-classes": "error",
 		},
 		settings: {
 			"better-tailwindcss": {
 				callees: [...getDefaultCallees(), "tj", "tm"],
+				attributes: [
+					...getDefaultAttributes(),
+					"class",
+					["classList", { match: "string" }],
+					["classList", { match: "objectKeys" }],
+				],
 				entryPoint: "src/index.css",
 			},
 		},

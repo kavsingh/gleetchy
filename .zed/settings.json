@@ -1,0 +1,108 @@
+{
+	"format_on_save": "on",
+	"code_actions_on_format": { "source.fixAll": true },
+	// for some reason auto-indentation does not respect formatter configs
+	"hard_tabs": true,
+
+	"auto_install_extensions": {
+		"oxc": true,
+		"html": true,
+		"toml": true,
+		"tombi": true
+	},
+
+	"file_scan_exclusions": ["**/node_modules", "**/dist", "**/reports"],
+
+	"lsp": {
+		"oxlint": {
+			"initialization_options": {
+				"settings": {
+					"typeAware": true,
+					"unusedDisableDirectives": "deny"
+				}
+			}
+		},
+
+		"oxfmt": {
+			"initialization_options": { "settings": { "run": "onSave" } }
+		},
+
+		"eslint": {
+			"settings": { "workingDirectories": [{ "mode": "auto" }] }
+		},
+
+		"tailwindcss-language-server": {
+			"settings": {
+				"validate": true,
+				"classAttributes": ["class", "classList", "className", ".*ClassNames"],
+				"experimental": {
+					"configFile": {
+						"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"
+					}
+				},
+				// @TODO: disable once figured out why eslint plugin
+				// doesn't catch some cases
+				"lint": { "suggestCanonicalClasses": "warn" }
+			}
+		}
+	},
+
+	"languages": {
+		"TypeScript": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }],
+			"code_actions_on_format": { "source.fixAll.eslint": true }
+		},
+
+		"TSX": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }],
+			"code_actions_on_format": { "source.fixAll.eslint": true }
+		},
+
+		"JavaScript": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }],
+			"code_actions_on_format": { "source.fixAll.eslint": true }
+		},
+
+		"CSS": {
+			"language_servers": [
+				"tailwindcss-intellisense-css",
+				"!vscode-css-language-server"
+			],
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+		},
+
+		"HTML": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+		},
+
+		"JSON": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+		},
+
+		"JSONC": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+		},
+
+		"TOML": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "tombi" } }]
+		},
+
+		"YAML": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+		},
+
+		"Markdown": {
+			"prettier": { "allowed": false },
+			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+		}
+	}
+}

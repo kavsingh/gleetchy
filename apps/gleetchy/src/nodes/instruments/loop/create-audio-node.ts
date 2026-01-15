@@ -89,6 +89,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 		this.#throttledNotifySubscribers(this.#playbackState);
 	};
 
+	// oxlint-disable-next-line max-statements
 	#updateSourceProps() {
 		if (
 			!this.props.audioBuffer ||
@@ -132,6 +133,7 @@ export class GLoopNode extends GInstrumentNode<Props, PlaybackState> {
 		this.#positionBufferSource = undefined;
 	}
 
+	// oxlint-disable-next-line max-statements
 	#replaceSource() {
 		this.#removeSource();
 

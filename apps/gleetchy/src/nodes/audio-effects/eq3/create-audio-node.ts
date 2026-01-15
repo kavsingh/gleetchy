@@ -13,6 +13,7 @@ export class GEq3Node extends GAudioNode<Props> {
 	#midNode = this.audioContext.createBiquadFilter();
 	#highNode = this.audioContext.createBiquadFilter();
 
+	// oxlint-disable-next-line max-statements
 	constructor(audioContext: AudioContext, props: Props) {
 		super(audioContext, props);
 

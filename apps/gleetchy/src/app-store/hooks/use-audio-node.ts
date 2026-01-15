@@ -19,6 +19,7 @@ import { useAppDispatch, useAppSelector } from "./base";
 
 import type { AudioNodeState, GenericObject } from "#types";
 
+// oxlint-disable-next-line max-statements
 export function useAudioNode<TAudioNodeProps extends GenericObject>(
 	id: string,
 	isValid: ReturnType<typeof validateNodeType>,
