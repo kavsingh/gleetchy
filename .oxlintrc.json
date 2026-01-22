@@ -18,7 +18,6 @@
 		"eslint/curly": ["warn", "multi-line", "consistent"],
 		"eslint/eqeqeq": "error",
 		"eslint/id-length": "off",
-
 		"eslint/func-style": [
 			"warn",
 			"declaration",
@@ -38,6 +37,7 @@
 		"eslint/no-magic-numbers": "off",
 		"eslint/no-plusplus": ["warn", { "allowForLoopAfterthoughts": true }],
 		"eslint/no-ternary": "off",
+		"eslint/no-undef": "off",
 		"eslint/no-undefined": "off",
 		"eslint/no-void": ["error", { "allowAsStatement": true }],
 		"eslint/no-warning-comments": ["warn", { "terms": ["fixme", "revert"] }],

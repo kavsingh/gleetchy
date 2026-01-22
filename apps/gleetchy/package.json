@@ -34,9 +34,9 @@
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/user-event": "14.6.1",
 		"@tsconfig/vite-react": "7.0.2",
-		"@types/audioworklet": "0.0.92",
+		"@types/audioworklet": "0.0.93",
 		"@types/webaudioapi": "0.0.27",
-		"@vitest/coverage-v8": "4.0.17",
+		"@vitest/coverage-v8": "4.0.18",
 		"eslint-plugin-better-tailwindcss": "4.0.1",
 		"eslint-plugin-jest-dom": "5.5.0",
 		"eslint-plugin-solid": "0.14.5",
@@ -47,7 +47,7 @@
 		"vite-plugin-checker": "0.12.0",
 		"vite-plugin-solid": "2.11.10",
 		"vite-tsconfig-paths": "6.0.4",
-		"vitest": "4.0.17",
+		"vitest": "4.0.18",
 		"web-audio-test-api": "0.5.2"
 	}
 }
