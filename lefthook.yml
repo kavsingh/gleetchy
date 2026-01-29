@@ -6,9 +6,11 @@ pre-commit:
   jobs:
     - run: pnpm oxfmt {staged_files}
       glob: "**/*.{js,ts,jsx,tsx,json,jsonc,yaml,yml,html,css}"
+      root: "."
       stage_fixed: true
     - run: pnpm tombi format {staged_files}
       glob: "**/*.toml"
+      root: "."
       stage_fixed: true
 
 pre-push:
@@ -16,5 +18,7 @@ pre-push:
   jobs:
     - run: pnpm lint
       glob: "**/*.*"
+      root: "."
     - run: pnpm tombi lint
       glob: "**/*.toml"
+      root: "."

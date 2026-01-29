@@ -2,5 +2,7 @@ pre-commit:
   jobs:
     - run: pnpm oxlint --type-aware --type-check --fix {staged_files}
       glob: "*.{js,ts,jsx,tsx}"
+      root: "apps/gleetchy"
     - run: pnpm eslint --fix {staged_files}
       glob: "*.{js,ts,jsx,tsx}"
+      root: "apps/gleetchy"
