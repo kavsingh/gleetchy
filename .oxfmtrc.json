@@ -3,5 +3,16 @@
 	"ignorePatterns": ["pnpm-*.yaml", "**/dist/**/*", "**/reports/**/*"],
 	"printWidth": 80,
 	"quoteProps": "consistent",
-	"useTabs": true
+	"useTabs": true,
+	"experimentalSortImports": {
+		"order": "asc",
+		"groups": [
+			["builtin"],
+			["external"],
+			["internal", "subpath"],
+			["parent"],
+			["sibling", "index"],
+			["type"]
+		]
+	}
 }

@@ -1,8 +1,8 @@
 import { defineConfig, mergeConfig } from "vitest/config";
 
-import type { ViteUserConfig } from "vitest/config";
+import baseConfig from "./vite.config.ts";
 
-import baseConfig from "./vite.config";
+import type { ViteUserConfig } from "vitest/config";
 
 export default defineConfig((configEnv) => {
 	return mergeConfig(baseConfig(configEnv), {
@@ -11,7 +11,7 @@ export default defineConfig((configEnv) => {
 			include: ["src/**/*.{test,spec}.?(m|c)[tj]s?(x)"],
 			includeSource: ["src/**/*.?(m|c)[tj]s?(x)"],
 			environment: "jsdom",
-			setupFiles: ["./vitest.setup.ts"],
+			setupFiles: ["./src/vitest.setup.ts"],
 			clearMocks: true,
 			coverage: {
 				provider: "v8",

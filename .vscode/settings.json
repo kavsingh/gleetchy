@@ -33,7 +33,13 @@
 
 	"files.associations": { "*.css": "tailwindcss" },
 	"tailwindCSS.validate": true,
-	"tailwindCSS.classAttributes": ["class", "classList"],
+	"tailwindCSS.classAttributes": [
+		"class",
+		"classList",
+		"className",
+		".+ClassName",
+		".+ClassNames"
+	],
 	"tailwindCSS.classFunctions": ["tj", "tm"],
 	"tailwindCSS.experimental.configFile": {
 		"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"
