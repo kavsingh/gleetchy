@@ -1,3 +1,17 @@
 extends:
   - apps/*/lefthook.yml
   - packages/*/lefthook.yml
+
+pre-commit:
+  jobs:
+    - run: pnpm oxfmt {staged_files}
+      glob: "**/*.{js,ts,jsx,tsx,json,jsonc,toml,yaml,yml,html,css}"
+      stage_fixed: true
+    - run: pnpm tombi format {staged_files}
+      glob: "**/*.toml"
+      stage_fixed: true
+
+pre-push:
+  jobs:
+    - run: pnpm lint
+      glob: "**/*.*"
