@@ -25,6 +25,7 @@
 		"@tsconfig/strictest": "2.0.8",
 		"@types/node": "24.10.9",
 		"@typescript/native-preview": "7.0.0-dev.20260129.1",
+		"concurrently": "9.2.1",
 		"lefthook": "2.0.16",
 		"nx": "22.4.2",
 		"oxfmt": "0.27.0",
