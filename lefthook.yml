@@ -12,6 +12,9 @@ pre-commit:
       stage_fixed: true
 
 pre-push:
+  parallel: true
   jobs:
     - run: pnpm lint
       glob: "**/*.*"
+    - run: pnpm tombi lint
+      glob: "**/*.tombi"
