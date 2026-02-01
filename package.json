@@ -24,13 +24,13 @@
 		"@tsconfig/node24": "24.0.4",
 		"@tsconfig/strictest": "2.0.8",
 		"@types/node": "24.10.9",
-		"@typescript/native-preview": "7.0.0-dev.20260129.1",
+		"@typescript/native-preview": "7.0.0-dev.20260201.1",
 		"concurrently": "9.2.1",
 		"lefthook": "2.0.16",
-		"nx": "22.4.2",
+		"nx": "22.4.4",
 		"oxfmt": "0.27.0",
 		"oxlint": "1.42.0",
-		"oxlint-tsgolint": "0.11.3",
+		"oxlint-tsgolint": "0.11.4",
 		"tombi": "0.7.25"
 	},
 	"packageManager": "pnpm@10.28.2+sha512.41872f037ad22f7348e3b1debbaf7e867cfd448f2726d9cf74c08f19507c31d2c8e7a11525b983febc2df640b5438dee6023ebb1f84ed43cc2d654d2bc326264"
