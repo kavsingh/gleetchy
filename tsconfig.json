@@ -1,5 +1,10 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"extends": ["./tsconfig.base.json", "@tsconfig/node24/tsconfig.json"],
-	"include": ["./*.ts", "./*.js", "./*.cjs"]
+	"include": ["./*.ts", "./*.js", "./*.cjs"],
+	"extends": ["./tsconfig.base.json", "@tsconfig/bun/tsconfig.json"],
+	"compilerOptions": {
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"types": ["bun"]
+	}
 }

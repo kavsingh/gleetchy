@@ -4,6 +4,6 @@ description: Setup and install dependencies
 runs:
   using: composite
   steps:
-    - uses: pnpm/action-setup@v4
-    - run: pnpm install --frozen-lockfile
+    - uses: oven-sh/setup-bun@v2
+    - run: bun install --frozen-lockfile
       shell: bash

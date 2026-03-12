@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - run: pnpm nx build gleetchy
+      - run: bun nx build gleetchy
         env:
           VITE_BUILD_BASE: /gleetchy/
       - uses: actions/configure-pages@v5

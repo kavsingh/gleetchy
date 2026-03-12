@@ -4,24 +4,18 @@ extends:
 
 pre-commit:
   jobs:
-    - run: pnpm oxfmt {staged_files}
-      glob: "**/*.{js,ts,jsx,tsx,json,jsonc,yaml,yml,html,css}"
-      root: "."
-      stage_fixed: true
-    - run: pnpm tombi format {staged_files}
+    - run: bun tombi format {staged_files}
       glob: "**/*.toml"
-      root: "."
       stage_fixed: true
-    - run: pnpm tombi lint {staged_files}
+    - run: bun tombi lint {staged_files}
       glob: "**/*.toml"
-      root: "."
 
 pre-push:
   parallel: true
   jobs:
-    - run: pnpm lint
+    - run: bun lint
       glob: "**/*.*"
       root: "."
-    - run: pnpm tombi lint
+    - run: bun tombi lint
       glob: "**/*.toml"
       root: "."

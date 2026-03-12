@@ -1,9 +1,0 @@
-packages:
-  - apps/*
-  - packages/*
-
-allowBuilds:
-  esbuild: true
-  lefthook: true
-  nx: true
-  tombi: true

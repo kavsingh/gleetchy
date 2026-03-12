@@ -25,7 +25,7 @@ export function TitleBar(props: Props) {
 			<div class="flex items-center">
 				<div class="me-1">{props.type} /</div>
 				{props.children}
-				<Button onClick={props.onRemoveClick}>Remove</Button>
+				<Button onClick={() => void props.onRemoveClick()}>Remove</Button>
 			</div>
 		</div>
 	);

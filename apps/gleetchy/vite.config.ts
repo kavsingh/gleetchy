@@ -4,6 +4,12 @@ import checkerPlugin from "vite-plugin-checker";
 import solidPlugin from "vite-plugin-solid";
 import tsconfigPathsPlugin from "vite-tsconfig-paths";
 
+function checker(mode: string) {
+	if (mode !== "development") return undefined;
+
+	return checkerPlugin({ oxlint: true, overlay: { initialIsOpen: false } });
+}
+
 export default defineConfig(({ mode }) => {
 	return {
 		base: process.env["VITE_BUILD_BASE"] ?? "/",
@@ -17,12 +23,3 @@ export default defineConfig(({ mode }) => {
 		],
 	};
 });
-
-function checker(mode: string) {
-	if (mode !== "development") return undefined;
-
-	return checkerPlugin({
-		overlay: { initialIsOpen: false },
-		typescript: true,
-	});
-}

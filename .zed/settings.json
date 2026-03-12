@@ -1,19 +1,7 @@
 {
 	"format_on_save": "on",
 	"prettier": { "allowed": false },
-	"code_actions_on_format": { "source.fixAll": true },
-	// for some reason auto-indentation does not respect formatter configs
 	"hard_tabs": true,
-
-	"auto_install_extensions": {
-		"oxc": true,
-		"tsgo": true,
-		"html": true,
-		"toml": true,
-		"tombi": true
-	},
-
-	"file_scan_exclusions": ["**/node_modules", "**/dist", "**/reports"],
 
 	"lsp": {
 		"oxlint": {
@@ -22,13 +10,6 @@
 
 		"oxfmt": {
 			"initialization_options": { "settings": { "run": "onSave" } }
-		},
-
-		"eslint": {
-			"settings": {
-				"workingDirectories": [{ "mode": "auto" }],
-				"onIgnoredFiles": "off"
-			}
 		},
 
 		"tailwindcss-language-server": {
@@ -46,45 +27,44 @@
 					"configFile": {
 						"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"
 					}
-				},
-				// @TODO: disable once figured out why eslint plugin
-				// doesn't catch some cases
-				"lint": { "suggestCanonicalClasses": "warn" }
+				}
 			}
 		}
 	},
 
 	"languages": {
 		"TypeScript": {
-			"language_servers": ["tsgo", "oxlint", "eslint", "oxfmt"],
+			"language_servers": [
+				"tsgo",
+				"oxlint",
+				"oxfmt",
+				"tailwindcss-language-server"
+			],
 			"formatter": [{ "language_server": { "name": "oxfmt" } }],
-			"code_actions_on_format": {
-				"source.fixAll.eslint": true,
-				"source.fixAll.oxc": true
-			}
+			"code_actions_on_format": { "source.fixAll.oxc": true }
 		},
 
 		"TSX": {
-			"language_servers": ["tsgo", "oxlint", "eslint", "oxfmt"],
+			"language_servers": [
+				"tsgo",
+				"oxlint",
+				"oxfmt",
+				"tailwindcss-language-server"
+			],
 			"formatter": [{ "language_server": { "name": "oxfmt" } }],
-			"code_actions_on_format": {
-				"source.fixAll.eslint": true,
-				"source.fixAll.oxc": true
-			}
+			"code_actions_on_format": { "source.fixAll.oxc": true }
 		},
 
 		"JavaScript": {
-			"language_servers": ["tsgo", "oxlint", "eslint", "oxfmt"],
+			"language_servers": ["tsgo", "oxlint", "oxfmt"],
 			"formatter": [{ "language_server": { "name": "oxfmt" } }],
-			"code_actions_on_format": {
-				"source.fixAll.eslint": true,
-				"source.fixAll.oxc": true
-			}
+			"code_actions_on_format": { "source.fixAll.oxc": true }
 		},
 
 		"CSS": {
 			"language_servers": [
 				"tailwindcss-intellisense-css",
+				"tailwindcss-language-server",
 				"!vscode-css-language-server"
 			],
 			"formatter": [{ "language_server": { "name": "oxfmt" } }]

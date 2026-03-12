@@ -14,9 +14,9 @@
 	"scripts": {
 		"tdd": "vitest",
 		"test": "vitest run",
-		"lint": "conc 'oxlint --type-aware --type-check' 'eslint .' 'oxfmt --check'",
+		"lint": "oxlint --type-aware --type-check --max-warnings 0 && oxfmt --check",
 		"dev": "vite",
-		"build": "rm -rf ./dist && vite build",
+		"build": "rimraf ./dist && vite build",
 		"preview": "vite preview"
 	},
 	"dependencies": {
@@ -25,32 +25,29 @@
 		"nanoid": "5.1.6",
 		"raf-throttle": "2.0.6",
 		"solid-js": "1.9.11",
-		"tailwind-merge": "3.4.0"
+		"tailwind-merge": "3.5.0"
 	},
 	"devDependencies": {
 		"@solidjs/testing-library": "0.8.10",
-		"@tailwindcss/vite": "4.1.18",
+		"@tailwindcss/vite": "4.2.1",
 		"@testing-library/dom": "10.4.1",
 		"@testing-library/jest-dom": "6.9.1",
 		"@testing-library/user-event": "14.6.1",
 		"@tsconfig/vite-react": "7.0.2",
-		"@types/audioworklet": "0.0.93",
-		"@types/eslint": "9.6.1",
+		"@types/audioworklet": "0.0.96",
 		"@types/webaudioapi": "0.0.27",
-		"@vitest/coverage-v8": "4.0.18",
-		"eslint": "9.39.2",
-		"eslint-plugin-better-tailwindcss": "4.0.2",
+		"@vitest/coverage-v8": "4.1.0",
+		"eslint-plugin-better-tailwindcss": "4.3.2",
 		"eslint-plugin-jest-dom": "5.5.0",
 		"eslint-plugin-solid": "0.14.5",
-		"eslint-plugin-testing-library": "7.15.4",
-		"jsdom": "27.4.0",
+		"eslint-plugin-testing-library": "7.16.0",
+		"jsdom": "28.1.0",
 		"rolldown-vite": "7.3.1",
-		"tailwindcss": "4.1.18",
-		"typescript-eslint": "8.54.0",
+		"tailwindcss": "4.2.1",
 		"vite-plugin-checker": "0.12.0",
 		"vite-plugin-solid": "2.11.10",
-		"vite-tsconfig-paths": "6.0.5",
-		"vitest": "4.0.18",
+		"vite-tsconfig-paths": "6.1.1",
+		"vitest": "4.1.0",
 		"web-audio-test-api": "0.5.2"
 	}
 }

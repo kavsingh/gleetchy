@@ -99,10 +99,10 @@ export function Slider(_props: Props) {
 			</LabelText>
 			<BarContainer
 				orientation={props.orientation}
-				ref={(el) => (barContainerRef = el)}
+				ref={(el) => void (barContainerRef = el)}
 			>
 				<Track orientation={props.orientation} />
-				<Bar orientation={props.orientation} ref={(el) => (barRef = el)} />
+				<Bar orientation={props.orientation} ref={(el) => void (barRef = el)} />
 			</BarContainer>
 			<LabelText
 				class={tj(

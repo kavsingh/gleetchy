@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext", "dom", "dom.iterable", "dom.asynciterable"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"target": "es2023",

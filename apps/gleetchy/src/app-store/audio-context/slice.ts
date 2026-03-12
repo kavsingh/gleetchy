@@ -29,11 +29,13 @@ function getAudioContext() {
 	let { AudioContext } = globalThis;
 
 	// workaround for Safari
+	// oxlint-disable-next-line typescript/no-unnecessary-condition
 	if (!AudioContext) {
 		// oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-unsafe-type-assertion, typescript/no-explicit-any, typescript/no-unsafe-member-access
 		AudioContext = (globalThis as any).webkitAudioContext;
 	}
 
+	// oxlint-disable-next-line typescript/no-unnecessary-condition
 	if (!AudioContext) throw new Error("No audio context available");
 
 	// NOTE: https://developer.chrome.com/blog/autoplay/#web-audio
