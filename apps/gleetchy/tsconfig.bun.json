@@ -1,0 +1,11 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"include": ["./*.ts", "./*.js", "./*.cjs", "../../*.config.ts"],
+	"extends": ["../../tsconfig.base.json", "@tsconfig/bun/tsconfig.json"],
+	"compilerOptions": {
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"noPropertyAccessFromIndexSignature": true,
+		"types": ["bun"]
+	}
+}

@@ -25,4 +25,4 @@ export const audioFilesSlice = createSlice({
 	},
 });
 
-type AudioFilesState = Record<string, AudioFile>;
+export type AudioFilesState = Record<string, AudioFile>;

@@ -1,0 +1,18 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"include": ["./src"],
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"composite": true,
+		"emitDeclarationOnly": true,
+		"jsx": "preserve",
+		"jsxImportSource": "solid-js",
+		"lib": ["esnext", "dom"],
+		"module": "esnext",
+		"moduleResolution": "bundler",
+		"target": "es2023",
+		"paths": { "#*": ["./src/*"] },
+		"sourceMap": true,
+		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
+	}
+}

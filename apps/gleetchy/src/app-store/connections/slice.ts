@@ -59,4 +59,4 @@ function createConnection(
 	};
 }
 
-type ConnectionsState = AudioNodeConnection[];
+export type ConnectionsState = AudioNodeConnection[];

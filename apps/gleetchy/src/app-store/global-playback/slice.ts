@@ -17,6 +17,6 @@ export const globalPlaybackSlice = createSlice({
 	},
 });
 
-interface GlobalPlaybackState {
+export interface GlobalPlaybackState {
 	isPlaying: boolean;
 }

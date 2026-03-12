@@ -42,6 +42,6 @@ function getAudioContext() {
 	return new AudioContext();
 }
 
-interface AudioContextState {
+export interface AudioContextState {
 	audioContext?: AudioContext;
 }

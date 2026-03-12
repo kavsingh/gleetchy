@@ -1,12 +1,11 @@
-.DS_Store
-*.log
-*.log.*
-*.sublime-project
-*.sublime-workspace
+**/.DS_Store
+**/*.log
+**/*.log.*
+**/*.tsbuildinfo
+
+**/node_modules/
+**/targets/
 
 .nx/cache
 .nx/workspace-data
 .github/instructions/nx.instructions.md
-
-**/node_modules/
-**/targets/

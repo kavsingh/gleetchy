@@ -22,7 +22,8 @@
 		"test": "nx run-many -t test --outputStyle stream",
 		"lint": "nx run-many -t lint --outputStyle stream",
 		"clean:nx": "rimraf ./**/.nx --glob",
-		"clean:modules": "rimraf ./**/node_modules --glob"
+		"clean:modules": "rimraf ./**/node_modules --glob",
+		"clean:types": "rimraf ./**/*.tsbuildinfo --glob"
 	},
 	"devDependencies": {
 		"@total-typescript/ts-reset": "0.6.1",

@@ -1,16 +1,8 @@
 {
-	"extends": "../../tsconfig.base.json",
-	"compilerOptions": {
-		"jsx": "preserve",
-		"jsxImportSource": "solid-js",
-		"lib": ["esnext", "dom", "dom.iterable", "dom.asynciterable"],
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"target": "es2023",
-		"paths": { "#*": ["./src/*"] },
-		"sourceMap": true,
-		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
-	},
-	"exclude": ["**/node_modules"],
-	"include": ["./src", "./*.ts", "./*.js", "./*.cjs"]
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"include": [],
+	"references": [
+		{ "path": "./tsconfig.bun.json" },
+		{ "path": "./tsconfig.app.json" }
+	]
 }

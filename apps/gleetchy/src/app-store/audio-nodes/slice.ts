@@ -178,12 +178,12 @@ function getNewNodeState(type: string) {
 	}
 }
 
-interface AudioNodesState {
+export interface AudioNodesState {
 	byId: Record<string, AudioNodeState<KnownProps>>;
 	orderedIdentifierMeta: AudioNodeIdentifierMeta[];
 }
 
-type KnownProps =
+export type KnownProps =
 	| DelayNodeProps
 	| ReverbNodeProps
 	| LoopNodeProps
