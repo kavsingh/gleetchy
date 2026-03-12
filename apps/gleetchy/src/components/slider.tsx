@@ -83,8 +83,8 @@ export function Slider(_props: Props) {
 			class={tj(
 				"flex size-full",
 				props.orientation === "block"
-					? "flex-col items-center cursor-ns-resize"
-					: "items-stretch cursor-ew-resize",
+					? "cursor-ns-resize flex-col items-center"
+					: "cursor-ew-resize items-stretch",
 			)}
 			onDblClick={handleDoubleClick}
 			{...dragHandlers}
@@ -150,7 +150,7 @@ function Track(props: OrientationProps) {
 			class={tj(
 				"absolute z-1 bg-emphasis-100",
 				props.orientation === "inline" && "inset-x-0 top-1/2 h-px",
-				props.orientation === "block" && "inset-y-0 start-1/2 w-px",
+				props.orientation === "block" && "inset-y-0 inset-s-1/2 w-px",
 			)}
 		/>
 	);
@@ -165,7 +165,7 @@ function Bar(props: BarProps) {
 				props.orientation === "inline" &&
 					"inset-x-0 top-[calc(50%-1px)] h-0.5 origin-left scale-x-0",
 				props.orientation === "block" &&
-					"inset-y-0 start-[calc(50%-1px)] w-0.5 origin-bottom scale-y-0",
+					"inset-y-0 inset-s-[calc(50%-1px)] w-0.5 origin-bottom scale-y-0",
 			)}
 		/>
 	);

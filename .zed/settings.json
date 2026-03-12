@@ -8,10 +8,6 @@
 			"initialization_options": { "settings": { "typeAware": true } }
 		},
 
-		"oxfmt": {
-			"initialization_options": { "settings": { "run": "onSave" } }
-		},
-
 		"tailwindcss-language-server": {
 			"settings": {
 				"validate": true,
@@ -23,6 +19,7 @@
 					".+ClassNames"
 				],
 				"classFunctions": ["tj", "tm"],
+				"lint": { "suggestCanonicalClasses": "ignore" },
 				"experimental": {
 					"configFile": {
 						"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"

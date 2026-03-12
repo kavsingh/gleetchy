@@ -30,6 +30,11 @@ export default defineConfig({
 			entryPoint: path.join(import.meta.dirname, "./src/index.css"),
 			selectors: [
 				...getDefaultSelectors(),
+				...["tj", "tm"].map((name) => ({
+					name,
+					kind: SelectorKind.Callee,
+					match: [{ type: MatcherType.String }],
+				})),
 				...["classNames", ".+ClassNames"].map((name) => ({
 					name,
 					kind: SelectorKind.Attribute,
@@ -79,7 +84,6 @@ export default defineConfig({
 
 				...tailwindcss.configs["recommended-error"].rules,
 				"better-tailwindcss/enforce-consistent-line-wrapping": "off",
-				"better-tailwindcss/enforce-shorthand-classes": "error",
 			},
 		},
 		{

@@ -29,8 +29,8 @@ function Tag(props: { align: Alignment; verticalPosition?: "top" | "bottom" }) {
 				"pointer-events-auto absolute h-px w-3/5 bg-emphasis-600",
 				props.verticalPosition === "top" && "top-0",
 				props.verticalPosition === "bottom" && "bottom-0",
-				props.align === "start" && "start-0",
-				props.align === "end" && "end-0",
+				props.align === "start" && "inset-s-0",
+				props.align === "end" && "inset-e-0",
 			)}
 		/>
 	);
