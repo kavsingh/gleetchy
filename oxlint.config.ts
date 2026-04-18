@@ -70,7 +70,7 @@ export default defineConfig({
 		"import/group-exports": "off",
 		"import/exports-last": "off",
 		"import/max-dependencies": "off",
-		"import/no-cycles": "error",
+		"import/no-cycle": "error",
 		"import/no-default-export": "error",
 		"import/no-named-export": "off",
 		"import/no-nodejs-modules": "off",

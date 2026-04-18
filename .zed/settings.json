@@ -1,7 +1,8 @@
 {
 	"format_on_save": "on",
 	"prettier": { "allowed": false },
-	"hard_tabs": true,
+	"formatter": [{ "language_server": { "name": "oxfmt" } }],
+	"code_actions_on_format": { "source.fixAll.oxc": true },
 
 	"lsp": {
 		"oxlint": {
@@ -10,7 +11,7 @@
 
 		"tailwindcss-language-server": {
 			"settings": {
-				"validate": true,
+				"validate": false,
 				"classAttributes": [
 					"class",
 					"classList",
@@ -19,7 +20,6 @@
 					".+ClassNames"
 				],
 				"classFunctions": ["tj", "tm"],
-				"lint": { "suggestCanonicalClasses": "ignore" },
 				"experimental": {
 					"configFile": {
 						"apps/gleetchy/src/index.css": "apps/gleetchy/src/**/*"
@@ -36,9 +36,7 @@
 				"oxlint",
 				"oxfmt",
 				"tailwindcss-language-server"
-			],
-			"formatter": [{ "language_server": { "name": "oxfmt" } }],
-			"code_actions_on_format": { "source.fixAll.oxc": true }
+			]
 		},
 
 		"TSX": {
@@ -47,15 +45,11 @@
 				"oxlint",
 				"oxfmt",
 				"tailwindcss-language-server"
-			],
-			"formatter": [{ "language_server": { "name": "oxfmt" } }],
-			"code_actions_on_format": { "source.fixAll.oxc": true }
+			]
 		},
 
 		"JavaScript": {
-			"language_servers": ["tsgo", "oxlint", "oxfmt"],
-			"formatter": [{ "language_server": { "name": "oxfmt" } }],
-			"code_actions_on_format": { "source.fixAll.oxc": true }
+			"language_servers": ["tsgo", "oxlint", "oxfmt"]
 		},
 
 		"CSS": {
@@ -63,32 +57,7 @@
 				"tailwindcss-intellisense-css",
 				"tailwindcss-language-server",
 				"!vscode-css-language-server"
-			],
-			"formatter": [{ "language_server": { "name": "oxfmt" } }]
-		},
-
-		"HTML": {
-			"formatter": [{ "language_server": { "name": "oxfmt" } }]
-		},
-
-		"JSON": {
-			"formatter": [{ "language_server": { "name": "oxfmt" } }]
-		},
-
-		"JSONC": {
-			"formatter": [{ "language_server": { "name": "oxfmt" } }]
-		},
-
-		"TOML": {
-			"formatter": [{ "language_server": { "name": "tombi" } }]
-		},
-
-		"YAML": {
-			"formatter": [{ "language_server": { "name": "oxfmt" } }]
-		},
-
-		"Markdown": {
-			"formatter": [{ "language_server": { "name": "oxfmt" } }]
+			]
 		}
 	}
 }

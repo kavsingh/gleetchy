@@ -8,7 +8,7 @@ import type { ParentProps } from "solid-js";
 
 export function TitleBar(props: Props) {
 	return (
-		<div class="mb-2 text-xs">
+		<div class="mbe-2 text-xs">
 			<div class="flex items-center justify-start">
 				<div class="flex h-full">
 					<For each={props.connections}>

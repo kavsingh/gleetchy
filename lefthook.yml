@@ -4,18 +4,13 @@ extends:
 
 pre-commit:
   jobs:
-    - run: bun tombi format {staged_files}
-      glob: "**/*.toml"
+    - run: bun oxfmt --no-error-on-unmatched-pattern {staged_files}
+      glob: "**/*.{ts,tsx,js,jsx,json,jsonc,yaml,yml,toml,html,css,md,mdx}"
       stage_fixed: true
-    - run: bun tombi lint {staged_files}
-      glob: "**/*.toml"
 
 pre-push:
   parallel: true
   jobs:
     - run: bun lint
       glob: "**/*.*"
-      root: "."
-    - run: bun tombi lint
-      glob: "**/*.toml"
       root: "."

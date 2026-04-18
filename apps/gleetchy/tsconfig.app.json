@@ -7,12 +7,12 @@
 		"emitDeclarationOnly": true,
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
-		"lib": ["esnext", "dom"],
+		"lib": ["esnext", "dom", "dom.asynciterable"],
 		"module": "esnext",
 		"moduleResolution": "bundler",
 		"target": "es2023",
 		"paths": { "#*": ["./src/*"] },
 		"sourceMap": true,
-		"types": ["audioworklet", "webaudioapi", "vitest/importMeta"]
+		"types": ["vite/client", "audioworklet", "webaudioapi", "vitest/importMeta"]
 	}
 }

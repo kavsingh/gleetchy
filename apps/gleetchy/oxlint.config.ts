@@ -11,7 +11,6 @@ import solid from "eslint-plugin-solid";
 import testingLibrary from "eslint-plugin-testing-library";
 import { defineConfig } from "oxlint";
 
-// oxlint-disable-next-line import/no-relative-parent-imports
 import base from "../../oxlint.config.ts";
 
 export default defineConfig({
@@ -25,9 +24,13 @@ export default defineConfig({
 		"!**/__generated__/__mocks__/**/*",
 	],
 	settings: {
-		"vitest": { typecheck: true },
+		"jsx-a11y": {
+			components: { Button: "button" },
+			attributes: { for: ["for"] },
+		},
 		"better-tailwindcss": {
-			entryPoint: path.join(import.meta.dirname, "./src/index.css"),
+			cwd: import.meta.dirname,
+			entryPoint: path.resolve(import.meta.dirname, "./src/index.css"),
 			selectors: [
 				...getDefaultSelectors(),
 				...["tj", "tm"].map((name) => ({
@@ -53,6 +56,7 @@ export default defineConfig({
 				})),
 			],
 		},
+		vitest: { typecheck: true },
 	},
 	rules: {
 		"typescript/strict-void-return": "off",
@@ -80,21 +84,19 @@ export default defineConfig({
 				"import/no-nodejs-modules": "error",
 
 				...solid.configs["flat/typescript"].rules,
-				"solid/jsx-uses-vars": "off",
 
 				...tailwindcss.configs["recommended-error"].rules,
 				"better-tailwindcss/enforce-consistent-line-wrapping": "off",
+				"better-tailwindcss/enforce-consistent-variant-order": "error",
+				"better-tailwindcss/enforce-logical-properties": "error",
 			},
 		},
 		{
 			files: ["src/**/*.tsx"],
 			plugins: ["jsx-a11y"],
 			rules: {
-				"eslint/max-lines-per-function": [
-					"warn",
-					{ max: 100, skipBlankLines: true, skipComments: true },
-				],
-				"eslint/max-statements": ["warn", { max: 30 }],
+				"eslint/max-lines-per-function": "off",
+				"eslint/max-statements": "off",
 			},
 		},
 		{
@@ -103,12 +105,14 @@ export default defineConfig({
 			plugins: ["vitest"],
 			rules: {
 				"eslint/max-lines-per-function": "off",
+				"eslint/max-statements": "off",
 				"eslint/no-console": "off",
 				"import/no-namespace": "off",
 				"unicorn/consistent-function-scoping": "off",
+				"vitest/no-importing-vitest-globals": "off",
 				"vitest/prefer-to-be-falsy": "off",
 				"vitest/prefer-to-be-truthy": "off",
-				"vitest/no-importing-vitest-globals": "off",
+				"vitest/require-test-timeout": "off",
 			},
 		},
 		{

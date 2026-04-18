@@ -66,7 +66,7 @@ function TargetLabel(props: ParentProps<{ title: string }>) {
 	return (
 		<td
 			title={props.title}
-			class="max-w-[5.4em] truncate pb-[0.4em] text-center text-[0.68em] font-normal not-first-of-type:p-0 first-of-type:text-start"
+			class="max-w-[5.4em] truncate pbe-[0.4em] text-center text-[0.68em] font-normal not-first-of-type:p-0 first-of-type:text-start"
 		>
 			{props.children}
 		</td>

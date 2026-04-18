@@ -1,25 +1,20 @@
-import tailwindcssPlugin from "@tailwindcss/vite";
-import { defineConfig } from "rolldown-vite";
-import checkerPlugin from "vite-plugin-checker";
-import solidPlugin from "vite-plugin-solid";
-import tsconfigPathsPlugin from "vite-tsconfig-paths";
-
-function checker(mode: string) {
-	if (mode !== "development") return undefined;
-
-	return checkerPlugin({ oxlint: true, overlay: { initialIsOpen: false } });
-}
+import tailwindcss from "@tailwindcss/vite";
+import { defineConfig } from "vite";
+import { checker } from "vite-plugin-checker";
+import solid from "vite-plugin-solid";
+import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ mode }) => {
 	return {
 		base: process.env["VITE_BUILD_BASE"] ?? "/",
-		build: { sourcemap: true },
 		oxc: { jsx: { importSource: "solid-js" } },
 		plugins: [
-			tsconfigPathsPlugin(),
-			solidPlugin(),
-			tailwindcssPlugin(),
-			checker(mode),
+			tsconfigPaths(),
+			solid(),
+			tailwindcss(),
+			mode === "development"
+				? checker({ oxlint: true, overlay: { initialIsOpen: false } })
+				: undefined,
 		],
 	};
 });

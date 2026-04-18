@@ -73,7 +73,7 @@ export function Knob(_props: Props) {
 				ref={(el) => (knobRef = el)}
 				style={{ "block-size": radius(), "inline-size": radius() }}
 				class={tj(
-					"relative my-auto mt-2 mb-1 shrink-0 grow-0",
+					"relative my-auto mbs-2 mbe-1 shrink-0 grow-0",
 					axis() === "vertical" && "cursor-ns-resize",
 					axis() === "horizontal" && "cursor-ew-resize",
 				)}

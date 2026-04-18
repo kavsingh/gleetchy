@@ -4,9 +4,16 @@ import { tm } from "#style";
 
 import type { ComponentProps } from "solid-js";
 
+interface Props extends Omit<ComponentProps<"button">, "classList"> {
+	variant?: Variant;
+}
+
+export type Variant = "braced" | "text";
+
 export function Button(_props: Props) {
 	const [props, buttonProps] = splitProps(_props, [
 		"class",
+		"type",
 		"variant",
 		"children",
 	]);
@@ -17,6 +24,7 @@ export function Button(_props: Props) {
 	return (
 		<button
 			{...buttonProps}
+			type={props.type ?? "button"}
 			class={tm(
 				"block appearance-none transition-colors hover:text-emphasis-600 focus-visible:text-emphasis-600 active:text-emphasis-600 disabled:cursor-default disabled:text-emphasis-100",
 				isBraced() && "text-xs",
@@ -29,9 +37,3 @@ export function Button(_props: Props) {
 		</button>
 	);
 }
-
-interface Props extends Omit<ComponentProps<"button">, "classList"> {
-	variant?: Variant;
-}
-
-export type Variant = "braced" | "text";

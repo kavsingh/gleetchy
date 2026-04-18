@@ -40,7 +40,7 @@ export function TextInput(props: Props) {
 	});
 
 	return (
-		<div class="relative inline-block border-b border-b-transparent focus-within:border-b-current">
+		<div class="relative inline-block border-be border-be-transparent focus-within:border-be-current">
 			<input
 				type="text"
 				class="absolute inset-0 z-10 cursor-text bg-transparent text-current transition-colors hover:text-emphasis-600 focus:text-emphasis-600 focus-visible:outline-none active:text-emphasis-600"

@@ -35,8 +35,10 @@ export function Loop(props: LoopUIProps) {
 
 	function handleLoopRegionDrag(movement: number) {
 		const span = props.loopEnd - props.loopStart;
-		let nextStart: number | undefined = undefined;
-		let nextEnd: number | undefined = undefined;
+		// oxlint-disable-next-line eslint/init-declarations
+		let nextStart: number | undefined;
+		// oxlint-disable-next-line eslint/init-declarations
+		let nextEnd: number | undefined;
 
 		if (movement < 0) {
 			const minStart = 0;

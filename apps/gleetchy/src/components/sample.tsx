@@ -30,7 +30,7 @@ export function Sample(props: SampleProps) {
 					<>
 						<div class="pointer-events-none absolute inset-0 z-1 overflow-hidden">
 							<div
-								class="pointer-events-none absolute inset-0 z-2 before:absolute before:inset-y-0 before:left-0 before:w-px before:bg-emphasis-600"
+								class="pointer-events-none absolute inset-0 z-2 before:absolute before:inset-y-0 before:inset-s-0 before:w-px before:bg-emphasis-600"
 								ref={(el) => (playheadRef = el)}
 							/>
 						</div>

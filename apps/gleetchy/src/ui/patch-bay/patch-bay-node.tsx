@@ -28,7 +28,7 @@ export function PatchBayNode(props: {
 			onClick={toggleConnection}
 			style={{ color: color() ?? "currentcolor" }}
 			class={tj(
-				"mx-auto mb-0 size-3 border p-0 transition-all",
+				"mx-auto mbe-0 size-3 border p-0 transition-all",
 				!color() && "border-emphasis-100",
 				!color() && !isBlocked() && "hover:border-emphasis-400",
 				isBlocked() && "scale-50 rotate-45 cursor-default bg-emphasis-100",

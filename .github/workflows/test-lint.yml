@@ -14,5 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
-      - run: bun run test
+      - uses: actions/setup-node@v6 # needed for oxlint
+        with: { node-version: latest }
+      - run: bun run test -- --coverage --silent
       - run: bun run lint

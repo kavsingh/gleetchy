@@ -91,7 +91,7 @@ function HandleContainer(_props: HandleContainerProps) {
 	return (
 		<div
 			{...divProps}
-			class="absolute top-0 z-1 h-full w-2.5 cursor-ew-resize"
+			class="absolute inset-bs-0 z-1 h-full w-2.5 cursor-ew-resize"
 			role="presentation"
 			style={{ left: `${props.offset * 100}%` }}
 		>

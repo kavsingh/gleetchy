@@ -1,9 +1,5 @@
 pre-commit:
   jobs:
-    - run: bun oxfmt --no-error-on-unmatched-pattern {staged_files}
-      glob: "**/*.{ts,tsx,js,jsx,json,jsonc,yaml,yml,html,css,md,mdx}"
-      root: "apps/gleetchy"
-      stage_fixed: true
     - run: bun oxlint --type-aware --type-check --max-warnings 0 --fix {staged_files}
       glob: "*.{js,ts,jsx,tsx}"
       stage_fixed: true

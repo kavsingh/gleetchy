@@ -135,7 +135,7 @@ function BarContainer(props: BarContainerProps) {
 			class={tj(
 				"relative grow",
 				local.orientation === "inline" &&
-					"mx-auto mt-2 mb-1 w-full cursor-ew-resize",
+					"mx-auto mbs-2 mbe-1 w-full cursor-ew-resize",
 				local.orientation === "block" && "mx-2 my-auto h-full cursor-ns-resize",
 			)}
 		/>
@@ -149,7 +149,7 @@ function Track(props: OrientationProps) {
 		<div
 			class={tj(
 				"absolute z-1 bg-emphasis-100",
-				props.orientation === "inline" && "inset-x-0 top-1/2 h-px",
+				props.orientation === "inline" && "inset-x-0 inset-bs-1/2 h-px",
 				props.orientation === "block" && "inset-y-0 inset-s-1/2 w-px",
 			)}
 		/>
@@ -163,7 +163,7 @@ function Bar(props: BarProps) {
 			class={tj(
 				"absolute z-2 bg-emphasis-600",
 				props.orientation === "inline" &&
-					"inset-x-0 top-[calc(50%-1px)] h-0.5 origin-left scale-x-0",
+					"inset-x-0 inset-bs-[calc(50%-1px)] h-0.5 origin-left scale-x-0",
 				props.orientation === "block" &&
 					"inset-y-0 inset-s-[calc(50%-1px)] w-0.5 origin-bottom scale-y-0",
 			)}

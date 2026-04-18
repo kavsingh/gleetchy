@@ -5,6 +5,7 @@
 	"compilerOptions": {
 		"module": "nodenext",
 		"moduleResolution": "nodenext",
+		"noEmit": true,
 		"noPropertyAccessFromIndexSignature": true,
 		"types": ["bun"]
 	}

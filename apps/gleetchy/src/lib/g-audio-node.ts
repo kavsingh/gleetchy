@@ -66,6 +66,7 @@ export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 export abstract class GInstrumentNode<
 	P extends GenericObject = GenericObject,
 	S extends GenericObject = GenericObject,
+	// oxlint-disable-next-line typescript/no-unnecessary-type-arguments
 > extends GAudioNode<P> {
 	private subscribers = new Set<GInstrumentNodeSubscriber<S>>();
 
