@@ -1,6 +1,6 @@
 import { Show, createMemo, splitProps } from "solid-js";
 
-import { tm } from "#style";
+import { tm } from "~/style";
 
 import type { ComponentProps } from "solid-js";
 

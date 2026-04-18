@@ -3,8 +3,8 @@ import { For } from "solid-js";
 import { Button } from "./button";
 import { TextInput } from "./text-input";
 
-import type { AudioNodeConnection } from "#types";
 import type { ParentProps } from "solid-js";
+import type { AudioNodeConnection } from "~/types";
 
 export function TitleBar(props: Props) {
 	return (

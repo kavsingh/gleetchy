@@ -1,4 +1,4 @@
-import { tj } from "#style";
+import { tj } from "~/style";
 
 export function LoopHandle(props: { align: Alignment }) {
 	return (

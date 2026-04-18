@@ -1,5 +1,5 @@
-import { Knob } from "#components/knob";
-import { denormalize, normalize } from "#lib/util/number";
+import { Knob } from "~/components/knob";
+import { denormalize, normalize } from "~/lib/util/number";
 
 export function PlaybackControls(props: Props) {
 	return (

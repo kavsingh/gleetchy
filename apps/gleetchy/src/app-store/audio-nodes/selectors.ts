@@ -1,10 +1,10 @@
-import { hasAudioEffectType, hasInstrumentType } from "#lib/audio";
+import { hasAudioEffectType, hasInstrumentType } from "~/lib/audio";
 
 import { createDeepEqualSelector } from "../lib/selector";
 
 import { audioNodesSlice } from "./slice";
 
-import type { AudioNodeMeta } from "#types";
+import type { AudioNodeMeta } from "~/types";
 
 export const {
 	selectAudioNodes,

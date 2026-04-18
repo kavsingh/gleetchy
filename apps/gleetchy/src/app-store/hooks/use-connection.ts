@@ -1,14 +1,14 @@
 import { deepEqual } from "fast-equals";
 import { createMemo } from "solid-js";
 
-import { getConnectionBetween, canConnectNodes } from "#lib/audio";
+import { getConnectionBetween, canConnectNodes } from "~/lib/audio";
 
 import { toggleConnection as toggleConnectionAction } from "../connections/actions";
 import { selectConnections } from "../connections/selectors";
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-import type { AudioNodeMeta } from "#types";
+import type { AudioNodeMeta } from "~/types";
 
 export function useConnection(source: AudioNodeMeta, target: AudioNodeMeta) {
 	const dispatch = useAppDispatch();

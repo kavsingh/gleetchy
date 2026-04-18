@@ -1,9 +1,9 @@
 import { createMemo } from "solid-js";
 
-import { useConnection } from "#app-store/hooks/use-connection";
-import { tj } from "#style";
+import { useConnection } from "~/app-store/hooks/use-connection";
+import { tj } from "~/style";
 
-import type { AudioNodeMeta } from "#types";
+import type { AudioNodeMeta } from "~/types";
 
 export function PatchBayNode(props: {
 	source: AudioNodeMeta;

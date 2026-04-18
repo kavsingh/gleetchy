@@ -1,4 +1,4 @@
-import { hasConnectionTo } from "#lib/audio";
+import { hasConnectionTo } from "~/lib/audio";
 
 import {
 	selectAudioEffectsIdentifierMeta,
@@ -12,7 +12,7 @@ import { createDeepEqualSelector } from "../lib/selector";
 
 import { connectionsSlice } from "./slice";
 
-import type { AudioNodeMeta } from "#types";
+import type { AudioNodeMeta } from "~/types";
 
 export const selectConnections =
 	connectionsSlice.selectSlice.bind(connectionsSlice);

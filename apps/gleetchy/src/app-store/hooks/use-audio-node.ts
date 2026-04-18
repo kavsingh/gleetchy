@@ -6,8 +6,8 @@ import {
 	updateAudioNodeLabel,
 	duplicateAudioNode,
 	removeAudioNode,
-} from "#app-store/audio-nodes/actions";
-import { getConnectionsFor } from "#lib/audio";
+} from "~/app-store/audio-nodes/actions";
+import { getConnectionsFor } from "~/lib/audio";
 
 import { selectAudioNodes } from "../audio-nodes/selectors";
 import {
@@ -17,7 +17,7 @@ import {
 
 import { useAppDispatch, useAppSelector } from "./base";
 
-import type { AudioNodeState, GenericObject } from "#types";
+import type { AudioNodeState, GenericObject } from "~/types";
 
 // oxlint-disable-next-line max-statements
 export function useAudioNode<TAudioNodeProps extends GenericObject>(

@@ -1,4 +1,4 @@
-import type { GenericObject } from "#types";
+import type { GenericObject } from "~/types";
 
 export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 	abstract type: string;

@@ -1,4 +1,4 @@
-import { tj } from "#style";
+import { tj } from "~/style";
 
 import type { ParentProps } from "solid-js";
 

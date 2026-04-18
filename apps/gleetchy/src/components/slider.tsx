@@ -1,7 +1,7 @@
 import { createEffect, mergeProps, splitProps } from "solid-js";
 
-import { clamp } from "#lib/util/number";
-import { tj, tm } from "#style";
+import { clamp } from "~/lib/util/number";
+import { tj, tm } from "~/style";
 
 import { useControlResponseMultiplier } from "./hooks/use-control-response-multiplier";
 import { usePointerDrag } from "./hooks/use-pointer-drag";

@@ -1,5 +1,5 @@
-import type { AppStartListening } from "#app-store/listener-middleware";
 import type { AudioEngine } from "./audio-engine";
+import type { AppStartListening } from "~/app-store/listener-middleware";
 
 export function setupAudioEngineListeners(
 	audioEngine: AudioEngine,

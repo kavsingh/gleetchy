@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { getConnectionsFor, isSameConnection } from "#lib/audio";
-import { stableWithout } from "#lib/util";
-import { nodeColorPool } from "#style/color";
+import { getConnectionsFor, isSameConnection } from "~/lib/audio";
+import { stableWithout } from "~/lib/util";
+import { nodeColorPool } from "~/style/color";
 
 import { removeAudioNode } from "../audio-nodes/actions";
 import { defaultNodes } from "../default-nodes";
 
-import type { AudioNodeConnection, ConnectionIdent } from "#types";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import type { AudioNodeConnection, ConnectionIdent } from "~/types";
 
 const [mainOut, loop0, loop1] = defaultNodes;
 const initialState: ConnectionsState = [

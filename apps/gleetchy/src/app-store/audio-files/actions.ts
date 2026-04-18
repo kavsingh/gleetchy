@@ -4,8 +4,8 @@ import { selectAudioContext } from "../audio-context/selectors";
 
 import { getFileId } from "./helpers";
 
-import type { AudioFile } from "#types";
 import type { AppState } from "../create";
+import type { AudioFile } from "~/types";
 
 export const loadAudioFileToNode = createAsyncThunk(
 	"audioFiles/loadToNode",

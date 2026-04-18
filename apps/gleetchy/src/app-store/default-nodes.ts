@@ -1,10 +1,10 @@
-import { MAIN_OUT_ID } from "#constants/audio";
+import { MAIN_OUT_ID } from "~/constants/audio";
 // oxlint-disable-next-line no-namespace
-import * as delay from "#nodes/audio-effects/delay";
+import * as delay from "~/nodes/audio-effects/delay";
 // oxlint-disable-next-line no-namespace
-import * as reverb from "#nodes/audio-effects/reverb";
+import * as reverb from "~/nodes/audio-effects/reverb";
 // oxlint-disable-next-line no-namespace
-import * as loop from "#nodes/instruments/loop";
+import * as loop from "~/nodes/instruments/loop";
 
 export const defaultNodes = [
 	{
