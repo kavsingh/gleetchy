@@ -14,7 +14,7 @@ import type { ParentProps } from "solid-js";
 
 export function AudioEffectsRack() {
 	return (
-		<div class="flex w-full flex-wrap items-start">
+		<div class="flex flex-wrap items-start inline-full">
 			<Rack />
 			<AddAudioEffectButtons />
 		</div>

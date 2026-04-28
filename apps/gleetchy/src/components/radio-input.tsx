@@ -17,7 +17,7 @@ export function RadioInput(_props: Props) {
 			<div class="relative">
 				<div
 					class={tj(
-						"pointer-events-none z-0 size-[0.8em] border",
+						"pointer-events-none z-0 border block-[0.8em] inline-[0.8em]",
 						inputProps.checked
 							? "border-emphasis-400 bg-emphasis-400"
 							: "border-emphasis-100",

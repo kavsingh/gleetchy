@@ -3,7 +3,7 @@ import { denormalize, normalize } from "~/lib/util/number";
 
 export function PlaybackControls(props: Props) {
 	return (
-		<div class="flex h-full flex-col items-center justify-between">
+		<div class="flex flex-col items-center justify-between block-full">
 			<div>
 				<Knob
 					value={props.gain}

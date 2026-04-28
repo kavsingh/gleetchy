@@ -10,11 +10,11 @@ export function TitleBar(props: Props) {
 	return (
 		<div class="mbe-2 text-xs">
 			<div class="flex items-center justify-start">
-				<div class="flex h-full">
+				<div class="flex block-full">
 					<For each={props.connections}>
 						{(connection) => (
 							<div
-								class="me-1 size-3 shrink-0 grow-0 border-current bg-current"
+								class="me-1 shrink-0 grow-0 border-current bg-current block-3 inline-3"
 								style={{ color: connection.color }}
 							/>
 						)}

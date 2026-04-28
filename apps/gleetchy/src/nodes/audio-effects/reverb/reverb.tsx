@@ -13,7 +13,7 @@ export function Reverb(props: ReverbProps) {
 	}
 
 	return (
-		<div class="w-full">
+		<div class="inline-full">
 			<TitleBar
 				type="Reverb"
 				label={props.label}
@@ -21,13 +21,13 @@ export function Reverb(props: ReverbProps) {
 				onLabelChange={(label) => props.onLabelChange(label)}
 				onRemoveClick={() => props.remove()}
 			/>
-			<div class="flex w-full items-start gap-2">
+			<div class="flex items-start gap-2 inline-full">
 				<SelectBox
 					options={impulseOptions}
 					onChange={handleImpulseChange}
 					value={props.impulse}
 				/>
-				<div class="w-12 shrink-0 grow-0">
+				<div class="shrink-0 grow-0 inline-12">
 					<Knob
 						radius="2.4em"
 						value={props.wetDryRatio}

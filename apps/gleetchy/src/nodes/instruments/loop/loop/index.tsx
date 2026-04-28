@@ -60,7 +60,7 @@ export function Loop(props: LoopUIProps) {
 	}
 
 	return (
-		<div class="w-full">
+		<div class="inline-full">
 			<LoopTitleBar
 				label={props.label}
 				fileName={props.fileName}
@@ -83,7 +83,7 @@ export function Loop(props: LoopUIProps) {
 					onLoopRegionDrag={handleLoopRegionDrag}
 					selectAudioFile={selectAudioFile}
 				/>
-				<div class="flex h-full shrink-0 grow-0 gap-3">
+				<div class="flex shrink-0 grow-0 gap-3 block-full">
 					<PlaybackControls
 						gain={props.gain}
 						playbackRate={props.playbackRate}
@@ -111,7 +111,7 @@ function AudioFileDropRegion(
 	});
 
 	return (
-		<div class="flex h-44 w-full gap-5" {...eventHandlers}>
+		<div class="flex gap-5 block-44 inline-full" {...eventHandlers}>
 			{props.children}
 		</div>
 	);

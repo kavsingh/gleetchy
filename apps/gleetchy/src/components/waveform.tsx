@@ -29,9 +29,9 @@ export function Waveform(props: Props) {
 	});
 
 	return (
-		<div class="size-full overflow-hidden">
+		<div class="overflow-hidden block-full inline-full">
 			<canvas
-				class="size-full border-0 border-emphasis-100 text-emphasis-600"
+				class="border-0 border-emphasis-100 text-emphasis-600 block-full inline-full"
 				ref={(el) => {
 					canvasRef = el;
 					unobserve = observe(el, update);

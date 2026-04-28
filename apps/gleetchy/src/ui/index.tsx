@@ -12,7 +12,7 @@ export function UI() {
 			<AudioInitListeners />
 			<ThemeEffects />
 			<KeyboardListeners />
-			<div class="mx-auto my-0 max-w-[92em] p-8">
+			<div class="mx-auto my-0 p-8 max-inline-[92em]">
 				<Masthead />
 				<Divider />
 				<InstrumentsRack />

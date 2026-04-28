@@ -81,7 +81,7 @@ export function Slider(_props: Props) {
 		<div
 			title={props.title}
 			class={tj(
-				"flex size-full",
+				"flex block-full inline-full",
 				props.orientation === "block"
 					? "cursor-ns-resize flex-col items-center"
 					: "cursor-ew-resize items-stretch",
@@ -91,8 +91,8 @@ export function Slider(_props: Props) {
 		>
 			<LabelText
 				class={tj(
-					props.orientation === "inline" && "flex w-12 items-center",
-					props.orientation === "block" && "h-6",
+					props.orientation === "inline" && "flex items-center inline-12",
+					props.orientation === "block" && "block-6",
 				)}
 			>
 				{props.label}
@@ -106,8 +106,8 @@ export function Slider(_props: Props) {
 			</BarContainer>
 			<LabelText
 				class={tj(
-					props.orientation === "inline" && "w-12 items-center",
-					props.orientation === "block" && "h-6 items-end",
+					props.orientation === "inline" && "items-center inline-12",
+					props.orientation === "block" && "items-end block-6",
 				)}
 			>
 				{props.valueLabel}
@@ -135,8 +135,9 @@ function BarContainer(props: BarContainerProps) {
 			class={tj(
 				"relative grow",
 				local.orientation === "inline" &&
-					"mx-auto mbs-2 mbe-1 w-full cursor-ew-resize",
-				local.orientation === "block" && "mx-2 my-auto h-full cursor-ns-resize",
+					"mx-auto mbs-2 mbe-1 cursor-ew-resize inline-full",
+				local.orientation === "block" &&
+					"mx-2 my-auto cursor-ns-resize block-full",
 			)}
 		/>
 	);
@@ -149,8 +150,8 @@ function Track(props: OrientationProps) {
 		<div
 			class={tj(
 				"absolute z-1 bg-emphasis-100",
-				props.orientation === "inline" && "inset-x-0 inset-bs-1/2 h-px",
-				props.orientation === "block" && "inset-y-0 inset-s-1/2 w-px",
+				props.orientation === "inline" && "inset-x-0 inset-bs-1/2 block-px",
+				props.orientation === "block" && "inset-y-0 inset-s-1/2 inline-px",
 			)}
 		/>
 	);
@@ -163,9 +164,9 @@ function Bar(props: BarProps) {
 			class={tj(
 				"absolute z-2 bg-emphasis-600",
 				props.orientation === "inline" &&
-					"inset-x-0 inset-bs-[calc(50%-1px)] h-0.5 origin-left scale-x-0",
+					"inset-x-0 inset-bs-[calc(50%-1px)] origin-left scale-x-0 block-0.5",
 				props.orientation === "block" &&
-					"inset-y-0 inset-s-[calc(50%-1px)] w-0.5 origin-bottom scale-y-0",
+					"inset-y-0 inset-s-[calc(50%-1px)] origin-bottom scale-y-0 inline-0.5",
 			)}
 		/>
 	);

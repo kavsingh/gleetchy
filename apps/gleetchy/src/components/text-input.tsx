@@ -51,7 +51,7 @@ export function TextInput(props: Props) {
 				onFocus={handleFocus}
 				onKeyDown={handleKeyDown}
 			/>
-			<span class="pointer-events-none z-0 block h-5 min-w-[1ch] opacity-0">
+			<span class="pointer-events-none z-0 block opacity-0 block-5 min-inline-[1ch]">
 				{value()}
 			</span>
 		</div>

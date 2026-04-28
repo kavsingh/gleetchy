@@ -62,7 +62,10 @@ export function LoopRegion(props: Props) {
 	const endDragListeners = usePointerDrag({ onDragMove: handleEndHandleDrag });
 
 	return (
-		<div class="relative size-full" ref={(el) => (containerRef = el)}>
+		<div
+			class="relative block-full inline-full"
+			ref={(el) => (containerRef = el)}
+		>
 			<HandleContainer {...startDragListeners} offset={props.loopStart}>
 				<LoopHandle align="start" />
 			</HandleContainer>
@@ -91,7 +94,7 @@ function HandleContainer(_props: HandleContainerProps) {
 	return (
 		<div
 			{...divProps}
-			class="absolute inset-bs-0 z-1 h-full w-2.5 cursor-ew-resize"
+			class="absolute inset-bs-0 z-1 cursor-ew-resize block-full inline-2.5"
 			role="presentation"
 			style={{ left: `${props.offset * 100}%` }}
 		>

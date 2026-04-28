@@ -16,7 +16,7 @@ export function PatchBay() {
 	const targets = useAppSelector(selectConnectableTargets);
 
 	return (
-		<div class="w-full">
+		<div class="inline-full">
 			<ErrorBoundary fallback={(e) => <ErrorMessage>{String(e)}</ErrorMessage>}>
 				<tbody>
 					<tr>
@@ -37,7 +37,7 @@ export function PatchBay() {
 								</TargetLabel>
 								<For each={sources()}>
 									{(source) => (
-										<td class="min-w-[1.4em]">
+										<td class="min-inline-[1.4em]">
 											<PatchBayNode source={source} target={target} />
 										</td>
 									)}
@@ -55,7 +55,7 @@ function SourceLabel(props: ParentProps<{ title: string }>) {
 	return (
 		<th
 			title={props.title}
-			class="max-w-[5.4em] truncate pe-[0.4em] text-center text-[0.68em] font-normal first-of-type:text-start"
+			class="truncate pe-[0.4em] text-center text-[0.68em] font-normal max-inline-[5.4em] first-of-type:text-start"
 		>
 			{props.children}
 		</th>
@@ -66,7 +66,7 @@ function TargetLabel(props: ParentProps<{ title: string }>) {
 	return (
 		<td
 			title={props.title}
-			class="max-w-[5.4em] truncate pbe-[0.4em] text-center text-[0.68em] font-normal not-first-of-type:p-0 first-of-type:text-start"
+			class="truncate pbe-[0.4em] text-center text-[0.68em] font-normal max-inline-[5.4em] not-first-of-type:p-0 first-of-type:text-start"
 		>
 			{props.children}
 		</td>

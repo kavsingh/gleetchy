@@ -12,7 +12,7 @@ import type { ParentProps } from "solid-js";
 
 export function InstrumentsRack() {
 	return (
-		<div class="flex w-full flex-col gap-8">
+		<div class="flex flex-col gap-8 inline-full">
 			<Rack />
 			<AddInstrumentButtons />
 		</div>

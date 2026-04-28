@@ -66,22 +66,19 @@ export abstract class GAudioNode<P extends GenericObject = GenericObject> {
 export abstract class GInstrumentNode<
 	P extends GenericObject = GenericObject,
 	S extends GenericObject = GenericObject,
-	// oxlint-disable-next-line typescript/no-unnecessary-type-arguments
 > extends GAudioNode<P> {
-	private subscribers = new Set<GInstrumentNodeSubscriber<S>>();
+	#subscribers = new Set<GInstrumentNodeSubscriber<S>>();
 
 	subscribe(subscriber: GInstrumentNodeSubscriber<S>): () => void {
-		this.subscribers.add(subscriber);
+		this.#subscribers.add(subscriber);
 
 		return () => {
-			this.subscribers.delete(subscriber);
+			this.#subscribers.delete(subscriber);
 		};
 	}
 
 	protected notifySubscribers = (state: S) => {
-		for (const subscriber of this.subscribers) {
-			subscriber(state);
-		}
+		for (const subscriber of this.#subscribers) subscriber(state);
 	};
 
 	abstract play(): void;

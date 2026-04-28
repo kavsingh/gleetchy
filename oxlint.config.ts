@@ -2,6 +2,12 @@ import { defineConfig } from "oxlint";
 
 export default defineConfig({
 	ignorePatterns: [".vscode/**/*", "**/.nx/**/*"],
+	options: {
+		typeAware: true,
+		typeCheck: true,
+		maxWarnings: 0,
+		reportUnusedDisableDirectives: "error",
+	},
 	plugins: ["oxc", "eslint", "typescript", "promise", "import", "unicorn"],
 	categories: {
 		correctness: "error",
@@ -56,6 +62,10 @@ export default defineConfig({
 			{ fixStyle: "separate-type-imports", prefer: "type-imports" },
 		],
 		"typescript/explicit-function-return-type": "off",
+		"typescript/explicit-member-accessibility": [
+			"error",
+			{ accessibility: "no-public" },
+		],
 		"typescript/explicit-module-boundary-types": "off",
 		"typescript/no-non-null-assertion": "error",
 		"typescript/prefer-readonly": "off",

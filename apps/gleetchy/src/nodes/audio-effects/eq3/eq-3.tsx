@@ -17,7 +17,7 @@ export function Eq3(props: Eq3Props) {
 	}
 
 	return (
-		<div class="flex h-full gap-2">
+		<div class="flex gap-2 block-full">
 			<SliderContainer>
 				<Slider
 					value={normalizeGain(props.lowGain)}
@@ -53,7 +53,7 @@ const normalizeGain = normalize.bind(undefined, -1, 1);
 const denormalizeGain = denormalize.bind(undefined, -1, 1);
 
 function SliderContainer(props: ParentProps) {
-	return <div class="h-full w-4">{props.children}</div>;
+	return <div class="block-full inline-4">{props.children}</div>;
 }
 
 export interface Eq3Props {

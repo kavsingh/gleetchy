@@ -109,6 +109,7 @@ export default defineConfig({
 				"eslint/no-console": "off",
 				"import/no-namespace": "off",
 				"unicorn/consistent-function-scoping": "off",
+				"vitest/no-conditional-in-test": "off",
 				"vitest/no-importing-vitest-globals": "off",
 				"vitest/prefer-to-be-falsy": "off",
 				"vitest/prefer-to-be-truthy": "off",

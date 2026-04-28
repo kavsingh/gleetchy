@@ -40,37 +40,37 @@ import type { GInstrumentNode } from "~/lib/g-audio-node";
 import type { AudioNodeState, GenericObject } from "~/types";
 
 export class AudioEngine {
-	private publishSubscriptionEvent: SubscriptionEventDispatcher;
-	private audioNodes = new Map<string, GAudioNode | GInstrumentNode>();
-	private unsubscribers = new Map<string, () => void>();
-	private workletsLoaded = false;
-	private audioContext?: AudioContext;
+	#publishSubscriptionEvent: SubscriptionEventDispatcher;
+	#audioNodes = new Map<string, GAudioNode | GInstrumentNode>();
+	#unsubscribers = new Map<string, () => void>();
+	#workletsLoaded = false;
+	#audioContext?: AudioContext;
 
-	public constructor({
+	constructor({
 		publishSubscriptionEvent,
 	}: {
 		publishSubscriptionEvent: SubscriptionEventDispatcher;
 	}) {
-		this.publishSubscriptionEvent = publishSubscriptionEvent;
+		this.#publishSubscriptionEvent = publishSubscriptionEvent;
 	}
 
 	// oxlint-disable-next-line max-lines-per-function, max-statements
-	public async update(appState: AppState, action: UnknownAction) {
-		const didUpdate = await this.updateAudioContext(
+	async update(appState: AppState, action: UnknownAction) {
+		const didUpdate = await this.#updateAudioContext(
 			appState.audioContext.audioContext,
 		);
 
-		if (!(this.audioContext && this.workletsLoaded)) return;
+		if (!(this.#audioContext && this.#workletsLoaded)) return;
 
 		const updateNodes = () => {
-			this.updateAudioNodes(
+			this.#updateAudioNodes(
 				appState.audioNodes.byId,
 				appState.globalPlayback.isPlaying,
 			);
 		};
 
 		const updateGraph = () => {
-			this.updateAudioGraph(appState.connections);
+			this.#updateAudioGraph(appState.connections);
 		};
 
 		if (didUpdate) {
@@ -81,8 +81,8 @@ export class AudioEngine {
 		}
 
 		if (isAnyOf(togglePlayback)(action)) {
-			this.forEachInstrument((instrument) => {
-				this.toggleInstrumentPlaybackAndSubscription(
+			this.#forEachInstrument((instrument) => {
+				this.#toggleInstrumentPlaybackAndSubscription(
 					instrument,
 					appState.globalPlayback.isPlaying,
 				);
@@ -106,11 +106,11 @@ export class AudioEngine {
 
 		if (isAnyOf(removeAudioNode)(action)) {
 			const id = action.payload;
-			const node = this.audioNodes.get(id);
+			const node = this.#audioNodes.get(id);
 
 			if (!node) return;
 
-			if (isInstrumentNode(node)) this.stopAndUnsubscribeInstrument(node);
+			if (isInstrumentNode(node)) this.#stopAndUnsubscribeInstrument(node);
 
 			if (node instanceof GAudioNode) {
 				try {
@@ -120,22 +120,22 @@ export class AudioEngine {
 				}
 			}
 
-			if (!appState.audioNodes.byId[id]) this.audioNodes.delete(id);
+			if (!appState.audioNodes.byId[id]) this.#audioNodes.delete(id);
 
-			this.updateAudioGraph(appState.connections);
+			this.#updateAudioGraph(appState.connections);
 
 			return;
 		}
 
 		if (isAnyOf(updateAudioNodeProps)(action)) {
-			this.updateNode(action.payload);
+			this.#updateNode(action.payload);
 
 			return;
 		}
 
 		if (isFulfilled(loadAudioFileToNode)(action)) {
 			const { nodeId, file } = action.payload;
-			const existing = this.audioNodes.get(nodeId);
+			const existing = this.#audioNodes.get(nodeId);
 
 			if (!(existing instanceof GLoopNode)) return;
 
@@ -148,56 +148,56 @@ export class AudioEngine {
 	}
 
 	// TODO: clean this shit up
-	private async updateAudioContext(
+	async #updateAudioContext(
 		nextContext: AppState["audioContext"]["audioContext"],
 	) {
-		if (!nextContext || this.audioContext === nextContext) return false;
+		if (!nextContext || this.#audioContext === nextContext) return false;
 
-		this.audioContext = nextContext;
-		await this.loadWorklets();
+		this.#audioContext = nextContext;
+		await this.#loadWorklets();
 
 		return true;
 	}
 
-	private async loadWorklets() {
-		this.workletsLoaded = false;
+	async #loadWorklets() {
+		this.#workletsLoaded = false;
 
-		if (!this.audioContext) {
+		if (!this.#audioContext) {
 			logWarn("attempted to load worklets without audio context");
 
 			return;
 		}
 
-		await registerWorklets(this.audioContext);
-		this.workletsLoaded = true;
+		await registerWorklets(this.#audioContext);
+		this.#workletsLoaded = true;
 	}
 
-	private forEachInstrument(fn: InstrumentNodeProcessor) {
-		for (const node of this.audioNodes.values()) {
+	#forEachInstrument(fn: InstrumentNodeProcessor) {
+		for (const node of this.#audioNodes.values()) {
 			if (isInstrumentNode(node)) fn(node);
 		}
 	}
 
-	private getNodeId(targetNode: GAudioNode | GInstrumentNode | AudioNode) {
-		for (const [id, node] of this.audioNodes.entries()) {
+	#getNodeId(targetNode: GAudioNode | GInstrumentNode | AudioNode) {
+		for (const [id, node] of this.#audioNodes.entries()) {
 			if (node === targetNode) return id;
 		}
 
 		return undefined;
 	}
 
-	private playAndSubscribeInstrument(node: GInstrumentNode) {
-		const nodeId = this.getNodeId(node);
+	#playAndSubscribeInstrument(node: GInstrumentNode) {
+		const nodeId = this.#getNodeId(node);
 
 		if (!nodeId) return;
 
-		this.unsubscribers.get(nodeId)?.();
+		this.#unsubscribers.get(nodeId)?.();
 
 		if (typeof node.subscribe === "function") {
-			this.unsubscribers.set(
+			this.#unsubscribers.set(
 				nodeId,
 				node.subscribe((payload: unknown) => {
-					this.publishSubscriptionEvent(nodeId, payload);
+					this.#publishSubscriptionEvent(nodeId, payload);
 				}),
 			);
 		}
@@ -205,27 +205,27 @@ export class AudioEngine {
 		node.play();
 	}
 
-	private stopAndUnsubscribeInstrument(node: GInstrumentNode) {
-		const nodeId = this.getNodeId(node);
+	#stopAndUnsubscribeInstrument(node: GInstrumentNode) {
+		const nodeId = this.#getNodeId(node);
 
 		if (nodeId) {
-			this.unsubscribers.get(nodeId)?.();
-			this.unsubscribers.delete(nodeId);
+			this.#unsubscribers.get(nodeId)?.();
+			this.#unsubscribers.delete(nodeId);
 		}
 
 		node.stop();
 	}
 
-	private toggleInstrumentPlaybackAndSubscription(
+	#toggleInstrumentPlaybackAndSubscription(
 		node: GInstrumentNode,
 		isPlaying: boolean,
 	) {
-		if (isPlaying) this.playAndSubscribeInstrument(node);
-		else this.stopAndUnsubscribeInstrument(node);
+		if (isPlaying) this.#playAndSubscribeInstrument(node);
+		else this.#stopAndUnsubscribeInstrument(node);
 	}
 
-	private disconnectAllNodes() {
-		for (const node of this.audioNodes.values()) {
+	#disconnectAllNodes() {
+		for (const node of this.#audioNodes.values()) {
 			// Safari crashes if node not connected
 			try {
 				node.disconnect();
@@ -236,56 +236,56 @@ export class AudioEngine {
 	}
 
 	// oxlint-disable-next-line max-statements
-	private updateAudioNodes(
+	#updateAudioNodes(
 		nextNodes: AppState["audioNodes"]["byId"],
 		isPlaying: AppState["globalPlayback"]["isPlaying"],
 	) {
-		if (!this.audioContext) return;
+		if (!this.#audioContext) return;
 
-		for (const id of this.audioNodes.keys()) {
-			if (!(id in nextNodes)) this.audioNodes.delete(id);
+		for (const id of this.#audioNodes.keys()) {
+			if (!(id in nextNodes)) this.#audioNodes.delete(id);
 		}
 
 		for (const [id, nodeState] of Object.entries(nextNodes)) {
-			if (this.audioNodes.has(id)) continue;
+			if (this.#audioNodes.has(id)) continue;
 
-			const newNode = createNewNode(this.audioContext, nodeState);
+			const newNode = createNewNode(this.#audioContext, nodeState);
 
 			if (!newNode) continue;
 
-			this.audioNodes.set(id, newNode);
+			this.#audioNodes.set(id, newNode);
 
 			if (isPlaying && isInstrumentNode(newNode)) {
-				this.playAndSubscribeInstrument(newNode);
+				this.#playAndSubscribeInstrument(newNode);
 			}
 		}
 
-		this.audioNodes.set(
+		this.#audioNodes.set(
 			MAIN_OUT_ID,
 			// oxlint-disable-next-line no-unsafe-type-assertion
-			this.audioContext.destination as unknown as GAudioNode,
+			this.#audioContext.destination as unknown as GAudioNode,
 		);
 	}
 
-	private updateAudioGraph(connections: AppState["connections"]) {
-		this.disconnectAllNodes();
+	#updateAudioGraph(connections: AppState["connections"]) {
+		this.#disconnectAllNodes();
 
 		for (const { fromId, toId } of connections) {
-			const fromNode = this.audioNodes.get(fromId);
-			const toNode = this.audioNodes.get(toId);
+			const fromNode = this.#audioNodes.get(fromId);
+			const toNode = this.#audioNodes.get(toId);
 
 			if (fromNode && toNode) fromNode.connect(toNode);
 		}
 	}
 
-	private updateNode({
+	#updateNode({
 		id,
 		audioProps,
 	}: {
 		id: string;
 		audioProps: Record<string, unknown>;
 	}) {
-		const node = this.audioNodes.get(id);
+		const node = this.#audioNodes.get(id);
 
 		if (!node) return;
 

@@ -8,7 +8,7 @@ import type { AudioNodeConnection } from "~/types";
 
 export function Delay(props: ParentProps<DelayProps>) {
 	return (
-		<div class="w-full">
+		<div class="inline-full">
 			<TitleBar
 				type="Delay"
 				label={props.label}
@@ -16,7 +16,7 @@ export function Delay(props: ParentProps<DelayProps>) {
 				onLabelChange={(label) => props.onLabelChange(label)}
 				onRemoveClick={() => props.remove()}
 			/>
-			<div class="flex w-full">
+			<div class="flex inline-full">
 				<KnobContainer>
 					<Knob
 						radius="2.4em"
@@ -46,7 +46,7 @@ const normalizeDelay = normalize.bind(undefined, 0, DELAY_UPPER_BOUND);
 const denormalizeDelay = denormalize.bind(undefined, 0, DELAY_UPPER_BOUND);
 
 function KnobContainer(props: ParentProps) {
-	return <div class="w-12 shrink-0 grow-0">{props.children}</div>;
+	return <div class="shrink-0 grow-0 inline-12">{props.children}</div>;
 }
 
 export interface DelayProps {

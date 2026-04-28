@@ -5,10 +5,6 @@
 	"code_actions_on_format": { "source.fixAll.oxc": true },
 
 	"lsp": {
-		"oxlint": {
-			"initialization_options": { "settings": { "typeAware": true } }
-		},
-
 		"tailwindcss-language-server": {
 			"settings": {
 				"validate": false,
@@ -56,6 +52,7 @@
 			"language_servers": [
 				"tailwindcss-intellisense-css",
 				"tailwindcss-language-server",
+				"oxfmt",
 				"!vscode-css-language-server"
 			]
 		}

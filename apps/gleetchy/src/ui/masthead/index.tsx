@@ -4,7 +4,7 @@ import { ThemeSelect } from "./theme-select";
 
 export function Masthead() {
 	return (
-		<div class="flex w-full items-center justify-between">
+		<div class="flex items-center justify-between inline-full">
 			<PlayPauseButton />
 			<div class="flex flex-nowrap items-center gap-2 self-stretch">
 				<ThemeSelect />
@@ -15,7 +15,7 @@ export function Masthead() {
 					title="view on github"
 					class="opacity-40 transition-opacity hover:opacity-100 focus:opacity-100 focus-visible:opacity-100"
 				>
-					<GithubLogo class="size-3.75" />
+					<GithubLogo class="block-3.75 inline-3.75" />
 				</a>
 			</div>
 		</div>
