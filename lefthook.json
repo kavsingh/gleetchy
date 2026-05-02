@@ -1,0 +1,14 @@
+{
+	"$schema": "./node_modules/lefthook/schema.json",
+	"extends": ["apps/*/lefthook.json", "packages/*/lefthook.json"],
+	"pre-commit": {
+		"jobs": [
+			{
+				"glob": "*.{ts,tsx,js,tsx,html,css,json,jsonc,yml,yaml,toml,md}",
+				"run": "bun oxfmt {staged_files}",
+				"stage_fixed": true
+			}
+		]
+	},
+	"pre-push": { "jobs": [{ "run": "bun lint" }] }
+}

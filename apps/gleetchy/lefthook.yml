@@ -1,6 +1,0 @@
-pre-commit:
-  jobs:
-    - run: bun oxlint --fix {staged_files}
-      glob: "*.{js,ts,jsx,tsx}"
-      stage_fixed: true
-      root: "apps/gleetchy"
