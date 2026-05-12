@@ -27,7 +27,8 @@ export function useFileDropRegion(props: UseFileDropRegionProps) {
 		if (!props.onFiles) return;
 
 		props.onFiles(
-			// oxlint-disable-next-line prefer-spread FileList has no symbol.iterator
+			// FileList has no symbol.iterator
+			// oxlint-disable-next-line prefer-spread
 			Array.from(event.dataTransfer?.files ?? []).filter((...args) => {
 				return props.fileFilter ? props.fileFilter(...args) : true;
 			}),

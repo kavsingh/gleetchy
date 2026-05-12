@@ -30,7 +30,8 @@ export function loadAudioFilesFromInput() {
 			}
 
 			resolve(
-				// oxlint-disable-next-line prefer-spread FileList has no symbol.iterator
+				// FileList has no symbol.iterator
+				// oxlint-disable-next-line unicorn/prefer-spread
 				Array.from(files).filter(({ type }) => type.startsWith("audio/")),
 			);
 

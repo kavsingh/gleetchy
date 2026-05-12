@@ -54,6 +54,7 @@ export default defineConfig({
 		"eslint/no-void": ["error", { allowAsStatement: true }],
 		"eslint/no-warning-comments": ["error", { terms: ["fixme", "revert"] }],
 		"eslint/prefer-destructuring": "off",
+		"eslint/require-unicode-regexp": "off",
 		"eslint/sort-imports": "off",
 		"eslint/sort-keys": "off",
 
