@@ -10,9 +10,9 @@ export function PatchBayNode(props: {
 	target: AudioNodeMeta;
 }) {
 	const { connection, isBlocked, toggleConnection } = useConnection(
-		// eslint-disable-next-line solid/reactivity
+		// oxlint-disable-next-line solid/reactivity
 		props.source,
-		// eslint-disable-next-line solid/reactivity
+		// oxlint-disable-next-line solid/reactivity
 		props.target,
 	);
 	const color = createMemo(() => connection()?.color);

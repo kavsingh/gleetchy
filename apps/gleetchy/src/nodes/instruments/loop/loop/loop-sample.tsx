@@ -13,7 +13,7 @@ export function LoopSample(_props: Props) {
 	const store = useAppStore();
 
 	function subscribeToPositionRatio(handler: (positionRatio: number) => void) {
-		// eslint-disable-next-line solid/reactivity
+		// oxlint-disable-next-line solid/reactivity
 		return store.subscribe(() => {
 			const state: AppState = store.getState();
 			const positionRatio = selectAudioNodeSubscriptionData(

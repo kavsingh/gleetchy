@@ -30,17 +30,17 @@
 		"@tsconfig/bun": "1.0.10",
 		"@tsconfig/node24": "24.0.4",
 		"@tsconfig/strictest": "2.0.8",
-		"@types/bun": "1.3.13",
-		"@typescript/native-preview": "7.0.0-dev.20260509.2",
+		"@types/bun": "1.3.14",
+		"@typescript/native-preview": "7.0.0-dev.20260519.1",
 		"concurrently": "9.2.1",
-		"lefthook": "2.1.6",
-		"nx": "22.7.1",
-		"oxfmt": "0.48.0",
-		"oxlint": "1.63.0",
-		"oxlint-tsgolint": "0.22.1",
+		"lefthook": "2.1.8",
+		"nx": "22.7.2",
+		"oxfmt": "0.51.0",
+		"oxlint": "1.66.0",
+		"oxlint-tsgolint": "0.23.0",
 		"rimraf": "6.1.3"
 	},
-	"packageManager": "bun@1.3.13",
+	"packageManager": "bun@1.3.14",
 	"trustedDependencies": [
 		"lefthook"
 	]

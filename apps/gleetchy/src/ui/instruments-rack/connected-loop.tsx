@@ -22,7 +22,7 @@ export function ConnectedLoop(props: { id: string }) {
 		updateLabel,
 		duplicate,
 		remove,
-		// eslint-disable-next-line solid/reactivity
+		// oxlint-disable-next-line solid/reactivity
 	} = useAudioNode<NodeProps>(props.id, validateNodeType(nodeType));
 
 	const dispatch = useAppDispatch();

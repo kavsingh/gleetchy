@@ -3,7 +3,7 @@ import { createEffect, createSignal } from "solid-js";
 import type { JSX } from "solid-js";
 
 export function TextInput(props: Props) {
-	// eslint-disable-next-line solid/reactivity
+	// oxlint-disable-next-line solid/reactivity
 	let initialValue = props.value;
 	let inputRef: HTMLInputElement | undefined = undefined;
 	const [value, setValue] = createSignal(initialValue);

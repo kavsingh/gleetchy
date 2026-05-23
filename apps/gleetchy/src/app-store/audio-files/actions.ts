@@ -9,10 +9,10 @@ import type { AudioFile } from "~/types";
 
 export const loadAudioFileToNode = createAsyncThunk(
 	"audioFiles/loadToNode",
-	async function loadFileToNode(
+	async (
 		{ nodeId, file }: { nodeId: string; file: File },
 		{ dispatch, getState },
-	): Promise<{ nodeId: string; file: AudioFile }> {
+	): Promise<{ nodeId: string; file: AudioFile }> => {
 		// oxlint-disable-next-line no-unsafe-type-assertion
 		const state = getState() as AppState;
 		const fileId = getFileId(file);
@@ -30,7 +30,7 @@ export const loadAudioFileToNode = createAsyncThunk(
 
 export const loadAudioFile = createAsyncThunk(
 	"audioFiles/decode",
-	async function loadFile(file: File, { getState }): Promise<AudioFile> {
+	async (file: File, { getState }): Promise<AudioFile> => {
 		// oxlint-disable-next-line no-unsafe-type-assertion
 		const audioContext = selectAudioContext(getState() as AppState);
 

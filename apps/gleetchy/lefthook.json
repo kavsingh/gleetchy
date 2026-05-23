@@ -5,7 +5,7 @@
 			{
 				"root": "apps/gleetchy",
 				"glob": "*.{ts,tsx,js,jsx}",
-				"run": "bun oxlint {staged_files}"
+				"run": "bun oxlint --no-error-on-unmatched-pattern {staged_files}"
 			}
 		]
 	}

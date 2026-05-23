@@ -18,7 +18,7 @@ export function ConnectedDelay(props: { id: string }) {
 		updateLabel,
 		updateAudioProps,
 		remove,
-		// eslint-disable-next-line solid/reactivity
+		// oxlint-disable-next-line solid/reactivity
 	} = useAudioNode<NodeProps>(props.id, validateNodeType(nodeType));
 
 	function handleDelayTimeChange(delayTime: number) {

@@ -5,7 +5,7 @@ import type { ParentProps } from "solid-js";
 
 export function AppStoreProvider(props: ParentProps<{ store: AppStore }>) {
 	return (
-		// eslint-disable-next-line solid/reactivity
+		// oxlint-disable-next-line solid/reactivity
 		<AppStoreContext.Provider value={props.store}>
 			{props.children}
 		</AppStoreContext.Provider>

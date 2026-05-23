@@ -97,6 +97,7 @@ export default defineConfig({
 			rules: {
 				"eslint/max-lines-per-function": "off",
 				"eslint/max-statements": "off",
+				"jsx-a11y/control-has-associated-label": "off",
 			},
 		},
 		{
