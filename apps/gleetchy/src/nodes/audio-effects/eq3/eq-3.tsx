@@ -56,9 +56,15 @@ function SliderContainer(props: ParentProps) {
 	return <div class="block-full inline-4">{props.children}</div>;
 }
 
-export interface Eq3Props {
+export interface Eq3GainProps {
 	lowGain: number;
 	midGain: number;
 	highGain: number;
-	onChange(eqProps: Record<string, number>): unknown;
+}
+
+export interface Eq3Props extends Eq3GainProps {
+	lowGain: number;
+	midGain: number;
+	highGain: number;
+	onChange: (eqProps: Partial<Eq3GainProps>) => unknown;
 }

@@ -1,5 +1,4 @@
-import path from "node:path";
-
+import { baseConfig } from "code-config/oxlint";
 import tailwindcss from "eslint-plugin-better-tailwindcss";
 import { getDefaultSelectors } from "eslint-plugin-better-tailwindcss/defaults";
 import {
@@ -11,14 +10,13 @@ import solid from "eslint-plugin-solid";
 import testingLibrary from "eslint-plugin-testing-library";
 import { defineConfig } from "oxlint";
 
-import base from "../../oxlint.config.ts";
+import type { OxlintConfig } from "oxlint";
 
-export default defineConfig({
-	extends: [base],
+const config: OxlintConfig = defineConfig({
+	extends: [baseConfig],
 	env: { node: true, browser: false },
 	ignorePatterns: [
 		"dist/**/*",
-		"dist-isolation/**/*",
 		"reports/**/*",
 		"**/__generated__/**/*",
 		"!**/__generated__/__mocks__/**/*",
@@ -30,7 +28,7 @@ export default defineConfig({
 		},
 		"better-tailwindcss": {
 			cwd: import.meta.dirname,
-			entryPoint: path.resolve(import.meta.dirname, "./src/index.css"),
+			entryPoint: "src/index.css",
 			selectors: [
 				...getDefaultSelectors(),
 				...["tj", "tm"].map((name) => ({
@@ -120,7 +118,6 @@ export default defineConfig({
 		{
 			files: ["src/**/*.test.tsx"],
 			jsPlugins: ["eslint-plugin-jest-dom", "eslint-plugin-testing-library"],
-			// @ts-expect-error upstream types
 			rules: {
 				...jestDom.configs["flat/recommended"].rules,
 				...testingLibrary.configs["flat/dom"].rules,
@@ -128,3 +125,5 @@ export default defineConfig({
 		},
 	],
 });
+
+export default config;

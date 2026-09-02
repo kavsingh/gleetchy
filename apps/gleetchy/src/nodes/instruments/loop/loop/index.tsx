@@ -103,7 +103,7 @@ export function Loop(props: LoopUIProps) {
 }
 
 function AudioFileDropRegion(
-	props: ParentProps<{ onFiles(files: File[]): unknown }>,
+	props: ParentProps<{ onFiles: (files: File[]) => unknown }>,
 ) {
 	const { eventHandlers } = useFileDropRegion({
 		onFiles: (files) => props.onFiles(files),

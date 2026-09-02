@@ -55,8 +55,8 @@ export interface DelayProps {
 	wetDryRatio: number;
 	delayTime: number;
 	isActive: boolean;
-	onDelayTimeChange(delayTime: number): unknown;
-	onWetDryRatioChange(wetDryRatio: number): unknown;
-	onLabelChange(label: string): unknown;
-	remove(): unknown;
+	onDelayTimeChange: (delayTime: number) => unknown;
+	onWetDryRatioChange: (wetDryRatio: number) => unknown;
+	onLabelChange: (label: string) => unknown;
+	remove: () => unknown;
 }

@@ -1,3 +1,4 @@
+import type { Eq3GainProps } from "~/nodes/audio-effects/eq3/eq-3";
 import type { AudioNodeConnection } from "~/types";
 
 export interface LoopUIProps {
@@ -14,12 +15,12 @@ export interface LoopUIProps {
 	playbackRate: number;
 	gain: number;
 	audioBuffer: AudioBuffer | undefined;
-	onGainChange(gain: number): unknown;
-	onPlaybackRateChange(playbackRate: number): unknown;
-	onEqChange(props: Record<string, number>): unknown;
-	loadAudioFile(file: File): unknown;
-	onLoopRegionChange(start: number, end: number): unknown;
-	onLabelChange(label: string): unknown;
-	duplicate(): unknown;
-	remove(): unknown;
+	onGainChange: (gain: number) => unknown;
+	onPlaybackRateChange: (playbackRate: number) => unknown;
+	onEqChange: (props: Partial<Eq3GainProps>) => unknown;
+	loadAudioFile: (file: File) => unknown;
+	onLoopRegionChange: (start: number, end: number) => unknown;
+	onLabelChange: (label: string) => unknown;
+	duplicate: () => unknown;
+	remove: () => unknown;
 }

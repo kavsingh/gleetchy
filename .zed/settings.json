@@ -1,5 +1,7 @@
 {
 	"format_on_save": "on",
+	"soft_wrap": "editor_width",
+	"wrap_guides": [80],
 	"prettier": { "allowed": false },
 	"formatter": [{ "language_server": { "name": "oxfmt" } }],
 	"code_actions_on_format": { "source.fixAll.oxc": true },
@@ -28,7 +30,7 @@
 	"languages": {
 		"TypeScript": {
 			"language_servers": [
-				"tsgo",
+				"typescript-ls",
 				"oxlint",
 				"oxfmt",
 				"tailwindcss-language-server"
@@ -37,7 +39,7 @@
 
 		"TSX": {
 			"language_servers": [
-				"tsgo",
+				"typescript-ls",
 				"oxlint",
 				"oxfmt",
 				"tailwindcss-language-server"
@@ -45,7 +47,7 @@
 		},
 
 		"JavaScript": {
-			"language_servers": ["tsgo", "oxlint", "oxfmt"]
+			"language_servers": ["typescript-ls", "oxlint", "oxfmt"]
 		},
 
 		"CSS": {

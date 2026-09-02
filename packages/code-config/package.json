@@ -1,0 +1,25 @@
+{
+	"name": "code-config",
+	"version": "0.0.0",
+	"description": "shared code configs",
+	"license": "MIT",
+	"type": "module",
+	"exports": {
+		"./*.json": "./*.json",
+		"./*": "./*.ts"
+	},
+	"devDependencies": {
+		"@tsconfig/bun": "1.0.11",
+		"@tsconfig/strictest": "2.0.8",
+		"@types/bun": "1.4.0"
+	},
+	"peerDependencies": {
+		"oxlint": "catalog:",
+		"vite": "catalog:"
+	},
+	"peerDependenciesMeta": {
+		"vite": {
+			"optional": true
+		}
+	}
+}

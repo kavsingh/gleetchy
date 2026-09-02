@@ -24,14 +24,14 @@ export function LoopTitleBar(props: Props) {
 				<Show when={props.fileName}>
 					<span>/</span>
 				</Show>
-				<Button onClick={() => void props.selectAudioFile()}>
+				<Button onClick={() => props.selectAudioFile()}>
 					<Show when={Boolean(props.audioBuffer)} fallback="Load">
 						Replace
 					</Show>{" "}
 					audio file
 				</Button>
 				<Show when={props.audioBuffer}>
-					<Button onClick={() => void props.duplicate()}>Clone</Button>
+					<Button onClick={() => props.duplicate()}>Clone</Button>
 				</Show>
 			</div>
 		</TitleBar>

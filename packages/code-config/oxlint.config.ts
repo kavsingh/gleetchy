@@ -1,17 +1,10 @@
-import { baseConfig } from "code-config/oxlint";
 import { defineConfig } from "oxlint";
+
+import { baseConfig } from "./oxlint.ts";
 
 import type { OxlintConfig } from "oxlint";
 
 const config: OxlintConfig = defineConfig({
-	ignorePatterns: [
-		".nx/*",
-		".temp/*",
-		"target/*",
-		"apps/*",
-		"packages/*",
-		"pnpm-*.yaml",
-	],
 	extends: [baseConfig],
 });
 

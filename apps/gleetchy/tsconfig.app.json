@@ -1,16 +1,12 @@
 {
 	"$schema": "https://json.schemastore.org/tsconfig",
-	"include": ["./src"],
-	"extends": "../../tsconfig.base.json",
+	"include": ["src"],
+	"extends": "code-config/tsconfig.browser.json",
 	"compilerOptions": {
 		"composite": true,
 		"emitDeclarationOnly": true,
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
-		"lib": ["esnext", "dom", "dom.asynciterable"],
-		"module": "esnext",
-		"moduleResolution": "bundler",
-		"target": "es2023",
 		"paths": { "~/*": ["./src/*"] },
 		"sourceMap": true,
 		"types": [

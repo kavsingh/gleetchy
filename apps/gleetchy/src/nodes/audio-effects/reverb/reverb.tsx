@@ -48,10 +48,10 @@ export interface ReverbProps {
 	isActive: boolean;
 	connections: AudioNodeConnection[];
 	impulse: ImpulseName;
-	onWetDryRatioChange(wetDryRatio: number): unknown;
-	onLabelChange(label: string): unknown;
-	onImpulseChange(impulse: ImpulseName): unknown;
-	remove(): unknown;
+	onWetDryRatioChange: (wetDryRatio: number) => unknown;
+	onLabelChange: (label: string) => unknown;
+	onImpulseChange: (impulse: ImpulseName) => unknown;
+	remove: () => unknown;
 }
 
 const impulseOptions: { value: ImpulseName; label: string }[] = [

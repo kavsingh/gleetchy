@@ -49,8 +49,10 @@ export function useFileDropRegion(props: UseFileDropRegionProps) {
 }
 
 export interface UseFileDropRegionProps {
-	fileFilter?(file: File, index: number, files: File[]): boolean;
-	onFiles?(files: File[]): unknown;
+	fileFilter?:
+		| ((file: File, index: number, files: File[]) => boolean)
+		| undefined;
+	onFiles?: ((files: File[]) => unknown) | undefined;
 }
 
 type DragEventHandler = JSX.EventHandlerUnion<HTMLElement, DragEvent>;

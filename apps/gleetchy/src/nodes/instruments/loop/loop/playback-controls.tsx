@@ -32,6 +32,6 @@ const denormalizeRate = denormalize.bind(undefined, 0, 2);
 interface Props {
 	gain: number;
 	playbackRate: number;
-	onGainChange(gain: number): unknown;
-	onPlaybackRateChange(playbackRate: number): unknown;
+	onGainChange: (gain: number) => unknown;
+	onPlaybackRateChange: (playbackRate: number) => unknown;
 }

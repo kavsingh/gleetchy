@@ -1,0 +1,10 @@
+{
+	"$schema": "https://json.schemastore.org/tsconfig",
+	"include": ["./*.ts"],
+	"extends": "./tsconfig.bun.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"allowJs": false,
+		"isolatedDeclarations": true
+	}
+}

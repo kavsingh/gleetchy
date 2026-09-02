@@ -22,7 +22,7 @@ export function isAudioEffectNode(
 export function isInstrumentNode(
 	node: GAudioNode | GInstrumentNode,
 ): node is GInstrumentNode {
-	return hasInstrumentType(node as GAudioNode);
+	return hasInstrumentType(node);
 }
 
 export function isSameConnection(a: ConnectionIdent, b: ConnectionIdent) {

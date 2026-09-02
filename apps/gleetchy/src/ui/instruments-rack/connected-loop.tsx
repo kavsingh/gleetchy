@@ -39,7 +39,7 @@ export function ConnectedLoop(props: { id: string }) {
 		updateAudioProps({ playbackRate });
 	}
 
-	function handleEqChange(eqProps: Eq3Props) {
+	function handleEqChange(eqProps: Partial<Eq3Props>) {
 		updateAudioProps(eqProps);
 	}
 
