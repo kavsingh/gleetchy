@@ -15,8 +15,8 @@
 			"packages/*"
 		],
 		"catalog": {
-			"oxfmt": "0.65.0",
-			"oxlint": "1.80.0"
+			"oxfmt": "0.67.0",
+			"oxlint": "1.82.0"
 		}
 	},
 	"type": "module",
@@ -30,11 +30,12 @@
 		"clean:types": "rimraf ./**/*.tsbuildinfo --glob"
 	},
 	"devDependencies": {
+		"@types/bun": "1.4.2",
 		"@typescript/native-preview": "npm:typescript@7.0.2",
 		"code-config": "workspace:*",
 		"concurrently": "10.0.5",
 		"lefthook": "2.1.12",
-		"nx": "23.1.2",
+		"nx": "23.2.1",
 		"oxfmt": "catalog:",
 		"oxlint": "catalog:",
 		"oxlint-tsgolint": "7.0.2001",
