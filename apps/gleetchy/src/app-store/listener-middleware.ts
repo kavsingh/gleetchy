@@ -11,9 +11,9 @@ export const appAddListener = addListener as TypedAddListener<
 	AppDispatch
 >;
 
-// oxlint-disable-next-line no-unsafe-type-assertion
 export const appStartListening = listenerMiddleware.startListening.bind(
 	listenerMiddleware,
+	// oxlint-disable-next-line no-unsafe-type-assertion
 ) as AppStartListening;
 
 export type AppStartListening = TypedStartListening<AppState, AppDispatch>;
