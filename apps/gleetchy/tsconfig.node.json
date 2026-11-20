@@ -2,5 +2,5 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"include": ["./*.ts"],
 	"extends": "code-config/tsconfig.node.json",
-	"compilerOptions": { "composite": true, "emitDeclarationOnly": true }
+	"compilerOptions": { "composite": true }
 }

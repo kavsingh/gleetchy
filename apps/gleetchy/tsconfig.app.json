@@ -4,7 +4,6 @@
 	"extends": "code-config/tsconfig.browser.json",
 	"compilerOptions": {
 		"composite": true,
-		"emitDeclarationOnly": true,
 		"jsx": "preserve",
 		"jsxImportSource": "solid-js",
 		"paths": { "~/*": ["./src/*"] },
