@@ -12,9 +12,7 @@ jobs:
     name: Test and lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-      - uses: actions/setup-node@v6 # needed for oxlint
-        with: { node-version: latest }
       - run: pnpm run test -- --coverage --silent
       - run: pnpm run lint
