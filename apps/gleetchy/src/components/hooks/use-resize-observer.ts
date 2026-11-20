@@ -6,20 +6,20 @@ const resizeObserver = new ResizeObserver((entries) => {
 	}
 });
 
+function observe(
+	el: Element,
+	onResize: UseResizeObserverEntryCallback,
+): UseResizeObserverUnobserveFn {
+	elementCallbacks.set(el, onResize);
+	resizeObserver.observe(el);
+
+	return function unobserve() {
+		resizeObserver.unobserve(el);
+		elementCallbacks.delete(el);
+	};
+}
+
 export function useResizeObserver() {
-	function observe(
-		el: Element,
-		onResize: UseResizeObserverEntryCallback,
-	): UseResizeObserverUnobserveFn {
-		elementCallbacks.set(el, onResize);
-		resizeObserver.observe(el);
-
-		return function unobserve() {
-			resizeObserver.unobserve(el);
-			elementCallbacks.delete(el);
-		};
-	}
-
 	return observe;
 }
 

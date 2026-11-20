@@ -21,16 +21,15 @@
 	},
 	"devDependencies": {
 		"@types/node": "26.6.6",
-		"@typescript/native-preview": "npm:typescript@7.0.2",
 		"code-config": "workspace:*",
-		"concurrently": "10.0.5",
-		"lefthook": "2.1.14",
-		"nx": "23.2.1",
+		"concurrently": "10.0.7",
+		"lefthook": "2.2.2",
+		"nx": "24.0.6",
 		"oxfmt": "catalog:",
 		"oxlint": "catalog:",
-		"oxlint-tsgolint": "7.0.2002",
-		"rimraf": "6.1.3",
-		"typescript": "npm:@typescript/typescript6@6.0.2"
+		"oxlint-tsgolint": "7.0.2007",
+		"rimraf": "6.1.4",
+		"typescript": "7.0.2"
 	},
 	"packageManager": "pnpm@12.21.0+sha512.66fd8278ee28935ce951792d34367ff3af5c432a2756445823029533835b8da529bbe0be5130afd56ed0713fb8789e47bad82d93bd5ae2fe54b15562d6276ef0"
 }

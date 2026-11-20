@@ -41,7 +41,7 @@ export const connectionsSlice = createSlice({
 	},
 	extraReducers(builder) {
 		builder.addCase(removeAudioNode, (state, { payload: id }) => {
-			// oxlint-disable-next-line no-param-reassign
+			// oxlint-disable-next-line no-param-reassign no-useless-assignment
 			state = stableWithout(getConnectionsFor(id, state), state);
 		});
 	},
