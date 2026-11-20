@@ -9,16 +9,10 @@
 		"./*": "./*.ts"
 	},
 	"devDependencies": {
-		"@tsconfig/bun": "1.0.11",
+		"@tsconfig/node26": "26.0.2",
 		"@tsconfig/strictest": "2.0.8"
 	},
 	"peerDependencies": {
-		"oxlint": "catalog:",
-		"vite": "catalog:"
-	},
-	"peerDependenciesMeta": {
-		"vite": {
-			"optional": true
-		}
+		"oxlint": "catalog:"
 	}
 }

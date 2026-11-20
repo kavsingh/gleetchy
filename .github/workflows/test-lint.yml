@@ -16,5 +16,5 @@ jobs:
       - uses: ./.github/actions/setup
       - uses: actions/setup-node@v6 # needed for oxlint
         with: { node-version: latest }
-      - run: bun run test -- --coverage --silent
-      - run: bun run lint
+      - run: pnpm run test -- --coverage --silent
+      - run: pnpm run lint

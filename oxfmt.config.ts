@@ -4,7 +4,7 @@ import type { OxfmtConfig } from "oxfmt";
 
 const config: OxfmtConfig = defineConfig({
 	ignorePatterns: [
-		"*.lock",
+		"pnpm-*.lock",
 		"**/.nx/**/*",
 		"**/dist/**/*",
 		"**/reports/**/*",

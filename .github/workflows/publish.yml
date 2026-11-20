@@ -21,13 +21,13 @@ jobs:
     needs: test-lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - uses: ./.github/actions/setup
-      - run: bun nx build gleetchy
+      - run: pnpm nx build gleetchy
         env:
           VITE_BUILD_BASE: /gleetchy/
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v4
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
         with:
           path: ./apps/gleetchy/dist
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v5

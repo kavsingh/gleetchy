@@ -1,0 +1,39 @@
+blockExoticSubdeps: true
+minimumReleaseAge: 4320 # 3 days in minutes
+strictDepBuilds: true
+trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 10080
+verifyDepsBeforeRun: prompt
+
+packages:
+  - apps/*
+  - packages/*
+
+savePrefix: ""
+
+catalog:
+  oxfmt: 0.68.0
+  oxlint: 1.83.0
+
+skills:
+  dirs:
+    - .agents/skills
+    - .claude/skills
+    - .github/skills
+
+allowBuilds:
+  lefthook: true
+  nx: true
+permissions:
+  "@reduxjs/toolkit":
+    skills:
+      [
+        modern-redux,
+        redux-dataflow,
+        debug-redux-toolkit-apps,
+        migrate-to-modern-redux,
+        adopt-rtk-query,
+        build-slices-and-selectors,
+        design-state-ownership,
+        handle-side-effects,
+      ]

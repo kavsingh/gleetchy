@@ -1,0 +1,10 @@
+# pnpm
+/adopt-rtk-query
+/build-slices-and-selectors
+/debug-redux-toolkit-apps
+/design-state-ownership
+/handle-side-effects
+/migrate-to-modern-redux
+/modern-redux
+/redux-dataflow
+# pnpm end
